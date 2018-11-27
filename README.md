@@ -9,7 +9,7 @@ You can install animalcules from github with:
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("schifferl/animalcules")
+devtools::install_github("compbiomed/animalcules")
 ```
 
 ## Example
