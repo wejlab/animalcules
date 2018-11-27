@@ -1,0 +1,44 @@
+Package: animalcules
+Title: What the Package Does (one line, title case)
+Version: 0.0.0.9000
+Author:
+    Yue (Jason) Zhao <yuezh@bu.edu>,
+    Anthony Federico <anfed@bu.edu>,
+    Lucas Schiffer <schifferl@bu.edu>
+Maintainer: Yue (Jason) Zhao <yuezh@bu.edu>
+Description:
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae sapien
+    at odio vehicula hendrerit. Curabitur finibus scelerisque ex volutpat
+    rhoncus. Mauris vel arcu placerat dui posuere mattis. Mauris laoreet pretium
+    purus, eu volutpat tellus egestas vel. Quisque ornare eros ut nulla finibus
+    lobortis. Praesent dictum pellentesque est a mattis. Suspendisse id rhoncus
+    purus.
+License: Artistic-2.0
+Encoding: UTF-8
+LazyData: true
+Depends:
+    R (>= 3.5.0)
+Imports:
+    assertthat
+Suggests:
+    BiocCheck,
+    BiocStyle,
+    covr,
+    dplyr,
+    devtools,
+    knitr,
+    magrittr,
+    MultiAssayExperiment,
+    rmarkdown,
+    SummarizedExperiment,
+    S4Vectors,
+    testthat,
+    usethis
+biocViews:
+    MicrobiomeData,
+    ReproducibleResearch,
+    SequencingData
+VignetteBuilder: knitr
+URL: https://github.com/schifferl/animalcules
+BugReports: https://github.com/schifferl/animalcules/issues
+RoxygenNote: 6.1.0

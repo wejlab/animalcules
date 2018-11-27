@@ -1,0 +1,7 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^CONDUCT\.md$
+^\.travis\.yml$
+^codecov\.yml$
+^data-raw$
+^LICENSE$

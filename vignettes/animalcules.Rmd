@@ -1,0 +1,1653 @@
+---
+title: "Animalcules"
+author:
+- name: Yue Zhao
+  affiliation:
+  - &1 Section of Computational Biomedicine, Boston University, Boston, MA
+- name: Anthony Federico
+  affiliation:
+  - *1
+- name: Lucas Schiffer
+  affiliation:
+  - *1
+date: '`r format(Sys.Date(), "%B %e, %Y")`'
+abstract: >
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae sapien
+    at odio vehicula hendrerit. Curabitur finibus scelerisque ex volutpat
+    rhoncus. Mauris vel arcu placerat dui posuere mattis. Mauris laoreet pretium
+    purus, eu volutpat tellus egestas vel. Quisque ornare eros ut nulla finibus
+    lobortis. Praesent dictum pellentesque est a mattis. Suspendisse id rhoncus
+    purus.
+package: animalculinstales
+output:
+    BiocStyle::html_document
+vignette: >
+    %\VignetteIndexEntry{animalcules}
+    %\VignetteEncoding{UTF-8}
+    %\VignetteEngine{knitr::rmarkdown}
+editor_options:
+    chunk_output_type: console
+---
+
+# Knitr Options
+
+```{r}
+knitr::opts_chunk$set(message = FALSE)
+```
+
+# Packages
+
+```{r}
+library(tidyverse)
+library(magrittr)
+library(MultiAssayExperiment)
+library(SummarizedExperiment)
+library(S4Vectors)
+library(usethis)
+library(plotly)
+library(reshape2)
+library(caret)
+library(vegan)
+library(ape)
+library(gbm)
+library(DESeq2)
+```
+
+# Toy Dataset
+
+```{r}
+data_raw <-
+    base::system.file("extdata/animalcules.rds", package = "animalcules") %>%
+    base::readRDS()
+
+se_mgx <-
+    magrittr::use_series(data_raw, count_table) %>%
+    base::data.matrix() %>%
+    S4Vectors::SimpleList() %>%
+    magrittr::set_names("MGX")
+
+se_ge <-
+    magrittr::use_series(data_raw, gene_expression_table) %>%
+    base::data.matrix() %>%
+    S4Vectors::SimpleList() %>%
+    magrittr::set_names("GeneExpression")
+
+se_colData <-
+    magrittr::use_series(data_raw, metadata_table) %>%
+    S4Vectors::DataFrame()
+
+se_rowData <-
+    magrittr::use_series(data_raw, tax_table) %>%
+    base::data.frame() %>%
+    dplyr::mutate_all(as.character) %>%
+    dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+    S4Vectors::DataFrame()
+
+microbe_se <-
+    SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
+                                               colData = se_colData,
+                                               rowData = se_rowData)
+
+host_se <-
+    SummarizedExperiment::SummarizedExperiment(assays = se_ge,
+                                               colData = se_colData)
+
+mae_experiments <-
+    S4Vectors::SimpleList(MicrobeGenetics = microbe_se, HostGenetics = host_se)
+
+MAE <-
+    MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
+                                               colData = se_colData)
+
+# usethis::use_data(MAE)
+```
+
+# Toy Test
+
+```{r}
+load("data/MAE.rda")
+MultiAssayExperiment::experiments(MAE)
+MultiAssayExperiment::colData(MAE)
+MultiAssayExperiment::sampleMap(MAE)
+```
+
+```{r}
+sessionInfo()
+```
+
+# Utility Functions
+
+```{r}
+upsample_counts <- function(counts_table, tax_table, higher_level) {
+    counts_table$higher_level = tax_table[[higher_level]]
+    counts_table <- reshape2::melt(counts_table, id.vars="higher_level") %>%
+        aggregate(.~variable+higher_level, . , sum) %>%
+        reshape2::dcast(higher_level~variable) %>%
+        as.data.frame()
+    rownames(counts_table) <- counts_table$higher_level
+    counts_table$higher_level <- NULL
+    return(counts_table)
+}
+
+counts_to_relabu <- function(counts_table) {
+    sapply(counts_table, prop.table) %>%
+        as.data.frame() %>%
+        magrittr::set_colnames(colnames(counts_table)) %>%
+        magrittr::set_rownames(rownames(counts_table))
+}
+
+counts_to_logcpm <- function(counts_table) {
+    sapply(counts_table, function(x) log10(x*1e6/sum(x) + 1)) %>%
+        as.data.frame() %>%
+        magrittr::set_colnames(colnames(counts_table)) %>%
+        magrittr::set_rownames(rownames(counts_table))
+}
+
+pick_samples <- function(df, isolate_samples, discard_samples) {
+    # Isolate all of these samples
+    if (!is.null(isolate_samples)) {
+        df <- dplyr::select(df, one_of(isolate_samples))
+    }
+    # Discard all of these samples
+    if (!is.null(discard_samples)) {
+        df <- dplyr::select(df, -one_of(discard_samples))
+    }
+    return(df)
+}
+
+pick_samples_MAE <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
+    # Isolate all of these samples
+    if (!is.null(isolate_samples)) {
+        MAE <- MAE[,isolate_samples,]
+    }
+    # Discard all of these samples
+    if (!is.null(discard_samples)) {
+        id = rownames(colData(MAE))
+        id_isolate = id[!id %in% discard_samples]
+        MAE <- MAE[,id_isolate,]
+    }
+    return(MAE)
+}
+```
+
+
+
+# Server_02_filter
+
+## Objects Define
+
+```{r}
+## tables from MAE
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+## shiny UI input object
+input_filter_type = "By Metadata"
+input_select_condition_sample_filter_sidebar = "SEX"
+samples_discard = c("subject_2", "subject_4")
+```
+
+
+## filter MAE by discarding samples
+
+```{r}
+MAE_subset <- pick_samples_MAE(MAE = MAE, discard_samples = samples_discard)
+```
+
+
+## summary_plot_top
+
+```{r}
+sam_table[,"Reads"] = colSums(counts_table[,base::rownames(sam_table)])
+sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) base::sum(x >= 1))
+
+if (input_filter_type == "By Microbes") {
+    cov <- "Taxnum"
+} else {
+    cov <- input_select_condition_sample_filter_sidebar
+}
+
+# use density plot if the variable has more than 8 unique values
+# use bar plot if the variable has less than 8 unique values
+if (length(unique(unlist(sam_table[,cov]))) > 8) {
+    fit <- density(unlist(sam_table[,cov]))
+    num.density <- plot_ly(x=fit$x, y=fit$y, 
+                           type="scatter", 
+                           mode="lines", 
+                           fill="tozeroy") %>%
+                    layout(title=cov)
+    num.density$elementId <- NULL
+    num.density
+} else {
+    cat.df = data.frame(table(sam_table[,cov]))
+    cat.bar <- plot_ly(x = cat.df$Var1,
+                       y = cat.df$Freq,
+                       type = "bar",
+                       showlegend = FALSE) %>%
+                layout(title=cov,
+                       xaxis = list(title = 'Diet',
+                                    tickmode = "array",
+                                    showticklabels = TRUE,
+                                    categoryorder = 'trace'),
+                       yaxis = list(title = 'Frequency'))
+    cat.bar$elementId <- NULL
+    cat.bar
+}
+```
+
+## summary_plot_bottom
+
+```{r}
+sam_table[,"Reads"] = colSums(counts_table[,rownames(sam_table)])
+sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) sum(x >= 1))
+
+if (input_filter_type == "By Microbes") {
+    cov <- "Taxnum"
+} else {
+    cov <- input_select_condition_sample_filter_sidebar
+}
+
+if (length(unique(unlist(sam_table[,cov]))) > 8) {
+    vec <- unlist(sam_table[,cov])
+    num.scatter <- plot_ly(y = vec, 
+                          jitter = 0.3, 
+                          pointpos = -1.8, 
+                          boxpoints = 'all',
+                          marker = list(color = 'rgb(7,40,89)'),
+                          line = list(color = 'rgb(7,40,89)'),
+                          name = cov, type="box") %>%
+                   layout(title=cov)
+    num.scatter$elementId <- NULL
+    num.scatter
+} else {
+    cat.df = data.frame(table(sam_table[,cov]))
+    cat.pie <- plot_ly(cat.df, labels = ~Var1, values = ~Freq,
+                       type = "pie",
+                       showlegend = FALSE) %>%
+                layout(title=cov)
+    cat.pie$elementId <- NULL
+    cat.pie
+}
+
+```
+
+# Server_03_relabu
+
+## Relative Abundance Stacked Bar Plot
+
+```{r}
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+tax_level="genus"
+order_organisms=c("Escherichia")
+sort_by="organisms"
+group_samples=F
+group_conditions="ALL"
+sample_conditions=c("SEX", "AGE")
+isolate_samples=c()
+discard_samples=c()
+show_legend=T
+
+##
+
+# Isolate or discard samples in the counts table
+counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
+
+# Subset and match sam table on the same samples as counts table
+sam_table <- sam_table %>%
+                .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
+                .[match(rownames(.), colnames(counts_table)),,drop=F]
+
+# Ensure sam table has the same subset of samples and is in the correct order
+stopifnot(colnames(counts_table) == rownames(sam_table))
+
+# Sum counts by taxon level and return relative abundance
+relabu_table <- counts_table %>%
+                    upsample_counts(tax_table, tax_level) %>%
+                    counts_to_relabu() %>%
+                    base::t() %>%
+                    base::as.data.frame()
+
+# If grouping samples
+if (group_samples & !is.null(group_conditions)) {
+    if (group_conditions == 'ALL') {
+        relabu_table$covariate <- rep('ALL', nrow(relabu_table))
+    } else {
+        relabu_table$covariate <- sam_table[[group_conditions]]
+    }
+
+    # Group relative abundance by the covariate (mean relative abundance across organisms)
+    relabu_table <- relabu_table %>%
+                        reshape2::melt(id.vars = 'covariate') %>%
+                        aggregate(. ~variable+covariate , ., mean) %>%
+                        reshape2::dcast(formula = covariate~variable) %>%
+                        magrittr::set_rownames(.[['covariate']]) %>%
+                        dplyr::select(-one_of(c("covariate")))
+
+    # Sam table becomes the grouped conditions
+    sam_table <- rownames(relabu_table) %>%
+                     as.data.frame() %>%
+                     magrittr::set_colnames(c(group_conditions)) %>%
+                     magrittr::set_rownames(rownames(relabu_table))
+}
+
+# Put selected organisms first
+relabu_table <- relabu_table[,order(colSums(relabu_table)),drop=F]
+if (!is.null(order_organisms)) {
+    org_order <- c(setdiff(colnames(relabu_table), order_organisms), rev(order_organisms))
+    relabu_table <- relabu_table[,org_order]
+}
+
+# Order samples by organisms if not by conditons
+if (sort_by == "organisms") {
+    for (i in 1:ncol(relabu_table)) {
+        relabu_table <- relabu_table[order(relabu_table[,i]),]
+    }
+}
+
+# If any conditions are selected make a side bar
+if (!is.null(sample_conditions) || (group_samples && group_conditions != "ALL")) {
+    if (!group_samples) {
+        sam_table <- sam_table[,sample_conditions,drop=F]
+    }
+
+    # Order samples by conditions if not by organisms
+    if (sort_by == "conditions") {
+        for (i in ncol(sam_table):1) {
+            sam_table <- sam_table[order(sam_table[[i]]),,drop=F]
+        }
+        # Reorder stacked barplot
+        relabu_table <- relabu_table[order(match(rownames(relabu_table), rownames(sam_table))),,drop=F]
+    } else {
+        sam_table <- sam_table[order(match(rownames(sam_table), rownames(relabu_table))),,drop=F]
+    }
+
+    if (nrow(sam_table) > 1) {
+        # Retain hover-text information before conditions are factorized
+        hover.txt <- c()
+        for (i in 1:ncol(sam_table)) {
+            hover.txt <- cbind(hover.txt, as.character(sam_table[[i]]))
+        }
+
+        # Normalized matrix
+        mat <- sam_table %>%
+                   data.matrix() %>%
+                   apply(2, function(x)(x-min(x))/(max(x)-min(x)))
+
+        # Plotly | Heatmap
+        hm <- plotly::plot_ly(x = colnames(mat),
+                              y = rownames(mat),
+                              z = mat,
+                              type = "heatmap",
+                              showscale=F,
+                              hoverinfo = "x+y+text",
+                              text=hover.txt) %>%
+            layout(xaxis = list(title = "",
+                                tickangle = -45),
+                   yaxis = list(showticklabels = F,
+                                type = 'category',
+                                ticks = ""))
+    }
+
+}
+
+# Plotly | Stacked Bar Plots
+relabu_table$samples <- rownames(relabu_table)
+sbp <- plot_ly(relabu_table,
+               y = ~samples,
+               x = relabu_table[[colnames(relabu_table)[1]]],
+               type = 'bar',
+               orientation = 'h',
+               name = substr(colnames(relabu_table)[1], 1, 40)) %>%
+               layout(font = list(size = 10),
+                      xaxis = list(title = 'Relative Abundance'),
+                      yaxis = list(title = '',
+                                   type = 'category',
+                      tickmode = "array",
+                      tickvals = rownames(relabu_table),
+                      showticklabels = FALSE,
+                      categoryorder = 'trace'),
+                      barmode = 'stack',
+                      showlegend = show_legend)
+for (i in 2:(ncol(relabu_table)-1)) {
+    sbp <- add_trace(sbp, x=relabu_table[[colnames(relabu_table)[i]]], name=substr(colnames(relabu_table)[i], 1, 40))
+}
+
+# Create a multiplot if any conditions are selected
+if (exists("hm") && nrow(sam_table) > 1) {
+    hm_sbp <- subplot(hm, sbp, widths=c(0.1,  0.9))
+    hm_sbp$elementId <- NULL # To suppress a shiny warning
+    hm_sbp
+    #return(hm_sbp)
+} else {
+    sbp$elementId <- NULL # To suppress a shiny warning
+    sbp
+    #return(sbp)
+}
+```
+
+## Relative Abundance Heatmap
+
+```{r}
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+tax_level="phylum"
+sort_by="conditions"
+sample_conditions=c("SEX", "AGE")
+isolate_organisms=c()
+isolate_samples=c()
+discard_samples=c()
+log_cpm=T
+
+##
+# Isolate or discard samples in the counts table
+counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
+
+# Subset and match sam table on the same samples as counts table
+sam_table <- sam_table %>%
+    .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
+    .[match(rownames(.), colnames(counts_table)),,drop=F]
+
+# Ensure sam table has the same subset of samples and is in the correct order
+stopifnot(colnames(counts_table) == rownames(sam_table))
+
+# Sum counts by taxon level and return counts or logcpm(counts)
+counts_table <- counts_table %>%
+                    upsample_counts(tax_table, tax_level) %>%
+                    {if(log_cpm) counts_to_logcpm(.) else .} %>%
+                    base::t() %>%
+                    base::as.data.frame()
+
+# Isolate organisms if specified
+if (!is.null(isolate_organisms)) {
+    counts_table <- counts_table[,isolate_organisms,drop=F]
+}
+
+# Reorder by most prominent organisms
+counts_table <- counts_table[,order(colSums(counts_table)),drop=F]
+
+# Order samples by organisms if not by conditons
+if (sort_by == "organisms") {
+    for (i in 1:ncol(counts_table)) {
+        counts_table <- counts_table[order(counts_table[,i]),,drop=F]
+    }
+}
+
+# If any conditions are selected make a side bar
+if (!is.null(sample_conditions)) {
+    sam_table <- sam_table[,sample_conditions,drop=F]
+    if (sort_by == "conditions") {
+        for (i in ncol(sam_table):1) {
+            sam_table <- sam_table[order(sam_table[[i]]),,drop=F]
+        }
+        # Reorder stacked barplot
+        counts_table <- counts_table[order(match(rownames(counts_table), rownames(sam_table))),,drop=F]
+    } else {
+        sam_table <- sam_table[order(match(rownames(sam_table), rownames(counts_table))),,drop=F]
+    }
+}
+
+# Plotly | Heatmap Counts
+mat <- data.matrix(counts_table)
+hm_c <- plot_ly(x = colnames(mat),
+                y = rownames(mat),
+                z = mat,
+                type = "heatmap",
+                colors= "RdPu",
+                hoverinfo = "x+y+z") %>%
+                layout(xaxis = list(showticklabels = F,
+                                    title = "",
+                                    ticks = "",
+                                    tickangle = -45),
+                       yaxis = list(showticklabels = F,
+                                    type = 'category',
+                                    ticks = ""))
+
+# Plotly | Heatmap Samples
+if (!is.null(sample_conditions)) {
+
+    # Retain hover-text information before conditions are factorized
+    hover.txt <- c()
+    for (i in 1:ncol(sam_table)) {
+        hover.txt <- cbind(hover.txt, as.character(sam_table[[i]]))
+    }
+
+    # Normalized matrix
+    mat <- sam_table %>%
+        data.matrix() %>%
+        apply(2, function(x)(x-min(x))/(max(x)-min(x)))
+
+    # Plotly | Heatmap Samples
+    hm_s <- plot_ly(x = colnames(mat),
+                    y = rownames(mat),
+                    z = mat,
+                    type = "heatmap",
+                    showscale=F,
+                    hoverinfo = "x+y+text",
+                    text=hover.txt) %>%
+                    layout(xaxis = list(title = "",
+                                        tickangle = -45),
+                           yaxis = list(showticklabels = F,
+                                        type = 'category',
+                                        ticks = ""))
+}
+
+# Create a multiplot if any conditions are selected
+if (!is.null(sample_conditions)) {
+    hm_c_s <- subplot(hm_s, hm_c, widths=c(0.1,  0.9))
+    hm_c_s$elementId <- NULL # To suppress a shiny warning
+    hm_c_s
+    #return(hm_sam_ra)
+} else {
+    hm_c$elementId <- NULL # To suppress a shiny warning
+    hm_c
+    #return(hm_c)
+}
+```
+
+## Relative Abundance Boxplot
+
+```{r}
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+tax_level <- "genus"
+organisms <- c("Escherichia", "Actinomyces")
+condition <- "DISEASE"
+datatype  <- c("counts", "relabu", "logcpm")[3]
+
+##
+
+# Sum counts by taxon level and return counts
+df <- counts_table %>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level) %>%
+      # Choose data type
+      {
+          if (datatype == "relabu") {
+              counts_to_relabu(.)
+          } else if (datatype == "logcpm") {
+              counts_to_logcpm(.)
+          } else {
+              .
+          }
+      } %>%
+      # Subset on chosen organisms
+      .[organisms, , drop=F] %>%
+      # Transpose
+      t() %>%
+      # Back to data frame
+      as.data.frame() %>%
+      # Merge in covariate information
+      merge(sam_table[, condition, drop=F], by=0, all=T) %>%
+      # Melt for plotly
+      reshape2::melt(by=organisms, variable.name="organisms")
+
+p <- plot_ly(df,
+             x = ~organisms,
+             y = ~value,
+             color = ~df[,condition],
+             type = "box")  %>%
+             layout(boxmode = "group",
+                    yaxis = list(title = datatype))
+p$p <- NULL # To suppress a shiny warning
+p
+#return(p)
+```
+
+
+
+
+```{r}
+
+diversities <- function(counts_table, index="all", zeroes=TRUE) {
+
+    # Only include accepted indices
+    index <- tolower(index)
+    accepted <- c("inverse_simpson", "gini_simpson", "shannon",
+                    "fisher", "coverage")
+
+    # Return all indices
+    if (length(index) == 1 && index == "all") {
+        index <- accepted
+    }
+
+    if (!is.null(index)) {
+        index <- intersect(index, accepted)
+    }
+
+    if (!is.null(index) && length(index) == 0) {
+        return(NULL)
+    }
+
+    tab <- diversities_help(counts_table, index, zeroes)
+    tab
+}
+
+
+
+diversities_help <- function(counts_table, index="all", zeroes=TRUE) {
+
+    if (length(index) > 1) {
+        tab <- NULL
+        for (idx in index) {
+            tab <- cbind(tab, diversities_help(x, index=idx, zeroes=TRUE))
+        }
+        colnames(tab) <- index
+        return(as.data.frame(tab))
+    }
+
+    if (index == "inverse_simpson") {
+        ev <- apply(counts_table, 2, function(x) {
+            inverse_simpson(x)
+        })
+    } else if (index == "gini_simpson") {
+        ev <- apply(counts_table, 2, function(x) {
+            gini_simpson(x)
+        })
+    } else if (index == "shannon") {
+        ev <- apply(counts_table, 2, function(x) {
+            shannon(x)
+        })
+    } else if (index == "fisher") {
+        if (length(setdiff(unique(as.vector(counts_table)%%1), 0)) == 0) {
+          ev <- fisher.alpha(counts_table, MARGIN=2)
+        } else {
+	  warning("Fisher diversity defined only for integers;
+                   the counts_table table contains non-integers. Fisher not estimated.")
+          ev <- NULL
+        }
+    } else if (index == "coverage") {
+        ev <- unname(coverage(counts_table))
+    }
+
+    names(ev) <- colnames(counts_table)
+
+    ev
+
+}
+
+
+
+# x: Species count vector
+inverse_simpson <- function(x) {
+
+    # Simpson index
+    lambda <- simpson_index(x)
+
+    # Inverse Simpson diversity
+    (1/lambda)
+
+}
+
+# x: Species count vector
+gini_simpson <- function(x) {
+
+    # Simpson index
+    lambda <- simpson_index(x)
+
+    # Gini-Simpson diversity
+    1 - lambda
+
+}
+
+simpson_index <- function(x) {
+
+    # Relative abundances
+    p <- x/sum(x)
+
+    # Simpson index
+    lambda <- sum(p^2)
+
+    lambda
+
+}
+
+
+
+# x: Species count vector
+shannon <- function(x) {
+
+    # Ignore zeroes
+    x <- x[x > 0]
+
+    # Species richness (number of species)
+    S <- length(x)
+
+    # Relative abundances
+    p <- x/sum(x)
+
+    # Shannon index
+    (-sum(p * log(p)))
+
+}
+```
+
+
+
+
+# Server_04_diversity
+
+```{r}
+# alpha diversity boxplot
+
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+
+tax_level <- "genus"
+condition <- "DISEASE"
+alpha_metric_all <- c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage")
+alpha_metric <- "shannon"
+
+
+
+# Sum counts by taxon level and return counts
+counts_table %<>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level)
+
+
+
+# calculate alpha diversity
+sam_table$richness <- diversities(counts_table, index = alpha_metric)
+colnames(sam_table)[ncol(sam_table)] <- "richness"
+colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
+
+# plot alpha diversity boxplot
+g <- ggplot(sam_table,
+            aes(condition,
+                richness,
+                text=rownames(sam_table),
+                color = condition)) +
+        geom_point() +
+        geom_boxplot() +
+        labs(title = paste("Alpha diversity between ",
+                   condition,
+                   " (", alpha_metric, ")", sep = ""))
+g <- ggplotly(g, tooltip="text")
+g$elementId <- NULL # To suppress a shiny warning
+g
+
+
+```
+
+
+
+## util functions for alpha diversity statistical test
+```{r}
+
+alpha_div_test <- function(sam_table, alpha_stat){
+    if (length(unique(sam_table$condition)) == 2){
+    if (alpha_stat == "Mann-Whitney"){
+      tmp <- wilcox.test(richness ~ condition, data = sam_table)
+      output <- c(tmp$method, tmp$p.value)
+      output.table <- data.frame(output)
+      rownames(output.table) <- c("Method", "P-value")
+      output.table
+    } else if (alpha_stat == "T-test"){
+      tmp <- t.test(richness ~ condition, data = sam_table)
+      output <- c(tmp$method, tmp$p.value)
+      output.table <- data.frame(output)
+      rownames(output.table) <- c("Method", "P-value")
+      output.table
+    } else{
+      print("Condition level number is 2, please use Mann-Whitney test.")
+    }
+
+    } else if (length(unique(sam_table$condition)) > 2){
+    if (alpha_stat == "Mann-Whitney"){
+      result.list <- list()
+      sam_table.list <- list()
+      for (i in 1:length(unique(sam_table$condition))){
+        sam_table.list[[i]] <- sam_table[which(sam_table$condition != unique(sam_table$condition)[i]),]
+        result.list[[i]] <- wilcox.test(richness ~ condition, data = sam_table.list[[i]])
+      }
+      output.table <- NULL
+      group.name <- c()
+      for (i in 1:length(result.list)){
+        output.tmp <- c(result.list[[i]]$method, result.list[[i]]$p.value)
+        output.table <- cbind(output.table, output.tmp)
+        group.name[i] <- paste(unique(sam_table.list[[i]]$condition), collapse = " and ")
+      }
+      rownames(output.table) <- c("Method", "P-value")
+      colnames(output.table) <- group.name
+      output.table
+
+    } else if (alpha_stat == "T-test"){
+              result.list <- list()
+      sam_table.list <- list()
+      for (i in 1:length(unique(sam_table$condition))){
+        sam_table.list[[i]] <- sam_table[which(sam_table$condition != unique(sam_table$condition)[i]),]
+        result.list[[i]] <- t.test(richness ~ condition, data = sam_table.list[[i]])
+      }
+      output.table <- NULL
+      group.name <- c()
+      for (i in 1:length(result.list)){
+        output.tmp <- c(result.list[[i]]$method, result.list[[i]]$p.value)
+        output.table <- cbind(output.table, output.tmp)
+        group.name[i] <- paste(unique(sam_table.list[[i]]$condition), collapse = " and ")
+      }
+      rownames(output.table) <- c("Method", "P-value")
+      colnames(output.table) <- group.name
+      output.table
+
+    } else{
+      tmp <- kruskal.test(richness ~ condition, data = sam_table)
+      output <- c(tmp$method, tmp$p.value)
+      output.table <- data.frame(output)
+      rownames(output.table) <- c("Method", "P-value")
+      output.table
+    }
+
+    } else{
+    "Condition level must be at least 2."
+    }
+}
+
+```
+
+
+
+## alpha diversity statistical test
+```{r}
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+
+tax_level <- "genus"
+condition <- "DISEASE"
+alpha_metric_all <- c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage")
+alpha_metric <- "shannon"
+alpha_stat_all <- c("Mann-Whitney", "T-test", "Kruskal-Wallis")
+alpha_stat <- "Mann-Whitney"
+
+
+# Sum counts by taxon level and return counts
+counts_table %<>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level)
+
+
+
+# calculate alpha diversity
+sam_table$richness <- diversities(counts_table, index = alpha_metric)
+colnames(sam_table)[ncol(sam_table)] <- "richness"
+colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
+sam_table$condition <- as.factor(sam_table$condition)
+
+
+# do the statistical test
+alpha_div_test(sam_table = sam_table,
+               alpha_stat = alpha_stat)
+
+
+
+
+```
+
+
+
+
+## beta diversity heatmap
+```{r}
+
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+
+tax_level <- "genus"
+input_bdhm_select_conditions <- "DISEASE"
+input_bdhm_sort_by_all <- c("nosort", "conditions")
+input_bdhm_sort_by <- "conditions"
+
+# Sum counts by taxon level and return counts
+counts_table %<>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level)
+
+
+#Then use vegdist from vegan to generate a bray distance object:
+dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
+dist.mat <- as.matrix(dist.mat)
+dist.mat <- dist.mat[order(match(rownames(dist.mat), rev(rownames(dist.mat)))),,drop=FALSE]
+
+
+if (!is.null(input_bdhm_select_conditions)) {
+    df.sam <- sam_table[,input_bdhm_select_conditions,drop=FALSE]
+    if (input_bdhm_sort_by == "conditions") {
+      for (i in ncol(df.sam):1) {
+        df.sam <- df.sam[order(df.sam[[i]]),,drop=FALSE]
+      }
+      dist.mat <- dist.mat[order(match(rownames(dist.mat), rownames(df.sam))),,drop=FALSE]
+      dist.mat <- dist.mat[,order(match(colnames(dist.mat), rownames(df.sam))),drop=FALSE]
+    } else {
+      df.sam <- df.sam[order(match(rownames(df.sam), rownames(dist.mat))),,drop=FALSE]
+    }
+}
+
+m <- data.matrix(dist.mat)
+hover.txt <- c()
+for (i in 1:ncol(dist.mat)) {
+hover.txt <- cbind(hover.txt, dist.mat[[i]])
+}
+hm.beta <- plot_ly(x = colnames(m), y = rownames(m), z = m,
+                 type = "heatmap",
+                 colors= "RdPu",
+                 hoverinfo = "x+y+z") %>%
+layout(xaxis = list(showticklabels = FALSE, title = "", ticks = "", tickangle = -45),
+       yaxis = list(showticklabels = FALSE, type = 'category', ticks = ""))
+
+if (!is.null(input_bdhm_select_conditions)) {
+    hover.txt <- c()
+    for (i in 1:ncol(df.sam)) {
+        hover.txt <- cbind(hover.txt, df.sam[[i]])
+}
+df.sam[] <- lapply(df.sam, factor)
+
+# Y-axis of subplot
+m <- data.matrix(df.sam)
+m.row.normalized <- apply(m, 2, function(x)(x-min(x))/(max(x)-min(x)))
+hm.sam.y <- plot_ly(x = colnames(m.row.normalized),
+                    y = rownames(m.row.normalized),
+                    z = m.row.normalized,
+                    type = "heatmap",
+                    showscale=FALSE,
+                    hoverinfo = "x+y+text",
+                    transpose=FALSE,
+                    text=hover.txt) %>%
+  layout(xaxis = list(title = "", tickangle = -45),
+         yaxis = list(showticklabels = FALSE, type = 'category', ticks = ""),
+         orientation=TRUE)
+
+# X-axis of subplot
+m <- data.matrix(df.sam)
+m.row.normalized <- apply(m, 2, function(x)(x-min(x))/(max(x)-min(x)))
+m.row.normalized = t(m.row.normalized)
+m.row.normalized = m.row.normalized[order(match(rownames(m.row.normalized), rev(rownames(m.row.normalized)))),,drop=FALSE]
+hm.sam.x <- plot_ly(x = colnames(m.row.normalized),
+                    y = rownames(m.row.normalized),
+                    z = m.row.normalized,
+                    type = "heatmap",
+                    showscale=FALSE,
+                    hoverinfo = "x+y+text",
+                    transpose=FALSE,
+                    text=t(hover.txt)) %>%
+  layout(xaxis = list(showticklabels = FALSE, type = 'category', ticks = ""),
+         yaxis = list(title = "", tickangle = -45),
+         orientation=TRUE)
+}
+
+empty <- plotly_empty(type = "scatter")
+
+if (!is.null(input_bdhm_select_conditions)) {
+    hm.sam.beta.top <- subplot(empty, hm.sam.x, widths=c(0.1,  0.9))
+    hm.sam.beta.bot <- subplot(hm.sam.y, hm.beta, widths=c(0.1,  0.9))
+    hm.sam.beta <- subplot(hm.sam.beta.top, hm.sam.beta.bot, nrows=2, heights=c(0.1,  0.9))
+    hm.sam.beta$elementId <- NULL # To suppress a shiny warning
+    hm.sam.beta
+} else {
+    hm.beta$elementId <- NULL # To suppress a shiny warning
+    hm.beta
+}
+
+
+```
+
+
+
+## beta boxplot
+```{r}
+
+
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+
+tax_level <- "genus"
+input_select_beta_condition = "DISEASE"
+
+
+# Sum counts by taxon level and return counts
+counts_table %<>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level)
+
+#Then use vegdist from vegan to generate a bray distance object:
+dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
+dist.mat <- as.matrix(dist.mat)
+
+
+# change condition name
+colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <- "condition"
+
+dist.within.a <- c()
+dist.within.b <- c()
+dist.between <- c()
+for (i in 1:nrow(dist.mat)){
+for (j in 1:nrow(dist.mat)) {
+  if (sam_table$condition[i] == unique(sam_table$condition)[1] &
+      sam_table$condition[j] == unique(sam_table$condition)[1]){
+    dist.within.a <- c(dist.within.a, dist.mat[i,j])
+  } else if (sam_table$condition[i] == unique(sam_table$condition)[2] &
+             sam_table$condition[j] == unique(sam_table$condition)[2]){
+    dist.within.b <- c(dist.within.b, dist.mat[i,j])
+  } else{
+    dist.between <- c(dist.between, dist.mat[i,j])
+  }
+}
+}
+y.axis <- list(
+title = paste("Bray-Curtis", "Distance", sep = " ")
+)
+p <- plot_ly(y = ~dist.within.a, type = "box", name = paste("Within", unique(sam_table$condition)[1])) %>%
+add_trace(y = ~dist.within.b, name = paste("Within", unique(sam_table$condition)[2])) %>%
+add_trace(y = ~dist.between, name = "Between 2 conditions") %>%
+layout(yaxis = y.axis)
+p$elementId <- NULL # To suppress a shiny warning
+p
+```
+
+
+## beta diversity stat
+
+```{r}
+
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+
+tax_level <- "genus"
+input_select_beta_condition <- "DISEASE"
+input_select_beta_stat_method_all <- c("PERMANOVA", "Kruskal-Wallis", "Mann-Whitney")
+input_select_beta_stat_method <- "PERMANOVA"
+
+input_num.permutation.permanova = 999
+
+# Sum counts by taxon level and return counts
+counts_table %<>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level)
+
+#Then use vegdist from vegan to generate a bray distance object:
+dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
+dist.mat <- as.matrix(dist.mat)
+
+
+colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <- "condition"
+
+  if (input_select_beta_stat_method == "PERMANOVA"){
+    set.seed(99)
+    beta.div <- adonis2(dist.mat~condition,
+                        data=sam_table,
+                        permutations = input_num.permutation.permanova,
+                        strata="PLOT")
+    beta.div
+  } else {
+    dist.within.a <- c()
+    dist.within.b <- c()
+    dist.between <- c()
+    for (i in 1:nrow(dist.mat)){
+      for (j in 1:nrow(dist.mat)) {
+        if (sam_table$condition[i] == unique(sam_table$condition)[1] &
+            sam_table$condition[j] == unique(sam_table$condition)[1]){
+          dist.within.a <- c(dist.within.a, dist.mat[i,j])
+        } else if (sam_table$condition[i] == unique(sam_table$condition)[2] &
+                   sam_table$condition[j] == unique(sam_table$condition)[2]){
+          dist.within.b <- c(dist.within.b, dist.mat[i,j])
+        } else{
+          dist.between <- c(dist.between, dist.mat[i,j])
+        }
+
+      }
+    }
+    dist.list <- list(dist.within.a, dist.within.b, dist.between)
+    names(dist.list) <- c(unique(sam_table$condition)[1], unique(sam_table$condition)[2], "between")
+
+    if (input_select_beta_stat_method == "Mann-Whitney"){
+      result.list <- list()
+      group.name <- c()
+      for (i in 1:length(dist.list)){
+        dist.list.tmp <- dist.list[which(names(dist.list) != names(dist.list)[i])]
+
+        group.name[i] <- paste(names(dist.list.tmp), collapse = " and ")
+        result.list[[i]] <- wilcox.test(dist.list.tmp[[1]], dist.list.tmp[[2]])
+      }
+      output.table <- NULL
+      for (i in 1:length(result.list)){
+        output.tmp <- c(result.list[[i]]$method, result.list[[i]]$p.value)
+        output.table <- cbind(output.table, output.tmp)
+      }
+      rownames(output.table) <- c("Method", "P-value")
+      colnames(output.table) <- group.name
+      output.table
+    } else {
+      tmp <- kruskal.test(list(dist.within.a, dist.within.b, dist.between))
+      output <- c(tmp$method, tmp$p.value)
+      output.table <- data.frame(output)
+      rownames(output.table) <- c("Method", "P-value")
+      output.table
+    }
+  }
+```
+
+
+
+
+
+
+# Server_05_dimred
+
+# PCA
+
+```{r}
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+color <- "AGE"
+shape <- "DISEASE"
+pcy <- 1
+pcx <- 2
+tax_level <- "phylum"
+datatype  <- c("counts", "relabu", "logcpm")[3]
+
+##
+
+# Sum counts by taxon level and return counts
+df <- counts_table %>%
+      # Sum counts by taxon level
+      upsample_counts(tax_table, tax_level) %>%
+      # Choose data type
+      {
+          if (datatype == "relabu") {
+              counts_to_relabu(.)
+          } else if (datatype == "logcpm") {
+              counts_to_logcpm(.)
+          } else {
+              .
+          }
+      } %>%
+      # Fix constant/zero row
+      {
+          if (sum(rowSums(as.matrix(.)) == 0) > 0){
+              . <- .[-which(rowSums(as.matrix(.)) == 0),]
+           } else {
+               .
+           }
+      } %>%
+      # Transpose
+      t()
+
+# PCA
+df.prcomp <- stats::prcomp(df, scale=T)
+# Principle Components
+df.pca <- df.prcomp$x
+# Importance
+df.imp <- t(summary(df.prcomp)$importance)
+
+# Merge in covariate information
+if (!is.null(shape)) {
+    df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=T)
+} else {
+    df.pca.m <- merge(df.pca, sam_table[, color, drop=F], by=0, all=T)
+    shape <- 'shape' # Referenced by plotly later
+    df.pca.m[[shape]] <- 1 # Constant results in omitting shape
+}
+
+# Plotly | Scatterplot
+p <- plot_ly(df.pca.m,
+             x = as.formula(paste("~PC", pcx, sep = "")),
+             y = as.formula(paste("~PC", pcy, sep = "")),
+             mode = "markers",
+             color = as.formula(paste("~", color, sep = "")),
+             symbol = as.formula(paste("~", shape, sep = "")),
+             type = "scatter",
+             text = df.pca.m$Row.names,
+             marker = list(size = 10))
+
+p$p <- NULL # To suppress a shiny warning
+p
+#return(p)
+
+# Formatting importance table
+colnames(df.imp) = c("Standard Deviation",
+                     "Variance Explained",
+                     "Cumulative Variance")
+
+# Show variance as a percentage
+df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
+df.imp[,3] <- scales::percent(as.numeric(df.imp[,3]))
+
+df.imp
+```
+
+# PCoA
+
+```{r}
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+host <- MAE[['HostGenetics']]
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+color <- "AGE"
+shape <- "DISEASE"
+axy <- 1
+axx <- 2
+tax_level <- "phylum"
+method  <- c("bray", "wunifrac")[1]
+
+##
+
+# Sum counts by taxon level and return counts
+df <- counts_table %>%
+    # Sum counts by taxon level
+    upsample_counts(tax_table, tax_level) %>%
+    # Fix constant/zero row
+    {
+        if (sum(rowSums(as.matrix(.)) == 0) > 0){
+            . <- .[-which(rowSums(as.matrix(.)) == 0),]
+        } else {
+            .
+        }
+    } %>%
+    # Transpose
+    t()
+
+# Distance metrics
+if (method == "bray") {
+    df.dist <- vegan::vegdist(df, method="bray")
+}
+
+# PCoA
+df.apcoa <- ape::pcoa(df.dist)
+# Principle Coordinates
+df.pcoa <- df.apcoa$vectors
+# Importance
+df.imp <- df.apcoa$values
+
+# Merge in covariate information
+if (!is.null(shape)) {
+    df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=F], by=0, all=T)
+} else {
+    df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=F], by=0, all=T)
+    shape <- 'shape' # Referenced by plotly later
+    df.pcoa.m[[shape]] <- 1 # Constant results in omitting shape
+}
+
+# Plotly | Scatterplot
+p <- plot_ly(df.pcoa.m,
+             x = as.formula(paste("~Axis.", axx, sep = "")),
+             y = as.formula(paste("~Axis.", axy, sep = "")),
+             mode = "markers",
+             color = as.formula(paste("~", color, sep = "")),
+             symbol = as.formula(paste("~", shape, sep = "")),
+             type = "scatter",
+             text = df.pcoa.m$Row.names,
+             marker = list(size = 10))
+
+p$p <- NULL # To suppress a shiny warning
+p
+#return(p)
+
+# Formatting importance table
+df.imp <- df.imp[,c(1,3,5)]
+rownames(df.imp) <- paste("Axis", 1:nrow(df.imp), sep = ".")
+colnames(df.imp) <- c("Eigenvalue",
+                      "Variance Explained",
+                      "Cumulative Variance")
+
+# Show variance as a percentage
+df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
+df.imp[,3] <- scales::percent(as.numeric(df.imp[,3]))
+
+df.imp
+```
+
+# Server_06_differential_analysis
+
+## util functions
+```{r}
+percent <- function(x, digits = 2, format = "f") {
+    paste0(formatC(100 * x, format = format, digits = digits), "%")
+}
+```
+
+```{r}
+## tables from MAE
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+
+## shiny UI input object
+tax_level="genus"
+input_da_condition=c("DISEASE")
+#input_da_condition_covariate=c("SEX")
+input_da_condition_covariate=NULL
+min_num_filter = 5
+input_da_padj_cutoff = 0.05
+
+# Sum counts by taxon level
+count_table_tax <- counts_table %>%
+                    upsample_counts(tax_table, tax_level)
+
+
+# build the deseq2 formula
+if (is.null(input_da_condition_covariate)){
+    dds_formula = stats::as.formula(paste("~",input_da_condition, sep = " "))
+} else{
+    dds_formula = stats::as.formula(paste("~",
+                                   paste(
+                                       paste(input_da_condition_covariate,
+                                             collapse = " + "),
+                                       input_da_condition,
+                                       sep = " + "),
+                                   sep = " "))
+}
+
+
+
+# run DEseq2
+dds <- DESeq2::DESeqDataSetFromMatrix(countData = count_table_tax,
+                                      colData = sam_table,
+                                      design = dds_formula)
+dds <- DESeq2::DESeq(dds)
+
+
+# filter microbes with less than min_num_filter
+keep <- base::rowSums(DESeq2::counts(dds)) >= min_num_filter
+dds <- dds[keep,]
+
+res <- DESeq2::results(dds)
+
+# reorder the result
+res = res[base::order(res$padj, na.last=NA), ]
+
+
+# reformat for reporting
+if (nrow(res) != 0){
+  sigtab = res[(res$padj < input_da_padj_cutoff), ]
+  if (nrow(sigtab) == 0){
+    as.matrix("No differentially abundant items found!")
+  } else{
+    sigtab = as(sigtab, "data.frame")
+    sigtab$padj <- as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
+    sigtab$log2FoldChange <- as.numeric(formatC(sigtab$log2FoldChange, format = "e", digits = 2))
+    sigtab$microbe <- rownames(sigtab)
+    rownames(sigtab) <- 1:nrow(sigtab)
+    sigtab %<>% select(microbe, padj, log2FoldChange)
+
+
+    num.1 <- c()
+    num.2 <- c()
+    # transform label into 1 and 0
+    label.vec.num = as.character((sam_table %>% select(input_da_condition))[,1])
+    label.vec.save <- unique(label.vec.num)
+    label.vec.num[label.vec.num == unique(label.vec.num)[1]] <- 1
+    label.vec.num[label.vec.num != 1] <- 0
+    label.vec.num <- as.numeric(label.vec.num)
+    for (i in 1:nrow(sigtab)){
+      species.index <- which(rownames(count_table_tax) == sigtab[i,1])
+      num.1 <- c(num.1, sum((count_table_tax[species.index,which(label.vec.num == 1)] > 0)))
+      num.2 <- c(num.2, sum((count_table_tax[species.index,which(label.vec.num == 0)] > 0)))
+    }
+
+    sigtab <- cbind(sigtab, num.1)
+    sigtab <- cbind(sigtab, num.2)
+
+
+    df.output.prevalence <- percent(round((num.1 + num.2)/ncol(count_table_tax),4))
+    sigtab <- cbind(sigtab, df.output.prevalence)
+
+
+    colnames(sigtab)[ncol(sigtab)-2] <- label.vec.save[1]
+    colnames(sigtab)[ncol(sigtab)-1] <- label.vec.save[2]
+    colnames(sigtab)[ncol(sigtab)] <- "prevalence"
+
+
+    foldChange <- c()
+    for (i in 1:nrow(sigtab)){
+    foldChange[i] <- round((max(as.numeric(c((sigtab[i,5] / sum(label.vec.num == 0)),
+                                             (sigtab[i,4] / sum(label.vec.num == 1))))) /
+                   min(as.numeric(c((sigtab[i,5] / sum(label.vec.num == 0)),
+                                    (sigtab[i,4] / sum(label.vec.num == 1)))))), digits = 2)
+    }
+    sigtab <- cbind(sigtab, foldChange)
+    colnames(sigtab)[ncol(sigtab)] <- "Group Size adjusted fold change"
+    sigtab
+
+  }
+
+}else{
+  as.matrix("No differentially abundant items found!")
+}
+
+
+
+
+
+    
+    
+```
+
+
+
+
+
+
+# Server_07_biomarker
+
+
+## Train biomarker
+
+```{r}
+## tables from MAE
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+## shiny UI input object
+tax_level="genus"
+input_select_target_biomarker=c("DISEASE")
+nfolds = 3
+nrepeats = 3
+percent_top_biomarker = 0.2
+model_name = "logistic regression" # svm, logistic regression, gbm, random forest
+
+# Sum counts by taxon level and return log10 cpm
+logcpm_table <- counts_table %>%
+                    upsample_counts(tax_table, tax_level) %>%
+                    counts_to_logcpm() %>%
+                    base::t() %>%
+                    base::as.data.frame()
+
+
+# add target variable
+logcpm_table[,'y'] <- sam_table %>%
+                        dplyr::pull(input_select_target_biomarker)
+
+# set up classification model prameters
+fitControl <- caret::trainControl(## n1-fold CV
+                           method = "repeatedcv",
+                           number = nfolds,
+                           ## repeated n2 times
+                           repeats = nrepeats,
+                           classProbs = TRUE,
+                           summaryFunction = twoClassSummary,
+                           sampling = "smote",
+                           savePredictions = TRUE)
+
+# choose different model
+if (model_name == "logistic regression"){
+    model_fit <- caret::train(y ~ ., 
+                data = logcpm_table, 
+                method = "glmnet",
+                tuneLength = 5,
+                trControl = fitControl,
+                metric = "ROC")
+} else if (model_name == "svm"){
+    model_fit <- caret::train(y ~ ., 
+                data = logcpm_table, 
+                method = "svmLinear",
+                tuneLength = 5,
+                trControl = fitControl,
+                metric = "ROC")
+} else if (model_name == "gbm"){
+    model_fit <- caret::train(y ~ ., 
+                 data = logcpm_table, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 tuneLength = 5,
+                 metric = "ROC",
+                 ## This last option is actually one
+                 ## for gbm() that passes through
+                 verbose = FALSE)
+} else if (model_name == "random forest"){
+    model_fit <- caret::train(y ~ ., 
+                data = logcpm_table, 
+                method = "ranger", 
+                trControl = fitControl,
+                tuneLength = 5,
+                metric = "ROC",
+                # ranger specific parameter
+                importance = "impurity")
+}
+
+# process the importance score
+if (model_name == "svm"){
+    svm_importance <- caret::varImp(model_fit)$importance
+    svm_importance[,2] <- NULL
+    colnames(svm_importance) <- "importance"
+    
+    biomarker <- svm_importance %>%
+                        rownames_to_column() %>%
+                        rename(biomarker = rowname) %>%  
+                        arrange(importance) %>%
+                        filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                        select(biomarker) %>%
+                        .$biomarker
+    
+    
+    importance_plot <- svm_importance %>%
+                        rownames_to_column() %>%
+                        rename(biomarker = rowname) %>%  
+                        arrange(importance) %>%
+                        filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                        mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
+                        ggplot2::ggplot()+
+                        geom_col(aes(x = biomarker, y = importance))+
+                        coord_flip()+
+                        theme_bw()
+    
+} else{
+    
+    biomarker <- caret::varImp(model_fit)$importance %>% 
+                      base::as.data.frame() %>%
+                      rownames_to_column() %>%
+                      rename(importance = Overall) %>%
+                      rename(biomarker = rowname) %>%  
+                      arrange(importance) %>%
+                      filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                      select(biomarker) %>%
+                      .$biomarker
+      
+    importance_plot <- caret::varImp(model_fit)$importance %>% 
+                      base::as.data.frame() %>%
+                      rownames_to_column() %>%
+                      rename(importance = Overall) %>%
+                      rename(biomarker = rowname) %>%  
+                      arrange(importance) %>%
+                      filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                      mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
+                      ggplot2::ggplot()+
+                        geom_col(aes(x = biomarker, y = importance))+
+                        coord_flip()+
+                        theme_bw()
+}
+
+# plot the imoportance
+importance_plot
+
+# retrain the model using the biomarker
+logcpm_table <- logcpm_table %>%
+                    select(biomarker,y)
+
+# choose different model
+if (model_name == "logistic regression"){
+    model_fit <- caret::train(y ~ ., 
+                data = logcpm_table, 
+                method = "glmnet",
+                tuneLength = 5,
+                trControl = fitControl,
+                metric = "ROC")
+} else if (model_name == "svm"){
+    model_fit <- caret::train(y ~ ., 
+                data = logcpm_table, 
+                method = "svmLinear",
+                tuneLength = 5,
+                trControl = fitControl,
+                metric = "ROC")
+} else if (model_name == "gbm"){
+    model_fit <- caret::train(y ~ ., 
+                 data = logcpm_table, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 tuneLength = 5,
+                 metric = "ROC",
+                 ## This last option is actually one
+                 ## for gbm() that passes through
+                 verbose = FALSE)
+} else if (model_name == "random forest"){
+    model_fit <- caret::train(y ~ ., 
+                data = logcpm_table, 
+                method = "ranger", 
+                trControl = fitControl,
+                tuneLength = 5,
+                metric = "ROC",
+                # ranger specific parameter
+                importance = "impurity")
+}
+
+# print the biomarker CV performance
+model_fit$results %>%
+    select(ROC, Sens, Spec) %>%
+    filter(ROC == max(ROC))
+
+```
+
+
