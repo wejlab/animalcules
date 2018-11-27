@@ -302,7 +302,7 @@ order_organisms=c("Escherichia")
 sort_by="conditions" # "conditions"
 group_samples=F
 group_conditions="DISEASE" # "SEX" "ALL" "DISEASE"
-sample_conditions=c("SEX")
+sample_conditions=c("DISEASE")
 isolate_samples=c()
 discard_samples=c()
 show_legend=T
@@ -455,10 +455,6 @@ tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-############
-# we need factor it first!!!
-sam_table$DISEASE <- as.factor(sam_table$DISEASE) 
-#########
 
 
 tax_level="phylum"
@@ -476,7 +472,8 @@ counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
 # Subset and match sam table on the same samples as counts table
 sam_table <- sam_table %>%
     .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
-    .[match(rownames(.), colnames(counts_table)),,drop=F]
+    .[match(rownames(.), colnames(counts_table)),,drop=F] %>%
+    df_character_to_factor()
 
 # Ensure sam table has the same subset of samples and is in the correct order
 stopifnot(colnames(counts_table) == rownames(sam_table))
@@ -1384,6 +1381,8 @@ input_da_padj_cutoff = 0.05
 count_table_tax <- counts_table %>%
                     upsample_counts(tax_table, tax_level)
 
+# sam table
+sam_table %<>% df_character_to_factor()
 
 # build the deseq2 formula
 if (is.null(input_da_condition_covariate)){
