@@ -56,50 +56,50 @@ library(DESeq2)
 # Toy Dataset
 
 ```{r}
-data_raw <-
-    base::system.file("extdata/animalcules.rds", package = "animalcules") %>%
-    base::readRDS()
-
-se_mgx <-
-    magrittr::use_series(data_raw, count_table) %>%
-    base::data.matrix() %>%
-    S4Vectors::SimpleList() %>%
-    magrittr::set_names("MGX")
-
-se_ge <-
-    magrittr::use_series(data_raw, gene_expression_table) %>%
-    base::data.matrix() %>%
-    S4Vectors::SimpleList() %>%
-    magrittr::set_names("GeneExpression")
-
-se_colData <-
-    magrittr::use_series(data_raw, metadata_table) %>%
-    S4Vectors::DataFrame()
-
-se_rowData <-
-    magrittr::use_series(data_raw, tax_table) %>%
-    base::data.frame() %>%
-    dplyr::mutate_all(as.character) %>%
-    dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
-    S4Vectors::DataFrame()
-
-microbe_se <-
-    SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
-                                               colData = se_colData,
-                                               rowData = se_rowData)
-
-host_se <-
-    SummarizedExperiment::SummarizedExperiment(assays = se_ge,
-                                               colData = se_colData)
-
-mae_experiments <-
-    S4Vectors::SimpleList(MicrobeGenetics = microbe_se, HostGenetics = host_se)
-
-MAE <-
-    MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
-                                               colData = se_colData)
-
-# usethis::use_data(MAE)
+# data_raw <-
+#     base::system.file("extdata/animalcules.rds", package = "animalcules") %>%
+#     base::readRDS()
+# 
+# se_mgx <-
+#     magrittr::use_series(data_raw, count_table) %>%
+#     base::data.matrix() %>%
+#     S4Vectors::SimpleList() %>%
+#     magrittr::set_names("MGX")
+# 
+# se_ge <-
+#     magrittr::use_series(data_raw, gene_expression_table) %>%
+#     base::data.matrix() %>%
+#     S4Vectors::SimpleList() %>%
+#     magrittr::set_names("GeneExpression")
+# 
+# se_colData <-
+#     magrittr::use_series(data_raw, metadata_table) %>%
+#     S4Vectors::DataFrame()
+# 
+# se_rowData <-
+#     magrittr::use_series(data_raw, tax_table) %>%
+#     base::data.frame() %>%
+#     dplyr::mutate_all(as.character) %>%
+#     dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+#     S4Vectors::DataFrame()
+# 
+# microbe_se <-
+#     SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
+#                                                colData = se_colData,
+#                                                rowData = se_rowData)
+# 
+# host_se <-
+#     SummarizedExperiment::SummarizedExperiment(assays = se_ge,
+#                                                colData = se_colData)
+# 
+# mae_experiments <-
+#     S4Vectors::SimpleList(MicrobeGenetics = microbe_se, HostGenetics = host_se)
+# 
+# MAE <-
+#     MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
+#                                                colData = se_colData)
+# 
+# # usethis::use_data(MAE)
 ```
 
 # Toy Test
@@ -168,6 +168,18 @@ pick_samples_MAE <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
     }
     return(MAE)
 }
+
+
+df_character_to_factor <- function(df){
+    for (i in 1:ncol(df)){
+        if (type(df[,i]) == "character"){
+            df[,i] <- as.factor(df[,i])
+        }
+    }
+    return(df)
+}
+
+
 ```
 
 
@@ -228,7 +240,7 @@ if (length(unique(unlist(sam_table[,cov]))) > 8) {
                        type = "bar",
                        showlegend = FALSE) %>%
                 layout(title=cov,
-                       xaxis = list(title = 'Diet',
+                       xaxis = list(
                                     tickmode = "array",
                                     showticklabels = TRUE,
                                     categoryorder = 'trace'),
@@ -287,10 +299,10 @@ counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism 
 
 tax_level="genus"
 order_organisms=c("Escherichia")
-sort_by="organisms"
+sort_by="conditions" # "conditions"
 group_samples=F
-group_conditions="ALL"
-sample_conditions=c("SEX", "AGE")
+group_conditions="DISEASE" # "SEX" "ALL" "DISEASE"
+sample_conditions=c("SEX")
 isolate_samples=c()
 discard_samples=c()
 show_legend=T
@@ -303,7 +315,8 @@ counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
 # Subset and match sam table on the same samples as counts table
 sam_table <- sam_table %>%
                 .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
-                .[match(rownames(.), colnames(counts_table)),,drop=F]
+                .[match(rownames(.), colnames(counts_table)),,drop=F] %>%
+                df_character_to_factor()
 
 # Ensure sam table has the same subset of samples and is in the correct order
 stopifnot(colnames(counts_table) == rownames(sam_table))
@@ -442,9 +455,15 @@ tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
+############
+# we need factor it first!!!
+sam_table$DISEASE <- as.factor(sam_table$DISEASE) 
+#########
+
+
 tax_level="phylum"
 sort_by="conditions"
-sample_conditions=c("SEX", "AGE")
+sample_conditions=c("DISEASE")
 isolate_organisms=c()
 isolate_samples=c()
 discard_samples=c()
@@ -1176,7 +1195,7 @@ tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-color <- "AGE"
+color <- "SEX"
 shape <- "DISEASE"
 pcy <- 1
 pcx <- 2
@@ -1262,7 +1281,7 @@ tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-color <- "AGE"
+color <- "SEX"
 shape <- "DISEASE"
 axy <- 1
 axx <- 2
