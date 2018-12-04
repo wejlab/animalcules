@@ -169,7 +169,6 @@ pick_samples_MAE <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
     return(MAE)
 }
 
-
 df_character_to_factor <- function(df){
     for (i in 1:ncol(df)){
         if (type(df[,i]) == "character"){
@@ -178,11 +177,7 @@ df_character_to_factor <- function(df){
     }
     return(df)
 }
-
-
 ```
-
-
 
 # Server_02_filter
 
@@ -195,71 +190,30 @@ host <- MAE[['HostGenetics']]
 tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-## shiny UI input object
-input_filter_type = "By Metadata"
-input_select_condition_sample_filter_sidebar = "SEX"
-samples_discard = c("subject_2", "subject_4")
 ```
 
-
-## filter MAE by discarding samples
+## Filter MAE by discarding samples
 
 ```{r}
+samples_discard = c("subject_2", "subject_4")
 MAE_subset <- pick_samples_MAE(MAE = MAE, discard_samples = samples_discard)
 ```
 
-
-## summary_plot_top
-
-```{r}
-sam_table[,"Reads"] = colSums(counts_table[,base::rownames(sam_table)])
-sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) base::sum(x >= 1))
-
-if (input_filter_type == "By Microbes") {
-    cov <- "Taxnum"
-} else {
-    cov <- input_select_condition_sample_filter_sidebar
-}
-
-# use density plot if the variable has more than 8 unique values
-# use bar plot if the variable has less than 8 unique values
-if (length(unique(unlist(sam_table[,cov]))) > 8) {
-    fit <- density(unlist(sam_table[,cov]))
-    num.density <- plot_ly(x=fit$x, y=fit$y, 
-                           type="scatter", 
-                           mode="lines", 
-                           fill="tozeroy") %>%
-                    layout(title=cov)
-    num.density$elementId <- NULL
-    num.density
-} else {
-    cat.df = data.frame(table(sam_table[,cov]))
-    cat.bar <- plot_ly(x = cat.df$Var1,
-                       y = cat.df$Freq,
-                       type = "bar",
-                       showlegend = FALSE) %>%
-                layout(title=cov,
-                       xaxis = list(
-                                    tickmode = "array",
-                                    showticklabels = TRUE,
-                                    categoryorder = 'trace'),
-                       yaxis = list(title = 'Frequency'))
-    cat.bar$elementId <- NULL
-    cat.bar
-}
-```
-
-## summary_plot_bottom
+## Summary Plot Top
 
 ```{r}
+filter_type = "By Microbes"
+sample_condition = "AGE"
+
+##
+# Add count summary data to sample table
 sam_table[,"Reads"] = colSums(counts_table[,rownames(sam_table)])
 sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) sum(x >= 1))
 
-if (input_filter_type == "By Microbes") {
+if (filter_type == "By Microbes") {
     cov <- "Taxnum"
 } else {
-    cov <- input_select_condition_sample_filter_sidebar
+    cov <- sample_condition
 }
 
 if (length(unique(unlist(sam_table[,cov]))) > 8) {
@@ -271,7 +225,7 @@ if (length(unique(unlist(sam_table[,cov]))) > 8) {
                           marker = list(color = 'rgb(7,40,89)'),
                           line = list(color = 'rgb(7,40,89)'),
                           name = cov, type="box") %>%
-                   layout(title=cov)
+                          layout(title=cov)
     num.scatter$elementId <- NULL
     num.scatter
 } else {
@@ -279,11 +233,52 @@ if (length(unique(unlist(sam_table[,cov]))) > 8) {
     cat.pie <- plot_ly(cat.df, labels = ~Var1, values = ~Freq,
                        type = "pie",
                        showlegend = FALSE) %>%
-                layout(title=cov)
+                       layout(title=cov)
     cat.pie$elementId <- NULL
     cat.pie
 }
+```
 
+## Summary Plot Bottom
+
+```{r}
+filter_type = "By Metadata"
+sample_condition = "SEX"
+
+sam_table[,"Reads"] = colSums(counts_table[,rownames(sam_table)])
+sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) sum(x >= 1))
+
+if (filter_type == "By Microbes") {
+    cov <- "Taxnum"
+} else {
+    cov <- sample_condition
+}
+
+# use density plot if the variable has more than 8 unique values
+# use bar plot if the variable has less than 8 unique values
+if (length(unique(unlist(sam_table[,cov]))) > 8) {
+    fit <- density(unlist(sam_table[,cov]))
+    num.density <- plot_ly(x=fit$x, y=fit$y, 
+                           type="scatter", 
+                           mode="lines", 
+                           fill="tozeroy") %>%
+                           layout(title=cov)
+    num.density$elementId <- NULL
+    num.density
+} else {
+    cat.df = data.frame(table(sam_table[,cov]))
+    cat.bar <- plot_ly(x = cat.df$Var1,
+                       y = cat.df$Freq,
+                       type = "bar",
+                       showlegend = FALSE) %>%
+                layout(title=cov,
+                       xaxis = list(tickmode = "array",
+                                    showticklabels = TRUE,
+                                    categoryorder = 'trace'),
+                       yaxis = list(title = 'Frequency'))
+    cat.bar$elementId <- NULL
+    cat.bar
+}
 ```
 
 ## Categorize
