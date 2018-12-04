@@ -216,6 +216,8 @@ if (filter_type == "By Microbes") {
     cov <- sample_condition
 }
 
+# Use density plot if the variable has more than 8 unique values
+# Use pie chart if the variable has less than 8 unique values
 if (length(unique(unlist(sam_table[,cov]))) > 8) {
     vec <- unlist(sam_table[,cov])
     num.scatter <- plot_ly(y = vec, 
@@ -254,8 +256,8 @@ if (filter_type == "By Microbes") {
     cov <- sample_condition
 }
 
-# use density plot if the variable has more than 8 unique values
-# use bar plot if the variable has less than 8 unique values
+# Use density plot if the variable has more than 8 unique values
+# Use bar plot if the variable has less than 8 unique values
 if (length(unique(unlist(sam_table[,cov]))) > 8) {
     fit <- density(unlist(sam_table[,cov]))
     num.density <- plot_ly(x=fit$x, y=fit$y, 
@@ -366,7 +368,6 @@ discard_samples=c()
 show_legend=T
 
 ##
-
 # Isolate or discard samples in the counts table
 counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
 
@@ -683,11 +684,7 @@ p
 #return(p)
 ```
 
-
-
-
 ```{r}
-
 diversities <- function(counts_table, index="all", zeroes=TRUE) {
 
     # Only include accepted indices
@@ -711,8 +708,6 @@ diversities <- function(counts_table, index="all", zeroes=TRUE) {
     tab <- diversities_help(counts_table, index, zeroes)
     tab
 }
-
-
 
 diversities_help <- function(counts_table, index="all", zeroes=TRUE) {
 
@@ -755,8 +750,6 @@ diversities_help <- function(counts_table, index="all", zeroes=TRUE) {
 
 }
 
-
-
 # x: Species count vector
 inverse_simpson <- function(x) {
 
@@ -791,8 +784,6 @@ simpson_index <- function(x) {
 
 }
 
-
-
 # x: Species count vector
 shannon <- function(x) {
 
@@ -810,9 +801,6 @@ shannon <- function(x) {
 
 }
 ```
-
-
-
 
 # Server_04_diversity
 
@@ -859,11 +847,7 @@ g <- ggplot(sam_table,
 g <- ggplotly(g, tooltip="text")
 g$elementId <- NULL # To suppress a shiny warning
 g
-
-
 ```
-
-
 
 ## util functions for alpha diversity statistical test
 ```{r}
@@ -938,8 +922,6 @@ alpha_div_test <- function(sam_table, alpha_stat){
 
 ```
 
-
-
 ## alpha diversity statistical test
 ```{r}
 microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
@@ -974,14 +956,7 @@ sam_table$condition <- as.factor(sam_table$condition)
 # do the statistical test
 alpha_div_test(sam_table = sam_table,
                alpha_stat = alpha_stat)
-
-
-
-
 ```
-
-
-
 
 ## beta diversity heatmap
 ```{r}
@@ -1087,16 +1062,10 @@ if (!is.null(input_bdhm_select_conditions)) {
     hm.beta$elementId <- NULL # To suppress a shiny warning
     hm.beta
 }
-
-
 ```
-
-
 
 ## beta boxplot
 ```{r}
-
-
 microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
 host <- MAE[['HostGenetics']]
 tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
@@ -1148,9 +1117,7 @@ p$elementId <- NULL # To suppress a shiny warning
 p
 ```
 
-
 ## beta diversity stat
-
 ```{r}
 
 microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
@@ -1234,15 +1201,9 @@ colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <
   }
 ```
 
-
-
-
-
-
 # Server_05_dimred
 
 # PCA
-
 ```{r}
 microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
 host <- MAE[['HostGenetics']]
@@ -1328,7 +1289,6 @@ df.imp
 ```
 
 # PCoA
-
 ```{r}
 microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
 host <- MAE[['HostGenetics']]
@@ -1426,7 +1386,6 @@ tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-
 ## shiny UI input object
 tax_level="genus"
 input_da_condition=c("DISEASE")
@@ -1454,8 +1413,6 @@ if (is.null(input_da_condition_covariate)){
                                        sep = " + "),
                                    sep = " "))
 }
-
-
 
 # run DEseq2
 dds <- DESeq2::DESeqDataSetFromMatrix(countData = count_table_tax,
@@ -1531,25 +1488,11 @@ if (nrow(res) != 0){
 }else{
   as.matrix("No differentially abundant items found!")
 }
-
-
-
-
-
-    
-    
 ```
-
-
-
-
-
 
 # Server_07_biomarker
 
-
 ## Train biomarker
-
 ```{r}
 ## tables from MAE
 microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
@@ -1725,5 +1668,3 @@ model_fit$results %>%
     filter(ROC == max(ROC))
 
 ```
-
-
