@@ -286,6 +286,69 @@ if (length(unique(unlist(sam_table[,cov]))) > 8) {
 
 ```
 
+## Categorize
+
+```{r}
+MAE <- readRDS("inst/extdata/MAE.rds")
+microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+host <- MultiAssayExperiment::experiments(MAE)[[2]]
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+
+sample_condition = "AGE"
+nbins = 3 # Auto bin cutoffs
+bin_breaks = c(0,55,75,100) # Custom bin cutoffs
+bin_labels = c('Young','Adult',"Elderly") # Optional custom labels
+new_label = "AGE_GROUP"
+
+##
+# Numeric vector according to covariate of interest
+unbinned <- as.numeric(unlist(sam_table[,sample_condition]))
+
+# Plot unbinned condition
+fit <- density(unbinned)
+p <- plot_ly(x=fit$x,
+             y=fit$y,
+             type="scatter",
+             mode="lines",
+             fill="tozeroy") %>%
+             layout(title=sample_condition,
+                    margin = list(l=0,
+                                  r=0,
+                                  t=30,
+                                  b=30))
+#p$elementId <- NULL
+p
+
+# If bins are provided use those
+if (length(bin_breaks) >= 2) {
+    nlabs <- length(bin_breaks)-1
+} else {
+    bin_breaks <- nbins
+    nlabs <- nbins
+}
+# Ensure provided labels are the correct length
+if (length(bin_labels) >= 1) {
+    stopifnot(length(bin_labels) == nlabs)
+}
+
+# Categorized condition
+binned <- cut.default(unbinned, bin_breaks, bin_labels)
+
+# Add into sam table
+sam_table[,new_label] <- binned
+
+# Plot Binned Condition
+p <- plot_ly(y = binned,
+             type = "histogram") %>%
+             layout(title = new_label,
+                    xaxis = list(title = "Frequency"),
+                    yaxis = list(title = "Bins"),
+                    margin = list(l=80)
+    )
+#p$elementId <- NULL
+p
+```
+
 # Server_03_relabu
 
 ## Relative Abundance Stacked Bar Plot
