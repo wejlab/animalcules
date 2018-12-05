@@ -169,9 +169,9 @@ pick_samples_MAE <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
     return(MAE)
 }
 
-df_char_to_factor <- function(df) {
+df_character_to_factor <- function(df){
     for (i in 1:ncol(df)){
-        if (type(df[,i,drop=F]) == "character"){
+        if (type(df[,i]) == "character"){
             df[,i] <- as.factor(df[,i])
         }
     }
@@ -375,7 +375,7 @@ counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
 sam_table <- sam_table %>%
                 .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
                 .[match(rownames(.), colnames(counts_table)),,drop=F] %>%
-                df_char_to_factor()
+                df_character_to_factor()
 
 # Ensure sam table has the same subset of samples and is in the correct order
 stopifnot(colnames(counts_table) == rownames(sam_table))
@@ -532,7 +532,7 @@ counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
 sam_table <- sam_table %>%
     .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
     .[match(rownames(.), colnames(counts_table)),,drop=F] %>%
-    df_char_to_factor()
+    df_character_to_factor()
 
 # Ensure sam table has the same subset of samples and is in the correct order
 stopifnot(colnames(counts_table) == rownames(sam_table))
@@ -1399,7 +1399,7 @@ count_table_tax <- counts_table %>%
                     upsample_counts(tax_table, tax_level)
 
 # sam table
-sam_table %<>% df_char_to_factor()
+sam_table %<>% df_character_to_factor()
 
 # build the deseq2 formula
 if (is.null(input_da_condition_covariate)){
