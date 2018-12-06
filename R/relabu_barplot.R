@@ -13,12 +13,12 @@
 #'
 #' @example
 #' toy_data <- readRDS("data/MAE.rds")
-#' p <- relative_abundance_barplot(toy_data,
-#'                                 tax_level="family",
-#'                                 order_organisms=c('Retroviridae'),
-#'                                 sort_by="organisms",
-#'                                 sample_conditions=c('SEX', 'AGE'),
-#'                                 show_legend=TRUE)
+#' p <- relabu_barplot(toy_data,
+#'                     tax_level="family",
+#'                     order_organisms=c('Retroviridae'),
+#'                     sort_by="organisms",
+#'                     sample_conditions=c('SEX', 'AGE'),
+#'                     show_legend=TRUE)
 #' p
 #'
 #' @import dplyr
@@ -28,16 +28,16 @@
 #' @import MultiAssayExperiment
 #'
 #' @export
-relative_abundance_barplot <- function(MAE,
-                                       tax_level,
-                                       order_organisms=c(),
-                                       sort_by=c("nosort", "conditions", "organisms"),
-                                       group_samples=FALSE,
-                                       group_conditions="ALL",
-                                       sample_conditions=c(),
-                                       isolate_samples=c(),
-                                       discard_samples=c(),
-                                       show_legend=TRUE) {
+relabu_barplot <- function(MAE,
+                           tax_level,
+                           order_organisms=c(),
+                           sort_by=c("nosort", "conditions", "organisms"),
+                           group_samples=FALSE,
+                           group_conditions="ALL",
+                           sample_conditions=c(),
+                           isolate_samples=c(),
+                           discard_samples=c(),
+                           show_legend=TRUE) {
 
     # Default variables
     sort_by <- match.arg(sort_by)
