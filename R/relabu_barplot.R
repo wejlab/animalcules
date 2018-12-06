@@ -1,6 +1,7 @@
 #' Plot bar plots of sample and group level relative abundance
 #'
 #' @param MAE A multi-assay experiment object
+#' @param tax_level The taxon level used for organisms
 #' @param order_organisms A character list of organisms to send to top e.g. c("Retroviridae", "Didymellaceae")
 #' @param sort_by Sort bars by one of c("nosort", "conditions", "organisms")
 #' @param group_samples A bool specifying whether to group samples
