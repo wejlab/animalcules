@@ -1,5 +1,5 @@
 Package: animalcules
-Title: What the Package Does (one line, title case)
+Title: Statistical microbiome analysis on metagenomics data
 Version: 0.0.0.9000
 Author:
     Yue (Jason) Zhao <yuezh@bu.edu>,
@@ -7,12 +7,7 @@ Author:
     Lucas Schiffer <schifferl@bu.edu>
 Maintainer: Yue (Jason) Zhao <yuezh@bu.edu>
 Description:
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae sapien
-    at odio vehicula hendrerit. Curabitur finibus scelerisque ex volutpat
-    rhoncus. Mauris vel arcu placerat dui posuere mattis. Mauris laoreet pretium
-    purus, eu volutpat tellus egestas vel. Quisque ornare eros ut nulla finibus
-    lobortis. Praesent dictum pellentesque est a mattis. Suspendisse id rhoncus
-    purus.
+    Statistical microbiome analysis on metagenomics data
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -39,6 +34,6 @@ biocViews:
     ReproducibleResearch,
     SequencingData
 VignetteBuilder: knitr
-URL: https://github.com/schifferl/animalcules
-BugReports: https://github.com/schifferl/animalcules/issues
+URL: https://github.com/compbiomed/animalcules
+BugReports: https://github.com/compbiomed/animalcules/issues
 RoxygenNote: 6.1.0

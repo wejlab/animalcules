@@ -9,7 +9,7 @@
 #' @param datatype Datatype to use e.g. c("counts", "relabu", "logcpm")
 #' @return A list with a plotly object and summary table
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' result <- dimred_pca(toy_data,
 #'                      tax_level="genus",

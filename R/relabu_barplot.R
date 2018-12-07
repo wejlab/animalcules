@@ -12,7 +12,7 @@
 #' @param show_legend A bool specifying whether or not to show organisms legend
 #' @return A plotly object
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' p <- relabu_barplot(toy_data,
 #'                     tax_level="family",

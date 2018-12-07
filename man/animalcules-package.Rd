@@ -4,20 +4,15 @@
 \name{animalcules-package}
 \alias{animalcules}
 \alias{animalcules-package}
-\title{animalcules: What the Package Does (one line, title case)}
+\title{animalcules: Statistical microbiome analysis on metagenomics data}
 \description{
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vitae sapien
-    at odio vehicula hendrerit. Curabitur finibus scelerisque ex volutpat
-    rhoncus. Mauris vel arcu placerat dui posuere mattis. Mauris laoreet pretium
-    purus, eu volutpat tellus egestas vel. Quisque ornare eros ut nulla finibus
-    lobortis. Praesent dictum pellentesque est a mattis. Suspendisse id rhoncus
-    purus.
+Statistical microbiome analysis on metagenomics data
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/schifferl/animalcules}
-  \item Report bugs at \url{https://github.com/schifferl/animalcules/issues}
+  \item \url{https://github.com/compbiomed/animalcules}
+  \item Report bugs at \url{https://github.com/compbiomed/animalcules/issues}
 }
 
 }
