@@ -38,7 +38,7 @@ knitr::opts_chunk$set(message = FALSE)
 # Packages
 
 ```{r}
-library(tidyverse)
+#library(tidyverse)
 library(magrittr)
 library(MultiAssayExperiment)
 library(SummarizedExperiment)
@@ -178,6 +178,12 @@ df_char_to_factor <- function(df) {
     }
     return(df)
 }
+
+
+percent <- function(x, digits = 2, format = "f") {
+    paste0(formatC(100 * x, format = format, digits = digits), "%")
+}
+
 ```
 
 # Server_02_filter
@@ -685,521 +691,52 @@ p
 #return(p)
 ```
 
-```{r}
-diversities <- function(counts_table, index="all", zeroes=TRUE) {
-
-    # Only include accepted indices
-    index <- tolower(index)
-    accepted <- c("inverse_simpson", "gini_simpson", "shannon",
-                    "fisher", "coverage")
-
-    # Return all indices
-    if (length(index) == 1 && index == "all") {
-        index <- accepted
-    }
-
-    if (!is.null(index)) {
-        index <- intersect(index, accepted)
-    }
-
-    if (!is.null(index) && length(index) == 0) {
-        return(NULL)
-    }
-
-    tab <- diversities_help(counts_table, index, zeroes)
-    tab
-}
-
-diversities_help <- function(counts_table, index="all", zeroes=TRUE) {
-
-    if (length(index) > 1) {
-        tab <- NULL
-        for (idx in index) {
-            tab <- cbind(tab, diversities_help(x, index=idx, zeroes=TRUE))
-        }
-        colnames(tab) <- index
-        return(as.data.frame(tab))
-    }
-
-    if (index == "inverse_simpson") {
-        ev <- apply(counts_table, 2, function(x) {
-            inverse_simpson(x)
-        })
-    } else if (index == "gini_simpson") {
-        ev <- apply(counts_table, 2, function(x) {
-            gini_simpson(x)
-        })
-    } else if (index == "shannon") {
-        ev <- apply(counts_table, 2, function(x) {
-            shannon(x)
-        })
-    } else if (index == "fisher") {
-        if (length(setdiff(unique(as.vector(counts_table)%%1), 0)) == 0) {
-          ev <- fisher.alpha(counts_table, MARGIN=2)
-        } else {
-	  warning("Fisher diversity defined only for integers;
-                   the counts_table table contains non-integers. Fisher not estimated.")
-          ev <- NULL
-        }
-    } else if (index == "coverage") {
-        ev <- unname(coverage(counts_table))
-    }
-
-    names(ev) <- colnames(counts_table)
-
-    ev
-
-}
-
-# x: Species count vector
-inverse_simpson <- function(x) {
-
-    # Simpson index
-    lambda <- simpson_index(x)
-
-    # Inverse Simpson diversity
-    (1/lambda)
-
-}
-
-# x: Species count vector
-gini_simpson <- function(x) {
-
-    # Simpson index
-    lambda <- simpson_index(x)
-
-    # Gini-Simpson diversity
-    1 - lambda
-
-}
-
-simpson_index <- function(x) {
-
-    # Relative abundances
-    p <- x/sum(x)
-
-    # Simpson index
-    lambda <- sum(p^2)
-
-    lambda
-
-}
-
-# x: Species count vector
-shannon <- function(x) {
-
-    # Ignore zeroes
-    x <- x[x > 0]
-
-    # Species richness (number of species)
-    S <- length(x)
-
-    # Relative abundances
-    p <- x/sum(x)
-
-    # Shannon index
-    (-sum(p * log(p)))
-
-}
-```
 
 # Server_04_diversity
 
+## alpha diversity boxplot
 ```{r}
-# alpha diversity boxplot
-
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-
-tax_level <- "genus"
-condition <- "DISEASE"
-alpha_metric_all <- c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage")
-alpha_metric <- "shannon"
-
-
-
-# Sum counts by taxon level and return counts
-counts_table %<>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level)
-
-
-
-# calculate alpha diversity
-sam_table$richness <- diversities(counts_table, index = alpha_metric)
-colnames(sam_table)[ncol(sam_table)] <- "richness"
-colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
-
-# plot alpha diversity boxplot
-g <- ggplot(sam_table,
-            aes(condition,
-                richness,
-                text=rownames(sam_table),
-                color = condition)) +
-        geom_point() +
-        geom_boxplot() +
-        labs(title = paste("Alpha diversity between ",
-                   condition,
-                   " (", alpha_metric, ")", sep = ""))
-g <- ggplotly(g, tooltip="text")
-g$elementId <- NULL # To suppress a shiny warning
-g
+alpha_div_boxplot(MAE = MAE,
+                  tax_level = "genus",
+                  condition = "DISEASE",
+                  alpha_metric = "shannon")
 ```
 
-## util functions for alpha diversity statistical test
-```{r}
 
-alpha_div_test <- function(sam_table, alpha_stat){
-    if (length(unique(sam_table$condition)) == 2){
-    if (alpha_stat == "Mann-Whitney"){
-      tmp <- wilcox.test(richness ~ condition, data = sam_table)
-      output <- c(tmp$method, tmp$p.value)
-      output.table <- data.frame(output)
-      rownames(output.table) <- c("Method", "P-value")
-      output.table
-    } else if (alpha_stat == "T-test"){
-      tmp <- t.test(richness ~ condition, data = sam_table)
-      output <- c(tmp$method, tmp$p.value)
-      output.table <- data.frame(output)
-      rownames(output.table) <- c("Method", "P-value")
-      output.table
-    } else{
-      print("Condition level number is 2, please use Mann-Whitney test.")
-    }
-
-    } else if (length(unique(sam_table$condition)) > 2){
-    if (alpha_stat == "Mann-Whitney"){
-      result.list <- list()
-      sam_table.list <- list()
-      for (i in 1:length(unique(sam_table$condition))){
-        sam_table.list[[i]] <- sam_table[which(sam_table$condition != unique(sam_table$condition)[i]),]
-        result.list[[i]] <- wilcox.test(richness ~ condition, data = sam_table.list[[i]])
-      }
-      output.table <- NULL
-      group.name <- c()
-      for (i in 1:length(result.list)){
-        output.tmp <- c(result.list[[i]]$method, result.list[[i]]$p.value)
-        output.table <- cbind(output.table, output.tmp)
-        group.name[i] <- paste(unique(sam_table.list[[i]]$condition), collapse = " and ")
-      }
-      rownames(output.table) <- c("Method", "P-value")
-      colnames(output.table) <- group.name
-      output.table
-
-    } else if (alpha_stat == "T-test"){
-              result.list <- list()
-      sam_table.list <- list()
-      for (i in 1:length(unique(sam_table$condition))){
-        sam_table.list[[i]] <- sam_table[which(sam_table$condition != unique(sam_table$condition)[i]),]
-        result.list[[i]] <- t.test(richness ~ condition, data = sam_table.list[[i]])
-      }
-      output.table <- NULL
-      group.name <- c()
-      for (i in 1:length(result.list)){
-        output.tmp <- c(result.list[[i]]$method, result.list[[i]]$p.value)
-        output.table <- cbind(output.table, output.tmp)
-        group.name[i] <- paste(unique(sam_table.list[[i]]$condition), collapse = " and ")
-      }
-      rownames(output.table) <- c("Method", "P-value")
-      colnames(output.table) <- group.name
-      output.table
-
-    } else{
-      tmp <- kruskal.test(richness ~ condition, data = sam_table)
-      output <- c(tmp$method, tmp$p.value)
-      output.table <- data.frame(output)
-      rownames(output.table) <- c("Method", "P-value")
-      output.table
-    }
-
-    } else{
-    "Condition level must be at least 2."
-    }
-}
-
-```
 
 ## alpha diversity statistical test
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+do_alpha_div_test(MAE = MAE,
+                  tax_level = "genus",
+                  condition = "DISEASE",
+                  alpha_metric = "shannon",
+                  alpha_stat = "T-test")
 
-
-tax_level <- "genus"
-condition <- "DISEASE"
-alpha_metric_all <- c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage")
-alpha_metric <- "shannon"
-alpha_stat_all <- c("Mann-Whitney", "T-test", "Kruskal-Wallis")
-alpha_stat <- "Mann-Whitney"
-
-
-# Sum counts by taxon level and return counts
-counts_table %<>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level)
-
-
-
-# calculate alpha diversity
-sam_table$richness <- diversities(counts_table, index = alpha_metric)
-colnames(sam_table)[ncol(sam_table)] <- "richness"
-colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
-sam_table$condition <- as.factor(sam_table$condition)
-
-
-# do the statistical test
-alpha_div_test(sam_table = sam_table,
-               alpha_stat = alpha_stat)
 ```
 
 ## beta diversity heatmap
 ```{r}
+diversity_beta_heatmap(MAE = MAE, 
+                       tax_level = 'genus', 
+                       input_bdhm_select_conditions = 'DISEASE',
+                       input_bdhm_sort_by = 'condition')
 
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-
-tax_level <- "genus"
-input_bdhm_select_conditions <- "DISEASE"
-input_bdhm_sort_by_all <- c("nosort", "conditions")
-input_bdhm_sort_by <- "conditions"
-
-# Sum counts by taxon level and return counts
-counts_table %<>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level)
-
-
-#Then use vegdist from vegan to generate a bray distance object:
-dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
-dist.mat <- as.matrix(dist.mat)
-dist.mat <- dist.mat[order(match(rownames(dist.mat), rev(rownames(dist.mat)))),,drop=FALSE]
-
-
-if (!is.null(input_bdhm_select_conditions)) {
-    df.sam <- sam_table[,input_bdhm_select_conditions,drop=FALSE]
-    if (input_bdhm_sort_by == "conditions") {
-      for (i in ncol(df.sam):1) {
-        df.sam <- df.sam[order(df.sam[[i]]),,drop=FALSE]
-      }
-      dist.mat <- dist.mat[order(match(rownames(dist.mat), rownames(df.sam))),,drop=FALSE]
-      dist.mat <- dist.mat[,order(match(colnames(dist.mat), rownames(df.sam))),drop=FALSE]
-    } else {
-      df.sam <- df.sam[order(match(rownames(df.sam), rownames(dist.mat))),,drop=FALSE]
-    }
-}
-
-m <- data.matrix(dist.mat)
-hover.txt <- c()
-for (i in 1:ncol(dist.mat)) {
-hover.txt <- cbind(hover.txt, dist.mat[[i]])
-}
-hm.beta <- plot_ly(x = colnames(m), y = rownames(m), z = m,
-                 type = "heatmap",
-                 colors= "RdPu",
-                 hoverinfo = "x+y+z") %>%
-layout(xaxis = list(showticklabels = FALSE, title = "", ticks = "", tickangle = -45),
-       yaxis = list(showticklabels = FALSE, type = 'category', ticks = ""))
-
-if (!is.null(input_bdhm_select_conditions)) {
-    hover.txt <- c()
-    for (i in 1:ncol(df.sam)) {
-        hover.txt <- cbind(hover.txt, df.sam[[i]])
-}
-df.sam[] <- lapply(df.sam, factor)
-
-# Y-axis of subplot
-m <- data.matrix(df.sam)
-m.row.normalized <- apply(m, 2, function(x)(x-min(x))/(max(x)-min(x)))
-hm.sam.y <- plot_ly(x = colnames(m.row.normalized),
-                    y = rownames(m.row.normalized),
-                    z = m.row.normalized,
-                    type = "heatmap",
-                    showscale=FALSE,
-                    hoverinfo = "x+y+text",
-                    transpose=FALSE,
-                    text=hover.txt) %>%
-  layout(xaxis = list(title = "", tickangle = -45),
-         yaxis = list(showticklabels = FALSE, type = 'category', ticks = ""),
-         orientation=TRUE)
-
-# X-axis of subplot
-m <- data.matrix(df.sam)
-m.row.normalized <- apply(m, 2, function(x)(x-min(x))/(max(x)-min(x)))
-m.row.normalized = t(m.row.normalized)
-m.row.normalized = m.row.normalized[order(match(rownames(m.row.normalized), rev(rownames(m.row.normalized)))),,drop=FALSE]
-hm.sam.x <- plot_ly(x = colnames(m.row.normalized),
-                    y = rownames(m.row.normalized),
-                    z = m.row.normalized,
-                    type = "heatmap",
-                    showscale=FALSE,
-                    hoverinfo = "x+y+text",
-                    transpose=FALSE,
-                    text=t(hover.txt)) %>%
-  layout(xaxis = list(showticklabels = FALSE, type = 'category', ticks = ""),
-         yaxis = list(title = "", tickangle = -45),
-         orientation=TRUE)
-}
-
-empty <- plotly_empty(type = "scatter")
-
-if (!is.null(input_bdhm_select_conditions)) {
-    hm.sam.beta.top <- subplot(empty, hm.sam.x, widths=c(0.1,  0.9))
-    hm.sam.beta.bot <- subplot(hm.sam.y, hm.beta, widths=c(0.1,  0.9))
-    hm.sam.beta <- subplot(hm.sam.beta.top, hm.sam.beta.bot, nrows=2, heights=c(0.1,  0.9))
-    hm.sam.beta$elementId <- NULL # To suppress a shiny warning
-    hm.sam.beta
-} else {
-    hm.beta$elementId <- NULL # To suppress a shiny warning
-    hm.beta
-}
 ```
 
 ## beta boxplot
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-
-tax_level <- "genus"
-input_select_beta_condition = "DISEASE"
-
-
-# Sum counts by taxon level and return counts
-counts_table %<>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level)
-
-#Then use vegdist from vegan to generate a bray distance object:
-dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
-dist.mat <- as.matrix(dist.mat)
-
-
-# change condition name
-colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <- "condition"
-
-dist.within.a <- c()
-dist.within.b <- c()
-dist.between <- c()
-for (i in 1:nrow(dist.mat)){
-for (j in 1:nrow(dist.mat)) {
-  if (sam_table$condition[i] == unique(sam_table$condition)[1] &
-      sam_table$condition[j] == unique(sam_table$condition)[1]){
-    dist.within.a <- c(dist.within.a, dist.mat[i,j])
-  } else if (sam_table$condition[i] == unique(sam_table$condition)[2] &
-             sam_table$condition[j] == unique(sam_table$condition)[2]){
-    dist.within.b <- c(dist.within.b, dist.mat[i,j])
-  } else{
-    dist.between <- c(dist.between, dist.mat[i,j])
-  }
-}
-}
-y.axis <- list(
-title = paste("Bray-Curtis", "Distance", sep = " ")
-)
-p <- plot_ly(y = ~dist.within.a, type = "box", name = paste("Within", unique(sam_table$condition)[1])) %>%
-add_trace(y = ~dist.within.b, name = paste("Within", unique(sam_table$condition)[2])) %>%
-add_trace(y = ~dist.between, name = "Between 2 conditions") %>%
-layout(yaxis = y.axis)
-p$elementId <- NULL # To suppress a shiny warning
-p
+diversity_beta_boxplot(MAE = MAE, 
+                       tax_level = 'genus', 
+                       input_select_beta_condition = 'DISEASE')
 ```
 
 ## beta diversity stat
 ```{r}
-
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-
-tax_level <- "genus"
-input_select_beta_condition <- "DISEASE"
-input_select_beta_stat_method_all <- c("PERMANOVA", "Kruskal-Wallis", "Mann-Whitney")
-input_select_beta_stat_method <- "PERMANOVA"
-
-input_num.permutation.permanova = 999
-
-# Sum counts by taxon level and return counts
-counts_table %<>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level)
-
-#Then use vegdist from vegan to generate a bray distance object:
-dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
-dist.mat <- as.matrix(dist.mat)
-
-
-colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <- "condition"
-
-  if (input_select_beta_stat_method == "PERMANOVA"){
-    set.seed(99)
-    beta.div <- adonis2(dist.mat~condition,
-                        data=sam_table,
-                        permutations = input_num.permutation.permanova,
-                        strata="PLOT")
-    beta.div
-  } else {
-    dist.within.a <- c()
-    dist.within.b <- c()
-    dist.between <- c()
-    for (i in 1:nrow(dist.mat)){
-      for (j in 1:nrow(dist.mat)) {
-        if (sam_table$condition[i] == unique(sam_table$condition)[1] &
-            sam_table$condition[j] == unique(sam_table$condition)[1]){
-          dist.within.a <- c(dist.within.a, dist.mat[i,j])
-        } else if (sam_table$condition[i] == unique(sam_table$condition)[2] &
-                   sam_table$condition[j] == unique(sam_table$condition)[2]){
-          dist.within.b <- c(dist.within.b, dist.mat[i,j])
-        } else{
-          dist.between <- c(dist.between, dist.mat[i,j])
-        }
-
-      }
-    }
-    dist.list <- list(dist.within.a, dist.within.b, dist.between)
-    names(dist.list) <- c(unique(sam_table$condition)[1], unique(sam_table$condition)[2], "between")
-
-    if (input_select_beta_stat_method == "Mann-Whitney"){
-      result.list <- list()
-      group.name <- c()
-      for (i in 1:length(dist.list)){
-        dist.list.tmp <- dist.list[which(names(dist.list) != names(dist.list)[i])]
-
-        group.name[i] <- paste(names(dist.list.tmp), collapse = " and ")
-        result.list[[i]] <- wilcox.test(dist.list.tmp[[1]], dist.list.tmp[[2]])
-      }
-      output.table <- NULL
-      for (i in 1:length(result.list)){
-        output.tmp <- c(result.list[[i]]$method, result.list[[i]]$p.value)
-        output.table <- cbind(output.table, output.tmp)
-      }
-      rownames(output.table) <- c("Method", "P-value")
-      colnames(output.table) <- group.name
-      output.table
-    } else {
-      tmp <- kruskal.test(list(dist.within.a, dist.within.b, dist.between))
-      output <- c(tmp$method, tmp$p.value)
-      output.table <- data.frame(output)
-      rownames(output.table) <- c("Method", "P-value")
-      output.table
-    }
-  }
+diversity_beta_test(MAE = MAE, 
+                    tax_level = 'genus',
+                    input_select_beta_condition =  'DISEASE',
+                    input_select_beta_stat_method = 'PERMANOVA',
+                    input_num_permutation_permanova = 999)
 ```
 
 # Server_05_dimred
@@ -1372,13 +909,6 @@ df.imp
 ```
 
 # Server_06_differential_analysis
-
-## util functions
-```{r}
-percent <- function(x, digits = 2, format = "f") {
-    paste0(formatC(100 * x, format = format, digits = digits), "%")
-}
-```
 
 ```{r}
 ## tables from MAE
