@@ -22,7 +22,6 @@
 #'                     show_legend=TRUE)
 #' p
 #'
-#' @import dplyr
 #' @import plotly
 #' @import magrittr
 #' @import reshape2
@@ -43,6 +42,9 @@ relabu_barplot <- function(MAE,
     # Default variables
     sort_by <- match.arg(sort_by)
 
+    # Subset samples
+    MAE <- mae_pick_samples(MAE, isolate_samples, discard_samples)
+
     # Extract data
     microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
     host <- MultiAssayExperiment::experiments(MAE)[[2]]
@@ -50,16 +52,8 @@ relabu_barplot <- function(MAE,
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-    # Isolate or discard samples in the counts table
-    counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
-
     # Ensure conditions are all factored
     sam_table %<>% df_char_to_factor()
-
-    # Subset and match sam table on the same samples as counts table
-    sam_table <- sam_table %>%
-                .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
-                .[match(rownames(.), colnames(counts_table)),,drop=F]
 
     # Ensure sam table has the same subset of samples and is in the correct order
     stopifnot(colnames(counts_table) == rownames(sam_table))

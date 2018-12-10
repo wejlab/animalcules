@@ -78,7 +78,7 @@ counts_to_logcpm <- function(counts_table) {
 #'
 #' @example
 #' toy_data <- readRDS("data/MAE.rds")
-#' subset <- pick_samples_MAE(toy_data, isolate_samples=c("subject_9", "subject_14"))
+#' subset <- mae_pick_samples(toy_data, isolate_samples=c("subject_9", "subject_14"))
 #'
 #' @import MultiAssayExperiment
 #'
@@ -131,3 +131,4 @@ df_char_to_factor <- function(df) {
 percent <- function(x, digits = 2, format = "f") {
     paste0(formatC(100 * x, format = format, digits = digits), "%")
 }
+
