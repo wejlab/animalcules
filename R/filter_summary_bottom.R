@@ -6,7 +6,7 @@
 #' @param sample_condition Which condition to check e.g. 'SEX'
 #' @return A plotly object
 #'
-#' @examples
+#' @example
 #' toy_data <- readRDS("data/MAE.rds")
 #' result <- filter_summary_bottom(toy_data,
 #'                                 samples_discard = c("subject_2", "subject_4"),

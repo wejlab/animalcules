@@ -10,7 +10,7 @@
 #' @param log_cpm Convert counts to logcpm
 #' @return A plotly object
 #'
-#' @examples
+#' @example
 #' toy_data <- readRDS("data/MAE.rds")
 #' p <- relabu_heatmap(toy_data,
 #'                    tax_level="genus",
