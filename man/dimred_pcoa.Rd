@@ -28,16 +28,3 @@ A list with a plotly object and summary table
 \description{
 Dimensionality reduction through PCoA
 }
-\examples{
-toy_data <- readRDS("data/MAE.rds")
-result <- dimred_pcoa(MAE,
-                     tax_level="genus",
-                     color="AGE",
-                     shape="DISEASE",
-                     axx=1,
-                     axy=2,
-                     method="bray")
-result$plot
-result$table
-
-}

@@ -21,12 +21,3 @@ A plotly object
 \description{
 Data visualization by barplot
 }
-\examples{
-toy_data <- readRDS("data/MAE.rds")
-result <- filter_summary_bottom(toy_data,
-                                samples_discard = c("subject_2", "subject_4"),
-                                filter_type = "By Metadata",
-                                sample_condition = "SEX")
-result
-
-}

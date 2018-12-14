@@ -40,6 +40,7 @@ knitr::opts_chunk$set(message = FALSE)
 ```{r}
 #library(tidyverse)
 library(magrittr)
+library(tibble)
 library(MultiAssayExperiment)
 library(SummarizedExperiment)
 library(S4Vectors)
@@ -186,106 +187,22 @@ percent <- function(x, digits = 2, format = "f") {
 
 # Server_02_filter
 
-## Objects Define
-
-```{r}
-## tables from MAE
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-```
-
-## Filter MAE by discarding samples
-
-```{r}
-samples_discard = c("subject_2", "subject_4")
-MAE_subset <- pick_samples_MAE(MAE = MAE, discard_samples = samples_discard)
-```
-
 ## Summary Plot Top
 
 ```{r}
-filter_type = "By Microbes"
-sample_condition = "AGE"
-
-##
-# Add count summary data to sample table
-sam_table[,"Reads"] = colSums(counts_table[,rownames(sam_table)])
-sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) sum(x >= 1))
-
-if (filter_type == "By Microbes") {
-    cov <- "Taxnum"
-} else {
-    cov <- sample_condition
-}
-
-# Use density plot if the variable has more than 8 unique values
-# Use pie chart if the variable has less than 8 unique values
-if (length(unique(unlist(sam_table[,cov]))) > 8) {
-    vec <- unlist(sam_table[,cov])
-    num.scatter <- plot_ly(y = vec, 
-                          jitter = 0.3, 
-                          pointpos = -1.8, 
-                          boxpoints = 'all',
-                          marker = list(color = 'rgb(7,40,89)'),
-                          line = list(color = 'rgb(7,40,89)'),
-                          name = cov, type="box") %>%
-                          layout(title=cov)
-    num.scatter$elementId <- NULL
-    num.scatter
-} else {
-    cat.df = data.frame(table(sam_table[,cov]))
-    cat.pie <- plot_ly(cat.df, labels = ~Var1, values = ~Freq,
-                       type = "pie",
-                       showlegend = FALSE) %>%
-                       layout(title=cov)
-    cat.pie$elementId <- NULL
-    cat.pie
-}
+filter_summary_top(MAE,
+                   samples_discard = c("subject_2", "subject_4"),
+                   filter_type = "By Metadata",
+                   sample_condition = "AGE")
 ```
 
 ## Summary Plot Bottom
 
 ```{r}
-filter_type = "By Metadata"
-sample_condition = "SEX"
-
-sam_table[,"Reads"] = colSums(counts_table[,rownames(sam_table)])
-sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) sum(x >= 1))
-
-if (filter_type == "By Microbes") {
-    cov <- "Taxnum"
-} else {
-    cov <- sample_condition
-}
-
-# Use density plot if the variable has more than 8 unique values
-# Use bar plot if the variable has less than 8 unique values
-if (length(unique(unlist(sam_table[,cov]))) > 8) {
-    fit <- density(unlist(sam_table[,cov]))
-    num.density <- plot_ly(x=fit$x, y=fit$y, 
-                           type="scatter", 
-                           mode="lines", 
-                           fill="tozeroy") %>%
-                           layout(title=cov)
-    num.density$elementId <- NULL
-    num.density
-} else {
-    cat.df = data.frame(table(sam_table[,cov]))
-    cat.bar <- plot_ly(x = cat.df$Var1,
-                       y = cat.df$Freq,
-                       type = "bar",
-                       showlegend = FALSE) %>%
-                layout(title=cov,
-                       xaxis = list(tickmode = "array",
-                                    showticklabels = TRUE,
-                                    categoryorder = 'trace'),
-                       yaxis = list(title = 'Frequency'))
-    cat.bar$elementId <- NULL
-    cat.bar
-}
+filter_summary_bottom(MAE,
+                      samples_discard = c("subject_2", "subject_4"),
+                      filter_type = "By Metadata",
+                      sample_condition = "SEX")
 ```
 
 ## Categorize
@@ -909,291 +826,35 @@ df.imp
 # Server_06_differential_analysis
 
 ```{r}
-## tables from MAE
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-## shiny UI input object
-tax_level="genus"
-input_da_condition=c("DISEASE")
-#input_da_condition_covariate=c("SEX")
-input_da_condition_covariate=NULL
-min_num_filter = 5
-input_da_padj_cutoff = 0.05
-
-# Sum counts by taxon level
-count_table_tax <- counts_table %>%
-                    upsample_counts(tax_table, tax_level)
-
-# sam table
-sam_table %<>% df_char_to_factor()
-
-# build the deseq2 formula
-if (is.null(input_da_condition_covariate)){
-    dds_formula = stats::as.formula(paste("~",input_da_condition, sep = " "))
-} else{
-    dds_formula = stats::as.formula(paste("~",
-                                   paste(
-                                       paste(input_da_condition_covariate,
-                                             collapse = " + "),
-                                       input_da_condition,
-                                       sep = " + "),
-                                   sep = " "))
-}
-
-# run DEseq2
-dds <- DESeq2::DESeqDataSetFromMatrix(countData = count_table_tax,
-                                      colData = sam_table,
-                                      design = dds_formula)
-dds <- DESeq2::DESeq(dds)
-
-
-# filter microbes with less than min_num_filter
-keep <- base::rowSums(DESeq2::counts(dds)) >= min_num_filter
-dds <- dds[keep,]
-
-res <- DESeq2::results(dds)
-
-# reorder the result
-res = res[base::order(res$padj, na.last=NA), ]
-
-
-# reformat for reporting
-if (nrow(res) != 0){
-  sigtab = res[(res$padj < input_da_padj_cutoff), ]
-  if (nrow(sigtab) == 0){
-    as.matrix("No differentially abundant items found!")
-  } else{
-    sigtab = as(sigtab, "data.frame")
-    sigtab$padj <- as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
-    sigtab$log2FoldChange <- as.numeric(formatC(sigtab$log2FoldChange, format = "e", digits = 2))
-    sigtab$microbe <- rownames(sigtab)
-    rownames(sigtab) <- 1:nrow(sigtab)
-    sigtab %<>% select(microbe, padj, log2FoldChange)
-
-
-    num.1 <- c()
-    num.2 <- c()
-    # transform label into 1 and 0
-    label.vec.num = as.character((sam_table %>% select(input_da_condition))[,1])
-    label.vec.save <- unique(label.vec.num)
-    label.vec.num[label.vec.num == unique(label.vec.num)[1]] <- 1
-    label.vec.num[label.vec.num != 1] <- 0
-    label.vec.num <- as.numeric(label.vec.num)
-    for (i in 1:nrow(sigtab)){
-      species.index <- which(rownames(count_table_tax) == sigtab[i,1])
-      num.1 <- c(num.1, sum((count_table_tax[species.index,which(label.vec.num == 1)] > 0)))
-      num.2 <- c(num.2, sum((count_table_tax[species.index,which(label.vec.num == 0)] > 0)))
-    }
-
-    sigtab <- cbind(sigtab, num.1)
-    sigtab <- cbind(sigtab, num.2)
-
-
-    df.output.prevalence <- percent(round((num.1 + num.2)/ncol(count_table_tax),4))
-    sigtab <- cbind(sigtab, df.output.prevalence)
-
-
-    colnames(sigtab)[ncol(sigtab)-2] <- label.vec.save[1]
-    colnames(sigtab)[ncol(sigtab)-1] <- label.vec.save[2]
-    colnames(sigtab)[ncol(sigtab)] <- "prevalence"
-
-
-    foldChange <- c()
-    for (i in 1:nrow(sigtab)){
-    foldChange[i] <- round((max(as.numeric(c((sigtab[i,5] / sum(label.vec.num == 0)),
-                                             (sigtab[i,4] / sum(label.vec.num == 1))))) /
-                   min(as.numeric(c((sigtab[i,5] / sum(label.vec.num == 0)),
-                                    (sigtab[i,4] / sum(label.vec.num == 1)))))), digits = 2)
-    }
-    sigtab <- cbind(sigtab, foldChange)
-    colnames(sigtab)[ncol(sigtab)] <- "Group Size adjusted fold change"
-    sigtab
-
-  }
-
-}else{
-  as.matrix("No differentially abundant items found!")
-}
+p <- differential_abundance(MAE,
+                            tax_level="genus",
+                            input_da_condition=c("DISEASE"),
+                            input_da_condition_covariate=c("SEX"),
+                            min_num_filter = 5,
+                            input_da_padj_cutoff = 0.5)
+p
 ```
 
 # Server_07_biomarker
 
 ## Train biomarker
 ```{r}
-## tables from MAE
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+p <- find_biomarker(MAE,
+                    tax_level="genus",
+                    input_select_target_biomarker=c("DISEASE"),
+                    nfolds = 3,
+                    nrepeats = 3,
+                    seed = 99,
+                    percent_top_biomarker = 0.2,
+                    model_name = "logistic regression")
+# biomarker
+p$biomarker
 
-## shiny UI input object
-tax_level="genus"
-input_select_target_biomarker=c("DISEASE")
-nfolds = 3
-nrepeats = 3
-percent_top_biomarker = 0.2
-model_name = "logistic regression" # svm, logistic regression, gbm, random forest
+# importance plot
+p$importance_plot
 
-# Sum counts by taxon level and return log10 cpm
-logcpm_table <- counts_table %>%
-                    upsample_counts(tax_table, tax_level) %>%
-                    counts_to_logcpm() %>%
-                    base::t() %>%
-                    base::as.data.frame()
-
-
-# add target variable
-logcpm_table[,'y'] <- sam_table %>%
-                        dplyr::pull(input_select_target_biomarker)
-
-# set up classification model prameters
-fitControl <- caret::trainControl(## n1-fold CV
-                           method = "repeatedcv",
-                           number = nfolds,
-                           ## repeated n2 times
-                           repeats = nrepeats,
-                           classProbs = TRUE,
-                           summaryFunction = twoClassSummary,
-                           sampling = "smote",
-                           savePredictions = TRUE)
-
-# choose different model
-if (model_name == "logistic regression"){
-    model_fit <- caret::train(y ~ ., 
-                data = logcpm_table, 
-                method = "glmnet",
-                tuneLength = 5,
-                trControl = fitControl,
-                metric = "ROC")
-} else if (model_name == "svm"){
-    model_fit <- caret::train(y ~ ., 
-                data = logcpm_table, 
-                method = "svmLinear",
-                tuneLength = 5,
-                trControl = fitControl,
-                metric = "ROC")
-} else if (model_name == "gbm"){
-    model_fit <- caret::train(y ~ ., 
-                 data = logcpm_table, 
-                 method = "gbm", 
-                 trControl = fitControl,
-                 tuneLength = 5,
-                 metric = "ROC",
-                 ## This last option is actually one
-                 ## for gbm() that passes through
-                 verbose = FALSE)
-} else if (model_name == "random forest"){
-    model_fit <- caret::train(y ~ ., 
-                data = logcpm_table, 
-                method = "ranger", 
-                trControl = fitControl,
-                tuneLength = 5,
-                metric = "ROC",
-                # ranger specific parameter
-                importance = "impurity")
-}
-
-# process the importance score
-if (model_name == "svm"){
-    svm_importance <- caret::varImp(model_fit)$importance
-    svm_importance[,2] <- NULL
-    colnames(svm_importance) <- "importance"
-    
-    biomarker <- svm_importance %>%
-                        rownames_to_column() %>%
-                        rename(biomarker = rowname) %>%  
-                        arrange(importance) %>%
-                        filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                        select(biomarker) %>%
-                        .$biomarker
-    
-    
-    importance_plot <- svm_importance %>%
-                        rownames_to_column() %>%
-                        rename(biomarker = rowname) %>%  
-                        arrange(importance) %>%
-                        filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                        mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
-                        ggplot2::ggplot()+
-                        geom_col(aes(x = biomarker, y = importance))+
-                        coord_flip()+
-                        theme_bw()
-    
-} else{
-    
-    biomarker <- caret::varImp(model_fit)$importance %>% 
-                      base::as.data.frame() %>%
-                      rownames_to_column() %>%
-                      rename(importance = Overall) %>%
-                      rename(biomarker = rowname) %>%  
-                      arrange(importance) %>%
-                      filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                      select(biomarker) %>%
-                      .$biomarker
-      
-    importance_plot <- caret::varImp(model_fit)$importance %>% 
-                      base::as.data.frame() %>%
-                      rownames_to_column() %>%
-                      rename(importance = Overall) %>%
-                      rename(biomarker = rowname) %>%  
-                      arrange(importance) %>%
-                      filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                      mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
-                      ggplot2::ggplot()+
-                        geom_col(aes(x = biomarker, y = importance))+
-                        coord_flip()+
-                        theme_bw()
-}
-
-# plot the imoportance
-importance_plot
-
-# retrain the model using the biomarker
-logcpm_table <- logcpm_table %>%
-                    select(biomarker,y)
-
-# choose different model
-if (model_name == "logistic regression"){
-    model_fit <- caret::train(y ~ ., 
-                data = logcpm_table, 
-                method = "glmnet",
-                tuneLength = 5,
-                trControl = fitControl,
-                metric = "ROC")
-} else if (model_name == "svm"){
-    model_fit <- caret::train(y ~ ., 
-                data = logcpm_table, 
-                method = "svmLinear",
-                tuneLength = 5,
-                trControl = fitControl,
-                metric = "ROC")
-} else if (model_name == "gbm"){
-    model_fit <- caret::train(y ~ ., 
-                 data = logcpm_table, 
-                 method = "gbm", 
-                 trControl = fitControl,
-                 tuneLength = 5,
-                 metric = "ROC",
-                 ## This last option is actually one
-                 ## for gbm() that passes through
-                 verbose = FALSE)
-} else if (model_name == "random forest"){
-    model_fit <- caret::train(y ~ ., 
-                data = logcpm_table, 
-                method = "ranger", 
-                trControl = fitControl,
-                tuneLength = 5,
-                metric = "ROC",
-                # ranger specific parameter
-                importance = "impurity")
-}
-
-# print the biomarker CV performance
-model_fit$results %>%
-    select(ROC, Sens, Spec) %>%
-    filter(ROC == max(ROC))
+# Cross-validation result
+p$biomarker_cv_performance
+   
 
 ```
