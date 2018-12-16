@@ -38,7 +38,6 @@ knitr::opts_chunk$set(message = FALSE)
 # Packages
 
 ```{r}
-#library(tidyverse)
 library(magrittr)
 library(tibble)
 library(MultiAssayExperiment)
