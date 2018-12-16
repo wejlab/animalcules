@@ -140,64 +140,16 @@ filter_summary_bottom(MAE,
 ## Categorize
 
 ```{r}
-MAE <- readRDS("inst/extdata/MAE.rds")
 microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
-host <- MultiAssayExperiment::experiments(MAE)[[2]]
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-
-sample_condition = "AGE"
-nbins = 3 # Auto bin cutoffs
-bin_breaks = c(0,55,75,100) # Custom bin cutoffs
-bin_labels = c('Young','Adult',"Elderly") # Optional custom labels
-new_label = "AGE_GROUP"
-
-##
-# Numeric vector according to covariate of interest
-unbinned <- as.numeric(unlist(sam_table[,sample_condition]))
-
-# Plot unbinned condition
-fit <- density(unbinned)
-p <- plot_ly(x=fit$x,
-             y=fit$y,
-             type="scatter",
-             mode="lines",
-             fill="tozeroy") %>%
-             layout(title=sample_condition,
-                    margin = list(l=0,
-                                  r=0,
-                                  t=30,
-                                  b=30))
-#p$elementId <- NULL
-p
-
-# If bins are provided use those
-if (length(bin_breaks) >= 2) {
-    nlabs <- length(bin_breaks)-1
-} else {
-    bin_breaks <- nbins
-    nlabs <- nbins
-}
-# Ensure provided labels are the correct length
-if (length(bin_labels) >= 1) {
-    stopifnot(length(bin_labels) == nlabs)
-}
-
-# Categorized condition
-binned <- cut.default(unbinned, bin_breaks, bin_labels)
-
-# Add into sam table
-sam_table[,new_label] <- binned
-
-# Plot Binned Condition
-p <- plot_ly(y = binned,
-             type = "histogram") %>%
-             layout(title = new_label,
-                    xaxis = list(title = "Frequency"),
-                    yaxis = list(title = "Bins"),
-                    margin = list(l=80)
-    )
-#p$elementId <- NULL
-p
+samples <- as.data.frame(colData(microbe))
+result <- filter_categorize(samples,
+                            sample_condition = "AGE",
+                            new_label="AGE_GROUP",
+                            bin_breaks=c(0,55,75,100),
+                            bin_labels=c('Young','Adult',"Elderly"))
+result$sam_table
+result$plot.unbinned
+result$plot.binned
 ```
 
 # Server_03_relabu
@@ -205,339 +157,35 @@ p
 ## Relative Abundance Stacked Bar Plot
 
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-tax_level="genus"
-order_organisms=c("Escherichia")
-sort_by="conditions" # "conditions"
-group_samples=F
-group_conditions="DISEASE" # "SEX" "ALL" "DISEASE"
-sample_conditions=c("DISEASE")
-isolate_samples=c()
-discard_samples=c()
-show_legend=T
-
-##
-# Isolate or discard samples in the counts table
-counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
-
-# Subset and match sam table on the same samples as counts table
-sam_table <- sam_table %>%
-                .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
-                .[match(rownames(.), colnames(counts_table)),,drop=F] %>%
-                df_char_to_factor()
-
-# Ensure sam table has the same subset of samples and is in the correct order
-stopifnot(colnames(counts_table) == rownames(sam_table))
-
-# Sum counts by taxon level and return relative abundance
-relabu_table <- counts_table %>%
-                    upsample_counts(tax_table, tax_level) %>%
-                    counts_to_relabu() %>%
-                    base::t() %>%
-                    base::as.data.frame()
-
-# If grouping samples
-if (group_samples & !is.null(group_conditions)) {
-    if (group_conditions == 'ALL') {
-        relabu_table$covariate <- rep('ALL', nrow(relabu_table))
-    } else {
-        relabu_table$covariate <- sam_table[[group_conditions]]
-    }
-
-    # Group relative abundance by the covariate (mean relative abundance across organisms)
-    relabu_table <- relabu_table %>%
-                        reshape2::melt(id.vars = 'covariate') %>%
-                        aggregate(. ~variable+covariate , ., mean) %>%
-                        reshape2::dcast(formula = covariate~variable) %>%
-                        magrittr::set_rownames(.[['covariate']]) %>%
-                        dplyr::select(-one_of(c("covariate")))
-
-    # Sam table becomes the grouped conditions
-    sam_table <- rownames(relabu_table) %>%
-                     as.data.frame() %>%
-                     magrittr::set_colnames(c(group_conditions)) %>%
-                     magrittr::set_rownames(rownames(relabu_table))
-}
-
-# Put selected organisms first
-relabu_table <- relabu_table[,order(colSums(relabu_table)),drop=F]
-if (!is.null(order_organisms)) {
-    org_order <- c(setdiff(colnames(relabu_table), order_organisms), rev(order_organisms))
-    relabu_table <- relabu_table[,org_order]
-}
-
-# Order samples by organisms if not by conditons
-if (sort_by == "organisms") {
-    for (i in 1:ncol(relabu_table)) {
-        relabu_table <- relabu_table[order(relabu_table[,i]),]
-    }
-}
-
-# If any conditions are selected make a side bar
-if (!is.null(sample_conditions) || (group_samples && group_conditions != "ALL")) {
-    if (!group_samples) {
-        sam_table <- sam_table[,sample_conditions,drop=F]
-    }
-
-    # Order samples by conditions if not by organisms
-    if (sort_by == "conditions") {
-        for (i in ncol(sam_table):1) {
-            sam_table <- sam_table[order(sam_table[[i]]),,drop=F]
-        }
-        # Reorder stacked barplot
-        relabu_table <- relabu_table[order(match(rownames(relabu_table), rownames(sam_table))),,drop=F]
-    } else {
-        sam_table <- sam_table[order(match(rownames(sam_table), rownames(relabu_table))),,drop=F]
-    }
-
-    if (nrow(sam_table) > 1) {
-        # Retain hover-text information before conditions are factorized
-        hover.txt <- c()
-        for (i in 1:ncol(sam_table)) {
-            hover.txt <- cbind(hover.txt, as.character(sam_table[[i]]))
-        }
-
-        # Normalized matrix
-        mat <- sam_table %>%
-                   data.matrix() %>%
-                   apply(2, function(x)(x-min(x))/(max(x)-min(x)))
-
-        # Plotly | Heatmap
-        hm <- plotly::plot_ly(x = colnames(mat),
-                              y = rownames(mat),
-                              z = mat,
-                              type = "heatmap",
-                              showscale=F,
-                              hoverinfo = "x+y+text",
-                              text=hover.txt) %>%
-            layout(xaxis = list(title = "",
-                                tickangle = -45),
-                   yaxis = list(showticklabels = F,
-                                type = 'category',
-                                ticks = ""))
-    }
-
-}
-
-# Plotly | Stacked Bar Plots
-relabu_table$samples <- rownames(relabu_table)
-sbp <- plot_ly(relabu_table,
-               y = ~samples,
-               x = relabu_table[[colnames(relabu_table)[1]]],
-               type = 'bar',
-               orientation = 'h',
-               name = substr(colnames(relabu_table)[1], 1, 40)) %>%
-               layout(font = list(size = 10),
-                      xaxis = list(title = 'Relative Abundance'),
-                      yaxis = list(title = '',
-                                   type = 'category',
-                      tickmode = "array",
-                      tickvals = rownames(relabu_table),
-                      showticklabels = FALSE,
-                      categoryorder = 'trace'),
-                      barmode = 'stack',
-                      showlegend = show_legend)
-for (i in 2:(ncol(relabu_table)-1)) {
-    sbp <- add_trace(sbp, x=relabu_table[[colnames(relabu_table)[i]]], name=substr(colnames(relabu_table)[i], 1, 40))
-}
-
-# Create a multiplot if any conditions are selected
-if (exists("hm") && nrow(sam_table) > 1) {
-    hm_sbp <- subplot(hm, sbp, widths=c(0.1,  0.9))
-    hm_sbp$elementId <- NULL # To suppress a shiny warning
-    hm_sbp
-    #return(hm_sbp)
-} else {
-    sbp$elementId <- NULL # To suppress a shiny warning
-    sbp
-    #return(sbp)
-}
+p <- relabu_barplot(MAE,
+                    tax_level="family",
+                    order_organisms=c('Retroviridae'),
+                    sort_by="organisms",
+                    sample_conditions=c('SEX', 'AGE'),
+                    show_legend=TRUE)
+p
 ```
 
 ## Relative Abundance Heatmap
 
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-
-
-tax_level="phylum"
-sort_by="conditions"
-sample_conditions=c("DISEASE")
-isolate_organisms=c()
-isolate_samples=c()
-discard_samples=c()
-log_cpm=T
-
-##
-# Isolate or discard samples in the counts table
-counts_table <- pick_samples(counts_table, isolate_samples, discard_samples)
-
-# Subset and match sam table on the same samples as counts table
-sam_table <- sam_table %>%
-    .[rownames(.) %in% colnames(counts_table),,drop=F] %>%
-    .[match(rownames(.), colnames(counts_table)),,drop=F] %>%
-    df_char_to_factor()
-
-# Ensure sam table has the same subset of samples and is in the correct order
-stopifnot(colnames(counts_table) == rownames(sam_table))
-
-# Sum counts by taxon level and return counts or logcpm(counts)
-counts_table <- counts_table %>%
-                    upsample_counts(tax_table, tax_level) %>%
-                    {if(log_cpm) counts_to_logcpm(.) else .} %>%
-                    base::t() %>%
-                    base::as.data.frame()
-
-# Isolate organisms if specified
-if (!is.null(isolate_organisms)) {
-    counts_table <- counts_table[,isolate_organisms,drop=F]
-}
-
-# Reorder by most prominent organisms
-counts_table <- counts_table[,order(colSums(counts_table)),drop=F]
-
-# Order samples by organisms if not by conditons
-if (sort_by == "organisms") {
-    for (i in 1:ncol(counts_table)) {
-        counts_table <- counts_table[order(counts_table[,i]),,drop=F]
-    }
-}
-
-# If any conditions are selected make a side bar
-if (!is.null(sample_conditions)) {
-    sam_table <- sam_table[,sample_conditions,drop=F]
-    if (sort_by == "conditions") {
-        for (i in ncol(sam_table):1) {
-            sam_table <- sam_table[order(sam_table[[i]]),,drop=F]
-        }
-        # Reorder stacked barplot
-        counts_table <- counts_table[order(match(rownames(counts_table), rownames(sam_table))),,drop=F]
-    } else {
-        sam_table <- sam_table[order(match(rownames(sam_table), rownames(counts_table))),,drop=F]
-    }
-}
-
-# Plotly | Heatmap Counts
-mat <- data.matrix(counts_table)
-hm_c <- plot_ly(x = colnames(mat),
-                y = rownames(mat),
-                z = mat,
-                type = "heatmap",
-                colors= "RdPu",
-                hoverinfo = "x+y+z") %>%
-                layout(xaxis = list(showticklabels = F,
-                                    title = "",
-                                    ticks = "",
-                                    tickangle = -45),
-                       yaxis = list(showticklabels = F,
-                                    type = 'category',
-                                    ticks = ""))
-
-# Plotly | Heatmap Samples
-if (!is.null(sample_conditions)) {
-
-    # Retain hover-text information before conditions are factorized
-    hover.txt <- c()
-    for (i in 1:ncol(sam_table)) {
-        hover.txt <- cbind(hover.txt, as.character(sam_table[[i]]))
-    }
-
-    # Normalized matrix
-    mat <- sam_table %>%
-        data.matrix() %>%
-        apply(2, function(x)(x-min(x))/(max(x)-min(x)))
-
-    # Plotly | Heatmap Samples
-    hm_s <- plot_ly(x = colnames(mat),
-                    y = rownames(mat),
-                    z = mat,
-                    type = "heatmap",
-                    showscale=F,
-                    hoverinfo = "x+y+text",
-                    text=hover.txt) %>%
-                    layout(xaxis = list(title = "",
-                                        tickangle = -45),
-                           yaxis = list(showticklabels = F,
-                                        type = 'category',
-                                        ticks = ""))
-}
-
-# Create a multiplot if any conditions are selected
-if (!is.null(sample_conditions)) {
-    hm_c_s <- subplot(hm_s, hm_c, widths=c(0.1,  0.9))
-    hm_c_s$elementId <- NULL # To suppress a shiny warning
-    hm_c_s
-    #return(hm_sam_ra)
-} else {
-    hm_c$elementId <- NULL # To suppress a shiny warning
-    hm_c
-    #return(hm_c)
-}
+p <- relabu_heatmap(MAE,
+                   tax_level="genus",
+                   sort_by="conditions",
+                   sample_conditions=c("SEX", "AGE"))
+p
 ```
 
 ## Relative Abundance Boxplot
 
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-tax_level <- "genus"
-organisms <- c("Escherichia", "Actinomyces")
-condition <- "DISEASE"
-datatype  <- c("counts", "relabu", "logcpm")[3]
-
-##
-
-# Sum counts by taxon level and return counts
-df <- counts_table %>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level) %>%
-      # Choose data type
-      {
-          if (datatype == "relabu") {
-              counts_to_relabu(.)
-          } else if (datatype == "logcpm") {
-              counts_to_logcpm(.)
-          } else {
-              .
-          }
-      } %>%
-      # Subset on chosen organisms
-      .[organisms, , drop=F] %>%
-      # Transpose
-      t() %>%
-      # Back to data frame
-      as.data.frame() %>%
-      # Merge in covariate information
-      merge(sam_table[, condition, drop=F], by=0, all=T) %>%
-      # Melt for plotly
-      reshape2::melt(by=organisms, variable.name="organisms")
-
-p <- plot_ly(df,
-             x = ~organisms,
-             y = ~value,
-             color = ~df[,condition],
-             type = "box")  %>%
-             layout(boxmode = "group",
-                    yaxis = list(title = datatype))
-p$p <- NULL # To suppress a shiny warning
+p <- relabu_boxplot(MAE,
+                    tax_level="genus",
+                    organisms=c("Escherichia", "Actinomyces"),
+                    condition="SEX",
+                    datatype="logcpm")
 p
-#return(p)
 ```
-
 
 # Server_04_diversity
 
@@ -548,8 +196,6 @@ alpha_div_boxplot(MAE = MAE,
                   condition = "DISEASE",
                   alpha_metric = "shannon")
 ```
-
-
 
 ## alpha diversity statistical test
 ```{r}
@@ -590,169 +236,28 @@ diversity_beta_test(MAE = MAE,
 
 # PCA
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-color <- "SEX"
-shape <- "DISEASE"
-pcy <- 1
-pcx <- 2
-tax_level <- "phylum"
-datatype  <- c("counts", "relabu", "logcpm")[3]
-
-##
-
-# Sum counts by taxon level and return counts
-df <- counts_table %>%
-      # Sum counts by taxon level
-      upsample_counts(tax_table, tax_level) %>%
-      # Choose data type
-      {
-          if (datatype == "relabu") {
-              counts_to_relabu(.)
-          } else if (datatype == "logcpm") {
-              counts_to_logcpm(.)
-          } else {
-              .
-          }
-      } %>%
-      # Fix constant/zero row
-      {
-          if (sum(rowSums(as.matrix(.)) == 0) > 0){
-              . <- .[-which(rowSums(as.matrix(.)) == 0),]
-           } else {
-               .
-           }
-      } %>%
-      # Transpose
-      t()
-
-# PCA
-df.prcomp <- stats::prcomp(df, scale=T)
-# Principle Components
-df.pca <- df.prcomp$x
-# Importance
-df.imp <- t(summary(df.prcomp)$importance)
-
-# Merge in covariate information
-if (!is.null(shape)) {
-    df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=T)
-} else {
-    df.pca.m <- merge(df.pca, sam_table[, color, drop=F], by=0, all=T)
-    shape <- 'shape' # Referenced by plotly later
-    df.pca.m[[shape]] <- 1 # Constant results in omitting shape
-}
-
-# Plotly | Scatterplot
-p <- plot_ly(df.pca.m,
-             x = as.formula(paste("~PC", pcx, sep = "")),
-             y = as.formula(paste("~PC", pcy, sep = "")),
-             mode = "markers",
-             color = as.formula(paste("~", color, sep = "")),
-             symbol = as.formula(paste("~", shape, sep = "")),
-             type = "scatter",
-             text = df.pca.m$Row.names,
-             marker = list(size = 10))
-
-p$p <- NULL # To suppress a shiny warning
-p
-#return(p)
-
-# Formatting importance table
-colnames(df.imp) = c("Standard Deviation",
-                     "Variance Explained",
-                     "Cumulative Variance")
-
-# Show variance as a percentage
-df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
-df.imp[,3] <- scales::percent(as.numeric(df.imp[,3]))
-
-df.imp
+result <- dimred_pca(MAE,
+                     tax_level="genus",
+                     color="AGE",
+                     shape="DISEASE",
+                     pcx=1,
+                     pcy=2,
+                     datatype="logcpm")
+result$plot
+result$table
 ```
 
 # PCoA
 ```{r}
-microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-host <- MAE[['HostGenetics']]
-tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-sam_table <- as.data.frame(colData(microbe)) # sample x condition
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
-color <- "SEX"
-shape <- "DISEASE"
-axy <- 1
-axx <- 2
-tax_level <- "phylum"
-method  <- c("bray", "wunifrac")[1]
-
-##
-
-# Sum counts by taxon level and return counts
-df <- counts_table %>%
-    # Sum counts by taxon level
-    upsample_counts(tax_table, tax_level) %>%
-    # Fix constant/zero row
-    {
-        if (sum(rowSums(as.matrix(.)) == 0) > 0){
-            . <- .[-which(rowSums(as.matrix(.)) == 0),]
-        } else {
-            .
-        }
-    } %>%
-    # Transpose
-    t()
-
-# Distance metrics
-if (method == "bray") {
-    df.dist <- vegan::vegdist(df, method="bray")
-}
-
-# PCoA
-df.apcoa <- ape::pcoa(df.dist)
-# Principle Coordinates
-df.pcoa <- df.apcoa$vectors
-# Importance
-df.imp <- df.apcoa$values
-
-# Merge in covariate information
-if (!is.null(shape)) {
-    df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=F], by=0, all=T)
-} else {
-    df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=F], by=0, all=T)
-    shape <- 'shape' # Referenced by plotly later
-    df.pcoa.m[[shape]] <- 1 # Constant results in omitting shape
-}
-
-# Plotly | Scatterplot
-p <- plot_ly(df.pcoa.m,
-             x = as.formula(paste("~Axis.", axx, sep = "")),
-             y = as.formula(paste("~Axis.", axy, sep = "")),
-             mode = "markers",
-             color = as.formula(paste("~", color, sep = "")),
-             symbol = as.formula(paste("~", shape, sep = "")),
-             type = "scatter",
-             text = df.pcoa.m$Row.names,
-             marker = list(size = 10))
-
-p$p <- NULL # To suppress a shiny warning
-p
-#return(p)
-
-# Formatting importance table
-df.imp <- df.imp[,c(1,3,5)]
-rownames(df.imp) <- paste("Axis", 1:nrow(df.imp), sep = ".")
-colnames(df.imp) <- c("Eigenvalue",
-                      "Variance Explained",
-                      "Cumulative Variance")
-
-# Show variance as a percentage
-df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
-df.imp[,3] <- scales::percent(as.numeric(df.imp[,3]))
-
-df.imp
+result <- dimred_pcoa(MAE,
+                     tax_level="genus",
+                     color="AGE",
+                     shape="DISEASE",
+                     axx=1,
+                     axy=2,
+                     method="bray")
+result$plot
+result$table
 ```
 
 # Server_06_differential_analysis
@@ -787,6 +292,4 @@ p$importance_plot
 
 # Cross-validation result
 p$biomarker_cv_performance
-   
-
 ```
