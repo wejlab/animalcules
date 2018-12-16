@@ -33,7 +33,7 @@ filter_summary_top <- function(MAE,
     counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
     # subset the data
-    MAE_subset <- pick_samples_MAE(MAE = MAE, discard_samples = samples_discard)
+    MAE_subset <- mae_pick_samples(MAE = MAE, discard_samples = samples_discard)
 
     # Add count summary data to sample table
     sam_table[,"Reads"] = colSums(counts_table[,rownames(sam_table)])

@@ -121,19 +121,21 @@ sessionInfo()
 ## Summary Plot Top
 
 ```{r}
-filter_summary_top(MAE,
-                   samples_discard = c("subject_2", "subject_4"),
-                   filter_type = "By Metadata",
-                   sample_condition = "AGE")
+p <- filter_summary_top(MAE,
+                        samples_discard = c("subject_2", "subject_4"),
+                        filter_type = "By Metadata",
+                        sample_condition = "AGE")
+p
 ```
 
 ## Summary Plot Bottom
 
 ```{r}
-filter_summary_bottom(MAE,
-                      samples_discard = c("subject_2", "subject_4"),
-                      filter_type = "By Metadata",
-                      sample_condition = "SEX")
+p <- filter_summary_bottom(MAE,
+                           samples_discard = c("subject_2", "subject_4"),
+                           filter_type = "By Metadata",
+                           sample_condition = "SEX")
+p
 ```
 
 ## Categorize
@@ -203,7 +205,6 @@ do_alpha_div_test(MAE = MAE,
                   condition = "DISEASE",
                   alpha_metric = "shannon",
                   alpha_stat = "T-test")
-
 ```
 
 ## beta diversity heatmap
@@ -212,7 +213,6 @@ diversity_beta_heatmap(MAE = MAE,
                        tax_level = 'genus', 
                        input_bdhm_select_conditions = 'DISEASE',
                        input_bdhm_sort_by = 'condition')
-
 ```
 
 ## beta boxplot
