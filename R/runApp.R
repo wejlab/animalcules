@@ -1,6 +1,6 @@
 #' @export
 run_animalcules <- function() {
-  appDir <- system.file("shiny", package = "Animalcules")
+  appDir <- system.file("shiny", package = "animalcules")
   if (appDir == "") {
     stop("Could not find myapp. Try re-installing `mypackage`.", call. = FALSE)
   }

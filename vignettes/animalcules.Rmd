@@ -1,5 +1,5 @@
 ---
-title: "Animalcules"
+title: "animalcules"
 author:
 - name: Yue Zhao
   affiliation:

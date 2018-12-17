@@ -6,7 +6,7 @@ tags$div(
     tags$div(
         class = "container",
         fluidRow(
-            column(7, h1("Animalcules")),
+            column(7, h1("animalcules")),
             column(5, br(),br(),img(src = "bu_bioinfo_logo.png", height = 80, width = 80))
 
         ),
@@ -19,7 +19,7 @@ sidebarLayout(
                     c("Example data" = "example",
                       "Count File" = "count",
                       "PathoScope Files" = "pathofiles",
-                      "Animalcules file" = "Animalcules.file"
+                      "animalcules file" = "animalcules.file"
                     )),
        br(),
        p(" "),
@@ -40,7 +40,7 @@ sidebarLayout(
                                      selected = "rda"
                         ),
                         withBusyIndicatorUI(
-                          actionButton("uploadAnimalcules",
+                          actionButton("upload_animalcules",
                                        "Upload",
                                        class = "btn-primary")
                         )
