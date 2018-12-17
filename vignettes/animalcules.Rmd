@@ -116,6 +116,14 @@ MultiAssayExperiment::sampleMap(MAE)
 sessionInfo()
 ```
 
+
+# run shiny app
+```{r}
+run_animalcules()
+```
+
+
+
 # Server_02_filter
 
 ## Summary Plot Top

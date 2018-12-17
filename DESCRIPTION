@@ -1,6 +1,6 @@
-Package: animalcules
+Package: Animalcules
 Title: Statistical microbiome analysis on metagenomics data
-Version: 0.0.0.9000
+Version: 0.0.1
 Author:
     Yue (Jason) Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
@@ -14,7 +14,9 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Imports:
-    assertthat
+    assertthat,
+    shiny,
+    shinyjs
 Suggests:
     BiocCheck,
     BiocStyle,
