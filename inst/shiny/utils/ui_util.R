@@ -21,52 +21,49 @@ minbatch <- function(batch1){
         function(x) length(batch3[[x]])))))
 }
 
-shinyInput <- getShinyInput()
 
-pstat <- shinyInput$pstat
-covariates <- colnames(sample_data(pstat))
-
-# choose the covariates that has less than 8 levels
-covariates.colorbar <- c()
-for (i in 1:length(covariates)){
-  num.levels <- length(unique(sample_data(pstat)[[covariates[i]]]))
-  if (num.levels < 8){
-    covariates.colorbar <- c(covariates.colorbar, covariates[i])
-  }
-}
-
-# choose the covariates that has 2 levels
-covariates.two.levels <- c()
-for (i in 1:length(covariates)){
-  num.levels <- length(unique(sample_data(pstat)[[covariates[i]]]))
-  if (num.levels == 2){
-    covariates.two.levels <- c(covariates.two.levels, covariates[i])
-  }
-}
-
-is.categorical <- function(v) {
-  if (class(v) == "integer" || class(v) == "numeric") {
-    return(F)
-  } else {
-    return(T)
-  }
-}
-
-# numeric cov
-    sam_temp <- as.data.frame(pstat@sam_data)
-    num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
-    num_covariates <- covariates[!unlist(num_select)]
-
-
-
-maxbatchElems <- minbatch(c(pstat@sam_data[,1])[[1]])
-maxcondElems <- minbatch(c(pstat@sam_data[,2])[[1]])
-defaultDisp <- 30
-defaultGenesDisp <- 10
-maxGenes <- dim(pstat@otu_table)[1]
-
-
-
-
-#sample name
-sample.names.all <- colnames(pstat@otu_table@.Data)
+#
+# # choose the covariates that has less than 8 levels
+# covariates.colorbar <- c()
+# for (i in 1:length(covariates)){
+#   num.levels <- length(unique(sample_data(pstat)[[covariates[i]]]))
+#   if (num.levels < 8){
+#     covariates.colorbar <- c(covariates.colorbar, covariates[i])
+#   }
+# }
+#
+# # choose the covariates that has 2 levels
+# covariates.two.levels <- c()
+# for (i in 1:length(covariates)){
+#   num.levels <- length(unique(sample_data(pstat)[[covariates[i]]]))
+#   if (num.levels == 2){
+#     covariates.two.levels <- c(covariates.two.levels, covariates[i])
+#   }
+# }
+#
+# is.categorical <- function(v) {
+#   if (class(v) == "integer" || class(v) == "numeric") {
+#     return(F)
+#   } else {
+#     return(T)
+#   }
+# }
+#
+# # numeric cov
+#     sam_temp <- as.data.frame(pstat@sam_data)
+#     num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
+#     num_covariates <- covariates[!unlist(num_select)]
+#
+#
+#
+# maxbatchElems <- minbatch(c(pstat@sam_data[,1])[[1]])
+# maxcondElems <- minbatch(c(pstat@sam_data[,2])[[1]])
+# defaultDisp <- 30
+# defaultGenesDisp <- 10
+# maxGenes <- dim(pstat@otu_table)[1]
+#
+#
+#
+#
+# #sample name
+# sample.names.all <- colnames(pstat@otu_table@.Data)

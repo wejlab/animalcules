@@ -1,4 +1,3 @@
-source(file.path("utils", "old_server_stuff.R"),  local = TRUE)
 
 observeEvent(input$uploadPathoStat,{
   withBusyIndicatorServer("uploadPathoStat", {

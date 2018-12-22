@@ -32,8 +32,11 @@
 #   return(logCPM.out)
 # }
 
+data_dir <- system.file("data/MAE.rds", package = "animalcules")
+
 vals <- reactiveValues(
-    MAE = readRDS("data/MAE.rds"),
+    data_dir = system.file("data/MAE.rds", package = "animalcules"),
+    MAE = readRDS(data_dir),
     MAE_backup = MAE
 )
 
