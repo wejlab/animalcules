@@ -132,3 +132,50 @@ percent <- function(x, digits = 2, format = "f") {
     paste0(formatC(100 * x, format = format, digits = digits), "%")
 }
 
+
+
+#' Check if object is categorical
+#'
+#' @param x A single value
+#' @return Boolean
+#'
+#' @example
+#' nums <- 2
+#' is.categorical(nums)
+#'
+#' @export
+is.categorical <- function(v) {
+   if (class(v) == "integer" || class(v) == "numeric") {
+     return(F)
+   } else {
+     return(T)
+   }
+}
+
+#' check if integer(0)
+#'
+#' @param x A single value
+#' @return Boolean
+#'
+#' @example
+#' nums <- 2
+#' is.integer0(nums)
+#'
+#' @export
+is.integer0 <- function(x){
+  is.integer(x) && length(x) == 0L
+}
+
+
+
+#' Converts decimal percentage to string with specified digits
+#'
+#' @param x A single value
+#' @return Boolean
+#'
+#' @example
+#' nums <- 0.23
+#' pct2str(nums)
+#'
+#' @export
+pct2str <- function(v, digits=2) {sprintf(paste0('%.',digits,'f'), v*100)}

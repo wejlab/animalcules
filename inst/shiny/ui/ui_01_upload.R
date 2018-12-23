@@ -26,18 +26,17 @@ sidebarLayout(
        conditionalPanel(condition = sprintf("input['%s'] == 'example'", "uploadChoice"),
                         helpText("Example data is loaded and ready to go!")
        ),
-       conditionalPanel(condition = sprintf("input['%s'] == 'Animalcules.file'", "uploadChoice"),
-                        fileInput("rdfile", ".rda/.rds file (required):",
+       conditionalPanel(condition = sprintf("input['%s'] == 'animalcules.file'", "uploadChoice"),
+                        fileInput("rdfile", ".rds file (required):",
                                   accept = c(
-                                    ".rda",
                                     ".rds"
                                   )
                         ),
                         radioButtons("rdtype", "Filetype",
-                                     choices = c(rda = "rda",
+                                     choices = c(
                                                  rds = "rds"
                                      ),
-                                     selected = "rda"
+                                     selected = "rds"
                         ),
                         withBusyIndicatorUI(
                           actionButton("upload_animalcules",

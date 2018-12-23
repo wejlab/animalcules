@@ -1,7 +1,3 @@
-library(shiny)
-library(shinyjs)
-library(plotly)
-# source(file.path("utils", "helpers.R"))
 
 
 
@@ -41,14 +37,7 @@ minbatch <- function(batch1){
 #   }
 # }
 #
-# is.categorical <- function(v) {
-#   if (class(v) == "integer" || class(v) == "numeric") {
-#     return(F)
-#   } else {
-#     return(T)
-#   }
-# }
-#
+
 # # numeric cov
 #     sam_temp <- as.data.frame(pstat@sam_data)
 #     num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))

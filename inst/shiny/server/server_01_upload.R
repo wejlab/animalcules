@@ -1,12 +1,7 @@
 
-observeEvent(input$uploadPathoStat,{
-  withBusyIndicatorServer("uploadPathoStat", {
-    if (input$rdtype == 'rda') {
-      load(input$rdfile$datapath)
-    }
-    if (input$rdtype == 'rds') {
-      MAE <- readRDS(input$rdfile$datapath)
-    }
+observeEvent(input$upload_animalcules,{
+  withBusyIndicatorServer("upload_animalcules", {
+    MAE <- readRDS(input$rdfile$datapath)
     vals$MAE <- MAE
     vals$MAE_backup <- MAE
     # Update ui
@@ -18,7 +13,7 @@ observeEvent(input$uploadPathoStat,{
 observeEvent(input$uploadDataCount,{
   withBusyIndicatorServer("uploadDataCount", {
 
-  df.input <- read.csv(input$countsfile$datapath,
+  count_table <- read.csv(input$countsfile$datapath,
                        header = input$header.count,
                        row.names = 1,
                        stringsAsFactors = FALSE,
@@ -26,7 +21,7 @@ observeEvent(input$uploadDataCount,{
                        comment.char="",
                        check.names = FALSE)
 
-  df.taxon.input <- read.csv(input$taxon.table$datapath,
+  tax_table <- read.csv(input$taxon.table$datapath,
                             header = input$header.count,
                             sep = input$sep.count,
                             row.names= 1,
@@ -34,7 +29,7 @@ observeEvent(input$uploadDataCount,{
                             comment.char="",
                             check.names = FALSE)
 
-  df.meta.input <- read.csv(input$annotfile.count$datapath,
+  metadata_table <- read.csv(input$annotfile.count$datapath,
                             header = input$header.count,
                             sep = input$sep.count,
                             row.names=input$metadata_sample_name_col_count,
@@ -43,39 +38,47 @@ observeEvent(input$uploadDataCount,{
                             check.names = FALSE)
 
   # Choose only the samples in metadata that have counts data as well
-  df.meta.input <- df.meta.input[match(colnames(df.input), rownames(df.meta.input)), ]
+  metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
 
   # Test and fix the constant/zero row
   row.remove.index <- c()
-  if (sum(rowSums(as.matrix(df.input)) == 0) > 0){
-      row.remove.index <- which(rowSums(as.matrix(df.input)) == 0)
-      df.input <- df.input[-row.remove.index,]
+  if (sum(rowSums(as.matrix(count_table)) == 0) > 0){
+      row.remove.index <- which(rowSums(as.matrix(count_table)) == 0)
+      count_table <- count_table[-row.remove.index,]
   }
 
-  OTU <- otu_table(df.input, taxa_are_rows = TRUE)
-  TAX <- tax_table(as.matrix(df.taxon.input))
-  physeq <- phyloseq(OTU, TAX)
+  # create MAE object
+  se_mgx <-
+      count_table %>%
+      base::data.matrix() %>%
+      S4Vectors::SimpleList() %>%
+      magrittr::set_names("MGX")
 
-  # Change NA/NULL to 0
-  # Remove variables with identical values
-  col.remove.index <- c()
-  for (i in 1:ncol(df.meta.input)){
-      if(length(unique(df.meta.input[,i])) < 2){
-          col.remove.index <- c(col.remove.index, i)
-      }
-  }
-  if (!is.null(col.remove.index)){
-      df.meta.input <- df.meta.input[,-col.remove.index]
-  }
+  se_colData <-
+      metadata_table %>%
+      S4Vectors::DataFrame()
 
-  sampledata = sample_data(data.frame(df.meta.input))
-  random_tree = rtree(ntaxa(physeq), rooted=TRUE, tip.label=
-                          taxa_names(physeq))
-  physeq1 <- merge_phyloseq(physeq, sampledata, random_tree)
-  pstat <- pathostat1(physeq1)
-  shinyInput <- list(pstat = pstat)
-  vals$shiny.input <- shinyInput
-  vals$shiny.input.backup <- shinyInput
+  se_rowData <-
+      tax_table %>%
+      base::data.frame() %>%
+      dplyr::mutate_all(as.character) %>%
+      #dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+      S4Vectors::DataFrame()
+
+  microbe_se <-
+      SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
+                                               colData = se_colData,
+                                               rowData = se_rowData)
+  mae_experiments <-
+      S4Vectors::SimpleList(MicrobeGenetics = microbe_se)
+
+  MAE <-
+      MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
+                                               colData = se_colData)
+
+  # update vals
+  vals$MAE <- MAE
+  vals$MAE_backup <- MAE
   # Update ui
   updateCovariate()
   updateSample()
@@ -93,64 +96,185 @@ observeEvent(input$uploadDataPs, {
         df.name.vec[i] <- input$countsfile.pathoscope[[i, 'name']]
     }
 
-    datlist <- readPathoscopeData(input_dir, pathoreport_file_suffix = input$report_suffix,
+    datlist <- read_pathoscope_data(input_dir, pathoreport_file_suffix = input$report_suffix,
                                   use.input.files = TRUE,
                                   input.files.path.vec = df.path.vec,
                                   input.files.name.vec = df.name.vec)
-    countdat <- datlist$countdata
+    count_table <- datlist$countdata
 
-    df.meta.input <- read.csv(input$annotfile.ps$datapath,
+    metadata_table <- read.csv(input$annotfile.ps$datapath,
                               header = input$header.ps,
                               sep = input$sep.ps,
                               row.names=input$metadata_sample_name_col,
                               stringsAsFactors=FALSE)
 
     # Choose only the samples in metadata that have counts data as well
-    df.meta.input <- df.meta.input[match(colnames(countdat), rownames(df.meta.input)), ]
+    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
 
     # Test and fix the constant/zero row
     row.remove.index <- c()
-    if (sum(rowSums(as.matrix(countdat)) == 0) > 0){
-        row.remove.index <- which(rowSums(as.matrix(countdat)) == 0)
-        countdat <- countdat[-row.remove.index,]
+    if (sum(rowSums(as.matrix(count_table)) == 0) > 0){
+        row.remove.index <- which(rowSums(as.matrix(count_table)) == 0)
+        count_table <- count_table[-row.remove.index,]
     }
 
-    ids <- rownames(countdat)
-    tids <- unlist(lapply(ids, FUN = grepTid))
-    taxonLevels <- findTaxonomy(tids)
-    taxmat <- findTaxonMat(ids, taxonLevels)
+    ids <- rownames(count_table)
+    tids <- unlist(lapply(ids, FUN = grep_tid))
+    taxonLevels <- find_taxonomy(tids)
+    tax_table <- find_taxon_mat(ids, taxonLevels)
     # Test and fix the constant/zero row
     if (!is.null(row.remove.index)){
-        taxmat <- taxmat[-row.remove.index,]
+        tax_table <- tax_table[-row.remove.index,]
     }
 
-    OTU <- otu_table(countdat, taxa_are_rows = TRUE)
-    TAX <- tax_table(taxmat)
-    physeq <- phyloseq(OTU, TAX)
+  # create MAE object
+  se_mgx <-
+      count_table %>%
+      base::data.matrix() %>%
+      S4Vectors::SimpleList() %>%
+      magrittr::set_names("MGX")
 
-    # Change NA/NULL to 0
-    # Remove variables with identical values
-    col.remove.index <- c()
-    for (i in 1:ncol(df.meta.input)){
-        if(length(unique(df.meta.input[,i])) < 2){
-            col.remove.index <- c(col.remove.index, i)
-        }
-    }
-    if (!is.null(col.remove.index)){
-        df.meta.input <- df.meta.input[,-col.remove.index]
-    }
+  se_colData <-
+      metadata_table %>%
+      S4Vectors::DataFrame()
 
-    sampledata = sample_data(data.frame(df.meta.input))
-    random_tree = rtree(ntaxa(physeq), rooted=TRUE, tip.label=
-                            taxa_names(physeq))
-    physeq1 <- merge_phyloseq(physeq, sampledata, random_tree)
-    pstat <- pathostat1(physeq1)
-    shinyInput <- list(pstat = pstat)
-    vals$shiny.input <- shinyInput
-    vals$shiny.input.backup <- shinyInput
-    # Update ui
-    updateCovariate()
-    updateSample()
-    updateTaxLevel()
+  se_rowData <-
+      tax_table %>%
+      base::data.frame() %>%
+      dplyr::mutate_all(as.character) %>%
+      dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+      S4Vectors::DataFrame()
+
+  microbe_se <-
+      SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
+                                               colData = se_colData,
+                                               rowData = se_rowData)
+  mae_experiments <-
+      S4Vectors::SimpleList(MicrobeGenetics = microbe_se)
+
+  MAE <-
+      MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
+                                               colData = se_colData)
+
+  # update vals
+  vals$MAE <- MAE
+  vals$MAE_backup <- MAE
+  # Update ui
+  updateCovariate()
+  updateSample()
+  updateTaxLevel()
+
+
   })
 })
+
+
+
+
+
+# Data input summary
+output$contents.count <- DT::renderDataTable({
+
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+
+    if (!is.null(input$countsfile.pathoscope)){
+        if (input$uploadChoice == "pathofiles"){
+        req(input$countsfile.pathoscope)
+        df <- read.csv(input$countsfile.pathoscope[[1, 'datapath']],
+                       skip = 1,
+                       header = TRUE,
+                       sep = input$sep.ps)
+        return(df)
+        }
+    }
+},
+options = list(
+    paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+output$contents.meta <- DT::renderDataTable({
+
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+
+    if (!is.null(input$annotfile.ps)){
+        if (input$uploadChoice == "pathofiles"){
+        req(input$countsfile.pathoscope)
+
+        df <- read.csv(input$annotfile.ps$datapath,
+                       header = input$header.ps,
+                       sep = input$sep.ps)
+        return(df)
+        }
+    }
+},
+options = list(
+    paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+
+### data input summary
+output$contents.count.2 <- DT::renderDataTable({
+
+  # input$file1 will be NULL initially. After the user selects
+  # and uploads a file, head of that data file by default,
+  # or all rows if selected, will be shown.
+
+  if (!is.null(input$countsfile)){
+    if (input$uploadChoice == "count"){
+      req(input$countsfile)
+      df <- read.csv(input$countsfile$datapath,
+                     header = input$header.count,
+                     sep = input$sep.count)
+      return(df)
+    }
+  }
+},
+options = list(
+  paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+output$contents.meta.2 <- DT::renderDataTable({
+
+  # input$file1 will be NULL initially. After the user selects
+  # and uploads a file, head of that data file by default,
+  # or all rows if selected, will be shown.
+
+  if (!is.null(input$annotfile.count)){
+    if (input$uploadChoice == "count"){
+      req(input$annotfile.count)
+      df <- read.csv(input$annotfile.count$datapath,
+                     header = input$header.count,
+                     sep = input$sep.count)
+      return(df)
+    }
+  }
+},
+options = list(
+  paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+output$contents.taxonomy <- DT::renderDataTable({
+
+  # input$file1 will be NULL initially. After the user selects
+  # and uploads a file, head of that data file by default,
+  # or all rows if selected, will be shown.
+
+
+  if (!is.null(input$taxon.table)){
+    if (input$uploadChoice == "count"){
+      req(input$taxon.table)
+
+      df <- read.csv(input$taxon.table$datapath,
+                     header = input$header.count,
+                     sep = input$sep.count)
+      return(df)
+    }
+  }
+},
+options = list(
+  paging = TRUE, scrollX = TRUE, pageLength = 5
+))
