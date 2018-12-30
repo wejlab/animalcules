@@ -6,6 +6,7 @@ alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon", "fisher", "cov
 beta.methods <- c("wUniFrac", "bray")
 
 tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
+sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
 
 measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){
