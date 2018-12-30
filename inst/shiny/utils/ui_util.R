@@ -1,14 +1,12 @@
+data_dir = system.file("data/MAE.rds", package = "animalcules")
+MAE = readRDS(data_dir)
 
 
-
-alpha.methods <- c("Shannon", "Simpson", "InvSimpson")
-# Weigthed Unifrac, Bray-Curtis
+alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage")
 beta.methods <- c("wUniFrac", "bray")
 
-tax.name <- c('superkingdom', 'kingdom', 'phylum', 'class', 'order', 'family',
-    'genus', 'species', 'no rank')
-norm.methods <- c('EBayes coreOTU Normalization',
-    'Quantile coreOTU Normalization', 'Library Size Scaling')
+tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
+
 measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){
     batch2 <- as.factor(batch1)
@@ -18,25 +16,26 @@ minbatch <- function(batch1){
 }
 
 
-#
-# # choose the covariates that has less than 8 levels
-# covariates.colorbar <- c()
-# for (i in 1:length(covariates)){
-#   num.levels <- length(unique(sample_data(pstat)[[covariates[i]]]))
-#   if (num.levels < 8){
-#     covariates.colorbar <- c(covariates.colorbar, covariates[i])
-#   }
-# }
-#
-# # choose the covariates that has 2 levels
-# covariates.two.levels <- c()
-# for (i in 1:length(covariates)){
-#   num.levels <- length(unique(sample_data(pstat)[[covariates[i]]]))
-#   if (num.levels == 2){
-#     covariates.two.levels <- c(covariates.two.levels, covariates[i])
-#   }
-# }
-#
+covariates = colnames(colData(MAE))
+
+# choose the covariates that has less than 8 levels
+covariates.colorbar <- c()
+for (i in 1:length(covariates)){
+  num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
+  if (num.levels < 8){
+    covariates.colorbar <- c(covariates.colorbar, covariates[i])
+  }
+}
+
+# choose the covariates that has 2 levels
+covariates.two.levels <- c()
+for (i in 1:length(covariates)){
+  num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
+  if (num.levels == 2){
+    covariates.two.levels <- c(covariates.two.levels, covariates[i])
+  }
+}
+
 
 # # numeric cov
 #     sam_temp <- as.data.frame(pstat@sam_data)

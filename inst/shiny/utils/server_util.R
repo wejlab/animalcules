@@ -10,29 +10,29 @@ vals <- reactiveValues(
 updateTaxLevel <- function(){
   MAE <- vals$MAE
   # updateSelectInput(session, "taxl",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
-  # updateSelectInput(session, "taxl.alpha",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
-  # updateSelectInput(session, "taxl.beta",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
+  updateSelectInput(session, "taxl.alpha",
+                    choices = colnames(rowData(MAE[['MicrobeGenetics']])))
+  updateSelectInput(session, "taxl.beta",
+                    choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxl.pca",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxl.da",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxl.edger",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxl.pa",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "sra_taxlev",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "hmra_taxlev",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxl_single_species",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxlTable",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxl_biomarker",
-  #                   choices = rownames(MAE[['MicrobeGenetics']]))
+  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
 }
 
 # update samples
