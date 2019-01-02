@@ -108,5 +108,10 @@ dimred_pca <- function(MAE,
     df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
     df.imp[,3] <- scales::percent(as.numeric(df.imp[,3]))
 
+    # Reorder
+    df.imp <- as.data.frame(df.imp)
+    df.imp$PC <- rownames(df.imp)
+    df.imp <- df.imp[,c(4,1,2,3)]
+
     return(list(plot=p, table=df.imp))
 }

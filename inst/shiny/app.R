@@ -18,7 +18,7 @@ ui <- navbarPage(
   # source(file.path("ui", "ui_02_filter.R"),  local = TRUE)$value,
   source(file.path("ui", "ui_03_relabu.R"),  local = TRUE)$value,
   source(file.path("ui", "ui_04_diversity.R"),  local = TRUE)$value,
-  # source(file.path("ui", "ui_05_dimreduction.R"),  local = TRUE)$value,
+  source(file.path("ui", "ui_05_dimred.R"),  local = TRUE)$value,
   source(file.path("ui", "ui_06_differential.R"),  local = TRUE)$value
   # source(file.path("ui", "ui_07_biomarker.R"),  local = TRUE)$value
 )
@@ -29,7 +29,7 @@ server <- function(input, output, session) {
   # source(file.path("server", "server_02_filter.R"),  local = TRUE)$value
   source(file.path("server", "server_03_relabu.R"),  local = TRUE)$value
   source(file.path("server", "server_04_diversity.R"),  local = TRUE)$value
-  # source(file.path("server", "server_05_dimreduction.R"),  local = TRUE)$value
+  source(file.path("server", "server_05_dimred.R"),  local = TRUE)$value
   source(file.path("server", "server_06_differential.R"),  local = TRUE)$value
   # source(file.path("server", "server_07_biomarker.R"),  local = TRUE)$value
 }
