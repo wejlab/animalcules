@@ -111,8 +111,8 @@ updateTaxLevel <- function(session){
   #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   # updateSelectInput(session, "taxlTable",
   #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  # updateSelectInput(session, "taxl_biomarker",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
+  updateSelectInput(session, "taxl_biomarker",
+                    choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   updateSelectInput(session, "relabu_bar_taxlev",
                      choices = colnames(rowData(MAE[['MicrobeGenetics']])))
   updateSelectInput(session, "relabu_heatmap_taxlev",

@@ -1,8 +1,6 @@
 
 
 tabPanel("Differential Analysis",
-    tabsetPanel(
-         tabPanel("Differential Abundance",
                   selectInput("DAmethod", "Select method",
                     c("DESeq2")),
                   conditionalPanel(condition = "input.DAmethod == 'DESeq2'",
@@ -33,8 +31,6 @@ tabPanel("Differential Analysis",
                                      )
                                    )
                                    )
-         )
-    )
 
 
 )
