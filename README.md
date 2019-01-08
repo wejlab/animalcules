@@ -1,3 +1,5 @@
+[![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
+
 # animalcules
 
 The goal of animalcules is to study the biological sample using microbiome and transcriptome data. A typical workflow will be like:
