@@ -99,8 +99,8 @@ library(DESeq2)
 # MAE <-
 #     MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
 #                                                colData = se_colData)
-# 
-# # usethis::use_data(MAE)
+
+## usethis::use_data(MAE)
 ```
 
 # Toy Test
