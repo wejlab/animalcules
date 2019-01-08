@@ -1,6 +1,8 @@
 # animalcules
 
-The goal of animalcules is to ...
+The goal of animalcules is to study the biological sample using microbiome and transcriptome data. A typical workflow will be like:
+
+![total RNA-seq based host-microbes analysis](others/workflow.png)
 
 ## Installation
 
