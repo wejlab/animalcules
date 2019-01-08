@@ -25,6 +25,7 @@
 #'
 #' @import caret
 #' @import tibble
+#' @import gbm
 #' @import dplyr
 #' @import MultiAssayExperiment
 #'
