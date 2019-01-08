@@ -16,20 +16,28 @@ Depends:
 Imports:
     assertthat,
     shiny,
-    shinyjs
+    shinyjs,
+    gbm,
+    DESeq2,
+    tibble,
+    caret,
+    plotly,
+    rentrez,
+    reshape2,
+    covr,
+    ape,
+    vegan,
+    dplyr,
+    magrittr,
+    MultiAssayExperiment,
+    SummarizedExperiment,
+    S4Vectors
 Suggests:
     BiocCheck,
     BiocStyle,
-    gbm,
-    covr,
-    dplyr,
     devtools,
     knitr,
-    magrittr,
-    MultiAssayExperiment,
     rmarkdown,
-    SummarizedExperiment,
-    S4Vectors,
     testthat,
     usethis
 biocViews:

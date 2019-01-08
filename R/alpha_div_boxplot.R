@@ -7,7 +7,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' data_dir = system.file("data/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- alpha_div_boxplot(toy_data,
 #'                        tax_level = "genus",
 #'                        condition = "DISEASE",

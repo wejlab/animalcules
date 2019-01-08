@@ -18,7 +18,7 @@ abstract: >
     purus, eu volutpat tellus egestas vel. Quisque ornare eros ut nulla finibus
     lobortis. Praesent dictum pellentesque est a mattis. Suspendisse id rhoncus
     purus.
-package: animalculinstales
+package: animalcules
 output:
     BiocStyle::html_document
 vignette: >
@@ -52,6 +52,7 @@ library(vegan)
 library(ape)
 library(gbm)
 library(DESeq2)
+library(animalcules)
 ```
 
 # Toy Dataset
@@ -101,15 +102,18 @@ library(DESeq2)
 #                                                colData = se_colData)
 
 ## usethis::use_data(MAE)
+
+# saveRDS(MAE, )
 ```
 
 # Toy Test
 
 ```{r}
-load("data/MAE.rda")
-MultiAssayExperiment::experiments(MAE)
-MultiAssayExperiment::colData(MAE)
-MultiAssayExperiment::sampleMap(MAE)
+data_dir = system.file("data/MAE.rds", package = "animalcules")
+MAE = readRDS(data_dir)
+#MultiAssayExperiment::experiments(MAE)
+#MultiAssayExperiment::colData(MAE)
+#MultiAssayExperiment::sampleMap(MAE)
 ```
 
 ```{r}
@@ -119,7 +123,7 @@ sessionInfo()
 
 # run shiny app
 ```{r}
-run_animalcules()
+# run_animalcules()
 ```
 
 
