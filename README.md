@@ -6,6 +6,7 @@ The goal of animalcules is to study the biological sample using microbiome and t
 
 ## Installation
 
+Note: Install devtools first if you haven't installed it yet. 
 You can install animalcules from github with:
 
 
@@ -14,10 +15,10 @@ You can install animalcules from github with:
 devtools::install_github("compbiomed/animalcules")
 ```
 
-## Example
+## Run animalcules
 
-This is a basic example which shows you how to solve a common problem:
 
 ``` r
-## basic example code
+library(animalcules)
+run_animalcules()
 ```
