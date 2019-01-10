@@ -11,7 +11,7 @@ tabPanel("Abundance",
           ),
           conditionalPanel(
             condition = "input.relabu_bar_group_samples == true",
-            selectizeInput('relabu_bar_group_conditions', 'Color Samples by Condition', choices=c("All", covariates))
+            selectizeInput('relabu_bar_group_conditions', 'Color Samples by Condition', choices=c("ALL", covariates))
           ),
 
           # Sample aggregation
