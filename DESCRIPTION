@@ -4,7 +4,8 @@ Version: 0.0.1
 Author:
     Yue (Jason) Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
-    Lucas Schiffer <schifferl@bu.edu>
+    Lucas Schiffer <schifferl@bu.edu>,
+    W. Evan Johnson <wej@bu.edu>
 Maintainer: Yue (Jason) Zhao <yuezh@bu.edu>
 Description:
     Statistical microbiome analysis on metagenomics data
@@ -14,6 +15,9 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Imports:
+    tools,
+    Rsubread,
+    Biostrings,
     assertthat,
     shiny,
     shinyjs,
@@ -47,4 +51,4 @@ biocViews:
 VignetteBuilder: knitr
 URL: https://github.com/compbiomed/animalcules
 BugReports: https://github.com/compbiomed/animalcules/issues
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
