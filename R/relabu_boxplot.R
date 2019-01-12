@@ -7,7 +7,7 @@
 #' @param datatype Datatype to use e.g. c("counts", "relabu", "logcpm")
 #' @return A plotly object
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' p <- relabu_boxplot(toy_data,
 #'                     tax_level="genus",

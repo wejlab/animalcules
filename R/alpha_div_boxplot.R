@@ -20,6 +20,7 @@
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment
+#' @import SummarizedExperiment
 #' @export
 
 alpha_div_boxplot <- function(MAE,

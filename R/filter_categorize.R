@@ -8,7 +8,7 @@
 #' @param bin_labels Manually label bins/categories
 #' @return A list with an updated sample table and before/after plots
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' microbe <- MultiAssayExperiment::experiments(toy_data)[[1]]
 #' samples <- as.data.frame(colData(microbe))
