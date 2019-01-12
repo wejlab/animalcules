@@ -1,0 +1,5 @@
+subject_id	BarcodeSequence
+Sample1	CTCACAACCGTG
+Sample2	CTGCTATTCCTC
+Sample3	ATGTCACCGCTG
+Sample4	TGTAACGCCGAT
