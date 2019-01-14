@@ -40,7 +40,7 @@ filter_summary_bottom <- function(MAE,
     sam_table[,"Taxnum"] = apply(counts_table , 2, function(x) sum(x >= 1))
 
     # select filter type
-    if (filter_type == "By Microbes") {
+    if (filter_type == "Microbes") {
         cov <- "Taxnum"
     } else {
         cov <- sample_condition
@@ -72,15 +72,3 @@ filter_summary_bottom <- function(MAE,
         return(cat.bar)
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
