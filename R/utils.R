@@ -132,8 +132,6 @@ percent <- function(x, digits = 2, format = "f") {
     paste0(formatC(100 * x, format = format, digits = digits), "%")
 }
 
-
-
 #' Check if object is categorical
 #'
 #' @param x A single value
@@ -165,8 +163,6 @@ is.categorical <- function(v) {
 is.integer0 <- function(x){
   is.integer(x) && length(x) == 0L
 }
-
-
 
 #' Converts decimal percentage to string with specified digits
 #'
