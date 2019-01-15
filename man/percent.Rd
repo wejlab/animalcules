@@ -15,3 +15,8 @@ An array of formatted strings
 \description{
 Format decimals to percentages
 }
+\examples{
+nums <- c(0.42, 0.15, 0.4, 0.563, 0.2)
+percent(nums)
+
+}

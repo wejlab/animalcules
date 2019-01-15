@@ -26,3 +26,17 @@ A list with an updated sample table and before/after plots
 \description{
 Categorize continuous variables
 }
+\examples{
+toy_data <- readRDS("data/MAE.rds")
+microbe <- MultiAssayExperiment::experiments(toy_data)[[1]]
+samples <- as.data.frame(colData(microbe))
+result <- filter_categorize(samples,
+                            sample_condition = "AGE",
+                            new_label="AGE_GROUP",
+                            bin_breaks=c(0,55,75,100),
+                            bin_labels=c('Young','Adult',"Elderly"))
+result$sam_table
+result$plot.unbinned
+result$plot.binned
+
+}

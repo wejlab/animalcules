@@ -19,3 +19,8 @@ A multi-assay experiment object
 \description{
 Modify samples of multi-assay experiment object
 }
+\examples{
+toy_data <- readRDS("data/MAE.rds")
+subset <- mae_pick_samples(toy_data, isolate_samples=c("subject_9", "subject_14"))
+
+}
