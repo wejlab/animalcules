@@ -9,7 +9,7 @@
 #' @param method Method to use e.g. c("bray")
 #' @return A list with a plotly object and summary table
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' result <- dimred_pcoa(MAE,
 #'                      tax_level="genus",
