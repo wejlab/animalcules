@@ -21,4 +21,5 @@ microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 samples <- df_char_to_factor(sam_table)
 
+
 }

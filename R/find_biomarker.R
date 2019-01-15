@@ -23,12 +23,6 @@
 #'                     model_name = "logistic regression")
 #' p
 #'
-#' @import caret
-#' @import tibble
-#' @import gbm
-#' @import caret
-#' @import ggplot2
-#' @import dplyr
 #' @import MultiAssayExperiment
 #'
 #' @export
@@ -66,6 +60,7 @@ find_biomarker <- function(MAE,
     logcpm_table[,'y'] <- sam_table %>%
                             dplyr::pull(input_select_target_biomarker)
 
+    print(1)
     # set up classification model prameters
     fitControl <- caret::trainControl(## n1-fold CV
                                method = "repeatedcv",
@@ -76,7 +71,7 @@ find_biomarker <- function(MAE,
                                summaryFunction = twoClassSummary,
                                sampling = "smote",
                                savePredictions = TRUE)
-
+    print(2)
     # choose different model
     if (model_name == "logistic regression"){
         model_fit <- caret::train(y ~ .,
@@ -112,7 +107,7 @@ find_biomarker <- function(MAE,
                     # ranger specific parameter
                     importance = "impurity")
     }
-
+    print(3)
     # process the importance score
     if (model_name == "svm"){
         svm_importance <- caret::varImp(model_fit)$importance
@@ -120,20 +115,20 @@ find_biomarker <- function(MAE,
         colnames(svm_importance) <- "importance"
 
         biomarker <- svm_importance %>%
-                            rownames_to_column() %>%
-                            rename(biomarker = rowname) %>%
-                            arrange(importance) %>%
-                            filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                            select(biomarker) %>%
+                            tibble::rownames_to_column() %>%
+                            dplyr::rename(biomarker = rowname) %>%
+                            dplyr::arrange(importance) %>%
+                            dplyr::filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                            dplyr::select(biomarker) %>%
                             .$biomarker
 
 
         importance_plot <- svm_importance %>%
-                            rownames_to_column() %>%
-                            rename(biomarker = rowname) %>%
-                            arrange(importance) %>%
-                            filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                            mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
+                            tibble::rownames_to_column() %>%
+                            dplyr::rename(biomarker = rowname) %>%
+                            dplyr::arrange(importance) %>%
+                            dplyr::filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                            dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
                             ggplot2::ggplot()+
                             geom_col(aes(x = biomarker, y = importance))+
                             coord_flip()+
@@ -143,31 +138,31 @@ find_biomarker <- function(MAE,
 
         biomarker <- caret::varImp(model_fit)$importance %>%
                           base::as.data.frame() %>%
-                          rownames_to_column() %>%
-                          rename(importance = Overall) %>%
-                          rename(biomarker = rowname) %>%
-                          arrange(importance) %>%
-                          filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                          select(biomarker) %>%
+                          tibble::rownames_to_column() %>%
+                          dplyr::rename(importance = Overall) %>%
+                          dplyr::rename(biomarker = rowname) %>%
+                          dplyr::arrange(importance) %>%
+                          dplyr::filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                          dplyr::select(biomarker) %>%
                           .$biomarker
 
         importance_plot <- caret::varImp(model_fit)$importance %>%
                           base::as.data.frame() %>%
-                          rownames_to_column() %>%
-                          rename(importance = Overall) %>%
-                          rename(biomarker = rowname) %>%
-                          arrange(importance) %>%
-                          filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                          mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
+                          tibble::rownames_to_column() %>%
+                          dplyr::rename(importance = Overall) %>%
+                          dplyr::rename(biomarker = rowname) %>%
+                          dplyr::arrange(importance) %>%
+                          dplyr::filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
+                          dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
                           ggplot2::ggplot()+
                             geom_col(aes(x = biomarker, y = importance))+
                             coord_flip()+
                             theme_bw()
     }
-
+    print(4)
     # retrain the model using the biomarker
     logcpm_table <- logcpm_table %>%
-                        select(biomarker,y)
+                        dplyr::select(biomarker,y)
 
     # choose different model
     if (model_name == "logistic regression"){
@@ -205,18 +200,19 @@ find_biomarker <- function(MAE,
                     importance = "impurity")
     }
 
-
+    print(5)
 
     # print the biomarker CV performance
     biomarker_cv_performance <- model_fit$results %>%
-        select(ROC, Sens, Spec) %>%
-        filter(ROC == max(ROC))
-
+        dplyr::select(ROC, Sens, Spec) %>%
+        dplyr::filter(ROC == max(ROC))
+    print(6)
 
     # output a list
     list_output <- list(biomarker = biomarker,
                         importance_plot = importance_plot,
                         biomarker_cv_performance = biomarker_cv_performance[1,])
+    print(7)
     return(list_output)
 
 }

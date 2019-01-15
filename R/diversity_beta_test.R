@@ -52,7 +52,7 @@ diversity_beta_test <- function(MAE,
 
     if (input_select_beta_stat_method == "PERMANOVA"){
     set.seed(99)
-    beta.div <- adonis2(dist.mat~condition,
+    beta.div <- vegan::adonis2(dist.mat~condition,
                         data=sam_table,
                         permutations = input_num_permutation_permanova,
                         strata="PLOT")

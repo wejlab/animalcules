@@ -76,7 +76,7 @@ relabu_barplot <- function(MAE,
         # Group relative abundance by the covariate (mean relative abundance across organisms)
         relabu_table <- relabu_table %>%
                         reshape2::melt(id.vars = 'covariate') %>%
-                        aggregate(. ~variable+covariate , ., mean) %>%
+                        S4Vectors::aggregate(. ~variable+covariate , ., mean) %>%
                         reshape2::dcast(formula = covariate~variable) %>%
                         magrittr::set_rownames(.[['covariate']]) %>%
                         dplyr::select(-one_of(c("covariate")))

@@ -19,7 +19,7 @@
 upsample_counts <- function(counts_table, tax_table, higher_level) {
     counts_table$higher_level = tax_table[[higher_level]]
     counts_table <- reshape2::melt(counts_table, id.vars="higher_level") %>%
-                    aggregate(.~variable+higher_level, . , sum) %>%
+                    S4Vectors::aggregate(.~variable+higher_level, . , sum) %>%
                     reshape2::dcast(higher_level~variable) %>%
                     as.data.frame()
     rownames(counts_table) <- counts_table$higher_level
@@ -108,10 +108,11 @@ mae_pick_samples <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
 #' sam_table <- as.data.frame(colData(microbe)) # sample x condition
 #' samples <- df_char_to_factor(sam_table)
 #'
+#'
 #' @export
 df_char_to_factor <- function(df) {
     for (i in 1:ncol(df)){
-        if (type(df[,i,drop=F]) == "character"){
+        if (typeof(df[,i,drop=F]) == "character"){
             df[,i] <- as.factor(df[,i])
         }
     }
