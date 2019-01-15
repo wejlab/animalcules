@@ -3,7 +3,7 @@ output$filter_metadata_params <- renderUI({
     MAE <- vals$MAE
     microbe <- MAE[['MicrobeGenetics']]
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
-    covdat <- sam_table[,input$filter_type_metadata]    
+    covdat <- sam_table[,input$filter_type_metadata]
 
     if (!is.categorical(covdat)) {
         sliderInput("filter_metadata_inp", "Include", min = min(covdat), max = max(covdat), value = c(min(covdat), max(covdat)))
@@ -15,7 +15,7 @@ output$filter_metadata_params <- renderUI({
 # Filter by metadata
 observeEvent(input$filter_metadata_btn,{
     withBusyIndicatorServer("filter_metadata_btn", {
-        
+
         MAE <- vals$MAE
         microbe <- MAE[['MicrobeGenetics']]
         sam_table <- as.data.frame(colData(microbe)) # sample x condition
@@ -39,11 +39,11 @@ observeEvent(input$filter_metadata_btn,{
 # Filter by microbes
 #observeEvent(input$filter_microbes_read_btn,{
 #    withBusyIndicatorServer("filter_microbes_read_btn", {
-#        
+#
 #        MAE <- vals$MAE
 #        microbe <- MAE[['MicrobeGenetics']]
 #        counts_table <- as.data.frame(assays(microbe)) # organism x sample
-#        
+#
 #        # Filter by average read number
 #        minval <- input$filter_microbes_read_inp
 #        means <- rowMeans(counts_table)
@@ -73,6 +73,7 @@ observeEvent(input$filter_reset_btn,{
 })
 
 output$filter_summary_top_plot <- renderPlotly({
+    #print(colData(vals$MAE))
     p <- filter_summary_top(MAE = vals$MAE,
                             samples_discard = c(),
                             filter_type = input$filter_type,
@@ -136,7 +137,7 @@ do_categorize <- eventReactive(input$filter_create_bins, {
       nbins = bin_breaks
       n = length(bin_breaks)-1
     }
-    
+
     # Add custom labels only if the correct amount is sepecified
     bin_labels = unlist(strsplit(input$filter_bin_labels,","))
     fx_labels <- NULL
@@ -149,11 +150,17 @@ do_categorize <- eventReactive(input$filter_create_bins, {
                                 new_label = input$filter_new_covariate,
                                 nbins = nbins,
                                 bin_breaks = bin_breaks,
-                                bin_labels = fx_labels)  
+                                bin_labels = fx_labels)
 
     # Modify sample table
     MAE@colData <- DataFrame(result$sam_table)
+
+    for (i in 1:length(MAE)){
+        colData(MAE[[i]]) <- DataFrame(result$sam_table)
+    }
+
     vals$MAE <- MAE
+    print(colData(vals$MAE))
     update_inputs(session)
 
     return(result$plot.binned)
