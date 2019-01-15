@@ -151,6 +151,11 @@ do_categorize <- eventReactive(input$filter_create_bins, {
                                 bin_breaks = bin_breaks,
                                 bin_labels = fx_labels)  
 
+    # Modify sample table
+    MAE@colData <- DataFrame(result$sam_table)
+    vals$MAE <- MAE
+    update_inputs(session)
+
     return(result$plot.binned)
 })
 
