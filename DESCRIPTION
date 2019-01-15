@@ -29,6 +29,7 @@ Imports:
     tibble,
     caret,
     plotly,
+    ggplot2,
     rentrez,
     reshape2,
     covr,
