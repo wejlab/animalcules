@@ -70,6 +70,28 @@ tabPanel("Summary and Filter",
           width=9
         )
       )
+    ),
+    tabPanel("Categorize",
+      tags$br(),
+      sidebarLayout(
+        sidebarPanel(
+          selectizeInput('filter_bin_cov', 'Covariate', choices=num_covariates, multiple=FALSE),
+          uiOutput("filter_nbins"),
+          textInput('filter_bin_breaks', 'Custom Breaks (Comma Delimited)'),
+          verbatimTextOutput("filter_bin_to1"),
+          textInput('filter_bin_labels', 'Custom Labels (Comma Delimited)'),
+          verbatimTextOutput("filter_bin_to2"),
+          textInput("filter_new_covariate", "Covariate Label", value = "new_cov"),
+          actionButton("filter_create_bins", "Create Bins"),
+          width=5
+        ),
+        mainPanel(
+          plotlyOutput("filter_unbin_plot", height="200px"),
+          br(),
+          plotlyOutput("filter_bin_plot"),
+          width=7
+        )
+      )
     )
   )
 )

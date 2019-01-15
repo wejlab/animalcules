@@ -87,3 +87,77 @@ output$filter_summary_bottom_plot <- renderPlotly({
                                sample_condition = input$filter_type_metadata)
     return(p)
 })
+
+
+
+
+
+
+
+# Categorize
+output$filter_nbins <- renderUI({
+    MAE <- vals$MAE
+    microbe <- MAE[['MicrobeGenetics']]
+    sam_table <- as.data.frame(colData(microbe)) # sample x condition
+    vals <- unlist(sam_table[,input$filter_bin_cov,drop=TRUE])
+    sliderInput("filter_nbins", label="Number of Bins", min=2, max=length(unique(vals)), value=2, step=1)
+})
+output$filter_bin_to1 <- renderPrint({
+    x <- sort(as.numeric(unlist(strsplit(input$filter_bin_breaks,","))))
+    print(x)
+})
+output$filter_bin_to2 <- renderPrint({
+    x <- unlist(strsplit(input$filter_bin_labels,","))
+    print(x)
+})
+
+output$filter_unbin_plot <- renderPlotly({
+    MAE <- vals$MAE
+    microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+    samples <- as.data.frame(colData(microbe))
+    result <- filter_categorize(samples,
+                                sample_condition = input$filter_bin_cov,
+                                new_label = input$filter_new_covariate)
+
+    return(result$plot.unbinned)
+})
+
+do_categorize <- eventReactive(input$filter_create_bins, {
+    MAE <- vals$MAE
+    microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+    samples <- as.data.frame(colData(microbe))
+
+    nbins <- input$filter_nbins
+    n <- input$filter_nbins
+
+    # Overide custom bins if specified
+    bin_breaks = sort(as.numeric(unlist(strsplit(input$filter_bin_breaks,","))))
+    if (length(bin_breaks) > 1) {
+      nbins = bin_breaks
+      n = length(bin_breaks)-1
+    }
+    
+    # Add custom labels only if the correct amount is sepecified
+    bin_labels = unlist(strsplit(input$filter_bin_labels,","))
+    fx_labels <- NULL
+    if (length(bin_labels) == n) {
+      fx_labels <- bin_labels
+    }
+
+    result <- filter_categorize(samples,
+                                sample_condition = input$filter_bin_cov,
+                                new_label = input$filter_new_covariate,
+                                nbins = nbins,
+                                bin_breaks = bin_breaks,
+                                bin_labels = fx_labels)  
+
+    return(result$plot.binned)
+})
+
+# Reaction to button pressing
+output$filter_bin_plot <- renderPlotly({
+    p <- do_categorize()
+    return(p)
+})
+
+
