@@ -25,7 +25,7 @@ extractReads(barcodeIndex, barcodes, sampleNames, index, reads,
 \item{hDist}{Uses a Hamming Distance or number of base differences to allow for inexact matches for the barcodes/indexes. Defaults to 0. Warning: if the Hamming Distance is >=1 and this leads to inexact index matches to more than one barcode, that read will be written to more than one demultiplexed read files}
 }
 \value{
-Returns a single .fastq file that contains all reads whose index matches the barcode specified. This file will be written to the location directory, and will be named based on the specified sampleName and barcode, e.g. './demultiplex_fastq/SampleName1_GGAATTATCGGT.fastq.gz'
+Writes a single .fastq file that contains all reads whose index matches the barcode specified. This file will be written to the location directory, and will be named based on the specified sampleName and barcode, e.g. './demultiplex_fastq/SampleName1_GGAATTATCGGT.fastq.gz'
 }
 \description{
 Helper function for demultiplexing sequencing reads, designed in a way to allow for parallelization accross barcodes (parallel extraction of reads by barcode). This function takes a specific barcode (numeric index) from lists of sample names/barcodes, a Biostrings::DNAStringSet of barcodes by sequence header, and a Biostrings::QualityScaledXStringSet of reads corresponding to the barcodes. Based on the barcode index given, it extracts all reads for the indexed barcode and writes all the reads from that barcode to a separate .fastq file.
@@ -35,10 +35,10 @@ Helper function for demultiplexing sequencing reads, designed in a way to allow 
 barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules.preprocess")
 bcFile <- read.table(barcodePath, sep = "\\t", header = T)
 
-indexPath <- system.file("extdata", "indexes_multiplex.fastq", package = "animalcules.preprocess")
+indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules.preprocess")
 inds <- Biostrings::readDNAStringSet(indexPath, format = "fastq")
 
-readPath <- system.file("extdata", "reads_multiplex.fastq", package = "animalcules.preprocess")
+readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
 reads <- Biostrings::readQualityScaledDNAStringSet(readPath)
 
 ## Extract reads from the first barcode
@@ -47,12 +47,11 @@ results <- extractReads(1, bcFile[, 2], bcFile[, 1], inds, reads, rcBarcodes = F
 results
 
 ## Extract reads from multiple barcodes
-more_results <- lapply(1:4, extractReads, bcFile[, 2], bcFile[, 1], inds, 
+more_results <- lapply(1:6, extractReads, bcFile[, 2], bcFile[, 1], inds, 
     reads, rcBarcodes = FALSE, location = ".")
                        
 ## BiocParallel application
-multicoreParam <- BiocParallel::MulticoreParam(workers = 4)
-parallel_results <- BiocParallel::bplapply(1:4, extractReads, bcFile[, 
+multicoreParam <- BiocParallel::MulticoreParam(workers = 3)
+parallel_results <- BiocParallel::bplapply(1:6, extractReads, bcFile[, 
     2], bcFile[, 1], inds, reads, rcBarcodes = FALSE, location = ".", BPPARAM = multicoreParam)
-
 }

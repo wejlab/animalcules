@@ -31,8 +31,8 @@ Function for demultiplexing sequencing reads arranged in a common format provide
 \examples{
 ## Get barcode, index, and read data locations
 barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules.preprocess")
-indexPath <- system.file("extdata", "indexes_multiplex.fastq", package = "animalcules.preprocess")
-readPath <- system.file("extdata", "reads_multiplex.fastq", package = "animalcules.preprocess")
+indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules.preprocess")
+readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
 
 ## Get barcode, index, and read data locations
 demult <- demultiplex(barcodePath, indexPath, readPath, rcBarcodes = FALSE, 
