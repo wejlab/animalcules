@@ -10,6 +10,7 @@ update_inputs <- function(session) {
     updateCovariate(session)
     updateSample(session)
     updateTaxLevel(session)
+    updateOrganisms(session)
 }
 
 updateCovariate <- function(session){
@@ -98,6 +99,15 @@ updateSample <- function(session){
     updateSelectInput(session, "relabu_bar_sample_dis", choices = sam.name)
     updateSelectInput(session, "relabu_heatmap_sample_iso", choices = sam.name)
     updateSelectInput(session, "relabu_heatmap_sample_dis", choices = sam.name)
+}
+
+# update organisms
+updateOrganisms <- function(session){
+    MAE <- vals$MAE
+    org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))
+
+    # Filter
+    updateSelectInput(session, "filter_organism_dis", choices = org.name)
 }
 
 observeEvent(input$upload_animalcules,{

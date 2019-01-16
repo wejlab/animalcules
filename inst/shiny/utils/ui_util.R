@@ -7,6 +7,7 @@ beta.methods <- c("wUniFrac", "bray")
 
 tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
+org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))
 
 measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){
