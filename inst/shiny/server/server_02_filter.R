@@ -123,6 +123,32 @@ output$filter_summary_bottom_plot <- renderPlotly({
     return(p)
 })
 
+## Table
+output$filter_summary_table <- renderTable({
+    MAE = vals$MAE
+    microbe <- MAE[['MicrobeGenetics']]
+    sam_table <- as.data.frame(colData(microbe)) # sample x condition
+    counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+    relabu_table <- counts_to_relabu(counts_table)
+
+    dat <- list()
+    dat['Number of Samples'] <- nrow(sam_table)
+    dat['Number of Covariates'] <- ncol(sam_table)
+    dat['Number of Organisms'] <- nrow(counts_table)
+    dat['Sample Mean Counts'] <- mean(apply(counts_table, 2, mean))
+    dat['Sample Median Counts'] <- median(apply(counts_table, 2, mean))
+    dat['Organism Mean Counts'] <- mean(apply(counts_table, 1, mean))
+    dat['Organism Median Counts'] <- median(apply(counts_table, 1, mean))
+    df <- as.data.frame(unlist(dat))
+    
+    # Formatting
+    df$temp <- rownames(df)
+    colnames(df) <- c("", "Summary Statistic")
+    df <- df[,c(2,1)]
+
+    return(df)
+})
+
 ## Categorize
 output$filter_nbins <- renderUI({
     MAE <- vals$MAE
