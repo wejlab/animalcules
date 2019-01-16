@@ -3,6 +3,7 @@
 #' @param tids Given taxonomy ids
 #' @return taxondata Data with the taxonomy information
 #' @import rentrez
+#' @import XML
 #' @export
 #' @examples
 #' example_data_dir <- system.file("example/data", package = "PathoStat")
@@ -27,7 +28,7 @@ find_taxonomy_300 <- function(tids) {
     }
 
     r_fetch <- entrez_fetch(db = "taxonomy", id = tids, rettype = "xml")
-    dat <- XML::xmlToList(r_fetch)
+    dat <- xmlToList(r_fetch)
     taxonLevels <- lapply(dat, function(x) x$LineageEx)
     if(!is.null(na.vec)){
         for(i in seq_len(length(na.vec))){

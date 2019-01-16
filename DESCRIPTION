@@ -39,7 +39,10 @@ Imports:
     magrittr,
     MultiAssayExperiment,
     SummarizedExperiment,
-    S4Vectors
+    S4Vectors,
+    XML,
+    forcats,
+    scales
 Suggests:
     BiocCheck,
     BiocStyle,
