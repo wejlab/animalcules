@@ -11,7 +11,7 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' p <- relabu_heatmap(toy_data,
 #'                    tax_level="genus",
 #'                    sort_by="conditions",

@@ -10,7 +10,7 @@
 #' @return A list with a plotly object and summary table
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' result <- dimred_pca(toy_data,
 #'                      tax_level="genus",
 #'                      color="AGE",

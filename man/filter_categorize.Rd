@@ -27,7 +27,7 @@ A list with an updated sample table and before/after plots
 Categorize continuous variables
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+toy_data <- readRDS("inst/extdata/MAE.rds")
 microbe <- MultiAssayExperiment::experiments(toy_data)[[1]]
 samples <- as.data.frame(colData(microbe))
 result <- filter_categorize(samples,

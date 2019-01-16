@@ -6,7 +6,7 @@
 #' @return A organism x sample data frame of counts aggregated by a higher taxon level
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 #' tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
@@ -33,7 +33,7 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
 #' @return A organism x sample data frame of relative abundances
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 #' relabu <- counts_to_relabu(counts_table)
@@ -54,7 +54,7 @@ counts_to_relabu <- function(counts_table) {
 #' @return A organism x sample data frame of logcpm counts
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 #' logcpm <- counts_to_logcpm(counts_table)
@@ -77,7 +77,7 @@ counts_to_logcpm <- function(counts_table) {
 #' @return A multi-assay experiment object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' subset <- mae_pick_samples(toy_data, isolate_samples=c("subject_9", "subject_14"))
 #'
 #' @import MultiAssayExperiment
@@ -105,7 +105,7 @@ mae_pick_samples <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
 #' @return A multi-assay experiment object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' subset <- mae_pick_organisms(toy_data, isolate_organisms=c("ti|001", "ti|002"))
 #'
 #' @import MultiAssayExperiment
@@ -132,7 +132,7 @@ mae_pick_organisms <- function(MAE, isolate_organisms=NULL, discard_organisms=NU
 #' @return A sample x condition data frame
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' sam_table <- as.data.frame(colData(microbe)) # sample x condition
 #' samples <- df_char_to_factor(sam_table)

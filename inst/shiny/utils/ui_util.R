@@ -1,4 +1,4 @@
-data_dir = system.file("data/MAE.rds", package = "animalcules")
+data_dir = system.file("inst/extdata/MAE.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 
 

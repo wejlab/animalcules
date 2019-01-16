@@ -25,7 +25,7 @@ A plotly object
 Plot boxplots comparing different organism prevalence across conditions
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+toy_data <- readRDS("inst/extdata/MAE.rds")
 p <- relabu_boxplot(toy_data,
                     tax_level="genus",
                     organisms=c("Escherichia", "Actinomyces"),

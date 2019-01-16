@@ -16,7 +16,7 @@ A sample x condition data frame
 Factorize all categorical columns
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+toy_data <- readRDS("inst/extdata/MAE.rds")
 microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 sam_table <- as.data.frame(colData(microbe)) # sample x condition
 samples <- df_char_to_factor(sam_table)

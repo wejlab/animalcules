@@ -22,7 +22,7 @@ A plotly object
 Data visualization by barplot
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+toy_data <- readRDS("inst/extdata/MAE.rds")
 result <- filter_summary_bottom(toy_data,
                                 samples_discard = c("subject_2", "subject_4"),
                                 filter_type = "By Metadata",

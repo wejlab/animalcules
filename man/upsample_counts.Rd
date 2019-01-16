@@ -20,7 +20,7 @@ A organism x sample data frame of counts aggregated by a higher taxon level
 Upsample a counts table to a higher taxon level
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+toy_data <- readRDS("inst/extdata/MAE.rds")
 microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev

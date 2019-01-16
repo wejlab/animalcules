@@ -15,7 +15,7 @@
 #' @importFrom ggplot2 geom_col aes coord_flip theme_bw
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_data <- readRDS("inst/extdata/MAE.rds")
 #' p <- find_biomarker(toy_data,
 #'                     tax_level="genus",
 #'                     input_select_target_biomarker=c("DISEASE"),

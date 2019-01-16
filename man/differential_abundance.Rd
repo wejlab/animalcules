@@ -28,7 +28,7 @@ A plotly object
 Differential abundance analysis
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+toy_data <- readRDS("inst/extdata/MAE.rds")
 p <- differential_abundance(toy_data,
 tax_level="genus",
 input_da_condition=c("DISEASE"),
