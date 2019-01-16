@@ -35,7 +35,7 @@ indexPath <- system.file("extdata", "virus_example_index.fastq", package = "anim
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
 
 ## Get barcode, index, and read data locations
-demult <- demultiplex(barcodePath, indexPath, readPath, rcBarcodes = FALSE, 
+demult <- demultiplex(barcodePath, indexPath, readPath, rcBarcodes = FALSE,
     hammingDist = 2)
 demult
 

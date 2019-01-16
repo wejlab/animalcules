@@ -11,6 +11,9 @@
 #'
 #' @return A list
 #'
+#' @import caret
+#' @importFrom ggplot2 geom_col aes coord_flip theme_bw
+#'
 #' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' p <- find_biomarker(toy_data,
@@ -37,7 +40,8 @@ find_biomarker <- function(MAE,
                            model_name = c("svm", "logistic regression", "gbm", "random forest")) {
 
     ## SEED
-    set.seed(seed)
+    # bioC not suggesst add set seed function in R code
+    # set.seed(seed)
 
     ## tables from MAE
     microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier

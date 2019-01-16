@@ -6,18 +6,18 @@ tabPanel("Dimension Reduction",
         sidebarPanel(
 
           numericInput('dimred_pca_x', 'Principal Component (x-axis)', 1, min = 1, max = 50),
-          
+
           numericInput('dimred_pca_y', 'Principal Component (y-axis)', 2, min = 1, max = 50),
-          
+
           selectizeInput('dimred_pca_taxlev', 'Taxonomy Level', choices = tax.name, selected='no rank'),
-          
+
           selectInput("dimred_pca_color", "Color points by:", covariates),
-          
+
           selectInput("dimred_pca_shape", "Shape points by:", c("None", covariates.colorbar)),
-          
-          selectInput("dimred_pca_datatype", "Select data type", c("Relative Abundance" = "relabu", 
-                                                                   "Counts"             = "counts", 
-                                                                   "log(CPM)"           = "logcpm"), 
+
+          selectInput("dimred_pca_datatype", "Select data type", c("Relative Abundance" = "relabu",
+                                                                   "Counts"             = "counts",
+                                                                   "log(CPM)"           = "logcpm"),
                                                                    selected             = "relabu"),
 
           # Do plot button
@@ -34,7 +34,7 @@ tabPanel("Dimension Reduction",
               dataTableOutput("dimred_pca_table")
             )
           ),
-          width=9        
+          width=9
         )
       )
     ),
@@ -44,16 +44,16 @@ tabPanel("Dimension Reduction",
         sidebarPanel(
 
           numericInput('dimred_pcoa_x', 'Principal Component (x-axis)', 1, min = 1, max = 50),
-          
+
           numericInput('dimred_pcoa_y', 'Principal Component (y-axis)', 2, min = 1, max = 50),
-          
+
           selectizeInput('dimred_pcoa_taxlev', 'Taxonomy Level', choices = tax.name, selected='no rank'),
-          
+
           selectInput("dimred_pcoa_color", "Color points by:", covariates),
-          
+
           selectInput("dimred_pcoa_shape", "Shape points by:", c("None", covariates.colorbar)),
-          
-          selectInput("dimred_pcoa_method", "Select distance method", c("Bray" = "bray"), 
+
+          selectInput("dimred_pcoa_method", "Select distance method", c("Bray" = "bray"),
                                                                         selected = "bray"),
 
           # Do plot button
@@ -70,9 +70,10 @@ tabPanel("Dimension Reduction",
               dataTableOutput("dimred_pcoa_table")
             )
           ),
-          width=9        
+          width=9
         )
       )
     )
   )
 )
+

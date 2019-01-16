@@ -61,30 +61,30 @@ relabu_heatmap <- function(MAE,
 
     # Isolate organisms if specified
     if (!is.null(isolate_organisms)) {
-        counts_table <- counts_table[,isolate_organisms,drop=F]
+        counts_table <- counts_table[,isolate_organisms,drop=FALSE]
     }
 
     # Reorder by most prominent organisms
-    counts_table <- counts_table[,order(colSums(counts_table)),drop=F]
+    counts_table <- counts_table[,order(colSums(counts_table)),drop=FALSE]
 
     # Order samples by organisms if not by conditons
     if (sort_by == "organisms") {
         for (i in 1:ncol(counts_table)) {
-            counts_table <- counts_table[order(counts_table[,i]),,drop=F]
+            counts_table <- counts_table[order(counts_table[,i]),,drop=FALSE]
         }
     }
 
     # If any conditions are selected make a side bar
     if (!is.null(sample_conditions)) {
-        sam_table <- sam_table[,sample_conditions,drop=F]
+        sam_table <- sam_table[,sample_conditions,drop=FALSE]
         if (sort_by == "conditions") {
             for (i in ncol(sam_table):1) {
-                sam_table <- sam_table[order(sam_table[[i]]),,drop=F]
+                sam_table <- sam_table[order(sam_table[[i]]),,drop=FALSE]
             }
             # Reorder stacked barplot
-            counts_table <- counts_table[order(match(rownames(counts_table), rownames(sam_table))),,drop=F]
+            counts_table <- counts_table[order(match(rownames(counts_table), rownames(sam_table))),,drop=FALSE]
         } else {
-            sam_table <- sam_table[order(match(rownames(sam_table), rownames(counts_table))),,drop=F]
+            sam_table <- sam_table[order(match(rownames(sam_table), rownames(counts_table))),,drop=FALSE]
         }
     }
 
@@ -96,11 +96,11 @@ relabu_heatmap <- function(MAE,
                     type = "heatmap",
                     colors= "RdPu",
                     hoverinfo = "x+y+z") %>%
-                    layout(xaxis = list(showticklabels = F,
+                    layout(xaxis = list(showticklabels = FALSE,
                                         title = "",
                                         ticks = "",
                                         tickangle = -45),
-                           yaxis = list(showticklabels = F,
+                           yaxis = list(showticklabels = FALSE,
                                         type = 'category',
                                         ticks = ""))
 
@@ -123,12 +123,12 @@ relabu_heatmap <- function(MAE,
                         y = rownames(mat),
                         z = mat,
                         type = "heatmap",
-                        showscale=F,
+                        showscale=FALSE,
                         hoverinfo = "x+y+text",
                         text=hover.txt) %>%
                         layout(xaxis = list(title = "",
                                             tickangle = -45),
-                               yaxis = list(showticklabels = F,
+                               yaxis = list(showticklabels = FALSE,
                                             type = 'category',
                                             ticks = ""))
     }

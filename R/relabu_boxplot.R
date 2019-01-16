@@ -62,7 +62,7 @@ relabu_boxplot <- function(MAE,
           # Back to data frame
           as.data.frame() %>%
           # Merge in covariate information
-          merge(sam_table[, condition, drop=F], by=0, all=T) %>%
+          merge(sam_table[, condition, drop=FALSE], by=0, all=TRUE) %>%
           # Melt for plotly
           reshape2::melt(by=organisms, variable.name="organisms")
 

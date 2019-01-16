@@ -71,7 +71,7 @@ dimred_pca <- function(MAE,
           t()
 
     # PCA
-    df.prcomp <- stats::prcomp(df, scale=T)
+    df.prcomp <- stats::prcomp(df, scale=TRUE)
     # Principle Components
     df.pca <- df.prcomp$x
     # Importance
@@ -79,9 +79,9 @@ dimred_pca <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=T)
+        df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=TRUE)
     } else {
-        df.pca.m <- merge(df.pca, sam_table[, color, drop=F], by=0, all=T)
+        df.pca.m <- merge(df.pca, sam_table[, color, drop=FALSE], by=0, all=TRUE)
         shape <- 'shape' # Referenced by plotly later
         df.pca.m[[shape]] <- 1 # Constant results in omitting shape
     }

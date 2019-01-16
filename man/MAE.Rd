@@ -6,7 +6,7 @@
 \title{Host/Microbiome Toy MultiAssayExperiment}
 \format{MultiAssayExperiment}
 \usage{
-MAE
+MAE(pred, obs, na.rm = FALSE)
 }
 \description{
 The MultiAssayExperiment object
@@ -14,4 +14,3 @@ The MultiAssayExperiment object
 \examples{
 data("MAE")
 }
-\keyword{datasets}

@@ -75,9 +75,9 @@ dimred_pcoa <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=F], by=0, all=T)
+        df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=FALSE], by=0, all=TRUE)
     } else {
-        df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=F], by=0, all=T)
+        df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=FALSE], by=0, all=TRUE)
         shape <- 'shape' # Referenced by plotly later
         df.pcoa.m[[shape]] <- 1 # Constant results in omitting shape
     }

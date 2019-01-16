@@ -17,6 +17,7 @@
 #'
 #' @import dplyr
 #' @import plotly
+#' @importFrom ggplot2 ggplot aes geom_point geom_boxplot labs
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment

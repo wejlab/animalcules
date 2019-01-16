@@ -112,7 +112,7 @@ mae_pick_samples <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
 #' @export
 df_char_to_factor <- function(df) {
     for (i in 1:ncol(df)){
-        if (typeof(df[,i,drop=F]) == "character"){
+        if (typeof(df[,i,drop=FALSE]) == "character"){
             df[,i] <- as.factor(df[,i])
         }
     }
@@ -144,10 +144,10 @@ percent <- function(x, digits = 2, format = "f") {
 #'
 #' @export
 is.categorical <- function(v) {
-   if (class(v) == "integer" || class(v) == "numeric") {
-     return(F)
+   if (is.integer(v) || is.numeric(v)) {
+     return(FALSE)
    } else {
-     return(T)
+     return(TRUE)
    }
 }
 

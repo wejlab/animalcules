@@ -51,7 +51,8 @@ diversity_beta_test <- function(MAE,
     colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <- "condition"
 
     if (input_select_beta_stat_method == "PERMANOVA"){
-    set.seed(99)
+    # bioconductor not allow set seed within R code
+    # set.seed(99)
     beta.div <- vegan::adonis2(dist.mat~condition,
                         data=sam_table,
                         permutations = input_num_permutation_permanova,
