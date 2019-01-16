@@ -61,12 +61,12 @@ tabPanel("Summary and Filter",
         ),
         mainPanel(
           fluidRow(
-            column(6,
+            column(5,
+              tableOutput("filter_summary_table")
+            ),
+            column(7,
               plotlyOutput("filter_summary_top_plot", height="350px"),
               plotlyOutput("filter_summary_bottom_plot", height="350px")
-            ),
-            column(6,
-              br()
             )
           ), 
           width=7
