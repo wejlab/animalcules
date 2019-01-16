@@ -1,6 +1,6 @@
 tabPanel("Summary and Filter",
   tabsetPanel(
-    tabPanel("Summary",
+    tabPanel("Filter",
       br(),
       sidebarLayout(
         sidebarPanel(
@@ -18,25 +18,25 @@ tabPanel("Summary and Filter",
 
           # Microbes
           conditionalPanel(condition = "input.filter_type == 'Microbes'",
-            selectInput("filter_type_microbes", "Select Filter Condition", c("Mapped Read Number",
-                                                                             "Relative Abundace",
-                                                                             "Prevalence")
+            selectInput("filter_type_microbes", "Select Filter Condition", c("Average Read Number",
+                                                                             "Average Relative Abundance",
+                                                                             "Average Prevalence")
             )
           ),
-          conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Mapped Read Number'",
-            numericInput("filter_microbes_read_inp", "Average Minimum Reads", 0, min = 0, max = 10000),
+          conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Read Number'",
+            numericInput("filter_microbes_read_inp", "Set Minimum", 0, min = 0, max = 10000),
             withBusyIndicatorUI(
               actionButton("filter_microbes_read_btn", "Filter")
             )
           ),
-          conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Relative Abundace'",
-            sliderInput("filter_microbes_rela_inp", "Restrict To", min = 0, max = 1, value = c(0,1)),
+          conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Relative Abundance'",
+            sliderInput("filter_microbes_rela_inp", "Restrict To", min = 0, max = 1, value = c(0,1), step=0.0001),
             withBusyIndicatorUI(
               actionButton("filter_microbes_rela_btn", "Filter")
             )
           ),
-          conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Prevalence'",
-            sliderInput("filter_microbes_prev_inp", "Restrict To", min = 0, max = 1, value = c(0,1)),
+          conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Prevalence'",
+            sliderInput("filter_microbes_prev_inp", "Restrict To", min = 0, max = 1, value = c(0,1), step=0.001),
             withBusyIndicatorUI(
               actionButton("filter_microbes_prev_btn", "Filter")
             )
@@ -46,8 +46,10 @@ tabPanel("Summary and Filter",
 
           # Discard samples
           selectizeInput("filter_sample_dis", "Discard Samples", choices=sam.name, multiple=TRUE),
+          # Discard organisms
+          selectizeInput("filter_organism_dis", "Discard Organisms", choices=org.name, multiple=TRUE),
           withBusyIndicatorUI(
-            actionButton("filter_sample_dis_btn", "Discard")
+            actionButton("filter_discard_btn", "Discard")
           ),
 
           br(),
@@ -55,7 +57,7 @@ tabPanel("Summary and Filter",
           withBusyIndicatorUI(
             actionButton("filter_reset_btn", "Reset")
           ),
-          width=3
+          width=5
         ),
         mainPanel(
           fluidRow(
@@ -67,7 +69,7 @@ tabPanel("Summary and Filter",
               br()
             )
           ), 
-          width=9
+          width=7
         )
       )
     ),

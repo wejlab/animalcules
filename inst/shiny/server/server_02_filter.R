@@ -1,3 +1,4 @@
+## Filter by metadata
 output$filter_metadata_params <- renderUI({
 
     MAE <- vals$MAE
@@ -11,8 +12,6 @@ output$filter_metadata_params <- renderUI({
         selectizeInput("filter_metadata_inp", "Include", choices=unique(covdat), selected=unique(covdat), multiple=TRUE)
     }
 })
-
-# Filter by metadata
 observeEvent(input$filter_metadata_btn,{
     withBusyIndicatorServer("filter_metadata_btn", {
 
@@ -36,35 +35,70 @@ observeEvent(input$filter_metadata_btn,{
     })
 })
 
-# Filter by microbes
-#observeEvent(input$filter_microbes_read_btn,{
-#    withBusyIndicatorServer("filter_microbes_read_btn", {
-#
-#        MAE <- vals$MAE
-#        microbe <- MAE[['MicrobeGenetics']]
-#        counts_table <- as.data.frame(assays(microbe)) # organism x sample
-#
-#        # Filter by average read number
-#        minval <- input$filter_microbes_read_inp
-#        means <- rowMeans(counts_table)
-#        organisms <- names(means[means >= minval])
-#    })
-#})
+## Filter by microbes
+# Filter by average read number
+observeEvent(input$filter_microbes_read_btn,{
+    withBusyIndicatorServer("filter_microbes_read_btn", {
 
+        MAE <- vals$MAE
+        microbe <- MAE[['MicrobeGenetics']]
+        sam_table <- as.data.frame(colData(microbe)) # sample x condition
+        counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
+        minval <- input$filter_microbes_read_inp
+        row_means <- apply(counts_table, 1, mean)
+        organisms <- names(row_means[row_means >= minval])
+        vals$MAE <- mae_pick_organisms(MAE, isolate_organisms = organisms)
+        update_inputs(session)
+    })
+})
+# Filter by average relative abundance
+observeEvent(input$filter_microbes_rela_btn,{
+    withBusyIndicatorServer("filter_microbes_rela_btn", {
 
+        MAE <- vals$MAE
+        microbe <- MAE[['MicrobeGenetics']]
+        sam_table <- as.data.frame(colData(microbe)) # sample x condition
+        counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+        relabu_table <- counts_to_relabu(counts_table)
 
+        minval <- input$filter_microbes_rela_inp[1]
+        maxval <- input$filter_microbes_rela_inp[2]
+        row_means <- apply(relabu_table, 1, mean)
+        organisms <- names(row_means[row_means >= minval & row_means <= maxval])
+        vals$MAE <- mae_pick_organisms(MAE, isolate_organisms = organisms)
+        update_inputs(session)
+    })
+})
+# Filter by average prevalence
+observeEvent(input$filter_microbes_prev_btn,{
+    withBusyIndicatorServer("filter_microbes_prev_btn", {
 
+        MAE <- vals$MAE
+        microbe <- MAE[['MicrobeGenetics']]
+        sam_table <- as.data.frame(colData(microbe)) # sample x condition
+        counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-# Discard Samples
-observeEvent(input$filter_sample_dis_btn,{
-    withBusyIndicatorServer("filter_sample_dis_btn", {
-        vals$MAE <- mae_pick_samples(MAE = vals$MAE, discard_samples = input$filter_sample_dis)
+        minval <- input$filter_microbes_prev_inp[1]
+        maxval <- input$filter_microbes_prev_inp[2]
+        row_means <- apply(counts_table, 1, function(x) (sum(x >= 1)/ncol(counts_table)))
+        organisms <- names(row_means[row_means >= minval & row_means <= maxval])
+        vals$MAE <- mae_pick_organisms(MAE, isolate_organisms = organisms)
         update_inputs(session)
     })
 })
 
-# Reset data
+## Discard Samples and Organisms
+observeEvent(input$filter_discard_btn,{
+    withBusyIndicatorServer("filter_discard_btn", {
+        MAE.1 <- mae_pick_samples(MAE = vals$MAE, discard_samples = input$filter_sample_dis)
+        MAE.2 <- mae_pick_organisms(MAE = MAE.1, discard_organisms = input$filter_organism_dis)
+        vals$MAE <- MAE.2
+        update_inputs(session)
+    })
+})
+
+## Reset data
 observeEvent(input$filter_reset_btn,{
     withBusyIndicatorServer("filter_reset_btn", {
         vals$MAE <- vals$MAE_backup
@@ -72,8 +106,8 @@ observeEvent(input$filter_reset_btn,{
     })
 })
 
+## Plots
 output$filter_summary_top_plot <- renderPlotly({
-    #print(colData(vals$MAE))
     p <- filter_summary_top(MAE = vals$MAE,
                             samples_discard = c(),
                             filter_type = input$filter_type,
@@ -89,13 +123,7 @@ output$filter_summary_bottom_plot <- renderPlotly({
     return(p)
 })
 
-
-
-
-
-
-
-# Categorize
+## Categorize
 output$filter_nbins <- renderUI({
     MAE <- vals$MAE
     microbe <- MAE[['MicrobeGenetics']]
@@ -171,5 +199,3 @@ output$filter_bin_plot <- renderPlotly({
     p <- do_categorize()
     return(p)
 })
-
-

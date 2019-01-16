@@ -97,6 +97,35 @@ mae_pick_samples <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
     return(MAE)
 }
 
+#' Modify organisms of multi-assay experiment object
+#'
+#' @param MAE A multi-assay experiment object
+#' @param isolate_organisms Isolate specific organisms e.g. c("ti|001", "ti|002")
+#' @param discard_organisms Discard specific organisms e.g. c("ti|001", "ti|002")
+#' @return A multi-assay experiment object
+#'
+#' @examples
+#' toy_data <- readRDS("data/MAE.rds")
+#' subset <- mae_pick_organisms(toy_data, isolate_organisms=c("ti|001", "ti|002"))
+#'
+#' @import MultiAssayExperiment
+#'
+#' @export
+mae_pick_organisms <- function(MAE, isolate_organisms=NULL, discard_organisms=NULL) {
+    # Isolate all of these organisms
+    if (!is.null(isolate_organisms)) {
+        MAE <- MAE[isolate_organisms,,]
+    }
+    # Discard all of these organisms
+    if (!is.null(discard_organisms)) {
+        microbe <- MAE[['MicrobeGenetics']]
+        id = rownames(as.data.frame(assays(microbe)))
+        id_isolate = id[!id %in% discard_organisms]
+        MAE <- MAE[id_isolate,,]
+    }
+    return(MAE)
+}
+
 #' Factorize all categorical columns
 #'
 #' @param df A sample x condition data frame
