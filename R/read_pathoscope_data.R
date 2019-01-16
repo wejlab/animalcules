@@ -10,8 +10,7 @@
 #' @return List of final guess relative abundance and count data
 #' @importFrom utils read.table
 #' @export
-#' @examples
-#'
+
 
 read_pathoscope_data <-
     function(input_dir=".", pathoreport_file_suffix="-sam-report.tsv",

@@ -4,7 +4,4 @@
 #'
 #' @name MAE
 #' @docType data
-#' @format MultiAssayExperiment
-#' @examples
-#' data("MAE")
-"MAE"
+NULL

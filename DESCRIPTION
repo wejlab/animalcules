@@ -8,7 +8,7 @@ Author:
     W. Evan Johnson <wej@bu.edu>
 Maintainer: Yue (Jason) Zhao <yuezh@bu.edu>
 Description:
-    Statistical microbiome analysis on metagenomics data
+    Statistical microbiome analysis on metagenomics data.
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true

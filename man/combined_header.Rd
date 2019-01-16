@@ -7,9 +7,9 @@
 combined_header(bam_files, header_file = "header_tmp.sam")
 }
 \arguments{
-\item{header_file}{A file name and location for the output file for the combined header. This will be a .sam format file without any reads. Defaults to 'header_tmp.sam'.}
+\item{bam_files}{A list of the locations/file names of .bam files from which to combine the headers}
 
-\item{bamfiles}{A list of the locations/file names of .bam files from which to combine the headers}
+\item{header_file}{A file name and location for the output file for the combined header. This will be a .sam format file without any reads. Defaults to 'header_tmp.sam'.}
 }
 \value{
 This function will return a combined header from all the supplied .bam files

@@ -7,7 +7,7 @@
 is.categorical(v)
 }
 \arguments{
-\item{x}{A single value}
+\item{v}{A single value}
 }
 \value{
 Boolean

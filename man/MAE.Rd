@@ -4,13 +4,6 @@
 \name{MAE}
 \alias{MAE}
 \title{Host/Microbiome Toy MultiAssayExperiment}
-\format{MultiAssayExperiment}
-\usage{
-MAE(pred, obs, na.rm = FALSE)
-}
 \description{
 The MultiAssayExperiment object
-}
-\examples{
-data("MAE")
 }

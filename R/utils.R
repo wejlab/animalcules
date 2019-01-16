@@ -151,6 +151,8 @@ df_char_to_factor <- function(df) {
 #' Format decimals to percentages
 #'
 #' @param x An array of decimals
+#' @param digits number of digits
+#' @param format f
 #' @return An array of formatted strings
 #'
 #' @examples
@@ -164,7 +166,7 @@ percent <- function(x, digits = 2, format = "f") {
 
 #' Check if object is categorical
 #'
-#' @param x A single value
+#' @param v A single value
 #' @return Boolean
 #'
 #' @examples
@@ -196,7 +198,8 @@ is.integer0 <- function(x){
 
 #' Converts decimal percentage to string with specified digits
 #'
-#' @param x A single value
+#' @param v A single value
+#' @param digits number of digits
 #' @return Boolean
 #'
 #' @examples

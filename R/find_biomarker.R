@@ -133,7 +133,7 @@ find_biomarker <- function(MAE,
                             dplyr::rename(biomarker = rowname) %>%
                             dplyr::arrange(importance) %>%
                             dplyr::filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                            dplyr::mutate(biomarker = fct_inorder(biomarker)) %>%
+                            dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
                             ggplot2::ggplot()+
                             geom_col(aes(x = biomarker, y = importance))+
                             coord_flip()+
@@ -158,7 +158,7 @@ find_biomarker <- function(MAE,
                           dplyr::rename(biomarker = rowname) %>%
                           dplyr::arrange(importance) %>%
                           dplyr::filter(importance > quantile(importance, 1-percent_top_biomarker)) %>%
-                          dplyr::mutate(biomarker = fct_inorder(biomarker)) %>%
+                          dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) %>%
                           ggplot2::ggplot()+
                             geom_col(aes(x = biomarker, y = importance))+
                             coord_flip()+
