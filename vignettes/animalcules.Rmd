@@ -291,20 +291,20 @@ p
 
 ## Train biomarker
 ```{r}
-p <- find_biomarker(MAE,
-                    tax_level="genus",
-                    input_select_target_biomarker=c("DISEASE"),
-                    nfolds = 3,
-                    nrepeats = 3,
-                    seed = 99,
-                    percent_top_biomarker = 0.2,
-                    model_name = "logistic regression")
-# biomarker
-p$biomarker
-
-# importance plot
-p$importance_plot
-
-# Cross-validation result
-p$biomarker_cv_performance
+# p <- find_biomarker(MAE,
+#                     tax_level="genus",
+#                     input_select_target_biomarker=c("DISEASE"),
+#                     nfolds = 3,
+#                     nrepeats = 3,
+#                     seed = 99,
+#                     percent_top_biomarker = 0.2,
+#                     model_name = "logistic regression")
+# # biomarker
+# p$biomarker
+# 
+# # importance plot
+# p$importance_plot
+# 
+# # Cross-validation result
+# p$biomarker_cv_performance
 ```
