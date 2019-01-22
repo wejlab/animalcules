@@ -11,7 +11,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("inst/extdata/MAE.rds")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- relabu_heatmap(toy_data,
 #'                    tax_level="genus",
 #'                    sort_by="conditions",
@@ -48,7 +49,6 @@ relabu_heatmap <- function(MAE,
 
     # Ensure conditions are all factored
     sam_table %<>% df_char_to_factor()
-
     # Ensure sam table has the same subset of samples and is in the correct order
     stopifnot(colnames(counts_table) == rownames(sam_table))
 

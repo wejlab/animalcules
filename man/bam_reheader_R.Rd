@@ -23,7 +23,7 @@ This function replaces the header from one .bam file with a header from a differ
 \examples{
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta', split = .0005)
-readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
+readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_example1.bam")
 Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 bam_files <- c('virus_example1.bam','virus_example2.bam')
@@ -31,5 +31,4 @@ com_head <- combined_header(bam_files)
 bam_reheader_R(com_head, 'virus_example2.bam')
 ## Note that the following would be an equivalent command if samtools is installed
 #system("samtools reheader header_tmp.sam virus_example2.bam > virus_example2h.bam")
-
 }

@@ -27,7 +27,8 @@ A dataframe
 Alpha diversity statistical test
 }
 \examples{
-toy_data <- readRDS("inst/extdata/MAE.rds")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+toy_data <- readRDS(data_dir)
 p <- do_alpha_div_test(toy_data,
                        tax_level = "genus",
                        condition = "DISEASE",

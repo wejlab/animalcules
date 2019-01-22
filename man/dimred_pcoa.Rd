@@ -29,7 +29,8 @@ A list with a plotly object and summary table
 Dimensionality reduction through PCoA
 }
 \examples{
-toy_data <- readRDS("inst/extdata/MAE.rds")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+toy_data <- readRDS(data_dir)
 result <- dimred_pcoa(MAE,
                      tax_level="genus",
                      color="AGE",

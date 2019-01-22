@@ -25,7 +25,8 @@ A plotly object
 Beta diversity test (by default we use bray-curtis distance)
 }
 \examples{
-toy_data <- readRDS("inst/extdata/MAE.rds")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+toy_data <- readRDS(data_dir)
 p <- diversity_beta_test(toy_data,
                          tax_level = "genus",
                          input_select_beta_condition = "DISEASE",

@@ -15,7 +15,7 @@
 #'
 #' ## Make and align to a single a reference genome library
 #' mk_subread_index('viral.fasta')
-#' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
+#' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 #' viral_map <- align_target( readPath, "viral", "virus_example")
 #'
 #' #### Apply animalcules ID:

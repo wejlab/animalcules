@@ -258,7 +258,7 @@ result <- dimred_pca(MAE,
                      pcx=1,
                      pcy=2,
                      datatype="logcpm")
-result$plot
+#result$plot
 result$table
 ```
 
@@ -271,7 +271,7 @@ result <- dimred_pcoa(MAE,
                      axx=1,
                      axy=2,
                      method="bray")
-result$plot
+#result$plot
 result$table
 ```
 

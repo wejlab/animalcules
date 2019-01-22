@@ -42,7 +42,8 @@ Imports:
     S4Vectors,
     XML,
     forcats,
-    scales
+    scales,
+    lattice
 Suggests:
     BiocCheck,
     BiocStyle,

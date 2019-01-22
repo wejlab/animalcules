@@ -7,7 +7,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("inst/extdata/MAE.rds")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- diversity_beta_heatmap(toy_data,
 #'                             tax_level = "genus",
 #'                             input_bdhm_select_conditions = "DISEASE",

@@ -20,7 +20,7 @@ This function generates a combined header from multiple .bam files from differen
 \examples{
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta', split = .0005)
-readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
+readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_example1.bam")
 Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 bam_files <- c('virus_example1.bam','virus_example2.bam')

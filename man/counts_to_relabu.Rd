@@ -16,9 +16,6 @@ A organism x sample data frame of relative abundances
 Covert a counts table to a relative abundances table
 }
 \examples{
-toy_data <- readRDS("inst/extdata/MAE.rds")
-microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
-counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-relabu <- counts_to_relabu(counts_table)
+counts_to_relabu(matrix(1:12,4))
 
 }

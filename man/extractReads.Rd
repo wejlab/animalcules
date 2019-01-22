@@ -32,13 +32,13 @@ Helper function for demultiplexing sequencing reads, designed in a way to allow 
 }
 \examples{
 ## Load example barcode, index, and read data into R session:
-barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules.preprocess")
+barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules")
 bcFile <- read.table(barcodePath, sep = "\\t", header = TRUE)
 
-indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules.preprocess")
+indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules")
 inds <- Biostrings::readDNAStringSet(indexPath, format = "fastq")
 
-readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules.preprocess")
+readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 reads <- Biostrings::readQualityScaledDNAStringSet(readPath)
 
 ## Extract reads from the first barcode

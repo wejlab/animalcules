@@ -17,14 +17,3 @@ taxmat Taxonomy Information Matrix
 \description{
 Find the Taxonomy Information Matrix
 }
-\examples{
-example_data_dir <- system.file("example/data", package = "PathoStat")
-pathoreport_file_suffix <- "-sam-report.tsv"
-datlist <- readPathoscopeData(example_data_dir, pathoreport_file_suffix,
-input.files.name.vec = as.character(1:6))
-dat <- datlist$data
-ids <- rownames(dat)
-tids <- unlist(lapply(ids, FUN = grepTid))
-taxonLevels <- findTaxonomy(tids[1:5])
-taxmat <- find_taxon_mat(ids[1:5], taxonLevels)
-}
