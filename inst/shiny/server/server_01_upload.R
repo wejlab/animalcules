@@ -6,7 +6,11 @@ vals <- reactiveValues(
     MAE_backup = MAE
 )
 
-
+update_inputs <- function(session) {
+    updateCovariate(session)
+    updateSample(session)
+    updateTaxLevel(session)
+}
 
 updateCovariate <- function(session){
     MAE <- vals$MAE
@@ -32,109 +36,69 @@ updateCovariate <- function(session){
     sam_temp <- colData(MAE)
     num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
     num_covariates <- covariates[!unlist(num_select)]
-    #
-    # updateSelectInput(session, "select_covariate_condition_biomarker",
-    #                   choices = covariates)
-    # updateSelectInput(session, "select_single_species_condition",
-    #                   choices = covariates.colorbar)
-    # updateSelectInput(session, "select_target_condition_biomarker",
-    #                   choices = covariates.colorbar)
-    # updateSelectInput(session, "select_condition_sample_filter",
-    #                   choices = c("Reads", covariates))
-    # updateSelectInput(session, "select_condition_sample_filter_micro",
-    #                   choices = c("Taxon elements number", covariates))
-    # updateSelectInput(session, "select_condition_sample_filter_sidebar",
-    #                   choices = c("Reads", covariates))
-    # updateSelectInput(session, "select_condition_sample_distribution",
-    #                   choices = covariates)
-    # updateSelectInput(session, "select_condition",
-    #                   choices = covariates)
-    # updateSelectInput(session, "select_heatmap_condition_1",
-    #                   choices = covariates.colorbar)
-    # updateSelectInput(session, "select_heatmap_condition_2",
-    #                   choices = covariates.colorbar)
-    updateSelectInput(session, "select_alpha_div_condition",
-                      choices = covariates.colorbar)
-    updateSelectInput(session, "select_beta_condition",
-                      choices = covariates.two.levels)
+    
+    # Filter
+    updateSelectInput(session, "filter_type_metadata", choices = covariates)
 
-    # updateSelectInput(session, "select_pca_color",
-    #                   choices = covariates)
-    # updateSelectInput(session, "select_pca_shape",
-    #                   choices = c("None", covariates.colorbar))
-     updateSelectInput(session, "da_condition",
-                       choices = covariates)
-    updateSelectInput(session, "da.condition.covariate",
-                       choices = covariates)
+    # Relabu
+    updateSelectInput(session, "relabu_bar_sample_conditions", choices = covariates)    
+    updateSelectInput(session, "relabu_bar_group_conditions", choices = c("ALL", covariates))  
+    updateSelectInput(session, "relabu_heatmap_conditions", choices = covariates)    
+    updateSelectInput(session, "relabu_box_condition", choices = covariates.colorbar)
 
-    # updateSelectInput(session, "sra_select_conditions",
-    #                   choices = covariates)
-    # updateSelectInput(session, "gra_select_conditions",
-    #                   choices = c("All", covariates))
-    # updateSelectInput(session, "hmra_select_conditions",
-    #                   choices = covariates)
-    # updateSelectInput(session, "bin_cov",
-    #                   choices = num_covariates)
-    updateSelectInput(session, "bdhm_select_conditions",
-                       choices = covariates.colorbar)
-    updateSelectInput(session, "relabu_bar_sample_conditions",
-                       choices = covariates)
-    updateSelectInput(session, "relabu_bar_group_conditions",
-                       choices = c("All", covariates))
-    updateSelectInput(session, "relabu_heatmap_conditions",
-                       choices = covariates)
-    updateSelectInput(session, "relabu_box_condition",
-                       choices = covariates.colorbar)
+    # Dimred
+    updateSelectInput(session, "dimred_pca_color", choices = covariates)   
+    updateSelectInput(session, "dimred_pca_shape", choices = c("None", covariates.colorbar))   
+    updateSelectInput(session, "dimred_pcoa_color", choices = covariates)   
+    updateSelectInput(session, "dimred_pcoa_shape", choices = c("None", covariates.colorbar))   
 
+    # Diversity
+    updateSelectInput(session, "select_alpha_div_condition", choices = covariates.colorbar)
+    updateSelectInput(session, "select_beta_condition", choices = covariates.two.levels)
 
+    # Differential
+    updateSelectInput(session, "da_condition", choices = covariates)
+    updateSelectInput(session, "da.condition.covariate", choices = covariates)
 
+    # Biomarker
+    updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
 }
 
 # update taxonomy levels
 updateTaxLevel <- function(session){
-  MAE <- vals$MAE
-  # updateSelectInput(session, "taxl",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "taxl.alpha",
-                    choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "taxl.beta",
-                    choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  # updateSelectInput(session, "taxl.pca",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "taxl.da",
-                     choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  # updateSelectInput(session, "sra_taxlev",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  # updateSelectInput(session, "hmra_taxlev",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  # updateSelectInput(session, "taxl_single_species",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  # updateSelectInput(session, "taxlTable",
-  #                   choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "taxl_biomarker",
-                    choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "relabu_bar_taxlev",
-                     choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "relabu_heatmap_taxlev",
-                     choices = colnames(rowData(MAE[['MicrobeGenetics']])))
-  updateSelectInput(session, "relabu_box_taxlev",
-                     choices = colnames(rowData(MAE[['MicrobeGenetics']])))
+    MAE <- vals$MAE
+    tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
+    
+    # Relabu
+    updateSelectInput(session, "relabu_bar_taxlev", choices = tax.name)
+    updateSelectInput(session, "relabu_heatmap_taxlev", choices = tax.name)
+    updateSelectInput(session, "relabu_box_taxlev", choices = tax.name)
 
+    # Diversity
+    updateSelectInput(session, "taxl.alpha", choices = tax.name)
+    updateSelectInput(session, "taxl.beta", choices = tax.name)
 
-
+    # Differential
+    updateSelectInput(session, "taxl.da", choices = tax.name)
+    
+    # Biomarker
+    updateSelectInput(session, "taxl_biomarker", choices = tax.name)
 }
 
 # update samples
 updateSample <- function(session){
     MAE <- vals$MAE
-    # updateSelectInput(session, "filterSample",
-    #                   choices = colnames(MAE[['MicrobeGenetics']]))
-    # updateSelectInput(session, "hmra_isolate_samples",
-    #                   choices = colnames(MAE[['MicrobeGenetics']]))
-    # updateSelectInput(session, "sra_isolate_samples",
-    #                   choices = colnames(MAE[['MicrobeGenetics']]))
-}
+    sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
 
+    # Filter
+    updateSelectInput(session, "filter_sample_dis", choices = sam.name)
+
+    # Relabu
+    updateSelectInput(session, "relabu_bar_sample_iso", choices = sam.name)    
+    updateSelectInput(session, "relabu_bar_sample_dis", choices = sam.name)
+    updateSelectInput(session, "relabu_heatmap_sample_iso", choices = sam.name)
+    updateSelectInput(session, "relabu_heatmap_sample_dis", choices = sam.name)
+}
 
 observeEvent(input$upload_animalcules,{
   withBusyIndicatorServer("upload_animalcules", {

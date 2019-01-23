@@ -5,7 +5,7 @@
 #' @param higher_level Higher taxon level to upsample to
 #' @return A organism x sample data frame of counts aggregated by a higher taxon level
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
@@ -32,7 +32,7 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
 #' @param counts_table A organism x sample data frame of counts
 #' @return A organism x sample data frame of relative abundances
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
@@ -53,7 +53,7 @@ counts_to_relabu <- function(counts_table) {
 #' @param counts_table A organism x sample data frame of counts
 #' @return A organism x sample data frame of logcpm counts
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
@@ -76,7 +76,7 @@ counts_to_logcpm <- function(counts_table) {
 #' @param discard_samples Discard specific samples e.g. c("SAM_01", "SAM_02")
 #' @return A multi-assay experiment object
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' subset <- mae_pick_samples(toy_data, isolate_samples=c("subject_9", "subject_14"))
 #'
@@ -102,7 +102,7 @@ mae_pick_samples <- function(MAE, isolate_samples=NULL, discard_samples=NULL) {
 #' @param df A sample x condition data frame
 #' @return A sample x condition data frame
 #'
-#' @example
+#' @examples
 #' toy_data <- readRDS("data/MAE.rds")
 #' microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
 #' sam_table <- as.data.frame(colData(microbe)) # sample x condition
@@ -123,7 +123,7 @@ df_char_to_factor <- function(df) {
 #' @param x An array of decimals
 #' @return An array of formatted strings
 #'
-#' @example
+#' @examples
 #' nums <- c(0.42, 0.15, 0.4, 0.563, 0.2)
 #' percent(nums)
 #'
@@ -132,14 +132,12 @@ percent <- function(x, digits = 2, format = "f") {
     paste0(formatC(100 * x, format = format, digits = digits), "%")
 }
 
-
-
 #' Check if object is categorical
 #'
 #' @param x A single value
 #' @return Boolean
 #'
-#' @example
+#' @examples
 #' nums <- 2
 #' is.categorical(nums)
 #'
@@ -157,7 +155,7 @@ is.categorical <- function(v) {
 #' @param x A single value
 #' @return Boolean
 #'
-#' @example
+#' @examples
 #' nums <- 2
 #' is.integer0(nums)
 #'
@@ -166,14 +164,12 @@ is.integer0 <- function(x){
   is.integer(x) && length(x) == 0L
 }
 
-
-
 #' Converts decimal percentage to string with specified digits
 #'
 #' @param x A single value
 #' @return Boolean
 #'
-#' @example
+#' @examples
 #' nums <- 0.23
 #' pct2str(nums)
 #'
