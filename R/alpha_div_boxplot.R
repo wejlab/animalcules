@@ -20,6 +20,7 @@
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment
+#' @import SummarizedExperiment
 #' @export
 
 alpha_div_boxplot <- function(MAE,
@@ -32,9 +33,9 @@ alpha_div_boxplot <- function(MAE,
     # Extract data
     microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
     host <- MAE[['HostGenetics']]
-    tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-    sam_table <- as.data.frame(colData(microbe)) # sample x condition
-    counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+    tax_table <- as.data.frame(SummarizedExperiment::rowData(microbe)) # organism x taxlev
+    sam_table <- as.data.frame(SummarizedExperiment::colData(microbe)) # sample x condition
+    counts_table <- as.data.frame(SummarizedExperiment::assays(microbe))[,rownames(sam_table)] # organism x sample
 
     # Sum counts by taxon level and return counts
     counts_table %<>%
@@ -47,14 +48,14 @@ alpha_div_boxplot <- function(MAE,
     colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
 
     # plot alpha diversity boxplot
-    g <- ggplot(sam_table,
-                aes(condition,
+    g <- ggplot2::ggplot(sam_table,
+                ggplot2::aes(condition,
                     richness,
                     text=rownames(sam_table),
                     color = condition)) +
-            geom_point() +
-            geom_boxplot() +
-            labs(title = paste("Alpha diversity between ",
+            ggplot2::geom_point() +
+            ggplot2::geom_boxplot() +
+            ggplot2::labs(title = paste("Alpha diversity between ",
                        condition,
                        " (", alpha_metric, ")", sep = ""))
     g <- ggplotly(g, tooltip="text")

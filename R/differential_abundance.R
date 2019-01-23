@@ -10,7 +10,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' toy_dat_path <- system.file("data", "MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(toy_dat_path)
 #' p <- differential_abundance(toy_data,
 #' tax_level="genus",
 #' input_da_condition=c("DISEASE"),
@@ -33,9 +34,9 @@ differential_abundance <- function(MAE,
 
     ## tables from MAE
     microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-    tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
-    sam_table <- as.data.frame(colData(microbe)) # sample x condition
-    counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+    tax_table <- as.data.frame(SummarizedExperiment::rowData(microbe)) # organism x taxlev
+    sam_table <- as.data.frame(SummarizedExperiment::colData(microbe)) # sample x condition
+    counts_table <- as.data.frame(SummarizedExperiment::assays(microbe))[,rownames(sam_table)] # organism x sample
 
 
 
