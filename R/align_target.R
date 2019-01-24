@@ -12,6 +12,7 @@
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 #' Rsubread::align(index = "viral", readfile1 = readPath, output_file = "virus_example.bam")
 #' filtered <- filter_unmapped_reads("virus_example.bam")
+#' 
 #' @export
 
 filter_unmapped_reads <- function(bamfile) {
@@ -48,8 +49,8 @@ filter_unmapped_reads <- function(bamfile) {
 #' Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 #' bam_files <- c('virus_example1.bam','virus_example2.bam')
 #' com_head <- combined_header(bam_files)
+#' 
 #' @export
-#'
 
 combined_header <- function(bam_files, header_file = "header_tmp.sam") {
   print(paste("Making a combined header file:", header_file))
@@ -94,10 +95,11 @@ combined_header <- function(bam_files, header_file = "header_tmp.sam") {
 #' Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_example1.bam")
 #' Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 #' bam_files <- c('virus_example1.bam','virus_example2.bam')
-#' com_head <- combined_header(bam_files)
+#' com_head <- animalcules::combined_header(bam_files)
 #' bam_reheader_R(com_head, 'virus_example2.bam')
 #' ## Note that the following would be an equivalent command if samtools is installed
 #' #system("samtools reheader header_tmp.sam virus_example2.bam > virus_example2h.bam")
+#' 
 #' @export
 
 bam_reheader_R <- function(head, old_bam, new_bam = paste(tools::file_path_sans_ext(old_bam),
@@ -143,8 +145,7 @@ bam_reheader_R <- function(head, old_bam, new_bam = paste(tools::file_path_sans_
 #' download_refseq('viral', compress = FALSE)
 #' mk_subread_index('viral.fasta', split = .0005)
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
-#' Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_example1.bam",
-#'  maxMismatches = 3)
+#' Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_example1.bam")
 #' Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 #' bam_files <- c('virus_example1.bam','virus_example2.bam')
 #' com_head <- combined_header(bam_files)
@@ -152,6 +153,7 @@ bam_reheader_R <- function(head, old_bam, new_bam = paste(tools::file_path_sans_
 #' bam_reheader_R(com_head, 'virus_example1.bam')
 #' bam_files <- c('virus_example1h.bam','virus_example2h.bam')
 #' merged_all <- merge_bam_files(bam_files, 'virus_example_merged')
+#'
 #' @export
 
 merge_bam_files <- function(bam_files, destination, head_file = paste(destination,
@@ -201,13 +203,13 @@ merge_bam_files <- function(bam_files, destination, head_file = paste(destinatio
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 #' viral_map <- align_target( readPath, "viral", "virus_example")
 #' viral_map_sam <- Rsamtools::asSam(viral_map, overwrite=TRUE)
-#'
-# ## Make and align to a multiple reference genome libraries
-# mk_subread_index('viral.fasta', split=0.005)
-# targLibs <- c("viral_1", "viral_2")
-# readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
-# viral_map <- align_target( readPath, targLibs, "virus_example")
-#'
+#' 
+#' ## Make and align to a multiple reference genome libraries
+#' mk_subread_index('viral.fasta', split=0.0005)
+#' targLibs <- c("viral_1", "viral_2")
+#' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
+#' viral_map <- align_target( readPath, targLibs, "virus_example")
+#' 
 #' @export
 
 align_target <- function(reads, libs, project_name = tools::file_path_sans_ext(reads),

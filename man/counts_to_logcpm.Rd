@@ -16,6 +16,9 @@ A organism x sample data frame of logcpm counts
 Covert a counts table to a relative abundances table
 }
 \examples{
-logcpm <- counts_to_logcpm(matrix(1:12,4))
+toy_data <- readRDS("data/MAE.rds")
+microbe <- toy_data[['MicrobeGenetics']] #double bracket subsetting is easier
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+logcpm <- counts_to_logcpm(counts_table)
 
 }
