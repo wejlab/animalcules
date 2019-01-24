@@ -16,7 +16,8 @@ Returns kingdom table
 This function will automatically download RefSeq assembly file for a specified kindom. This the precursor for the function that will allow the user to select subgroups of the kingdom for download.
 }
 \examples{
-## Download all RefSeq reference bacterial genomes
-download_kingdom_summary('bacteria')
+## Download summary of all RefSeq reference bacterial genomes
+summary_file <- download_kingdom_summary('bacteria')
+head(summary_file)
 
 }

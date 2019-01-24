@@ -21,4 +21,5 @@ mk_subread_index('viral.fasta')
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 Rsubread::align(index = "viral", readfile1 = readPath, output_file = "virus_example.bam")
 filtered <- filter_unmapped_reads("virus_example.bam")
+
 }

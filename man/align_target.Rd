@@ -40,4 +40,5 @@ mk_subread_index('viral.fasta', split=0.0005)
 targLibs <- c("viral_1", "viral_2")
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 viral_map <- align_target( readPath, targLibs, "virus_example")
+
 }
