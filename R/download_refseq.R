@@ -6,8 +6,9 @@
 #' @return Returns kingdom table
 #'
 #' @examples
-#' ## Download all RefSeq reference bacterial genomes
-#' download_kingdom_summary('bacteria')
+#' ## Download summary of all RefSeq reference bacterial genomes
+#' summary_file <- download_kingdom_summary('bacteria')
+#' head(summary_file)
 #'
 #' @export
 
