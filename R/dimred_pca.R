@@ -83,6 +83,11 @@ dimred_pca <- function(MAE,
     # Merge in covariate information
     if (!is.null(shape)) {
         df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=TRUE)
+        
+        # When shape is required
+        shape <- colnames(df.pca.m)[ncol(df.pca.m)] # Bypass duplicate colnames if color == shape
+        df.pca.m[[shape]] <- as.factor(df.pca.m[[shape]])
+
     } else {
         df.pca.m <- merge(df.pca, sam_table[, color, drop=FALSE], by=0, all=TRUE)
         shape <- 'shape' # Referenced by plotly later
@@ -112,6 +117,7 @@ dimred_pca <- function(MAE,
                      mode = "markers",
                      color = as.formula(paste("~", color, sep = "")),
                      symbol = as.formula(paste("~", shape, sep = "")),
+                     symbols = c("circle", "square", "diamond", "cross", "square-open", "circle-open", "diamond-open", "x"),
                      type = "scatter3d",
                      text = df.pca.m$Row.names,
                      marker = list(size = 6))
