@@ -30,6 +30,6 @@ download_refseq('bacteria')
 download_refseq( 'viral', representative = TRUE )
 
 ## Download all RefSeq viral genomes
-download_refseq( 'viral', reference = FALSE )
+download_refseq( 'viral', reference = FALSE ) 
 
 }

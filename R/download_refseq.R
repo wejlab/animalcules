@@ -36,21 +36,21 @@ download_kingdom_summary <- function(kingdom){
 #' @param reference Download only RefSeq reference genomes? Defaults to TRUE. Automatically set to TURE if representative is TRUE
 #' @param representative Download only RefSeq representative genomes? Defaults to FALSE. If TRUE, reference is automatically set at TRUE
 #' @param compress Compress the output .fasta file? Defaults to TRUE
-#' @return Returns a .fasta or .fasta.gz file of the desired RefSeq genomes. This file is named after the kindom selectd and saved to the current directory (e.g. 'bacteria.fasta.gz'). Currently, this function also returns a .fasta file formatted for PathoScope as well (e.g. 'bacteria.pathoscope.fasta.gz'), but this will soon be retired.
+#' @return Returns a .fasta or .fasta.gz file of the desired RefSeq genomes. This file is named after the kindom selectd and saved to the current directory (e.g. 'bacteria.fasta.gz'). Currently, this function also returns a .fasta file formatted for PathoScope as well (e.g. 'bacteria.pathoscope.fasta.gz'), but this will soon be retired.  
 #'
 #' @examples
 #' ## Download all RefSeq reference bacterial genomes
 #' download_refseq('bacteria')
-#'
+#' 
 #' ## Download all RefSeq representative viral genomes
 #' download_refseq( 'viral', representative = TRUE )
-#'
+#' 
 #' ## Download all RefSeq viral genomes
-#' download_refseq( 'viral', reference = FALSE )
+#' download_refseq( 'viral', reference = FALSE ) 
 #'
 #' @export
 
-download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
+download_refseq <- function(kingdom, reference = TRUE, representative = FALSE, 
                             compress = TRUE) {
   ## Download refseq table
   kingdom_table <- animalcules::download_kingdom_summary(kingdom)
@@ -60,11 +60,11 @@ download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
     reference <- TRUE
   }
   if (representative & reference) {
-    king_table <- kingdom_table[kingdom_table$refseq_category %in%
+    king_table <- kingdom_table[kingdom_table$refseq_category %in% 
                                   c("reference genome", "representative genome"), ]
   } else {
     if (!representative & reference) {
-      king_table <- kingdom_table[kingdom_table$refseq_category ==
+      king_table <- kingdom_table[kingdom_table$refseq_category == 
                                     "reference genome", ]
     } else {
       king_table <- kingdom_table
@@ -72,7 +72,7 @@ download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
   }
   total_genomes <- nrow(king_table)
   message(paste("Downloading", total_genomes, kingdom, "genomes from RefSeq"))
-
+  
   ## delete existing genome files and combined fasta--make these
   ## user-defined
   download_dir <- paste(kingdom, "refseq_download", sep = "_")
@@ -88,18 +88,18 @@ download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
     suppressWarnings(file.remove(combined_fasta))
     suppressWarnings(file.remove(combined_fasta_patho))
   })  # start with a new combined file
-
+  
   ## Download genomes
   for (i in 1:nrow(king_table)) {
     tryCatch({
       if (i%%10 == 0) {
-        message(paste("Number of Genomes Downloaded: ", i, "/",
-                      total_genomes, " (", round(100 * i/total_genomes, 2),
+        message(paste("Number of Genomes Downloaded: ", i, "/", 
+                      total_genomes, " (", round(100 * i/total_genomes, 2), 
                       "%)", sep = ""))
       }
-
+      
       ## Download the genome
-      genome_file <- paste(basename(as.character(king_table[i, ]$ftp_path)),
+      genome_file <- paste(basename(as.character(king_table[i, ]$ftp_path)), 
                            "genomic.fna.gz", sep = "_")
       location <- paste(king_table[i, ]$ftp_path, genome_file, sep = "/")
       destination <- paste(download_dir, genome_file, sep = "/")
@@ -107,27 +107,27 @@ download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
         dir.create(download_dir)
       }
       download.file(location, destination)
-
+      
       ## read in the genome
       ref <- Biostrings::readDNAStringSet(destination)
-
+      
       ## write to file
-      Biostrings::writeXStringSet(ref, combined_fasta, append = TRUE,
+      Biostrings::writeXStringSet(ref, combined_fasta, append = T, 
                                   compress = compress)
-
+      
       ## format for pathoscope and write to file
       accession <- NULL
       for (j in strsplit(names(ref), " ")) {
         accession <- c(accession, j[1])
       }
-      names(ref) <- paste("ti|", king_table[i, ]$taxid, "|org|",
-                          gsub(" ", "_", king_table[i, ]$organism_name), "|accession|",
+      names(ref) <- paste("ti|", king_table[i, ]$taxid, "|org|", 
+                          gsub(" ", "_", king_table[i, ]$organism_name), "|accession|", 
                           accession, sep = "")
-      Biostrings::writeXStringSet(ref, combined_fasta_patho, append = TRUE,
+      Biostrings::writeXStringSet(ref, combined_fasta_patho, append = T, 
                                   compress = compress)
-
+      
       ## delete intermediate download files
-      unlink(download_dir, recursive = TRUE)
+      unlink(download_dir, recursive = T)
     }, error = function(e) {
       cat("ERROR :", conditionMessage(e), "\n")
     })
