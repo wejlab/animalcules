@@ -13,12 +13,25 @@ tabPanel("Dimension Reduction",
 
           selectInput("dimred_pca_color", "Color points by:", covariates),
 
-          selectInput("dimred_pca_shape", "Shape points by:", c("None", covariates.colorbar)),
+          checkboxInput("dimred_pca_adv", "Advanced Options"),
 
-          selectInput("dimred_pca_datatype", "Select data type", c("Relative Abundance" = "relabu",
-                                                                   "Counts"             = "counts",
-                                                                   "log(CPM)"           = "logcpm"),
-                                                                   selected             = "relabu"),
+          conditionalPanel(
+            condition = "input.dimred_pca_adv == true",
+            numericInput('dimred_pca_z', 'Principal Component (z-axis)', NA, min = 1, max = 50)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_pca_adv == true",
+            selectInput("dimred_pca_shape", "Shape points by:", c("None", covariates.colorbar))
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_pca_adv == true",
+            selectInput("dimred_pca_datatype", "Select data type", c("Relative Abundance" = "relabu",
+                                                                     "Counts"             = "counts",
+                                                                     "log(CPM)"           = "logcpm"),
+                                                                     selected             = "relabu")
+          ),
 
           # Do plot button
           actionButton("dimred_pca_plot_btn", "Plot"),
@@ -27,10 +40,10 @@ tabPanel("Dimension Reduction",
         ),
         mainPanel(
           fluidRow(
-            column(6,
+            column(7,
               plotlyOutput("dimred_pca_plot", height="500px")
             ),
-            column(6,
+            column(5,
               dataTableOutput("dimred_pca_table")
             )
           ),

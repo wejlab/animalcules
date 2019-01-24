@@ -5,7 +5,7 @@
 \title{Dimensionality reduction through PCA}
 \usage{
 dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
-  datatype = c("counts", "relabu", "logcpm"))
+  pcz = NULL, datatype = c("counts", "relabu", "logcpm"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -19,6 +19,8 @@ dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
 \item{pcx}{Principal component on the x-axis e.g. 1}
 
 \item{pcy}{Principal component on the y-axis e.g. 2}
+
+\item{pcz}{Principal component on the z-axis e.g. 3}
 
 \item{datatype}{Datatype to use e.g. c("counts", "relabu", "logcpm")}
 }

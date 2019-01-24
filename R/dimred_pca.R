@@ -6,6 +6,7 @@
 #' @param shape A condition to shape data points by e.g. "SEX"
 #' @param pcx Principal component on the x-axis e.g. 1
 #' @param pcy Principal component on the y-axis e.g. 2
+#' @param pcz Principal component on the z-axis e.g. 3
 #' @param datatype Datatype to use e.g. c("counts", "relabu", "logcpm")
 #' @return A list with a plotly object and summary table
 #'
@@ -35,6 +36,7 @@ dimred_pca <- function(MAE,
                        shape=NULL,
                        pcx=1,
                        pcy=2,
+                       pcz=NULL,
                        datatype=c("counts", "relabu", "logcpm")) {
 
     # Default variables
@@ -88,15 +90,32 @@ dimred_pca <- function(MAE,
     }
 
     # Plotly | Scatterplot
-    p <- plot_ly(df.pca.m,
-                 x = as.formula(paste("~PC", pcx, sep = "")),
-                 y = as.formula(paste("~PC", pcy, sep = "")),
-                 mode = "markers",
-                 color = as.formula(paste("~", color, sep = "")),
-                 symbol = as.formula(paste("~", shape, sep = "")),
-                 type = "scatter",
-                 text = df.pca.m$Row.names,
-                 marker = list(size = 10))
+    if (is.null(pcz)) {
+        
+        # 2D Plot
+        p <- plot_ly(df.pca.m,
+                     x = as.formula(paste("~PC", pcx, sep = "")),
+                     y = as.formula(paste("~PC", pcy, sep = "")),
+                     mode = "markers",
+                     color = as.formula(paste("~", color, sep = "")),
+                     symbol = as.formula(paste("~", shape, sep = "")),
+                     type = "scatter",
+                     text = df.pca.m$Row.names,
+                     marker = list(size = 10))
+    } else {
+
+        # 3D Plot
+        p <- plot_ly(df.pca.m,
+                     x = as.formula(paste("~PC", pcx, sep = "")),
+                     y = as.formula(paste("~PC", pcy, sep = "")),
+                     z = as.formula(paste("~PC", pcz, sep = "")),
+                     mode = "markers",
+                     color = as.formula(paste("~", color, sep = "")),
+                     symbol = as.formula(paste("~", shape, sep = "")),
+                     type = "scatter3d",
+                     text = df.pca.m$Row.names,
+                     marker = list(size = 6))
+    }
 
     p$p <- NULL # To suppress a shiny warning
 

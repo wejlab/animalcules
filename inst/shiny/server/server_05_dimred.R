@@ -4,12 +4,14 @@
 # Plot
 do_dimred_pca_plot <- eventReactive(input$dimred_pca_plot_btn, {
     if (input$dimred_pca_shape == "None") {shape <- NULL} else {shape <- input$dimred_pca_shape}
+    if (is.na(input$dimred_pca_z)) {pcz <- NULL} else {pcz <- input$dimred_pca_z}
     result <- dimred_pca(MAE = vals$MAE,
                          tax_level = input$dimred_pca_taxlev,
                          color = input$dimred_pca_color,
                          shape = shape,
                          pcx = input$dimred_pca_x,
                          pcy = input$dimred_pca_y,
+                         pcz = pcz,
                          datatype = input$dimred_pca_datatype)
     return(result$plot)
 })
