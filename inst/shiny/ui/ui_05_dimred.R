@@ -89,10 +89,10 @@ tabPanel("Dimension Reduction",
         ),
         mainPanel(
           fluidRow(
-            column(5,
+            column(7,
               plotlyOutput("dimred_pcoa_plot", height="500px")
             ),
-            column(7,
+            column(5,
               dataTableOutput("dimred_pcoa_table")
             )
           ),
