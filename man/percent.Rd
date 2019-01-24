@@ -8,6 +8,10 @@ percent(x, digits = 2, format = "f")
 }
 \arguments{
 \item{x}{An array of decimals}
+
+\item{digits}{number of digits}
+
+\item{format}{f}
 }
 \value{
 An array of formatted strings

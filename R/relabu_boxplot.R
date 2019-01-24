@@ -8,7 +8,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- relabu_boxplot(toy_data,
 #'                     tax_level="genus",
 #'                     organisms=c("Escherichia", "Actinomyces"),
@@ -62,7 +63,7 @@ relabu_boxplot <- function(MAE,
           # Back to data frame
           as.data.frame() %>%
           # Merge in covariate information
-          merge(sam_table[, condition, drop=F], by=0, all=T) %>%
+          merge(sam_table[, condition, drop=FALSE], by=0, all=TRUE) %>%
           # Melt for plotly
           reshape2::melt(by=organisms, variable.name="organisms")
 

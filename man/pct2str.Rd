@@ -7,7 +7,9 @@
 pct2str(v, digits = 2)
 }
 \arguments{
-\item{x}{A single value}
+\item{v}{A single value}
+
+\item{digits}{number of digits}
 }
 \value{
 Boolean

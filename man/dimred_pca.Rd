@@ -5,7 +5,7 @@
 \title{Dimensionality reduction through PCA}
 \usage{
 dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
-  datatype = c("counts", "relabu", "logcpm"))
+  pcz = NULL, datatype = c("counts", "relabu", "logcpm"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -20,6 +20,8 @@ dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
 
 \item{pcy}{Principal component on the y-axis e.g. 2}
 
+\item{pcz}{Principal component on the z-axis e.g. 3}
+
 \item{datatype}{Datatype to use e.g. c("counts", "relabu", "logcpm")}
 }
 \value{
@@ -29,7 +31,8 @@ A list with a plotly object and summary table
 Dimensionality reduction through PCA
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+toy_data <- readRDS(data_dir)
 result <- dimred_pca(toy_data,
                      tax_level="genus",
                      color="AGE",

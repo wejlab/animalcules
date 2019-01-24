@@ -35,7 +35,7 @@ diversities_help <- function(counts_table, index="all", zeroes=TRUE) {
         })
     } else if (index == "fisher") {
         if (length(setdiff(unique(as.vector(counts_table)%%1), 0)) == 0) {
-          ev <- fisher.alpha(counts_table, MARGIN=2)
+          ev <- vegan::fisher.alpha(counts_table, MARGIN=2)
         } else {
 	  warning("Fisher diversity defined only for integers;
                    the counts_table table contains non-integers. Fisher not estimated.")

@@ -52,6 +52,10 @@ library(vegan)
 library(ape)
 library(gbm)
 library(DESeq2)
+library(ggplot2)
+library(forcats)
+library(grid)
+library(lattice)
 library(animalcules)
 ```
 
@@ -103,13 +107,13 @@ library(animalcules)
 
 ## usethis::use_data(MAE)
 
-# saveRDS(MAE, )
+# saveRDS(MAE, "extdata/MAE.rds")
 ```
 
 # Toy Test
 
 ```{r}
-data_dir = system.file("data/MAE.rds", package = "animalcules")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 #MultiAssayExperiment::experiments(MAE)
 #MultiAssayExperiment::colData(MAE)
@@ -254,7 +258,7 @@ result <- dimred_pca(MAE,
                      pcx=1,
                      pcy=2,
                      datatype="logcpm")
-result$plot
+#result$plot
 result$table
 ```
 
@@ -267,7 +271,7 @@ result <- dimred_pcoa(MAE,
                      axx=1,
                      axy=2,
                      method="bray")
-result$plot
+#result$plot
 result$table
 ```
 
@@ -287,20 +291,20 @@ p
 
 ## Train biomarker
 ```{r}
-p <- find_biomarker(MAE,
-                    tax_level="genus",
-                    input_select_target_biomarker=c("DISEASE"),
-                    nfolds = 3,
-                    nrepeats = 3,
-                    seed = 99,
-                    percent_top_biomarker = 0.2,
-                    model_name = "logistic regression")
-# biomarker
-p$biomarker
-
-# importance plot
-p$importance_plot
-
-# Cross-validation result
-p$biomarker_cv_performance
+# p <- find_biomarker(MAE,
+#                     tax_level="genus",
+#                     input_select_target_biomarker=c("DISEASE"),
+#                     nfolds = 3,
+#                     nrepeats = 3,
+#                     seed = 99,
+#                     percent_top_biomarker = 0.2,
+#                     model_name = "logistic regression")
+# # biomarker
+# p$biomarker
+# 
+# # importance plot
+# p$importance_plot
+# 
+# # Cross-validation result
+# p$biomarker_cv_performance
 ```

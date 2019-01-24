@@ -1,5 +1,5 @@
 
-data_dir = system.file("data/MAE.rds", package = "animalcules")
+data_dir = system.file("inst/extdata/MAE.rds", package = "animalcules")
 # reactive values shared thorough the shiny app
 vals <- reactiveValues(
     MAE = readRDS(data_dir),
@@ -10,6 +10,7 @@ update_inputs <- function(session) {
     updateCovariate(session)
     updateSample(session)
     updateTaxLevel(session)
+    updateOrganisms(session)
 }
 
 updateCovariate <- function(session){
@@ -36,21 +37,21 @@ updateCovariate <- function(session){
     sam_temp <- colData(MAE)
     num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
     num_covariates <- covariates[!unlist(num_select)]
-    
+
     # Filter
     updateSelectInput(session, "filter_type_metadata", choices = covariates)
 
     # Relabu
-    updateSelectInput(session, "relabu_bar_sample_conditions", choices = covariates)    
-    updateSelectInput(session, "relabu_bar_group_conditions", choices = c("ALL", covariates))  
-    updateSelectInput(session, "relabu_heatmap_conditions", choices = covariates)    
+    updateSelectInput(session, "relabu_bar_sample_conditions", choices = covariates)
+    updateSelectInput(session, "relabu_bar_group_conditions", choices = c("ALL", covariates))
+    updateSelectInput(session, "relabu_heatmap_conditions", choices = covariates)
     updateSelectInput(session, "relabu_box_condition", choices = covariates.colorbar)
 
     # Dimred
-    updateSelectInput(session, "dimred_pca_color", choices = covariates)   
-    updateSelectInput(session, "dimred_pca_shape", choices = c("None", covariates.colorbar))   
-    updateSelectInput(session, "dimred_pcoa_color", choices = covariates)   
-    updateSelectInput(session, "dimred_pcoa_shape", choices = c("None", covariates.colorbar))   
+    updateSelectInput(session, "dimred_pca_color", choices = covariates)
+    updateSelectInput(session, "dimred_pca_shape", choices = c("None", covariates.colorbar))
+    updateSelectInput(session, "dimred_pcoa_color", choices = covariates)
+    updateSelectInput(session, "dimred_pcoa_shape", choices = c("None", covariates.colorbar))
 
     # Diversity
     updateSelectInput(session, "select_alpha_div_condition", choices = covariates.colorbar)
@@ -68,7 +69,7 @@ updateCovariate <- function(session){
 updateTaxLevel <- function(session){
     MAE <- vals$MAE
     tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
-    
+
     # Relabu
     updateSelectInput(session, "relabu_bar_taxlev", choices = tax.name)
     updateSelectInput(session, "relabu_heatmap_taxlev", choices = tax.name)
@@ -80,7 +81,7 @@ updateTaxLevel <- function(session){
 
     # Differential
     updateSelectInput(session, "taxl.da", choices = tax.name)
-    
+
     # Biomarker
     updateSelectInput(session, "taxl_biomarker", choices = tax.name)
 }
@@ -94,10 +95,19 @@ updateSample <- function(session){
     updateSelectInput(session, "filter_sample_dis", choices = sam.name)
 
     # Relabu
-    updateSelectInput(session, "relabu_bar_sample_iso", choices = sam.name)    
+    updateSelectInput(session, "relabu_bar_sample_iso", choices = sam.name)
     updateSelectInput(session, "relabu_bar_sample_dis", choices = sam.name)
     updateSelectInput(session, "relabu_heatmap_sample_iso", choices = sam.name)
     updateSelectInput(session, "relabu_heatmap_sample_dis", choices = sam.name)
+}
+
+# update organisms
+updateOrganisms <- function(session){
+    MAE <- vals$MAE
+    org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))
+
+    # Filter
+    updateSelectInput(session, "filter_organism_dis", choices = org.name)
 }
 
 observeEvent(input$upload_animalcules,{

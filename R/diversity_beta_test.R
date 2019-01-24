@@ -8,7 +8,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- diversity_beta_test(toy_data,
 #'                          tax_level = "genus",
 #'                          input_select_beta_condition = "DISEASE",
@@ -51,8 +52,9 @@ diversity_beta_test <- function(MAE,
     colnames(sam_table)[which(colnames(sam_table) == input_select_beta_condition)] <- "condition"
 
     if (input_select_beta_stat_method == "PERMANOVA"){
-    set.seed(99)
-    beta.div <- adonis2(dist.mat~condition,
+    # bioconductor not allow set seed within R code
+    # set.seed(99)
+    beta.div <- vegan::adonis2(dist.mat~condition,
                         data=sam_table,
                         permutations = input_num_permutation_permanova,
                         strata="PLOT")

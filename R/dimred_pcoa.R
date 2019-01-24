@@ -6,11 +6,13 @@
 #' @param shape A condition to shape data points by e.g. "SEX"
 #' @param axx Principle coordinate on the x-axis e.g. 1
 #' @param axy Principle coordinate on the y-axis e.g. 2
+#' @param axz Principle coordinate on the z-axis e.g. 2
 #' @param method Method to use e.g. c("bray")
 #' @return A list with a plotly object and summary table
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' result <- dimred_pcoa(MAE,
 #'                      tax_level="genus",
 #'                      color="AGE",
@@ -34,6 +36,7 @@ dimred_pcoa <- function(MAE,
                         shape=NULL,
                         axx=1,
                         axy=2,
+                        axz=NULL,
                         method=c("bray")) {
 
     # Default variables
@@ -75,23 +78,46 @@ dimred_pcoa <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=F], by=0, all=T)
+        df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=FALSE], by=0, all=TRUE)
+
+        # When shape is required
+        shape <- colnames(df.pcoa.m)[ncol(df.pcoa.m)] # Bypass duplicate colnames if color == shape
+        df.pcoa.m[[shape]] <- as.factor(df.pcoa.m[[shape]])
+
     } else {
-        df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=F], by=0, all=T)
+        df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=FALSE], by=0, all=TRUE)
         shape <- 'shape' # Referenced by plotly later
         df.pcoa.m[[shape]] <- 1 # Constant results in omitting shape
     }
 
     # Plotly | Scatterplot
-    p <- plot_ly(df.pcoa.m,
-                 x = as.formula(paste("~Axis.", axx, sep = "")),
-                 y = as.formula(paste("~Axis.", axy, sep = "")),
-                 mode = "markers",
-                 color = as.formula(paste("~", color, sep = "")),
-                 symbol = as.formula(paste("~", shape, sep = "")),
-                 type = "scatter",
-                 text = df.pcoa.m$Row.names,
-                 marker = list(size = 10))
+    if (is.null(axz)) {
+        
+        # 2D Plot
+        p <- plot_ly(df.pcoa.m,
+                     x = as.formula(paste("~Axis.", axx, sep = "")),
+                     y = as.formula(paste("~Axis.", axy, sep = "")),
+                     mode = "markers",
+                     color = as.formula(paste("~", color, sep = "")),
+                     symbol = as.formula(paste("~", shape, sep = "")),
+                     type = "scatter",
+                     text = df.pcoa.m$Row.names,
+                     marker = list(size = 10))
+    } else {
+
+        # 3D Plot
+        p <- plot_ly(df.pcoa.m,
+                     x = as.formula(paste("~Axis.", axx, sep = "")),
+                     y = as.formula(paste("~Axis.", axy, sep = "")),
+                     z = as.formula(paste("~Axis.", axz, sep = "")),
+                     mode = "markers",
+                     color = as.formula(paste("~", color, sep = "")),
+                     symbol = as.formula(paste("~", shape, sep = "")),
+                     symbols = c("circle", "square", "diamond", "cross", "square-open", "circle-open", "diamond-open", "x"),
+                     type = "scatter3d",
+                     text = df.pcoa.m$Row.names,
+                     marker = list(size = 6))
+    }
 
     p$p <- NULL # To suppress a shiny warning
 

@@ -33,7 +33,7 @@ Helper function for demultiplexing sequencing reads, designed in a way to allow 
 \examples{
 ## Load example barcode, index, and read data into R session:
 barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules")
-bcFile <- read.table(barcodePath, sep = "\\t", header = T)
+bcFile <- read.table(barcodePath, sep = "\\t", header = TRUE)
 
 indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules")
 inds <- Biostrings::readDNAStringSet(indexPath, format = "fastq")
@@ -42,16 +42,16 @@ readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules
 reads <- Biostrings::readQualityScaledDNAStringSet(readPath)
 
 ## Extract reads from the first barcode
-results <- extractReads(1, bcFile[, 2], bcFile[, 1], inds, reads, rcBarcodes = FALSE, 
+results <- extractReads(1, bcFile[, 2], bcFile[, 1], inds, reads, rcBarcodes = FALSE,
     location = ".")
 results
 
 ## Extract reads from multiple barcodes
-more_results <- lapply(1:6, extractReads, bcFile[, 2], bcFile[, 1], inds, 
+more_results <- lapply(1:6, extractReads, bcFile[, 2], bcFile[, 1], inds,
     reads, rcBarcodes = FALSE, location = ".")
-                       
+
 ## BiocParallel application
 multicoreParam <- BiocParallel::MulticoreParam(workers = 3)
-parallel_results <- BiocParallel::bplapply(1:6, extractReads, bcFile[, 
+parallel_results <- BiocParallel::bplapply(1:6, extractReads, bcFile[,
     2], bcFile[, 1], inds, reads, rcBarcodes = FALSE, location = ".", BPPARAM = multicoreParam)
 }

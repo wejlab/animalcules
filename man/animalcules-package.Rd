@@ -6,7 +6,7 @@
 \alias{animalcules-package}
 \title{animalcules: Statistical microbiome analysis on metagenomics data}
 \description{
-Statistical microbiome analysis on metagenomics data
+Statistical microbiome analysis on metagenomics data.
 }
 \seealso{
 Useful links:

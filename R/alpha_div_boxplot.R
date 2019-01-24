@@ -7,7 +7,7 @@
 #' @return A plotly object
 #'
 #' @examples
-#' data_dir = system.file("data/MAE.rds", package = "animalcules")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 #' toy_data <- readRDS(data_dir)
 #' p <- alpha_div_boxplot(toy_data,
 #'                        tax_level = "genus",
@@ -17,6 +17,7 @@
 #'
 #' @import dplyr
 #' @import plotly
+#' @importFrom ggplot2 ggplot aes geom_point geom_boxplot labs
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment

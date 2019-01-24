@@ -10,8 +10,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_dat_path <- system.file("data", "MAE.rds", package = "animalcules")
-#' toy_data <- readRDS(toy_dat_path)
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- differential_abundance(toy_data,
 #' tax_level="genus",
 #' input_da_condition=c("DISEASE"),

@@ -1,4 +1,4 @@
-data_dir = system.file("data/MAE.rds", package = "animalcules")
+data_dir = system.file("inst/extdata/MAE.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 
 
@@ -7,6 +7,7 @@ beta.methods <- c("wUniFrac", "bray")
 
 tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
+org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))
 
 measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){

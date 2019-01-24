@@ -8,7 +8,7 @@ Author:
     W. Evan Johnson <wej@bu.edu>
 Maintainer: Yue (Jason) Zhao <yuezh@bu.edu>
 Description:
-    Statistical microbiome analysis on metagenomics data
+    Statistical microbiome analysis on metagenomics data.
 License: Artistic-2.0
 Encoding: UTF-8
 LazyData: true
@@ -29,6 +29,7 @@ Imports:
     tibble,
     caret,
     plotly,
+    ggplot2,
     rentrez,
     reshape2,
     covr,
@@ -38,7 +39,11 @@ Imports:
     magrittr,
     MultiAssayExperiment,
     SummarizedExperiment,
-    S4Vectors
+    S4Vectors,
+    XML,
+    forcats,
+    scales,
+    lattice
 Suggests:
     BiocCheck,
     BiocStyle,

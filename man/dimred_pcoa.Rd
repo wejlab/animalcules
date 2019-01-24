@@ -5,7 +5,7 @@
 \title{Dimensionality reduction through PCoA}
 \usage{
 dimred_pcoa(MAE, tax_level, color, shape = NULL, axx = 1, axy = 2,
-  method = c("bray"))
+  axz = NULL, method = c("bray"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -20,6 +20,8 @@ dimred_pcoa(MAE, tax_level, color, shape = NULL, axx = 1, axy = 2,
 
 \item{axy}{Principle coordinate on the y-axis e.g. 2}
 
+\item{axz}{Principle coordinate on the z-axis e.g. 2}
+
 \item{method}{Method to use e.g. c("bray")}
 }
 \value{
@@ -29,7 +31,8 @@ A list with a plotly object and summary table
 Dimensionality reduction through PCoA
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+toy_data <- readRDS(data_dir)
 result <- dimred_pcoa(MAE,
                      tax_level="genus",
                      color="AGE",

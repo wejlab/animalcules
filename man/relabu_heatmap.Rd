@@ -32,7 +32,8 @@ A plotly object
 Plot heatmap of sample level counts in logcpm
 }
 \examples{
-toy_data <- readRDS("data/MAE.rds")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+toy_data <- readRDS(data_dir)
 p <- relabu_heatmap(toy_data,
                    tax_level="genus",
                    sort_by="conditions",

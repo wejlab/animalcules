@@ -6,7 +6,8 @@
 #' @return A plotly object
 #'
 #' @examples
-#' toy_data <- readRDS("data/MAE.rds")
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
 #' p <- diversity_beta_boxplot(toy_data,
 #'                             tax_level = "genus",
 #'                             input_select_beta_condition = "DISEASE")
