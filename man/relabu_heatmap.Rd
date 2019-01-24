@@ -31,3 +31,12 @@ A plotly object
 \description{
 Plot heatmap of sample level counts in logcpm
 }
+\examples{
+toy_data <- readRDS("data/MAE.rds")
+p <- relabu_heatmap(toy_data,
+                   tax_level="genus",
+                   sort_by="conditions",
+                   sample_conditions=c("SEX", "AGE"))
+p
+
+}

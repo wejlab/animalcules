@@ -15,3 +15,8 @@ Boolean
 \description{
 check if integer(0)
 }
+\examples{
+nums <- 2
+is.integer0(nums)
+
+}

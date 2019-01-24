@@ -15,3 +15,8 @@ Boolean
 \description{
 Converts decimal percentage to string with specified digits
 }
+\examples{
+nums <- 0.23
+pct2str(nums)
+
+}

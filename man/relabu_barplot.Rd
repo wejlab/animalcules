@@ -37,3 +37,14 @@ A plotly object
 \description{
 Plot bar plots of sample and group level relative abundance
 }
+\examples{
+toy_data <- readRDS("data/MAE.rds")
+p <- relabu_barplot(toy_data,
+                    tax_level="family",
+                    order_organisms=c('Retroviridae'),
+                    sort_by="organisms",
+                    sample_conditions=c('SEX', 'AGE'),
+                    show_legend=TRUE)
+p
+
+}

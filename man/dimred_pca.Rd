@@ -28,3 +28,16 @@ A list with a plotly object and summary table
 \description{
 Dimensionality reduction through PCA
 }
+\examples{
+toy_data <- readRDS("data/MAE.rds")
+result <- dimred_pca(toy_data,
+                     tax_level="genus",
+                     color="AGE",
+                     shape="DISEASE",
+                     pcx=1,
+                     pcy=2,
+                     datatype="logcpm")
+result$plot
+result$table
+
+}

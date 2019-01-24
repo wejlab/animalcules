@@ -1,3 +1,20 @@
+#' Download RefSeq assembly summary
+#'
+#' This function will automatically download RefSeq assembly file for a specified kindom. This the precursor for the function that will allow the user to select subgroups of the kingdom for download. 
+#' @param kingdom Select the kingdom taxonomy to download. Options are 'archaea', 'bacteria', 'fungi', 'invertebrate', 'plant', 'protozoa', 'vertibrate', 'vertibrate_other', 'viral'
+#' 
+#' @return Returns (eventually) a list of possible subgroups for download
+#'
+#' @examples
+#' ## Download all RefSeq reference bacterial genomes
+#' download_kingdom_summary('bacteria')
+#'
+#' @export
+
+download_kingdom_summary <- function(){
+  message("hello")
+}
+
 #' Download RefSeq genome libraries
 #'
 #' This function will automatically download RefSeq genome libraries in a .fasta format from the specified kingdom. The function will first download the summary report at: ftp://ftp.ncbi.nlm.nih.gov/genomes/**kingdom**/overview.txt, and then use this file to download genomes and combine them in a single compressed or uncompressed .fasta file.

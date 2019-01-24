@@ -15,3 +15,8 @@ Boolean
 \description{
 Check if object is categorical
 }
+\examples{
+nums <- 2
+is.categorical(nums)
+
+}
