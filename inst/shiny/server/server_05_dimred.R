@@ -42,12 +42,14 @@ output$dimred_pca_table <- renderDataTable({
 # Plot
 do_dimred_pcoa_plot <- eventReactive(input$dimred_pcoa_plot_btn, {
     if (input$dimred_pcoa_shape == "None") {shape <- NULL} else {shape <- input$dimred_pcoa_shape}
+    if (is.na(input$dimred_pcoa_z)) {axz <- NULL} else {axz <- input$dimred_pcoa_z}
     result <- dimred_pcoa(MAE = vals$MAE,
                          tax_level = input$dimred_pcoa_taxlev,
                          color = input$dimred_pcoa_color,
                          shape = shape,
                          axx = input$dimred_pcoa_x,
                          axy = input$dimred_pcoa_y,
+                         axz = axz,
                          method = input$dimred_pcoa_datatype)
     return(result$plot)
 })

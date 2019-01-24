@@ -64,10 +64,23 @@ tabPanel("Dimension Reduction",
 
           selectInput("dimred_pcoa_color", "Color points by:", covariates),
 
-          selectInput("dimred_pcoa_shape", "Shape points by:", c("None", covariates.colorbar)),
+          checkboxInput("dimred_pcoa_adv", "Advanced Options"),
 
-          selectInput("dimred_pcoa_method", "Select distance method", c("Bray" = "bray"),
-                                                                        selected = "bray"),
+          conditionalPanel(
+            condition = "input.dimred_pcoa_adv == true",
+            numericInput('dimred_pcoa_z', 'Principal Coordinate (z-axis)', NA, min = 1, max = 50)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_pcoa_adv == true",
+            selectInput("dimred_pcoa_shape", "Shape points by:", c("None", covariates.colorbar))
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_pcoa_adv == true",
+            selectInput("dimred_pcoa_method", "Select distance method", c("Bray" = "bray"),
+                                                                          selected = "bray")
+          ),
 
           # Do plot button
           actionButton("dimred_pcoa_plot_btn", "Plot"),
@@ -76,10 +89,10 @@ tabPanel("Dimension Reduction",
         ),
         mainPanel(
           fluidRow(
-            column(6,
+            column(5,
               plotlyOutput("dimred_pcoa_plot", height="500px")
             ),
-            column(6,
+            column(7,
               dataTableOutput("dimred_pcoa_table")
             )
           ),
@@ -89,4 +102,3 @@ tabPanel("Dimension Reduction",
     )
   )
 )
-
