@@ -43,9 +43,9 @@ tabPanel("Dimension Reduction",
       sidebarLayout(
         sidebarPanel(
 
-          numericInput('dimred_pcoa_x', 'Principal Component (x-axis)', 1, min = 1, max = 50),
+          numericInput('dimred_pcoa_x', 'Principal Coordinate (x-axis)', 1, min = 1, max = 50),
 
-          numericInput('dimred_pcoa_y', 'Principal Component (y-axis)', 2, min = 1, max = 50),
+          numericInput('dimred_pcoa_y', 'Principal Coordinate (y-axis)', 2, min = 1, max = 50),
 
           selectizeInput('dimred_pcoa_taxlev', 'Taxonomy Level', choices = tax.name, selected='no rank'),
 
