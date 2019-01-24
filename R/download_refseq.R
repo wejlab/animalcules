@@ -3,7 +3,7 @@
 #' This function will automatically download RefSeq assembly file for a specified kindom. This the precursor for the function that will allow the user to select subgroups of the kingdom for download. 
 #' @param kingdom Select the kingdom taxonomy to download. Options are 'archaea', 'bacteria', 'fungi', 'invertebrate', 'plant', 'protozoa', 'vertibrate', 'vertibrate_other', 'viral'
 #' 
-#' @return Returns (eventually) a list of possible subgroups for download
+#' @return Returns kingdom table
 #'
 #' @examples
 #' ## Download all RefSeq reference bacterial genomes
@@ -11,8 +11,22 @@
 #'
 #' @export
 
-download_kingdom_summary <- function(){
-  message("hello")
+download_kingdom_summary <- function(kingdom){
+  ## check if user provided a valid kingdom
+  kingdom_list <- c("archaea", "bacteria", "fungi", "invertebrate", "plant", 
+                    "protozoa", "vertibrate", "vertibrate_other", "viral")
+  if (!(kingdom %in% kingdom_list)) {
+    stop("You supplied a kingdom not in the kingdom list")
+  }
+  
+  ## Download refseq table
+  table_name <- paste("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/", kingdom, 
+                      "/assembly_summary.txt", sep = "")
+  message(paste("Downloading kingdom assembly list from:", table_name))
+  kingdom_table <- read.table(table_name, header = T, sep = "\t", comment.char = "", 
+                              quote = "\"", skip = 1)
+  
+  kingdom_table
 }
 
 #' Download RefSeq genome libraries
@@ -38,19 +52,8 @@ download_kingdom_summary <- function(){
 
 download_refseq <- function(kingdom, reference = TRUE, representative = FALSE, 
                             compress = TRUE) {
-  ## check if user provided a valid kingdom
-  kingdom_list <- c("archaea", "bacteria", "fungi", "invertebrate", "plant", 
-                    "protozoa", "vertibrate", "vertibrate_other", "viral")
-  if (!(kingdom %in% kingdom_list)) {
-    stop("You supplied a kingdom not in the kingdom list")
-  }
-  
   ## Download refseq table
-  table_name <- paste("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/", kingdom, 
-                      "/assembly_summary.txt", sep = "")
-  message(paste("Downloading kingdom assembly list from:", table_name))
-  kingdom_table <- read.table(table_name, header = T, sep = "\t", comment.char = "", 
-                              quote = "\"", skip = 1)
+  kingdom_table <- animalcules::download_kingdom_summary(kingdom)
   
   ## Reduce the table size based on reference or represenative
   if (representative) {
