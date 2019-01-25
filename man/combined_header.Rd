@@ -26,5 +26,6 @@ Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_ex
 Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 bam_files <- c('virus_example1.bam','virus_example2.bam')
 com_head <- combined_header(bam_files)
+
 }
 }

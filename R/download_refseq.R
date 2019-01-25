@@ -1,3 +1,37 @@
+#' Download RefSeq assembly summary
+#'
+#' This function will automatically download RefSeq assembly file for a specified kindom. This the precursor for the function that will allow the user to select subgroups of the kingdom for download.
+#' @param kingdom Select the kingdom taxonomy to download. Options are 'archaea', 'bacteria', 'fungi', 'invertebrate', 'plant', 'protozoa', 'vertibrate', 'vertibrate_other', 'viral'
+#'
+#' @return Returns kingdom table
+#'
+#' @examples
+#' \dontrun{
+#' ## Download summary of all RefSeq reference bacterial genomes
+#' summary_file <- download_kingdom_summary('bacteria')
+#' head(summary_file)
+#' }
+#'
+#' @export
+
+download_kingdom_summary <- function(kingdom){
+  ## check if user provided a valid kingdom
+  kingdom_list <- c("archaea", "bacteria", "fungi", "invertebrate", "plant",
+                    "protozoa", "vertibrate", "vertibrate_other", "viral")
+  if (!(kingdom %in% kingdom_list)) {
+    stop("You supplied a kingdom not in the kingdom list")
+  }
+
+  ## Download refseq table
+  table_name <- paste("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/", kingdom,
+                      "/assembly_summary.txt", sep = "")
+  message(paste("Downloading kingdom assembly list from:", table_name))
+  kingdom_table <- read.table(table_name, header = T, sep = "\t", comment.char = "",
+                              quote = "\"", skip = 1)
+
+  kingdom_table
+}
+
 #' Download RefSeq genome libraries
 #'
 #' This function will automatically download RefSeq genome libraries in a .fasta format from the specified kingdom. The function will first download the summary report at: ftp://ftp.ncbi.nlm.nih.gov/genomes/**kingdom**/overview.txt, and then use this file to download genomes and combine them in a single compressed or uncompressed .fasta file.
@@ -10,31 +44,25 @@
 #' @examples
 #' \dontrun{
 #' ## Download all RefSeq reference bacterial genomes
-#' download_refseq('bacteria')
+#' #download_refseq('bacteria') # these will take a little longer, so are commented
 #'
 #' ## Download all RefSeq representative viral genomes
 #' download_refseq( 'viral', representative = TRUE )
 #'
 #' ## Download all RefSeq viral genomes
+<<<<<<< HEAD
 #' download_refseq( 'viral', reference = FALSE )
 #' }
+=======
+#' #download_refseq( 'viral', reference = FALSE ) # these will take a little longer, so are commented
+#'
+>>>>>>> a9c4dff576ea4a322f4c361c29000a916dea4149
 #' @export
 
 download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
                             compress = TRUE) {
-  ## check if user provided a valid kingdom
-  kingdom_list <- c("archaea", "bacteria", "fungi", "invertebrate", "plant",
-                    "protozoa", "vertibrate", "vertibrate_other", "viral")
-  if (!(kingdom %in% kingdom_list)) {
-    stop("You supplied a kingdom not in the kingdom list")
-  }
-
   ## Download refseq table
-  table_name <- paste("ftp://ftp.ncbi.nlm.nih.gov/genomes/refseq/", kingdom,
-                      "/assembly_summary.txt", sep = "")
-  message(paste("Downloading kingdom assembly list from:", table_name))
-  kingdom_table <- read.table(table_name, header = TRUE, sep = "\t", comment.char = "",
-                              quote = "\"", skip = 1)
+  kingdom_table <- animalcules::download_kingdom_summary(kingdom)
 
   ## Reduce the table size based on reference or represenative
   if (representative) {
@@ -93,7 +121,7 @@ download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
       ref <- Biostrings::readDNAStringSet(destination)
 
       ## write to file
-      Biostrings::writeXStringSet(ref, combined_fasta, append = TRUE,
+      Biostrings::writeXStringSet(ref, combined_fasta, append = T,
                                   compress = compress)
 
       ## format for pathoscope and write to file
@@ -104,11 +132,11 @@ download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,
       names(ref) <- paste("ti|", king_table[i, ]$taxid, "|org|",
                           gsub(" ", "_", king_table[i, ]$organism_name), "|accession|",
                           accession, sep = "")
-      Biostrings::writeXStringSet(ref, combined_fasta_patho, append = TRUE,
+      Biostrings::writeXStringSet(ref, combined_fasta_patho, append = T,
                                   compress = compress)
 
       ## delete intermediate download files
-      unlink(download_dir, recursive = TRUE)
+      unlink(download_dir, recursive = T)
     }, error = function(e) {
       cat("ERROR :", conditionMessage(e), "\n")
     })

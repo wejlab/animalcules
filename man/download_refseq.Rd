@@ -25,12 +25,17 @@ This function will automatically download RefSeq genome libraries in a .fasta fo
 \examples{
 \dontrun{
 ## Download all RefSeq reference bacterial genomes
-download_refseq('bacteria')
+#download_refseq('bacteria') # these will take a little longer, so are commented
 
 ## Download all RefSeq representative viral genomes
 download_refseq( 'viral', representative = TRUE )
 
 ## Download all RefSeq viral genomes
+<<<<<<< HEAD
 download_refseq( 'viral', reference = FALSE )
 }
+=======
+#download_refseq( 'viral', reference = FALSE ) # these will take a little longer, so are commented
+
+>>>>>>> a9c4dff576ea4a322f4c361c29000a916dea4149
 }
