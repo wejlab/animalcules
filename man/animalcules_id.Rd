@@ -24,6 +24,7 @@ This function returns a .csv file with annotated read counts to genomes with map
 This function will read in a .bam file, annotate the taxonomy and genome names, reduce the mapping ambiguity using a mixture model, and output a .csv file with the results. Right now, it assumes that the genome library/.bam files uses NCBI accession names for reference names (rnames in .bam file).
 }
 \examples{
+\dontrun{
 ## Get a reference genome library
 download_refseq('viral', compress = FALSE)
 
@@ -34,5 +35,5 @@ viral_map <- align_target( readPath, "viral", "virus_example")
 
 #### Apply animalcules ID:
 animalcules_id( viral_map )
-
+}
 }

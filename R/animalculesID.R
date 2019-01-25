@@ -10,6 +10,7 @@
 #' This function returns a .csv file with annotated read counts to genomes with mapped reads. The function iself returns the output .csv file name.
 #'
 #' @examples
+#' \dontrun{
 #' ## Get a reference genome library
 #' download_refseq('viral', compress = FALSE)
 #'
@@ -20,7 +21,7 @@
 #'
 #' #### Apply animalcules ID:
 #' animalcules_id( viral_map )
-#'
+#' }
 #' @export
 
 animalcules_id <- function(bam_file, out_file = paste(tools::file_path_sans_ext(bam_file),
