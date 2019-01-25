@@ -42,7 +42,8 @@ Imports:
     XML,
     forcats,
     scales,
-    lattice
+    lattice,
+    glmnet
 Suggests:
     BiocCheck,
     BiocStyle,
