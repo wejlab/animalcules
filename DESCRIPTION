@@ -44,7 +44,8 @@ Imports:
     scales,
     lattice,
     glmnet,
-    tsne
+    tsne,
+    umap
 Suggests:
     BiocCheck,
     BiocStyle,
