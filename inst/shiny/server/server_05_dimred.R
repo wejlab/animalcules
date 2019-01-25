@@ -73,3 +73,24 @@ output$dimred_pcoa_table <- renderDataTable({
     t <- do_dimred_pcoa_table()
     return(t)
 })
+
+#
+# t-SNE
+#
+# Plot
+do_dimred_tsne_plot <- eventReactive(input$dimred_tsne_plot_btn, {
+    if (input$dimred_tsne_shape == "None") {shape <- NULL} else {shape <- input$dimred_tsne_shape}
+    p <- dimred_tsne(MAE = vals$MAE,
+                     tax_level = input$dimred_tsne_taxlev,
+                     color = input$dimred_tsne_color,
+                     shape = shape,
+                     k = input$dimred_tsne_k,
+                     initial_dims= input$dimred_tsne_initial_dims,
+                     perplexity = input$dimred_tsne_perplexity,
+                     datatype = input$dimred_tsne_datatype)
+    return(p)
+})
+output$dimred_tsne_plot <- renderPlotly({
+    p <- do_dimred_tsne_plot()
+    return(p)
+})

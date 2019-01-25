@@ -2,7 +2,7 @@
 % Please edit documentation in R/dimred_tsne.R
 \name{dimred_tsne}
 \alias{dimred_tsne}
-\title{Dimensionality reduction through tSNE}
+\title{Dimensionality reduction through t-SNE}
 \usage{
 dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
   initial_dims = 30, perplexity = 10, datatype = c("counts",
@@ -29,7 +29,7 @@ dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
 A plotly object
 }
 \description{
-Dimensionality reduction through tSNE
+Dimensionality reduction through t-SNE
 }
 \examples{
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")

@@ -1,4 +1,4 @@
-#' Dimensionality reduction through tSNE
+#' Dimensionality reduction through t-SNE
 #'
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
