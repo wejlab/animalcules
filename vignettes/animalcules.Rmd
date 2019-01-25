@@ -46,6 +46,7 @@ library(S4Vectors)
 library(usethis)
 library(dplyr)
 library(plotly)
+library(tsne)
 library(reshape2)
 library(caret)
 library(vegan)
@@ -265,14 +266,27 @@ result$table
 # PCoA
 ```{r}
 result <- dimred_pcoa(MAE,
-                     tax_level="genus",
-                     color="AGE",
-                     shape="DISEASE",
-                     axx=1,
-                     axy=2,
-                     method="bray")
+                      tax_level="genus",
+                      color="AGE",
+                      shape="DISEASE",
+                      axx=1,
+                      axy=2,
+                      method="bray")
 #result$plot
 result$table
+```
+
+# t-SNE
+```{r}
+p <- dimred_tsne(MAE,
+                 tax_level="phylum",
+                 color="AGE",
+                 shape="GROUP",
+                 k="3D",
+                 initial_dims=30,
+                 perplexity=10,
+                 datatype="logcpm")
+p
 ```
 
 # Server_06_differential_analysis
