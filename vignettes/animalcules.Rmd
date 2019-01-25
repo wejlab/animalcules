@@ -47,7 +47,6 @@ library(usethis)
 library(dplyr)
 library(plotly)
 library(tsne)
-library(umap)
 library(reshape2)
 library(caret)
 library(vegan)
@@ -286,19 +285,6 @@ p <- dimred_tsne(MAE,
                  k="3D",
                  initial_dims=30,
                  perplexity=10,
-                 datatype="logcpm")
-p
-```
-
-# UMAP
-```{r}
-p <- dimred_umap(MAE,
-                 tax_level="phylum",
-                 color="AGE",
-                 shape="GROUP",
-                 k="3D",
-                 n_neighbors=15,
-                 min_dist=3,
                  datatype="logcpm")
 p
 ```
