@@ -7,7 +7,7 @@ tags$div(
         class = "container",
         fluidRow(
             column(7, h1("animalcules")),
-            column(5, br(),br(),img(src = "animalcules.jpg", height = 150, width = 200))
+            column(5, br(),br(),img(src = "animalcules.jpg", height = 350, width = 400))
 
         ),
         p("Statistical Microbiome Analysis Toolkit")
