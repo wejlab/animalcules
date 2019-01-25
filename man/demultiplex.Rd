@@ -29,6 +29,7 @@ Returns multiple .fastq files that contain all reads whose index matches the bar
 Function for demultiplexing sequencing reads arranged in a common format provided by sequencers (such as Illumina) generally for 16S data. This function takes a matrix of sample names/barcodes, a .fastq file of barcodes by sequence header, and a .fastq file of reads corresponding to the barcodes. Based on the barcodes given, the function extracts all reads for the indexed barcode and writes all the reads from that barcode to separate .fastq files.
 }
 \examples{
+\dontrun{
 ## Get barcode, index, and read data locations
 barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules")
 indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules")
@@ -38,5 +39,5 @@ readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules
 demult <- demultiplex(barcodePath, indexPath, readPath, rcBarcodes = FALSE,
     hammingDist = 2)
 demult
-
+}
 }

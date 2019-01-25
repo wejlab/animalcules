@@ -13,6 +13,7 @@
 #' @return Writes a single .fastq file that contains all reads whose index matches the barcode specified. This file will be written to the location directory, and will be named based on the specified sampleName and barcode, e.g. './demultiplex_fastq/SampleName1_GGAATTATCGGT.fastq.gz'
 #'
 #' @examples
+#' \dontrun{
 #' ## Load example barcode, index, and read data into R session:
 #' barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules")
 #' bcFile <- read.table(barcodePath, sep = "\t", header = TRUE)
@@ -36,6 +37,7 @@
 #' multicoreParam <- BiocParallel::MulticoreParam(workers = 3)
 #' parallel_results <- BiocParallel::bplapply(1:6, extractReads, bcFile[,
 #'     2], bcFile[, 1], inds, reads, rcBarcodes = FALSE, location = ".", BPPARAM = multicoreParam)
+#' }
 #' @export
 #'
 extractReads <- function(barcodeIndex, barcodes, sampleNames, index, reads,
@@ -80,6 +82,7 @@ extractReads <- function(barcodeIndex, barcodes, sampleNames, index, reads,
 #' @return Returns multiple .fastq files that contain all reads whose index matches the barcodes given. These files will be written to the location directory, and will be named based on the given sampleNames and barcodes, e.g. './demultiplex_fastq/SampleName1_GGAATTATCGGT.fastq.gz'
 #'
 #' @examples
+#' \dontrun{
 #' ## Get barcode, index, and read data locations
 #' barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules")
 #' indexPath <- system.file("extdata", "virus_example_index.fastq", package = "animalcules")
@@ -89,7 +92,7 @@ extractReads <- function(barcodeIndex, barcodes, sampleNames, index, reads,
 #' demult <- demultiplex(barcodePath, indexPath, readPath, rcBarcodes = FALSE,
 #'     hammingDist = 2)
 #' demult
-#'
+#' }
 #' @export
 
 demultiplex <- function(barcodeFile, indexFile, readFile, rcBarcodes = TRUE,

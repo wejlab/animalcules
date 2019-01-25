@@ -21,6 +21,7 @@ This function merges .bam files and combines them into a single file. The functi
 This function merges .bam files. It first used the combined_header funtion to generate a combined header for all the files, reheaders the files, and then merges and sorts the .bam files. This is similar to the 'samtools merge' function, but it allows the .bam files to have different headers.
 }
 \examples{
+\dontrun{
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta', split = .0005)
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
@@ -33,4 +34,5 @@ bam_reheader_R(com_head, 'virus_example1.bam')
 bam_reheader_R(com_head, 'virus_example1.bam')
 bam_files <- c('virus_example1h.bam','virus_example2h.bam')
 merged_all <- merge_bam_files(bam_files, 'virus_example_merged')
+}
 }

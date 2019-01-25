@@ -8,6 +8,7 @@
 #' @return Returns a .fasta or .fasta.gz file of the desired RefSeq genomes. This file is named after the kindom selectd and saved to the current directory (e.g. 'bacteria.fasta.gz'). Currently, this function also returns a .fasta file formatted for PathoScope as well (e.g. 'bacteria.pathoscope.fasta.gz'), but this will soon be retired.
 #'
 #' @examples
+#' \dontrun{
 #' ## Download all RefSeq reference bacterial genomes
 #' download_refseq('bacteria')
 #'
@@ -16,7 +17,7 @@
 #'
 #' ## Download all RefSeq viral genomes
 #' download_refseq( 'viral', reference = FALSE )
-#'
+#' }
 #' @export
 
 download_refseq <- function(kingdom, reference = TRUE, representative = FALSE,

@@ -26,6 +26,7 @@ This function writes to file a merged and sorted .bam file after aligning to all
 This is the main animalcules target library mapping function, using Rsubread and multiple libraries. Aligns to each library separately, filters unmapped reads from each file, and then merges and sorts the .bam files from each library into one output file.
 }
 \examples{
+\dontrun{
 ## Get a reference genome library
 download_refseq('viral', compress = FALSE)
 
@@ -35,5 +36,10 @@ readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules
 viral_map <- align_target( readPath, "viral", "virus_example")
 viral_map_sam <- Rsamtools::asSam(viral_map, overwrite=TRUE)
 
-
+## Make and align to a multiple reference genome libraries
+mk_subread_index('viral.fasta', split=0.005)
+targLibs <- c("viral_1", "viral_2")
+readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
+viral_map <- align_target( readPath, targLibs, "virus_example")
+}
 }

@@ -2,11 +2,10 @@ Package: animalcules
 Title: Statistical microbiome analysis on metagenomics data
 Version: 0.0.1
 Author:
-    Yue (Jason) Zhao <yuezh@bu.edu>,
+    Yue Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
-    Lucas Schiffer <schifferl@bu.edu>,
     W. Evan Johnson <wej@bu.edu>
-Maintainer: Yue (Jason) Zhao <yuezh@bu.edu>
+Maintainer: Yue Zhao <yuezh@bu.edu>
 Description:
     Statistical microbiome analysis on metagenomics data.
 License: Artistic-2.0

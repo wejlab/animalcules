@@ -18,6 +18,7 @@ This function will return a combined header from all the supplied .bam files
 This function generates a combined header from multiple .bam files from different reference libraries (e.g. a split bacterial library)
 }
 \examples{
+\dontrun{
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta', split = .0005)
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
@@ -25,4 +26,5 @@ Rsubread::align(index = "viral_1", readfile1 = readPath, output_file = "virus_ex
 Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 bam_files <- c('virus_example1.bam','virus_example2.bam')
 com_head <- combined_header(bam_files)
+}
 }

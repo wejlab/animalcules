@@ -16,9 +16,11 @@ This function will overwrite the existing .bam file with a new .bam file in the 
 This function will to remove all unmapped reads or lines in a .bam file (warning: overwrites the original file!). This function is needed because combining multiple .bam files from different microbial libraries may lead to some reads that mapped to one library and have unmapped entries from another library. This will just remove any unmapped entries and leave all referene mapped lines in the .bam file.
 }
 \examples{
+\dontrun{
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta')
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 Rsubread::align(index = "viral", readfile1 = readPath, output_file = "virus_example.bam")
 filtered <- filter_unmapped_reads("virus_example.bam")
+}
 }

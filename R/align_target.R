@@ -7,11 +7,13 @@
 #' This function will overwrite the existing .bam file with a new .bam file in the same location that has only mapped lines. The function iself returns the output .bam file name.
 #'
 #' @examples
+#' \dontrun{
 #' download_refseq('viral', compress = FALSE)
 #' mk_subread_index('viral.fasta')
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 #' Rsubread::align(index = "viral", readfile1 = readPath, output_file = "virus_example.bam")
 #' filtered <- filter_unmapped_reads("virus_example.bam")
+#' }
 #' @export
 
 filter_unmapped_reads <- function(bamfile) {
@@ -41,6 +43,7 @@ filter_unmapped_reads <- function(bamfile) {
 #' This function will return a combined header from all the supplied .bam files
 #'
 #' @examples
+#' \dontrun{
 #' download_refseq('viral', compress = FALSE)
 #' mk_subread_index('viral.fasta', split = .0005)
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
@@ -48,6 +51,7 @@ filter_unmapped_reads <- function(bamfile) {
 #' Rsubread::align(index = "viral_2", readfile1 = readPath, output_file = "virus_example2.bam")
 #' bam_files <- c('virus_example1.bam','virus_example2.bam')
 #' com_head <- combined_header(bam_files)
+#' }
 #' @export
 #'
 
@@ -88,6 +92,7 @@ combined_header <- function(bam_files, header_file = "header_tmp.sam") {
 #' This function will return a new .bam file with a replaced header. The function also outputs the new .bam filename.
 #'
 #' @examples
+#' \dontrun{
 #' download_refseq('viral', compress = FALSE)
 #' mk_subread_index('viral.fasta', split = .0005)
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
@@ -98,6 +103,7 @@ combined_header <- function(bam_files, header_file = "header_tmp.sam") {
 #' bam_reheader_R(com_head, 'virus_example2.bam')
 #' ## Note that the following would be an equivalent command if samtools is installed
 #' #system("samtools reheader header_tmp.sam virus_example2.bam > virus_example2h.bam")
+#' }
 #' @export
 
 bam_reheader_R <- function(head, old_bam, new_bam = paste(tools::file_path_sans_ext(old_bam),
@@ -140,6 +146,7 @@ bam_reheader_R <- function(head, old_bam, new_bam = paste(tools::file_path_sans_
 #' This function merges .bam files and combines them into a single file. The function also outputs the new .bam filename.
 #'
 #' @examples
+#' \dontrun{
 #' download_refseq('viral', compress = FALSE)
 #' mk_subread_index('viral.fasta', split = .0005)
 #' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
@@ -152,6 +159,7 @@ bam_reheader_R <- function(head, old_bam, new_bam = paste(tools::file_path_sans_
 #' bam_reheader_R(com_head, 'virus_example1.bam')
 #' bam_files <- c('virus_example1h.bam','virus_example2h.bam')
 #' merged_all <- merge_bam_files(bam_files, 'virus_example_merged')
+#' }
 #' @export
 
 merge_bam_files <- function(bam_files, destination, head_file = paste(destination,
@@ -193,6 +201,7 @@ merge_bam_files <- function(bam_files, destination, head_file = paste(destinatio
 #' This function writes to file a merged and sorted .bam file after aligning to all reference libraries given. The function also outputs the new .bam filename.
 #'
 #' @examples
+#' \dontrun{
 #' ## Get a reference genome library
 #' download_refseq('viral', compress = FALSE)
 #'
@@ -202,12 +211,12 @@ merge_bam_files <- function(bam_files, destination, head_file = paste(destinatio
 #' viral_map <- align_target( readPath, "viral", "virus_example")
 #' viral_map_sam <- Rsamtools::asSam(viral_map, overwrite=TRUE)
 #'
-# ## Make and align to a multiple reference genome libraries
-# mk_subread_index('viral.fasta', split=0.005)
-# targLibs <- c("viral_1", "viral_2")
-# readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
-# viral_map <- align_target( readPath, targLibs, "virus_example")
-#'
+#' ## Make and align to a multiple reference genome libraries
+#' mk_subread_index('viral.fasta', split=0.005)
+#' targLibs <- c("viral_1", "viral_2")
+#' readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
+#' viral_map <- align_target( readPath, targLibs, "virus_example")
+#' }
 #' @export
 
 align_target <- function(reads, libs, project_name = tools::file_path_sans_ext(reads),

@@ -21,6 +21,7 @@ This function will return a new .bam file with a replaced header. The function a
 This function replaces the header from one .bam file with a header from a different .sam file. This function mimicks the function of the 'reheader' function in samtools.
 }
 \examples{
+\dontrun{
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta', split = .0005)
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
@@ -31,4 +32,5 @@ com_head <- combined_header(bam_files)
 bam_reheader_R(com_head, 'virus_example2.bam')
 ## Note that the following would be an equivalent command if samtools is installed
 #system("samtools reheader header_tmp.sam virus_example2.bam > virus_example2h.bam")
+}
 }

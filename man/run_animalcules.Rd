@@ -9,6 +9,3 @@ run_animalcules()
 \description{
 Find the taxonomy for maximum 300 tids
 }
-\examples{
-run_animalcules()
-}

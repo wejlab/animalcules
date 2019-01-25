@@ -20,6 +20,7 @@ Returns one or more Subread indexes for the supplied reference .fasta file. If m
 This function is a wrapper for the Rsubread::buildindex function. It will generate one or more Subread indexes from a .fasta file. If the library is too large (default >4GB) it will automatically be split into multiple indexes, with _1, _2, etc at the end of the ref_lib basename.
 }
 \examples{
+\dontrun{
 ## Download all RefSeq reference viral genomes and make an index
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta')
@@ -27,5 +28,5 @@ mk_subread_index('viral.fasta')
 ## Download all RefSeq reference viral genomes and make more than one index
 download_refseq('viral', compress = FALSE)
 mk_subread_index('viral.fasta', split = .0005)
-
+}
 }

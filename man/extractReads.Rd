@@ -31,6 +31,7 @@ Writes a single .fastq file that contains all reads whose index matches the barc
 Helper function for demultiplexing sequencing reads, designed in a way to allow for parallelization accross barcodes (parallel extraction of reads by barcode). This function takes a specific barcode (numeric index) from lists of sample names/barcodes, a Biostrings::DNAStringSet of barcodes by sequence header, and a Biostrings::QualityScaledXStringSet of reads corresponding to the barcodes. Based on the barcode index given, it extracts all reads for the indexed barcode and writes all the reads from that barcode to a separate .fastq file.
 }
 \examples{
+\dontrun{
 ## Load example barcode, index, and read data into R session:
 barcodePath <- system.file("extdata", "barcodes.txt", package = "animalcules")
 bcFile <- read.table(barcodePath, sep = "\\t", header = TRUE)
@@ -54,4 +55,5 @@ more_results <- lapply(1:6, extractReads, bcFile[, 2], bcFile[, 1], inds,
 multicoreParam <- BiocParallel::MulticoreParam(workers = 3)
 parallel_results <- BiocParallel::bplapply(1:6, extractReads, bcFile[,
     2], bcFile[, 1], inds, reads, rcBarcodes = FALSE, location = ".", BPPARAM = multicoreParam)
+}
 }
