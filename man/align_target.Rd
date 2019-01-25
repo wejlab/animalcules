@@ -35,19 +35,10 @@ mk_subread_index('viral.fasta')
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 viral_map <- align_target( readPath, "viral", "virus_example")
 viral_map_sam <- Rsamtools::asSam(viral_map, overwrite=TRUE)
-
 ## Make and align to a multiple reference genome libraries
-<<<<<<< HEAD
-mk_subread_index('viral.fasta', split=0.005)
-targLibs <- c("viral_1", "viral_2")
-readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
-viral_map <- align_target( readPath, targLibs, "virus_example")
-}
-=======
 mk_subread_index('viral.fasta', split=0.0005)
 targLibs <- c("viral_1", "viral_2")
 readPath <- system.file("extdata", "virus_example.fastq", package = "animalcules")
 viral_map <- align_target( readPath, targLibs, "virus_example")
-
->>>>>>> a9c4dff576ea4a322f4c361c29000a916dea4149
+}
 }

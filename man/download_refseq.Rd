@@ -31,11 +31,6 @@ This function will automatically download RefSeq genome libraries in a .fasta fo
 download_refseq( 'viral', representative = TRUE )
 
 ## Download all RefSeq viral genomes
-<<<<<<< HEAD
-download_refseq( 'viral', reference = FALSE )
+download_refseq( 'viral', reference = FALSE ) # these will take a little longer, so are commented
 }
-=======
-#download_refseq( 'viral', reference = FALSE ) # these will take a little longer, so are commented
-
->>>>>>> a9c4dff576ea4a322f4c361c29000a916dea4149
 }
