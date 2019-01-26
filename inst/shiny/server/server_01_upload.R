@@ -1,5 +1,5 @@
 
-data_dir = system.file("inst/extdata/MAE.rds", package = "animalcules")
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 # reactive values shared thorough the shiny app
 vals <- reactiveValues(
     MAE = readRDS(data_dir),
