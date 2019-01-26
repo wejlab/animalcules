@@ -90,5 +90,8 @@ output$relabu_box_plot <- renderPlotly({
 # Return unique organisms for a given tax level
 output$relabu_box_organisms <- renderUI({
     organisms <- unique(as.data.frame(rowData(experiments(vals$MAE)[[1]]))[,input$relabu_box_taxlev])
-    selectizeInput('relabu_box_organisms', label='Organisms', choices=organisms, multiple=TRUE)
+    selectizeInput('relabu_box_organisms', label='Organisms', choices=organisms, selected=organisms[1], multiple=TRUE)
 })
+
+
+
