@@ -18,7 +18,7 @@ tabPanel("Abundance",
           checkboxInput("relabu_bar_group_samples", "Group Samples by Condition"),
 
           # Select taxon level
-          selectInput("relabu_bar_taxlev", "Tax Level", choices=tax.name, selected="family"),
+          selectInput("relabu_bar_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
 
           # Sort the bars
           radioButtons("relabu_bar_sort", "Sort By", c("No Sorting" = "nosort", 
@@ -76,7 +76,7 @@ tabPanel("Abundance",
           selectizeInput("relabu_heatmap_conditions", "Color Samples by Condition", choices=covariates, multiple=TRUE),
 
           # Select taxon level
-          selectInput("relabu_heatmap_taxlev", "Tax Level", choices=tax.name, selected="family"),
+          selectInput("relabu_heatmap_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
 
 
           # Column sort
@@ -138,7 +138,7 @@ tabPanel("Abundance",
           uiOutput("relabu_box_organisms"),
           
           # Select taxon level
-          selectInput("relabu_box_taxlev", "Tax Level", choices=tax.name, selected="family"),
+          selectInput("relabu_box_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
           
           # Select condition
           selectInput("relabu_box_condition", "Select condition", covariates.colorbar),

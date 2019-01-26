@@ -5,6 +5,8 @@ MAE = readRDS(data_dir)
 alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon")
 beta.methods <- c("wUniFrac", "bray")
 
+tax.default <- "phylum"
+
 tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
 org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))

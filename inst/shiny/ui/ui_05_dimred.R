@@ -9,7 +9,7 @@ tabPanel("Dimension Reduction",
 
           numericInput('dimred_pca_y', 'Principal Component (y-axis)', 2, min=1, max=50),
 
-          selectizeInput('dimred_pca_taxlev', 'Taxonomy Level', choices = tax.name, selected='no rank'),
+          selectizeInput('dimred_pca_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_pca_color", "Color points by:", covariates),
 
@@ -60,7 +60,7 @@ tabPanel("Dimension Reduction",
 
           numericInput('dimred_pcoa_y', 'Principal Coordinate (y-axis)', 2, min=1, max=50),
 
-          selectizeInput('dimred_pcoa_taxlev', 'Taxonomy Level', choices = tax.name, selected='no rank'),
+          selectizeInput('dimred_pcoa_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_pcoa_color", "Color points by:", covariates),
 
@@ -105,7 +105,7 @@ tabPanel("Dimension Reduction",
       sidebarLayout(
         sidebarPanel(
 
-          selectizeInput('dimred_tsne_taxlev', 'Taxonomy Level', choices = tax.name, selected='no rank'),
+          selectizeInput('dimred_tsne_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_tsne_color", "Color points by:", covariates),
 
