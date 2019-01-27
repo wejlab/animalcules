@@ -79,11 +79,23 @@ tabPanel("Summary and Filter",
         sidebarPanel(
           selectizeInput('filter_bin_cov', 'Covariate', choices=num_covariates, multiple=FALSE),
           uiOutput("filter_nbins"),
-          textInput('filter_bin_breaks', 'Custom Breaks (Comma Delimited)'),
-          verbatimTextOutput("filter_bin_to1"),
-          textInput('filter_bin_labels', 'Custom Labels (Comma Delimited)'),
-          verbatimTextOutput("filter_bin_to2"),
+
           textInput("filter_new_covariate", "Covariate Label", value = "new_cov"),
+
+          checkboxInput("filter_bin_adv", "Advanced Options"),
+
+          conditionalPanel(
+            condition = "input.filter_bin_adv == true",
+            textInput('filter_bin_breaks', 'Custom Breaks (Comma Delimited)'),
+            verbatimTextOutput("filter_bin_to1")
+          ),
+
+          conditionalPanel(
+            condition = "input.filter_bin_adv == true",
+            textInput('filter_bin_labels', 'Custom Labels (Comma Delimited)'),
+            verbatimTextOutput("filter_bin_to2")
+          ),
+
           actionButton("filter_create_bins", "Create Bins"),
           width=5
         ),
