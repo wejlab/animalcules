@@ -4,17 +4,32 @@ tabPanel("Biomarker",
                      sidebarPanel(
                          br(),
                          selectizeInput('taxl_biomarker', 'Taxonomy Level', choices = tax.name,
-                                        selected='genus'),
+                                        selected=tax.default),
                          selectInput("select_target_condition_biomarker", "Select Target Condition:",
                                      covariates.colorbar),
                          conditionalPanel(condition = "output.biomarker_condition_type == 'multiple'",
                                           helpText("Please select 2 levels to compare"),
                                           uiOutput("biomarker_condition_options")
                          ),
-                         numericInput("num.cv.nfolds", "Number of CV nfolds", value = 3, max = 20, min = 3),
-                         numericInput("num.biomarker.run", "Number of CV repeats", value = 3, max = 100, min = 3),
-                         numericInput("percent_top_biomarker", "Top biomarker proportion", value = 0.2, max = 1, min = 0.01),
-                         selectInput("select_model_biomarker", "Select Model", c("logistic regression", "gbm", "random forest")),
+                         checkboxInput("biomarker_adv", "Advanced Options"),
+                         conditionalPanel(
+                           condition = "input.biomarker_adv == true",
+                           numericInput("num.cv.nfolds", "Number of CV nfolds", value = 3, max = 20, min = 3)
+                         ),
+                         conditionalPanel(
+                           condition = "input.biomarker_adv == true",
+                           numericInput("num.biomarker.run", "Number of CV repeats", value = 3, max = 100, min = 3)
+                         ),
+                         conditionalPanel(
+                           condition = "input.biomarker_adv == true",
+                           numericInput("percent_top_biomarker", "Top biomarker proportion", value = 0.2, max = 1, min = 0.01)
+                         ),
+                         conditionalPanel(
+                           condition = "input.biomarker_adv == true",
+                           selectInput("select_model_biomarker", "Select Model", c("logistic regression", "gbm", "random forest"))
+                         ),
+
+
                          withBusyIndicatorUI(
                             actionButton("goButtonBiomarker",
                                          "Run",

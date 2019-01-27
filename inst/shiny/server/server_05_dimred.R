@@ -13,11 +13,11 @@ do_dimred_pca_plot <- eventReactive(input$dimred_pca_plot_btn, {
                          pcy = input$dimred_pca_y,
                          pcz = pcz,
                          datatype = input$dimred_pca_datatype)
-    return(result$plot)
+    return(suppressWarnings(result$plot))
 })
 output$dimred_pca_plot <- renderPlotly({
-    p <- do_dimred_pca_plot()
-    return(p)
+    p <- suppressWarnings(do_dimred_pca_plot())
+    return(suppressWarnings(p))
 })
 # Table
 do_dimred_pca_table <- eventReactive(input$dimred_pca_table_btn, {

@@ -5,16 +5,21 @@ tabPanel("Dimension Reduction",
       sidebarLayout(
         sidebarPanel(
 
-          numericInput('dimred_pca_x', 'Principal Component (x-axis)', 1, min=1, max=50),
-
-          numericInput('dimred_pca_y', 'Principal Component (y-axis)', 2, min=1, max=50),
 
           selectizeInput('dimred_pca_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_pca_color", "Color points by:", covariates),
 
-          checkboxInput("dimred_pca_adv", "Advanced Options"),
+          checkboxInput("dimred_pca_adv", "Advanced Options (3D)"),
 
+          conditionalPanel(
+            condition = "input.dimred_pca_adv == true",
+            numericInput('dimred_pca_x', 'Principal Component (x-axis)', 1, min=1, max=50)
+          ),
+          conditionalPanel(
+            condition = "input.dimred_pca_adv == true",
+            numericInput('dimred_pca_y', 'Principal Component (y-axis)', 2, min=1, max=50)
+          ),
           conditionalPanel(
             condition = "input.dimred_pca_adv == true",
             numericInput('dimred_pca_z', 'Principal Component (z-axis)', NA, min=1, max=50)
@@ -56,21 +61,24 @@ tabPanel("Dimension Reduction",
       sidebarLayout(
         sidebarPanel(
 
-          numericInput('dimred_pcoa_x', 'Principal Coordinate (x-axis)', 1, min=1, max=50),
-
-          numericInput('dimred_pcoa_y', 'Principal Coordinate (y-axis)', 2, min=1, max=50),
-
           selectizeInput('dimred_pcoa_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_pcoa_color", "Color points by:", covariates),
 
-          checkboxInput("dimred_pcoa_adv", "Advanced Options"),
+          checkboxInput("dimred_pcoa_adv", "Advanced Options (3D)"),
 
+          conditionalPanel(
+            condition = "input.dimred_pcoa_adv == true",
+            numericInput('dimred_pcoa_x', 'Principal Coordinate (x-axis)', 1, min=1, max=50)
+          ),
+          conditionalPanel(
+            condition = "input.dimred_pcoa_adv == true",
+            numericInput('dimred_pcoa_y', 'Principal Coordinate (y-axis)', 2, min=1, max=50)
+          ),
           conditionalPanel(
             condition = "input.dimred_pcoa_adv == true",
             numericInput('dimred_pcoa_z', 'Principal Coordinate (z-axis)', NA, min=1, max=50)
           ),
-
           conditionalPanel(
             condition = "input.dimred_pcoa_adv == true",
             selectInput("dimred_pcoa_shape", "Shape points by:", c("None", covariates.colorbar))
@@ -109,7 +117,7 @@ tabPanel("Dimension Reduction",
 
           selectInput("dimred_tsne_color", "Color points by:", covariates),
 
-          checkboxInput("dimred_tsne_adv", "Advanced Options"),
+          checkboxInput("dimred_tsne_adv", "Advanced Options (3D)"),
 
           conditionalPanel(
             condition = "input.dimred_tsne_adv == true",

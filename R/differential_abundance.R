@@ -127,6 +127,14 @@ differential_abundance <- function(MAE,
         }
         sigtab <- cbind(sigtab, foldChange)
         colnames(sigtab)[ncol(sigtab)] <- "Group Size adjusted fold change"
+
+
+        # total num
+        num_total = length(label.vec.num)
+        sigtab[,4] = paste0(sigtab[,4], "/", num_total)
+        sigtab[,5] = paste0(sigtab[,5], "/", num_total)
+
+
         return(sigtab)
 
       }

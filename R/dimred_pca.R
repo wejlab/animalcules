@@ -83,7 +83,7 @@ dimred_pca <- function(MAE,
     # Merge in covariate information
     if (!is.null(shape)) {
         df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=TRUE)
-        
+
         # When shape is required
         shape <- colnames(df.pca.m)[ncol(df.pca.m)] # Bypass duplicate colnames if color == shape
         df.pca.m[[shape]] <- as.factor(df.pca.m[[shape]])
@@ -96,7 +96,7 @@ dimred_pca <- function(MAE,
 
     # Plotly | Scatterplot
     if (is.null(pcz)) {
-        
+
         # 2D Plot
         p <- plot_ly(df.pca.m,
                      x = as.formula(paste("~PC", pcx, sep = "")),
