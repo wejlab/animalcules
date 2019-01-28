@@ -5,9 +5,6 @@
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 ![](inst/shiny/www/animalcules.jpg)
 
-The goal of animalcules is to study the biological sample using microbiome and transcriptome data. A typical workflow will be like:
-
-![total RNA-seq based host-microbes analysis](inst/extdata/workflow.png)
 
 ## Installation
 
