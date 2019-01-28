@@ -17,7 +17,6 @@ tabPanel("Diversity",
             selectInput("select_alpha_stat_method","Statistical Test", c("Wilcoxon rank sum test","T-test", "Kruskal-Wallis"))
           ),
 
-
           actionButton("alpha_boxplot", "Run")
         ),
         mainPanel(
