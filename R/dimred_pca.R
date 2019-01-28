@@ -82,7 +82,7 @@ dimred_pca <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=F], by=0, all=TRUE)
+        df.pca.m <- merge(df.pca, sam_table[, c(color, shape), drop=FALSE], by=0, all=TRUE)
 
         # When shape is required
         shape <- colnames(df.pca.m)[ncol(df.pca.m)] # Bypass duplicate colnames if color == shape

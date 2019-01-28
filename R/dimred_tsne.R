@@ -82,7 +82,7 @@ dimred_tsne <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.tsne.m <- merge(df.tsne, sam_table[, c(color, shape), drop=F], by=0, all=TRUE)
+        df.tsne.m <- merge(df.tsne, sam_table[, c(color, shape), drop=FALSE], by=0, all=TRUE)
 
         # When shape is required
         shape <- colnames(df.tsne.m)[ncol(df.tsne.m)] # Bypass duplicate colnames if color == shape

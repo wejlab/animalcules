@@ -90,7 +90,7 @@ relabu_barplot <- function(MAE,
     }
 
     # Put selected organisms first
-    relabu_table <- relabu_table[,order(colSums(relabu_table)),drop=F]
+    relabu_table <- relabu_table[,order(colSums(relabu_table)),drop=FALSE]
     if (!is.null(order_organisms)) {
         org_order <- c(setdiff(colnames(relabu_table), order_organisms), rev(order_organisms))
         relabu_table <- relabu_table[,org_order]
@@ -106,18 +106,18 @@ relabu_barplot <- function(MAE,
     # If any conditions are selected make a side bar
     if (!is.null(sample_conditions) || (group_samples && group_conditions != "ALL")) {
         if (!group_samples) {
-            sam_table <- sam_table[,sample_conditions,drop=F]
+            sam_table <- sam_table[,sample_conditions,drop=FALSE]
         }
 
         # Order samples by conditions if not by organisms
         if (sort_by == "conditions") {
             for (i in ncol(sam_table):1) {
-                sam_table <- sam_table[order(sam_table[[i]]),,drop=F]
+                sam_table <- sam_table[order(sam_table[[i]]),,drop=FALSE]
             }
             # Reorder stacked barplot
-            relabu_table <- relabu_table[order(match(rownames(relabu_table), rownames(sam_table))),,drop=F]
+            relabu_table <- relabu_table[order(match(rownames(relabu_table), rownames(sam_table))),,drop=FALSE]
         } else {
-            sam_table <- sam_table[order(match(rownames(sam_table), rownames(relabu_table))),,drop=F]
+            sam_table <- sam_table[order(match(rownames(sam_table), rownames(relabu_table))),,drop=FALSE]
         }
 
         if (nrow(sam_table) > 1) {
@@ -137,12 +137,12 @@ relabu_barplot <- function(MAE,
                                   y = rownames(mat),
                                   z = mat,
                                   type = "heatmap",
-                                  showscale=F,
+                                  showscale=FALSE,
                                   hoverinfo = "x+y+text",
                                   text=hover.txt) %>%
                                   layout(xaxis = list(title = "",
                                                       tickangle = -45),
-                                         yaxis = list(showticklabels = F,
+                                         yaxis = list(showticklabels = FALSE,
                                                       type = 'category',
                                                       ticks = ""))
         }

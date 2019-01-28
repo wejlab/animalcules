@@ -57,7 +57,7 @@ relabu_boxplot <- function(MAE,
               }
           } %>%
           # Subset on chosen organisms
-          .[organisms, , drop=F] %>%
+          .[organisms, , drop=FALSE] %>%
           # Transpose
           t() %>%
           # Back to data frame

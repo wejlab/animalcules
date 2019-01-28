@@ -132,20 +132,20 @@ output$filter_summary_table <- renderTable({
     relabu_table <- counts_to_relabu(counts_table)
 
     dat <- list()
-    dat['Number of Samples'] <- nrow(sam_table)
-    dat['Number of Covariates'] <- ncol(sam_table)
-    dat['Number of Organisms'] <- nrow(counts_table)
+    dat['Number of Samples'] <- round(nrow(sam_table))
+    dat['Number of Covariates'] <- round(ncol(sam_table))
+    dat['Number of Organisms'] <- round(nrow(counts_table))
     dat['Sample Mean Counts'] <- mean(apply(counts_table, 2, mean))
     dat['Sample Median Counts'] <- median(apply(counts_table, 2, mean))
     dat['Organism Mean Counts'] <- mean(apply(counts_table, 1, mean))
     dat['Organism Median Counts'] <- median(apply(counts_table, 1, mean))
     df <- as.data.frame(unlist(dat))
-    
+
     # Formatting
     df$temp <- rownames(df)
     colnames(df) <- c("", "Summary Statistic")
     df <- df[,c(2,1)]
-
+    df[,2] <- round(df[,2])
     return(df)
 })
 

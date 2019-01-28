@@ -30,6 +30,9 @@
 #' p
 #'
 #' @import MultiAssayExperiment
+#' @import glmnet
+#' @import gbm
+#' @import DMwR
 #'
 #' @export
 
