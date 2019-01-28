@@ -164,7 +164,12 @@ percent <- function(x, digits = 2, format = "f") {
 #' @export
 is.categorical <- function(v) {
    if (is.integer(v) || is.numeric(v)) {
-     return(FALSE)
+     if (length(unique(v)) > 3){
+        return(FALSE)
+     } else{
+        return(TRUE)
+     }
+
    } else {
      return(TRUE)
    }

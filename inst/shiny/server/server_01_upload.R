@@ -40,6 +40,8 @@ updateCovariate <- function(session){
 
     # Filter
     updateSelectInput(session, "filter_type_metadata", choices = covariates)
+    updateSelectInput(session, "filter_bin_cov", choices = num_covariates)
+
 
     # Relabu
     updateSelectInput(session, "relabu_bar_sample_conditions", choices = covariates)
@@ -52,17 +54,22 @@ updateCovariate <- function(session){
     updateSelectInput(session, "dimred_pca_shape", choices = c("None", covariates.colorbar))
     updateSelectInput(session, "dimred_pcoa_color", choices = covariates)
     updateSelectInput(session, "dimred_pcoa_shape", choices = c("None", covariates.colorbar))
+    updateSelectInput(session, "dimred_tsne_color", choices = covariates)
+    updateSelectInput(session, "dimred_tsne_shape", choices = c("None", covariates.colorbar))
+
 
     # Diversity
     updateSelectInput(session, "select_alpha_div_condition", choices = covariates.colorbar)
     updateSelectInput(session, "select_beta_condition", choices = covariates.two.levels)
+    updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
 
     # Differential
     updateSelectInput(session, "da_condition", choices = covariates)
     updateSelectInput(session, "da.condition.covariate", choices = covariates)
 
     # Biomarker
-    updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
+    updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.colorbar)
+
 }
 
 # update taxonomy levels
@@ -71,19 +78,24 @@ updateTaxLevel <- function(session){
     tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 
     # Relabu
-    updateSelectInput(session, "relabu_bar_taxlev", choices = tax.name)
-    updateSelectInput(session, "relabu_heatmap_taxlev", choices = tax.name)
-    updateSelectInput(session, "relabu_box_taxlev", choices = tax.name)
+    updateSelectInput(session, "relabu_bar_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "relabu_heatmap_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "relabu_box_taxlev", choices = tax.name, selected=tax.default)
 
     # Diversity
-    updateSelectInput(session, "taxl.alpha", choices = tax.name)
-    updateSelectInput(session, "taxl.beta", choices = tax.name)
+    updateSelectInput(session, "taxl.alpha", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "taxl.beta", choices = tax.name, selected=tax.default)
+
+    # Dim Reduction
+    updateSelectInput(session, "dimred_pca_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "dimred_pcoa_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "dimred_tsne_taxlev", choices = tax.name, selected=tax.default)
 
     # Differential
-    updateSelectInput(session, "taxl.da", choices = tax.name)
+    updateSelectInput(session, "taxl.da", choices = tax.name, selected=tax.default)
 
     # Biomarker
-    updateSelectInput(session, "taxl_biomarker", choices = tax.name)
+    updateSelectInput(session, "taxl_biomarker", choices = tax.name, selected="genus")
 }
 
 # update samples
@@ -112,12 +124,12 @@ updateOrganisms <- function(session){
 
 observeEvent(input$upload_animalcules,{
   withBusyIndicatorServer("upload_animalcules", {
-    MAE <- readRDS(input$rdfile$datapath)
-    vals$MAE <- MAE
-    vals$MAE_backup <- MAE
+    MAE_tmp <- readRDS(input$rdfile$datapath)
+    #print(colData(MAE_tmp))
+    vals$MAE <- MAE_tmp
+    vals$MAE_backup <- MAE_tmp
     # Update ui
-    updateCovariate(session)
-    updateSample(session)
+    update_inputs(session)
   })
 })
 
@@ -194,9 +206,7 @@ observeEvent(input$uploadDataCount,{
 
 
   # Update ui
-  updateCovariate(session)
-  updateSample(session)
-  updateTaxLevel(session)
+  update_inputs(session)
   })
 })
 
@@ -234,7 +244,11 @@ observeEvent(input$uploadDataPs, {
 
     ids <- rownames(count_table)
     tids <- unlist(lapply(ids, FUN = grep_tid))
-    print(tids)
+    tid_remove <- which(is.na(tids))
+    ids <- ids[-tid_remove]
+    tids <- tids[-tid_remove]
+    count_table <- count_table[-tid_remove,]
+    #print(tids)
     taxonLevels <- find_taxonomy(tids)
     print("find taxonomy done!")
     tax_table <- find_taxon_mat(ids, taxonLevels)
@@ -271,15 +285,15 @@ observeEvent(input$uploadDataPs, {
   MAE <-
       MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
                                                colData = se_colData)
-saveRDS(MAE, "~/Desktop/test.RDS")
+  ### debug
+  # saveRDS(MAE, "~/Desktop/test.RDS")
+
   # update vals
   vals$MAE <- MAE
   vals$MAE_backup <- MAE
 
   # Update ui
-  updateCovariate(session)
-  updateSample(session)
-  updateTaxLevel(session)
+  update_inputs(session)
 
 
   })

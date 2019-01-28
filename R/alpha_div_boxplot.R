@@ -33,7 +33,7 @@ alpha_div_boxplot <- function(MAE,
 
     # Extract data
     microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
-    host <- MAE[['HostGenetics']]
+    #host <- MAE[['HostGenetics']]
     tax_table <- as.data.frame(SummarizedExperiment::rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(SummarizedExperiment::colData(microbe)) # sample x condition
     counts_table <- as.data.frame(SummarizedExperiment::assays(microbe))[,rownames(sam_table)] # organism x sample

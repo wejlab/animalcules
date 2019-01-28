@@ -49,6 +49,9 @@ tabPanel("Summary and Filter",
             actionButton("filter_reset_btn", "Reset")
           ),
           width=5,
+          br(),
+          downloadButton('download_rds', 'Download Animalcules File'),
+
 
           checkboxInput("filter_adv", "Advanced Options"),
           conditionalPanel(

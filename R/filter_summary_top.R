@@ -32,7 +32,7 @@ filter_summary_top <- function(MAE,
 
     # Extract data
     microbe <- MAE_subset[['MicrobeGenetics']]
-    host <- MAE_subset[['HostGenetics']]
+    #host <- MAE_subset[['HostGenetics']]
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 

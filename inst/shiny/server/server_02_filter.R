@@ -145,9 +145,19 @@ output$filter_summary_table <- renderTable({
     df$temp <- rownames(df)
     colnames(df) <- c("", "Summary Statistic")
     df <- df[,c(2,1)]
-    df[,2] <- round(df[,2])
+    df[,2] <- as.character(round(df[,2]))
     return(df)
 })
+
+
+
+## download
+output$download_rds <- downloadHandler(filename = function() {
+  paste("animalcules_data_", Sys.Date(), ".rds", sep="")
+}, content = function(file) {
+  saveRDS(vals$MAE, file=file)
+})
+
 
 ## Categorize
 output$filter_nbins <- renderUI({

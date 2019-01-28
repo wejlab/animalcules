@@ -5,7 +5,7 @@
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 <br/>
-<img src="https://github.com/compbiomed/animalcules/blob/master/inst/shiny/www/animalcules.jpg" width="400" height="330">
+<img src="https://github.com/compbiomed/animalcules/blob/master/inst/shiny/www/animalcules.jpg" width="500" height="360">
 
 
 
