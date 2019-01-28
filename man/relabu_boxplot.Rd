@@ -5,7 +5,7 @@
 \title{Plot boxplots comparing different organism prevalence across conditions}
 \usage{
 relabu_boxplot(MAE, tax_level, condition, organisms = c(),
-  datatype = c("counts", "relabu", "logcpm"))
+  datatype = c("counts", "relative abundance", "logcpm"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -16,7 +16,7 @@ relabu_boxplot(MAE, tax_level, condition, organisms = c(),
 
 \item{organisms}{Include organisms for plotting e.g. c("Escherichia", "Actinomyces")}
 
-\item{datatype}{Datatype to use e.g. c("counts", "relabu", "logcpm")}
+\item{datatype}{Datatype to use e.g. c("counts", "relative abundance", "logcpm")}
 }
 \value{
 A plotly object

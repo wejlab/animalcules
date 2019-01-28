@@ -45,7 +45,8 @@ Imports:
     lattice,
     glmnet,
     tsne,
-    DMwR
+    DMwR,
+    plotROC
 Suggests:
     BiocCheck,
     BiocStyle,

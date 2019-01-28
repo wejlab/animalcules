@@ -14,7 +14,7 @@
 #'                        tax_level = "genus",
 #'                        condition = "DISEASE",
 #'                        alpha_metric = "shannon",
-#'                        alpha_stat = "Mann-Whitney")
+#'                        alpha_stat = "Wilcoxon rank sum test")
 #' p
 #'
 #' @import dplyr
@@ -29,7 +29,7 @@ do_alpha_div_test <- function(MAE,
                              condition,
                              alpha_metric = c("inverse_simpson", "gini_simpson",
                                               "shannon", "fisher", "coverage"),
-                             alpha_stat = c("Mann-Whitney",
+                             alpha_stat = c("Wilcoxon rank sum test",
                                             "T-test",
                                             "Kruskal-Wallis")){
 

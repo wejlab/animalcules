@@ -4,7 +4,7 @@ tabPanel("Biomarker",
                      sidebarPanel(
                          br(),
                          selectizeInput('taxl_biomarker', 'Taxonomy Level', choices = tax.name,
-                                        selected=tax.default),
+                                        selected='genus'),
                          selectInput("select_target_condition_biomarker", "Select Target Condition:",
                                      covariates.colorbar),
                          conditionalPanel(condition = "output.biomarker_condition_type == 'multiple'",
@@ -47,9 +47,9 @@ tabPanel("Biomarker",
                                      br(),
                                      plotOutput("importance_plot",height=300)),
 
-                            tabPanel("CV performance",
+                            tabPanel("CV ROC plot",
                                      br(),
-                                     tableOutput("loocv_output"))
+                                     plotOutput("roc_plot"))
                          ), width=9
                      )
                  )

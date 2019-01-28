@@ -57,6 +57,7 @@ library(ggplot2)
 library(forcats)
 library(grid)
 library(lattice)
+library(plotROC)
 library(animalcules)
 ```
 
@@ -307,7 +308,7 @@ p
 ```{r}
 p <- find_biomarker(MAE,
                     tax_level="genus",
-                    input_select_target_biomarker=c("DISEASE"),
+                    input_select_target_biomarker=c("SEX"),
                     nfolds = 3,
                     nrepeats = 3,
                     seed = 99,
@@ -319,6 +320,6 @@ p$biomarker
 # importance plot
 p$importance_plot
 
-# Cross-validation result
-p$biomarker_cv_performance
+# ROC plot
+p$roc_plot
 ```

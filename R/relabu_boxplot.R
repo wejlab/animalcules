@@ -4,7 +4,7 @@
 #' @param tax_level The taxon level used for organisms
 #' @param condition Compare groups by condition e.g. "SEX"
 #' @param organisms Include organisms for plotting e.g. c("Escherichia", "Actinomyces")
-#' @param datatype Datatype to use e.g. c("counts", "relabu", "logcpm")
+#' @param datatype Datatype to use e.g. c("counts", "relative abundance", "logcpm")
 #' @return A plotly object
 #'
 #' @examples
@@ -27,7 +27,7 @@ relabu_boxplot <- function(MAE,
                            tax_level,
                            condition,
                            organisms=c(),
-                           datatype=c("counts", "relabu", "logcpm")) {
+                           datatype=c("counts", "relative abundance", "logcpm")) {
 
     # Default variables
     datatype <- match.arg(datatype)
@@ -48,7 +48,7 @@ relabu_boxplot <- function(MAE,
           upsample_counts(tax_table, tax_level) %>%
           # Choose data type
           {
-              if (datatype == "relabu") {
+              if (datatype == "relative abundance") {
                   counts_to_relabu(.)
               } else if (datatype == "logcpm") {
                   counts_to_logcpm(.)

@@ -14,7 +14,7 @@ diversity_beta_test(MAE, tax_level, input_select_beta_condition,
 
 \item{input_select_beta_condition}{Which condition to group samples}
 
-\item{input_select_beta_stat_method}{"PERMANOVA", "Kruskal-Wallis", "Mann-Whitney"}
+\item{input_select_beta_stat_method}{"PERMANOVA", "Kruskal-Wallis", "Wilcoxon rank sum test"}
 
 \item{input_num_permutation_permanova}{number of permutations}
 }

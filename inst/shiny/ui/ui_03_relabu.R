@@ -21,9 +21,9 @@ tabPanel("Abundance",
           selectInput("relabu_bar_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
 
           # Sort the bars
-          radioButtons("relabu_bar_sort", "Sort By", c("No Sorting" = "nosort", 
-                                                           "Conditions" = "conditions", 
-                                                           "Organisms"  = "organisms"), 
+          radioButtons("relabu_bar_sort", "Sort By", c("No Sorting" = "nosort",
+                                                           "Conditions" = "conditions",
+                                                           "Organisms"  = "organisms"),
                                                            selected     = "nosort"),
 
           checkboxInput("relabu_bar_adv", "Advanced Options"),
@@ -57,14 +57,14 @@ tabPanel("Abundance",
             condition = "input.relabu_bar_adv == true",
             sliderInput("relabu_bar_height", "Plot Height", 600, 1000, value=600, step=50, post="px")
           ),
-          
+
           # Do plot button
           actionButton("relabu_bar_plot_btn", "Plot"),
           width=3
         ),
         mainPanel(
           uiOutput("relabu_bar_dynamic_plot"),
-          width=9        
+          width=9
         )
       )
     ),
@@ -80,9 +80,9 @@ tabPanel("Abundance",
 
 
           # Column sort
-          radioButtons("relabu_heatmap_sort", "Sort By", c("No Sorting" = "nosort", 
-                                                           "Conditions" = "conditions", 
-                                                           "Organisms"  = "organisms"), 
+          radioButtons("relabu_heatmap_sort", "Sort By", c("No Sorting" = "nosort",
+                                                           "Conditions" = "conditions",
+                                                           "Organisms"  = "organisms"),
                                                            selected     = "nosort"),
 
           checkboxInput("relabu_heatmap_adv", "Advanced Options"),
@@ -125,7 +125,7 @@ tabPanel("Abundance",
         ),
         mainPanel(
           uiOutput("relabu_heatmap_dynamic_plot"),
-          width=9        
+          width=9
         )
       )
     ),
@@ -136,26 +136,26 @@ tabPanel("Abundance",
 
           # Dynamic choose from organisms based on tax level
           uiOutput("relabu_box_organisms"),
-          
+
           # Select taxon level
           selectInput("relabu_box_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
-          
+
           # Select condition
           selectInput("relabu_box_condition", "Select condition", covariates.colorbar),
 
           # Select datatype
-          radioButtons("relabu_box_datatype", "Select data format", c("Relative Abundance" = "relabu", 
-                                                                      "Counts"             = "counts", 
-                                                                      "log(CPM)"           = "logcpm"), 
+          radioButtons("relabu_box_datatype", "Select data format", c("Relative Abundance" = "relative abundance",
+                                                                      "Counts"             = "counts",
+                                                                      "log(CPM)"           = "logcpm"),
                                                                       selected             = "logcpm"),
-          
+
           # Do plot button
           actionButton("relabu_box_plot_btn", "Plot"),
           width=3
         ),
         mainPanel(
           plotlyOutput("relabu_box_plot", width="800px"),
-          width=9        
+          width=9
         )
       )
     )

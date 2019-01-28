@@ -3,7 +3,7 @@
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
 #' @param input_select_beta_condition Which condition to group samples
-#' @param input_select_beta_stat_method "PERMANOVA", "Kruskal-Wallis", "Mann-Whitney"
+#' @param input_select_beta_stat_method "PERMANOVA", "Kruskal-Wallis", "Wilcoxon rank sum test"
 #' @param input_num_permutation_permanova number of permutations
 #' @return A plotly object
 #'
@@ -80,7 +80,7 @@ diversity_beta_test <- function(MAE,
     dist.list <- list(dist.within.a, dist.within.b, dist.between)
     names(dist.list) <- c(unique(sam_table$condition)[1], unique(sam_table$condition)[2], "between")
 
-    if (input_select_beta_stat_method == "Mann-Whitney"){
+    if (input_select_beta_stat_method == "Wilcoxon rank sum test"){
       result.list <- list()
       group.name <- c()
       for (i in 1:length(dist.list)){

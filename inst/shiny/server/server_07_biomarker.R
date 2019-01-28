@@ -22,8 +22,8 @@
          biomarker.vals$biomarker.list$importance_plot
       })
 
-      output$loocv_output <- renderTable({
-       biomarker.vals$biomarker.list$biomarker_cv_performance
+      output$roc_plot <- renderPlot({
+       biomarker.vals$biomarker.list$roc_plot
       })
 
   })

@@ -14,7 +14,7 @@ tabPanel("Diversity",
           ),
           conditionalPanel(
             condition = "input.alpha_adv == true",
-            selectInput("select_alpha_stat_method","Statistical Test", c("Mann-Whitney","T-test", "Kruskal-Wallis"))
+            selectInput("select_alpha_stat_method","Statistical Test", c("Wilcoxon rank sum test","T-test", "Kruskal-Wallis"))
           ),
 
 
@@ -55,7 +55,7 @@ tabPanel("Diversity",
             tabPanel("Boxplot",
               fluidRow(
                 column(4,
-                  selectInput("select_beta_stat_method","Select Test", c("PERMANOVA", "Kruskal-Wallis", "Mann-Whitney")),
+                  selectInput("select_beta_stat_method","Select Test", c("PERMANOVA", "Kruskal-Wallis", "Wilcoxon rank sum test")),
                   helpText("Only variables with 2 levels are supported" ),
                   selectInput("select_beta_condition", "Select condition", covariates.two.levels),
                   numericInput("num_permutation_permanova", "Number of permutations", value = 999, max = 2000)

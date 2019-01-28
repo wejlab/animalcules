@@ -1,19 +1,19 @@
 #' Get alpha diversity
 #'
 #' @param sam_table A dataframe with 2 cols, richness and condition
-#' @param alpha_stat Mann-Whitney or T-test for the test
+#' @param alpha_stat Wilcoxon rank sum test or T-test for the test
 #' @return A dataframe
 #'
 #' @examples
 #' df_test <- data.frame(richness = 1:10,
 #' condition = c(rep(1,5), rep(0,5)))
-#' alpha_div_test(df_test,alpha_stat="Mann-Whitney")
+#' alpha_div_test(df_test,alpha_stat="Wilcoxon rank sum test")
 #'
 #' @export
 
 alpha_div_test <- function(sam_table, alpha_stat){
     if (length(unique(sam_table$condition)) == 2){
-    if (alpha_stat == "Mann-Whitney"){
+    if (alpha_stat == "Wilcoxon rank sum test"){
       tmp <- wilcox.test(richness ~ condition, data = sam_table)
       output <- c(tmp$method, tmp$p.value)
       output.table <- data.frame(output)
@@ -26,11 +26,13 @@ alpha_div_test <- function(sam_table, alpha_stat){
       rownames(output.table) <- c("Method", "P-value")
       output.table
     } else{
-      print("Condition level number is 2, please use Mann-Whitney test.")
+      output.table = data.frame(("Condition level number is 2, please use Wilcoxon rank sum test."))
+      colnames(output.table) <- "Note"
+      output.table
     }
 
     } else if (length(unique(sam_table$condition)) > 2){
-    if (alpha_stat == "Mann-Whitney"){
+    if (alpha_stat == "Wilcoxon rank sum test"){
       result.list <- list()
       sam_table.list <- list()
       for (i in 1:length(unique(sam_table$condition))){

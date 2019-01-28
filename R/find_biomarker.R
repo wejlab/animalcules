@@ -12,8 +12,9 @@
 #' @return A list
 #'
 #' @import caret
+#' @import plotROC
 #' @import forcats
-#' @importFrom ggplot2 geom_col aes coord_flip theme_bw
+#' @importFrom ggplot2 geom_col aes coord_flip theme_bw coord_equal annotate
 #'
 #' @examples
 #' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
@@ -66,7 +67,7 @@ find_biomarker <- function(MAE,
     logcpm_table[,'y'] <- sam_table %>%
                             dplyr::pull(input_select_target_biomarker)
 
-    print(1)
+
     # set up classification model prameters
     fitControl <- caret::trainControl(## n1-fold CV
                                method = "repeatedcv",
@@ -77,7 +78,7 @@ find_biomarker <- function(MAE,
                                summaryFunction = twoClassSummary,
                                sampling = "smote",
                                savePredictions = TRUE)
-    print(2)
+
     # choose different model
     if (model_name == "logistic regression"){
         model_fit <- caret::train(y ~ .,
@@ -113,7 +114,7 @@ find_biomarker <- function(MAE,
                     # ranger specific parameter
                     importance = "impurity")
     }
-    print(3)
+
     # process the importance score
     if (model_name == "svm"){
         svm_importance <- caret::varImp(model_fit)$importance
@@ -165,7 +166,7 @@ find_biomarker <- function(MAE,
                             coord_flip()+
                             theme_bw()
     }
-    print(4)
+
     # retrain the model using the biomarker
     logcpm_table <- logcpm_table %>%
                         dplyr::select(biomarker,y)
@@ -206,19 +207,34 @@ find_biomarker <- function(MAE,
                     importance = "impurity")
     }
 
-    print(5)
+
 
     # print the biomarker CV performance
-    biomarker_cv_performance <- model_fit$results %>%
-        dplyr::select(ROC, Sens, Spec) %>%
-        dplyr::filter(ROC == max(ROC))
-    print(6)
+    # biomarker_cv_performance <- model_fit$results %>%
+    #     dplyr::select(ROC, Sens, Spec) %>%
+    #     dplyr::filter(ROC == max(ROC))
+
+    prob_pred <- as.numeric(model_fit$pred$obs)
+    prob_pred[prob_pred == 1] <- 0
+    prob_pred[prob_pred == 2] <- 1
+    df_roc <- data.frame(m = model_fit$pred[,which(colnames(model_fit$pred)
+                                                   == levels(model_fit$pred$obs)[2])],
+                         d = prob_pred,
+                         stringsAsFactors = FALSE)
+
+    g <- ggplot(df_roc, aes(m=m, d=d)) +
+    geom_roc(n.cuts=0) +
+    coord_equal() +
+    style_roc()
+
+    roc_plot <- g + annotate("text", x=0.75, y=0.25,
+                             label=paste("AUC =", round((calc_auc(g))$AUC, 4)))
 
     # output a list
     list_output <- list(biomarker = biomarker,
                         importance_plot = importance_plot,
-                        biomarker_cv_performance = biomarker_cv_performance[1,])
-    print(7)
+                        roc_plot = roc_plot)
+
     return(list_output)
 
 }
