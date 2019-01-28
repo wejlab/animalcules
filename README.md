@@ -3,7 +3,7 @@
 [![Travis build status](https://travis-ci.org/compbiomed/animalcules.svg?branch=master)](https://travis-ci.org/compbiomed/animalcules)
 [![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-![](inst/shiny/www/animalcules.jpg)
+![](inst/shiny/www/animalcules.jpg){:height="50%" width="50%"}
 
 
 ## Installation
