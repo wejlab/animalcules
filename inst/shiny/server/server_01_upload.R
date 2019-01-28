@@ -234,7 +234,7 @@ observeEvent(input$uploadDataPs, {
 
     # Choose only the samples in metadata that have counts data as well
     metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
-    print("read in done!")
+    # print("read in done!")
     # Test and fix the constant/zero row
     row.remove.index <- c()
     if (sum(rowSums(as.matrix(count_table)) == 0) > 0){
@@ -250,7 +250,7 @@ observeEvent(input$uploadDataPs, {
     count_table <- count_table[-tid_remove,]
     #print(tids)
     taxonLevels <- find_taxonomy(tids)
-    print("find taxonomy done!")
+    # print("find taxonomy done!")
     tax_table <- find_taxon_mat(ids, taxonLevels)
     # Test and fix the constant/zero row
     if (!is.null(row.remove.index)){
