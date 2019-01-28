@@ -108,7 +108,7 @@ sidebarLayout(
                                       ".tsv"
                                   )
                         ),
-                        fileInput("annotfile.ps", "Annotation .tsv file (required):",
+                        fileInput("annotfile.ps", "Annotation file (required):",
                                   accept = c(
                                       "text/csv",
                                       "text/comma-separated-values",
