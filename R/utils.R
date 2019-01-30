@@ -189,6 +189,21 @@ is.integer0 <- function(x){
   is.integer(x) && length(x) == 0L
 }
 
+#' check if integer(1)
+#'
+#' @param x A single value
+#' @return Boolean
+#'
+#' @examples
+#' nums <- 2
+#' is.integer1(nums)
+#'
+#' @export
+is.integer1 <- function(x){
+  is.integer(x) && length(x) == 1L
+}
+
+
 #' Converts decimal percentage to string with specified digits
 #'
 #' @param v A single value

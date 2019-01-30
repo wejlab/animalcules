@@ -14,12 +14,6 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Imports:
-    tools,
-    Rsubread,
-    Rsamtools,
-    Biostrings,
-    taxize,
-    BiocParallel,
     assertthat,
     shiny,
     shinyjs,
