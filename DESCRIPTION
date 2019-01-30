@@ -40,7 +40,8 @@ Imports:
     glmnet,
     tsne,
     DMwR,
-    plotROC
+    plotROC,
+    DT
 Suggests:
     BiocCheck,
     BiocStyle,
