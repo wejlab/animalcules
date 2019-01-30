@@ -6,6 +6,9 @@
 \usage{
 run_animalcules()
 }
+\value{
+None
+}
 \description{
 Find the taxonomy for maximum 300 tids
 }

@@ -1,7 +1,7 @@
 #' Find the taxonomy for maximum 300 tids
 #'
+#' @return None
 #' @export
-
 run_animalcules <- function() {
   appDir <- system.file("shiny", package = "animalcules")
   if (appDir == "") {

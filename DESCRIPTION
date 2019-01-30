@@ -41,7 +41,8 @@ Imports:
     tsne,
     DMwR,
     plotROC,
-    DT
+    DT,
+    utils
 Suggests:
     BiocCheck,
     BiocStyle,
