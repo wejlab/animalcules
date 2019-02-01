@@ -53,10 +53,10 @@ diversity_beta_heatmap <- function(MAE,
         df.sam <- sam_table[,input_bdhm_select_conditions,drop=FALSE]
         if (input_bdhm_sort_by == "conditions") {
           for (i in ncol(df.sam):1) {
-            df.sam <- df.sam[order(df.sam[[i]]),,drop=FALSE]
+            df.sam <- df.sam[rev(order(df.sam[[i]])),,drop=FALSE]
           }
           dist.mat <- dist.mat[order(match(rownames(dist.mat), rownames(df.sam))),,drop=FALSE]
-          dist.mat <- dist.mat[,order(match(colnames(dist.mat), rownames(df.sam))),drop=FALSE]
+          dist.mat <- dist.mat[,rev(order(match(colnames(dist.mat), rownames(df.sam)))),drop=FALSE]
         } else {
           df.sam <- df.sam[order(match(rownames(df.sam), rownames(dist.mat))),,drop=FALSE]
         }
