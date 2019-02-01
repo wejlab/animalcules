@@ -16,9 +16,10 @@ tags$div(
 sidebarLayout(
    sidebarPanel(
        radioButtons("uploadChoice", "Upload:",
-                    c("Example data" = "example",
-                      "Count File" = "count",
-                      "PathoScope Files" = "pathofiles",
+                    c("example data" = "example",
+                      "count file" = "count",
+                      "pathoScope file" = "pathofiles",
+                      "MAE file" = "mae.file",
                       "animalcules file" = "animalcules.file"
                     )),
        br(),
@@ -40,6 +41,26 @@ sidebarLayout(
                         ),
                         withBusyIndicatorUI(
                           actionButton("upload_animalcules",
+                                       "Upload",
+                                       class = "btn-primary")
+                        )
+
+       ),
+       conditionalPanel(condition = sprintf("input['%s'] == 'mae.file'", "uploadChoice"),
+                        fileInput("rdfile", ".rds file (required):",
+                                  accept = c(
+                                    ".rds"
+                                  )
+                        ),
+                        radioButtons("mae_data_type", "Choose count type",
+                                     choices = c(
+                                                 "EM count" = "em",
+                                                 "Best hit" = 'hit'
+                                     ),
+                                     selected = "hit"
+                        ),
+                        withBusyIndicatorUI(
+                          actionButton("upload_mae",
                                        "Upload",
                                        class = "btn-primary")
                         )

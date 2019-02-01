@@ -43,7 +43,7 @@ dimred_pcoa <- function(MAE,
     method <- match.arg(method)
 
     # Extract data
-    microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+    microbe <- MAE[['MicrobeGenetics']]
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample

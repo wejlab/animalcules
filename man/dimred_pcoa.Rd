@@ -5,7 +5,7 @@
 \title{Dimensionality reduction through PCoA}
 \usage{
 dimred_pcoa(MAE, tax_level, color, shape = NULL, axx = 1, axy = 2,
-  axz = NULL, method)
+  axz = NULL, method = c("bray", "jaccard"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

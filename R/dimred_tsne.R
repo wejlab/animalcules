@@ -45,7 +45,7 @@ dimred_tsne <- function(MAE,
     datatype <- match.arg(datatype)
 
     # Extract data
-    microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+    microbe <- MAE[['MicrobeGenetics']]
     #host <- MultiAssayExperiment::experiments(MAE)[[2]]
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition

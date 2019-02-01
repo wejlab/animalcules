@@ -133,6 +133,20 @@ observeEvent(input$upload_animalcules,{
   })
 })
 
+
+
+observeEvent(input$upload_mae,{
+  withBusyIndicatorServer("upload_animalcules", {
+    MAE_tmp <- readRDS(input$rdfile$datapath)
+    names(MAE_tmp)[which(names(MAE_tmp) == input$mae_data_type)] <- "MicrobeGenetics"
+    vals$MAE <- MAE_tmp
+    vals$MAE_backup <- MAE_tmp
+    # Update ui
+    update_inputs(session)
+  })
+})
+
+
 observeEvent(input$uploadDataCount,{
   withBusyIndicatorServer("uploadDataCount", {
 

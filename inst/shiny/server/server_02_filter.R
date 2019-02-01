@@ -178,7 +178,7 @@ output$filter_bin_to2 <- renderPrint({
 
 output$filter_unbin_plot <- renderPlotly({
     MAE <- vals$MAE
-    microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+    microbe <- MAE[['MicrobeGenetics']]
     samples <- as.data.frame(colData(microbe))
     result <- filter_categorize(samples,
                                 sample_condition = input$filter_bin_cov,
@@ -189,7 +189,7 @@ output$filter_unbin_plot <- renderPlotly({
 
 do_categorize <- eventReactive(input$filter_create_bins, {
     MAE <- vals$MAE
-    microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+    microbe <- MAE[['MicrobeGenetics']]
     samples <- as.data.frame(colData(microbe))
 
     nbins <- input$filter_nbins

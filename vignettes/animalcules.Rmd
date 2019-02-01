@@ -159,7 +159,7 @@ p
 ## Categorize
 
 ```{r}
-microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
+microbe <- MAE[['MicrobeGenetics']]
 samples <- as.data.frame(colData(microbe))
 result <- filter_categorize(samples,
                             sample_condition = "AGE",
