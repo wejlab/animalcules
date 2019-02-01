@@ -50,7 +50,7 @@ do_dimred_pcoa_plot <- eventReactive(input$dimred_pcoa_plot_btn, {
                          axx = input$dimred_pcoa_x,
                          axy = input$dimred_pcoa_y,
                          axz = axz,
-                         method = input$dimred_pcoa_datatype)
+                         method = input$dimred_pcoa_method)
     return(result$plot)
 })
 output$dimred_pcoa_plot <- renderPlotly({

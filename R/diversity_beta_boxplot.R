@@ -2,6 +2,7 @@
 #'
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
+#' @param input_beta_method bray, jaccard
 #' @param input_select_beta_condition Which condition to group samples
 #' @return A plotly object
 #'
@@ -10,6 +11,7 @@
 #' toy_data <- readRDS(data_dir)
 #' p <- diversity_beta_boxplot(toy_data,
 #'                             tax_level = "genus",
+#'                             input_beta_method = "bray",
 #'                             input_select_beta_condition = "DISEASE")
 #' p
 #'
@@ -22,6 +24,7 @@
 
 diversity_beta_boxplot <- function(MAE,
                                    tax_level,
+                                   input_beta_method,
                                    input_select_beta_condition){
 
     # Extract data
@@ -37,7 +40,7 @@ diversity_beta_boxplot <- function(MAE,
           upsample_counts(tax_table, tax_level)
 
     #Then use vegdist from vegan to generate a bray distance object:
-    dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
+    dist.mat <- vegan::vegdist(t(counts_table), method = input_beta_method)
     dist.mat <- as.matrix(dist.mat)
 
 

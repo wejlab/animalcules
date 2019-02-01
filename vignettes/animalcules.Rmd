@@ -229,6 +229,7 @@ do_alpha_div_test(MAE = MAE,
 ```{r}
 diversity_beta_heatmap(MAE = MAE, 
                        tax_level = 'genus', 
+                       input_beta_method = "bray",
                        input_bdhm_select_conditions = 'DISEASE',
                        input_bdhm_sort_by = 'condition')
 ```
@@ -237,6 +238,7 @@ diversity_beta_heatmap(MAE = MAE,
 ```{r}
 diversity_beta_boxplot(MAE = MAE, 
                        tax_level = 'genus', 
+                       input_beta_method = "bray",
                        input_select_beta_condition = 'DISEASE')
 ```
 
@@ -244,6 +246,7 @@ diversity_beta_boxplot(MAE = MAE,
 ```{r}
 diversity_beta_test(MAE = MAE, 
                     tax_level = 'genus',
+                    input_beta_method = "bray",
                     input_select_beta_condition =  'DISEASE',
                     input_select_beta_stat_method = 'PERMANOVA',
                     input_num_permutation_permanova = 999)

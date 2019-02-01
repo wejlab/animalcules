@@ -4,12 +4,15 @@
 \alias{diversity_beta_boxplot}
 \title{Beta diversity boxplot}
 \usage{
-diversity_beta_boxplot(MAE, tax_level, input_select_beta_condition)
+diversity_beta_boxplot(MAE, tax_level, input_beta_method,
+  input_select_beta_condition)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
 
 \item{tax_level}{The taxon level used for organisms}
+
+\item{input_beta_method}{bray, jaccard}
 
 \item{input_select_beta_condition}{Which condition to group samples}
 }
@@ -24,6 +27,7 @@ data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- diversity_beta_boxplot(toy_data,
                             tax_level = "genus",
+                            input_beta_method = "bray",
                             input_select_beta_condition = "DISEASE")
 p
 

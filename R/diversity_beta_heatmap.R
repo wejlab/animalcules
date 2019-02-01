@@ -2,6 +2,7 @@
 #'
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
+#' @param input_beta_method bray, jaccard
 #' @param input_bdhm_select_conditions Which condition to group samples
 #' @param input_bdhm_sort_by Sorting option e.g. "nosort", "conditions"
 #' @return A plotly object
@@ -11,6 +12,7 @@
 #' toy_data <- readRDS(data_dir)
 #' p <- diversity_beta_heatmap(toy_data,
 #'                             tax_level = "genus",
+#'                             input_beta_method = "bray",
 #'                             input_bdhm_select_conditions = "DISEASE",
 #'                             input_bdhm_sort_by = "conditions")
 #' p
@@ -24,6 +26,7 @@
 
 diversity_beta_heatmap <- function(MAE,
                                    tax_level,
+                                   input_beta_method,
                                    input_bdhm_select_conditions,
                                    input_bdhm_sort_by = c("nosort", "conditions")){
 
@@ -41,7 +44,7 @@ diversity_beta_heatmap <- function(MAE,
 
 
     #Then use vegdist from vegan to generate a bray distance object:
-    dist.mat <- vegan::vegdist(t(counts_table), method = "bray")
+    dist.mat <- vegan::vegdist(t(counts_table), method = input_beta_method)
     dist.mat <- as.matrix(dist.mat)
     dist.mat <- dist.mat[order(match(rownames(dist.mat), rev(rownames(dist.mat)))),,drop=FALSE]
 

@@ -40,9 +40,13 @@ tabPanel("Diversity",
       sidebarLayout(
         sidebarPanel(
           selectizeInput('taxl.beta', 'Taxonomy Level', choices = tax.name, selected=tax.default),
-          # selectInput("select_beta_div_method", "Choose method:", beta.methods),
           selectizeInput('bdhm_select_conditions', 'Color Samples by Condition', choices=covariates.colorbar, multiple=TRUE),
           radioButtons("bdhm_sort_by", "Sort By", c("No Sorting" = "nosort", "Conditions" = "conditions"), selected="nosort"),
+          checkboxInput("beta_adv", "Advanced Options"),
+          conditionalPanel(
+            condition = "input.beta_adv == true",
+            selectInput("beta_method", "Choose distance metric:", choices = c("bray", "jaccard"), selected="bray")
+          ),
           actionButton("beta_heatmap", "Plot Heatmap")
         ),
         mainPanel(

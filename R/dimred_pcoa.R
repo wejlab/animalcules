@@ -7,7 +7,7 @@
 #' @param axx Principle coordinate on the x-axis e.g. 1
 #' @param axy Principle coordinate on the y-axis e.g. 2
 #' @param axz Principle coordinate on the z-axis e.g. 2
-#' @param method Method to use e.g. c("bray")
+#' @param method Method to use e.g. c("bray", "jaccard")
 #' @return A list with a plotly object and summary table
 #'
 #' @examples
@@ -37,10 +37,10 @@ dimred_pcoa <- function(MAE,
                         axx=1,
                         axy=2,
                         axz=NULL,
-                        method=c("bray")) {
+                        method) {
 
     # Default variables
-    method <- match.arg(method)
+    #method <- match.arg(method)
 
     # Extract data
     microbe <- MultiAssayExperiment::experiments(MAE)[[1]]
@@ -67,6 +67,8 @@ dimred_pcoa <- function(MAE,
     # Distance metrics
     if (method == "bray") {
         df.dist <- vegan::vegdist(df, method="bray")
+    } else if (method == "jaccard"){
+        df.dist <- vegan::vegdist(df, method="jaccard")
     }
 
     # PCoA

@@ -72,6 +72,7 @@ output$alpha.stat.test <- DT::renderDataTable({
 plotBetaHeatmapServerButton <- eventReactive(input$beta_heatmap,{
   diversity_beta_heatmap(MAE = vals$MAE,
                        tax_level = input$taxl.beta,
+                       input_beta_method = input$beta_method,
                        input_bdhm_select_conditions = input$bdhm_select_conditions,
                        input_bdhm_sort_by = input$bdhm_sort_by)
 })
@@ -84,6 +85,7 @@ output$BetaDiversityHeatmap <- renderPlotly({
 plotBetaBoxplotServerButton <- eventReactive(input$beta_boxplot,{
   diversity_beta_boxplot(MAE = vals$MAE,
                        tax_level = input$taxl.beta,
+                       input_beta_method = input$beta_method,
                        input_select_beta_condition = input$select_beta_condition)
 })
 output$BetaDiversityBoxplot <- renderPlotly({
@@ -149,6 +151,7 @@ output$BetaDiversityBoxplot <- renderPlotly({
 plotBetaBoxplotServerButton3 <- eventReactive(input$beta_boxplot, {
   diversity_beta_test(MAE = vals$MAE,
                     tax_level = input$taxl.beta,
+                    input_beta_method = input$beta_method,
                     input_select_beta_condition = input$select_beta_condition,
                     input_select_beta_stat_method = input$select_beta_stat_method,
                     input_num_permutation_permanova = input$num_permutation_permanova)

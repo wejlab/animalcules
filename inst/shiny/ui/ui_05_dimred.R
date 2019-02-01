@@ -15,12 +15,12 @@ tabPanel("Dimension Reduction",
             condition = "input.dimred_pca_adv == true",
             numericInput('dimred_pca_x', 'Principal Component (x-axis)', 1, min=1, max=50)
           ),
-          
+
           conditionalPanel(
             condition = "input.dimred_pca_adv == true",
             numericInput('dimred_pca_y', 'Principal Component (y-axis)', 2, min=1, max=50)
           ),
-          
+
           conditionalPanel(
             condition = "input.dimred_pca_adv == true",
             numericInput('dimred_pca_z', 'Principal Component (z-axis)', NA, min=1, max=50)
@@ -72,12 +72,12 @@ tabPanel("Dimension Reduction",
             condition = "input.dimred_pcoa_adv == true",
             numericInput('dimred_pcoa_x', 'Principal Coordinate (x-axis)', 1, min=1, max=50)
           ),
-          
+
           conditionalPanel(
             condition = "input.dimred_pcoa_adv == true",
             numericInput('dimred_pcoa_y', 'Principal Coordinate (y-axis)', 2, min=1, max=50)
           ),
-          
+
           conditionalPanel(
             condition = "input.dimred_pcoa_adv == true",
             numericInput('dimred_pcoa_z', 'Principal Coordinate (z-axis)', NA, min=1, max=50)
@@ -89,8 +89,8 @@ tabPanel("Dimension Reduction",
 
           conditionalPanel(
             condition = "input.dimred_pcoa_adv == true",
-            selectInput("dimred_pcoa_method", "Select distance method", c("Bray" = "bray"),
-                                                                          selected = "bray")
+            selectInput("dimred_pcoa_method", "Select distance metric",
+                        c("bray", "jaccard"), selected = "bray")
           ),
 
           # Do plot button

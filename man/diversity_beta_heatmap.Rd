@@ -4,13 +4,16 @@
 \alias{diversity_beta_heatmap}
 \title{Beta diversity heatmap}
 \usage{
-diversity_beta_heatmap(MAE, tax_level, input_bdhm_select_conditions,
-  input_bdhm_sort_by = c("nosort", "conditions"))
+diversity_beta_heatmap(MAE, tax_level, input_beta_method,
+  input_bdhm_select_conditions, input_bdhm_sort_by = c("nosort",
+  "conditions"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
 
 \item{tax_level}{The taxon level used for organisms}
+
+\item{input_beta_method}{bray, jaccard}
 
 \item{input_bdhm_select_conditions}{Which condition to group samples}
 
@@ -27,6 +30,7 @@ data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- diversity_beta_heatmap(toy_data,
                             tax_level = "genus",
+                            input_beta_method = "bray",
                             input_bdhm_select_conditions = "DISEASE",
                             input_bdhm_sort_by = "conditions")
 p
