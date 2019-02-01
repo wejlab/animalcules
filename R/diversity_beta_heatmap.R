@@ -109,7 +109,7 @@ diversity_beta_heatmap <- function(MAE,
                         hoverinfo = "x+y+text",
                         transpose=FALSE,
                         text=t(hover.txt)) %>%
-      layout(xaxis = list(showticklabels = FALSE, type = 'category', ticks = ""),
+      layout(xaxis = list(showticklabels = FALSE, type = 'category', ticks = "", autorange="reversed"),
              yaxis = list(title = "", tickangle = -45),
              orientation=TRUE)
     }
