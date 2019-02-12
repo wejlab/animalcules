@@ -19,7 +19,7 @@ sidebarLayout(
                     c("example data" = "example",
                       "count file" = "count",
                       "pathoScope file" = "pathofiles",
-                      "MAE file" = "mae.file",
+                      "animalcules-id file" = "animalcules-id",
                       "animalcules file" = "animalcules.file"
                     )),
        br(),
@@ -46,8 +46,8 @@ sidebarLayout(
                         )
 
        ),
-       conditionalPanel(condition = sprintf("input['%s'] == 'mae.file'", "uploadChoice"),
-                        fileInput("rdfile", ".rds file (required):",
+       conditionalPanel(condition = sprintf("input['%s'] == 'animalcules-id'", "uploadChoice"),
+                        fileInput("rdfile_id", ".rds file (required):",
                                   accept = c(
                                     ".rds"
                                   )
@@ -56,8 +56,7 @@ sidebarLayout(
                                      choices = c(
                                                  "EM count" = "em",
                                                  "Best hit" = 'hit'
-                                     ),
-                                     selected = "hit"
+                                     )
                         ),
                         withBusyIndicatorUI(
                           actionButton("upload_mae",

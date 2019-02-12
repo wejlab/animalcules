@@ -136,9 +136,19 @@ observeEvent(input$upload_animalcules,{
 
 
 observeEvent(input$upload_mae,{
-  withBusyIndicatorServer("upload_animalcules", {
-    MAE_tmp <- readRDS(input$rdfile$datapath)
-    names(MAE_tmp)[which(names(MAE_tmp) == input$mae_data_type)] <- "MicrobeGenetics"
+  withBusyIndicatorServer("upload_mae", {
+    MAE_list <- readRDS(input$rdfile_id$datapath)
+    # check the length of the list
+    if (length(MAE_list) == 1){
+        MAE_tmp <- MAE_list[[1]]
+    } else{
+        if (input$mae_data_type == "em"){
+        MAE_tmp <- MAE_list[['em']]
+        } else{
+        MAE_tmp <- MAE_list[['hit']]
+        }
+    }
+
     vals$MAE <- MAE_tmp
     vals$MAE_backup <- MAE_tmp
     # Update ui
@@ -244,7 +254,8 @@ observeEvent(input$uploadDataPs, {
                               header = input$header.ps,
                               sep = input$sep.ps,
                               row.names=input$metadata_sample_name_col,
-                              stringsAsFactors=FALSE)
+                              stringsAsFactors=FALSE,
+                              strip.white=TRUE)
 
     # Choose only the samples in metadata that have counts data as well
     metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]

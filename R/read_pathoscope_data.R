@@ -38,7 +38,7 @@ read_pathoscope_data <-
     samplenames <- unlist(lapply(input.files.name.vec, function(x) {
         return(strsplit(x, "-sam-report.tsv")[[1]])
     }))
-
+    print(samplenames)
     dat <- matrix(0L, nrow = length(genomes), ncol = length(samplenames))
     countdat <- matrix(0L, nrow = length(genomes), ncol = length(samplenames))
 
@@ -55,8 +55,10 @@ read_pathoscope_data <-
     dat <- data.frame(dat)
     rownames(dat) <- genomes
     colnames(dat) <- samplenames
+    # integer
     countdat <- data.frame(countdat)
     rownames(countdat) <- genomes
     colnames(countdat) <- samplenames
+    #saveRDS(countdat, "~/Desktop/test.rds")
     return(list(data = dat, countdata = countdat))
 }
