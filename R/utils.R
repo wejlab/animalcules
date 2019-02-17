@@ -129,7 +129,7 @@ mae_pick_organisms <- function(MAE, isolate_organisms=NULL, discard_organisms=NU
 #' @export
 df_char_to_factor <- function(df) {
     for (i in 1:ncol(df)){
-        if (typeof(df[,i]) == "character"){
+        if (typeof(df[,i]) == "character" | length(unique(df[,i])) < 4){
             df[,i] <- as.factor(df[,i])
         }
     }

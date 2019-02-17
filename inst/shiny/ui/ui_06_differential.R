@@ -4,7 +4,7 @@ tabPanel("Differential Analysis",
       selectizeInput('taxl.da', 'Taxonomy Level', choices = tax.name,
                      selected=tax.default),
       selectizeInput('da_condition', 'Select condition',
-                     choices = covariates),
+                     choices = covariates.colorbar),
       conditionalPanel(condition = "output.da_condition_type == 'multiple'",
                        helpText("Please select 2 levels to compare"),
                        uiOutput("da_condition_options")
@@ -26,7 +26,7 @@ tabPanel("Differential Analysis",
                     min = 1e-100, max = 1)
       ),
       #helpText("Continuous covariates would be automatically cut into factors with 3 levels."),
- 
+
       actionButton("run_deseq2", "Run"),
       width=3
     ),

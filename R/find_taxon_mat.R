@@ -10,7 +10,7 @@ find_taxon_mat <- function(names, taxonLevels) {
     #     'suborder', 'family', 'subfamily', 'genus', 'subgenus', 'species',
     #     'subspecies', 'no rank')
     tax.name <- c('superkingdom', 'kingdom', 'phylum', 'class', 'order',
-        'family', 'genus', 'species', 'no rank')
+        'family', 'genus', 'species')
     tl <- c()
     for (i in seq_len(length(tax.name))) {
         tl[tax.name[i]] <- "others"

@@ -16,11 +16,11 @@ update_inputs <- function(session) {
 updateCovariate <- function(session){
     MAE <- vals$MAE
     covariates <- colnames(colData(MAE))
-    # choose the covariates that has less than 8 levels
+    # choose the covariates that has less than 6 levels
     covariates.colorbar <- c()
     for (i in 1:length(covariates)){
         num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
-        if (num.levels < 8){
+        if (num.levels > 1 & num.levels < 6){
             covariates.colorbar <- c(covariates.colorbar, covariates[i])
         }
     }
@@ -64,7 +64,7 @@ updateCovariate <- function(session){
     updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
 
     # Differential
-    updateSelectInput(session, "da_condition", choices = covariates)
+    updateSelectInput(session, "da_condition", choices = covariates.colorbar)
     updateSelectInput(session, "da.condition.covariate", choices = covariates)
 
     # Biomarker
@@ -248,7 +248,7 @@ observeEvent(input$uploadDataPs, {
                                   use.input.files = TRUE,
                                   input.files.path.vec = df.path.vec,
                                   input.files.name.vec = df.name.vec)
-    count_table <- datlist$countdata
+    count_table <- datlist$countdat
 
     metadata_table <- read.csv(input$annotfile.ps$datapath,
                               header = input$header.ps,
@@ -269,19 +269,17 @@ observeEvent(input$uploadDataPs, {
 
     ids <- rownames(count_table)
     tids <- unlist(lapply(ids, FUN = grep_tid))
-    tid_remove <- which(is.na(tids))
-    ids <- ids[-tid_remove]
-    tids <- tids[-tid_remove]
-    count_table <- count_table[-tid_remove,]
-    #print(tids)
-    taxonLevels <- find_taxonomy(tids)
-    # print("find taxonomy done!")
-    tax_table <- find_taxon_mat(ids, taxonLevels)
-    # Test and fix the constant/zero row
-    if (!is.null(row.remove.index)){
-        tax_table <- tax_table[-row.remove.index,]
+    if (sum(is.na(tids)) > 0){
+        tid_remove <- which(is.na(tids))
+        ids <- ids[-tid_remove]
+        tids <- tids[-tid_remove]
+        count_table <- count_table[-tid_remove,]
     }
 
+    taxonLevels <- find_taxonomy(tids)
+    tax_table <- find_taxon_mat(ids, taxonLevels)
+saveRDS(list(count_table = count_table, metadata_table = metadata_table, tax_table = tax_table),
+        "~/Desktop/mae.RDS")
   # create MAE object
   se_mgx <-
       count_table %>%
@@ -311,7 +309,7 @@ observeEvent(input$uploadDataPs, {
       MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
                                                colData = se_colData)
   ### debug
-  # saveRDS(MAE, "~/Desktop/test.RDS")
+  saveRDS(MAE, "~/Desktop/test.RDS")
 
   # update vals
   vals$MAE <- MAE

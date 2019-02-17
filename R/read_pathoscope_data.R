@@ -31,34 +31,28 @@ read_pathoscope_data <-
 
     lgenomes <- lapply(ltbl, function(tbl) {return(levels(tbl[,1]))})
     genomes <- unique(unlist(lgenomes))
-    genomes <- c(genomes, "others")
+    #genomes <- c(genomes, "others")
     lfl <- lapply(filenames, readLines, n = 1)
     lnumReads <- unlist(lapply(lfl, function(fl)
     {return(as.numeric(strsplit(fl, "\t")[[1]][2]))}))
     samplenames <- unlist(lapply(input.files.name.vec, function(x) {
         return(strsplit(x, "-sam-report.tsv")[[1]])
     }))
-    print(samplenames)
-    dat <- matrix(0L, nrow = length(genomes), ncol = length(samplenames))
+    #print(samplenames)
+
     countdat <- matrix(0L, nrow = length(genomes), ncol = length(samplenames))
 
     for (i in seq(length(samplenames))){
       index.tmp <- match(ltbl[[i]][,1], genomes)
-      dat[index.tmp,i] <- ltbl[[i]][,3]
-      countdat[index.tmp,i] <- ltbl[[i]][,4]
-      read.sum <- sum(ltbl[[i]][,4])
-      read.num.other <- lnumReads[i] - read.sum
-      dat[nrow(dat),i] <- 1 - sum(ltbl[[i]][,3])
-      countdat[nrow(dat),i] <- read.num.other
+      countdat[index.tmp,i] <- floor(ltbl[[i]][,4])
     }
 
-    dat <- data.frame(dat)
-    rownames(dat) <- genomes
-    colnames(dat) <- samplenames
     # integer
     countdat <- data.frame(countdat)
     rownames(countdat) <- genomes
     colnames(countdat) <- samplenames
+
+
     #saveRDS(countdat, "~/Desktop/test.rds")
-    return(list(data = dat, countdata = countdat))
+    return(list(countdat = countdat))
 }
