@@ -1,3 +1,6 @@
+# A notification ID
+id <- NULL
+
 
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 # reactive values shared thorough the shiny app
@@ -184,8 +187,18 @@ observeEvent(input$uploadDataCount,{
                             comment.char="",
                             check.names = FALSE)
 
+
   # Choose only the samples in metadata that have counts data as well
-  metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
+    sample_overlap <- intersect(colnames(count_table), rownames(metadata_table))
+    if (length(sample_overlap) < length(colnames(count_table))){
+        print(paste("The following samples don't have metadata info:",
+                    paste(colnames(count_table)[which(!colnames(count_table) %in% sample_overlap)],
+                          collapse = ",")))
+        count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
+    }
+    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
+
+
 
   # Test and fix the constant/zero row
   row.remove.index <- c()
@@ -258,7 +271,17 @@ observeEvent(input$uploadDataPs, {
                               strip.white=TRUE)
 
     # Choose only the samples in metadata that have counts data as well
+    sample_overlap <- intersect(colnames(count_table), rownames(metadata_table))
+    if (length(sample_overlap) < length(colnames(count_table))){
+        print(paste("The following samples don't have metadata info:",
+                    paste(colnames(count_table)[which(!colnames(count_table) %in% sample_overlap)],
+                          collapse = ",")))
+        count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
+    }
     metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
+
+
+
     # print("read in done!")
     # Test and fix the constant/zero row
     row.remove.index <- c()
@@ -278,8 +301,7 @@ observeEvent(input$uploadDataPs, {
 
     taxonLevels <- find_taxonomy(tids)
     tax_table <- find_taxon_mat(ids, taxonLevels)
-saveRDS(list(count_table = count_table, metadata_table = metadata_table, tax_table = tax_table),
-        "~/Desktop/mae.RDS")
+
   # create MAE object
   se_mgx <-
       count_table %>%
@@ -309,7 +331,7 @@ saveRDS(list(count_table = count_table, metadata_table = metadata_table, tax_tab
       MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
                                                colData = se_colData)
   ### debug
-  saveRDS(MAE, "~/Desktop/test.RDS")
+  # saveRDS(MAE, "~/Desktop/test.RDS")
 
   # update vals
   vals$MAE <- MAE

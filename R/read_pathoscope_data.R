@@ -22,7 +22,7 @@ read_pathoscope_data <-
         }
         pattern <- paste("*", pathoreport_file_suffix, sep="")
         filenames <- list.files(input_dir, pattern = pattern, full.names = TRUE)
-
+        input.files.name.vec <- list.files(input_dir)
 
     } else{
         filenames <- input.files.path.vec
