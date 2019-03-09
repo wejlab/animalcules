@@ -49,7 +49,8 @@ filter_summary_top <- function(MAE,
 
     # Use density plot if the variable has more than 8 unique values
     # Use pie chart if the variable has less than 8 unique values
-    if (length(unique(unlist(sam_table[,cov]))) > 8) {
+    num_levels <- length(unique(unlist(sam_table[,cov])))
+    if (num_levels > 8 & num_levels/nrow(sam_table) >= 0.3) {
         vec <- unlist(sam_table[,cov])
         num.scatter <- plotly::plot_ly(y = vec,
                                        jitter = 0.3,

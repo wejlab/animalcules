@@ -19,12 +19,19 @@ update_inputs <- function(session) {
 updateCovariate <- function(session){
     MAE <- vals$MAE
     covariates <- colnames(colData(MAE))
-    # choose the covariates that has less than 6 levels
+    # use experience to choose categorical variables
     covariates.colorbar <- c()
     for (i in 1:length(covariates)){
         num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
         if (num.levels > 1 & num.levels < 6){
-            covariates.colorbar <- c(covariates.colorbar, covariates[i])
+            if (num.levels/nrow(colData(MAE)) < 0.7){
+                covariates.colorbar <- c(covariates.colorbar, covariates[i])
+            }
+
+        } else if(num.levels >= 6){
+            if (num.levels/nrow(colData(MAE)) < 0.1){
+                covariates.colorbar <- c(covariates.colorbar, covariates[i])
+            }
         }
     }
     # choose the covariates that has 2 levels
