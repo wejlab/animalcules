@@ -28,3 +28,25 @@ devtools::install_github("compbiomed/animalcules")
 library(animalcules)
 run_animalcules()
 ```
+
+## Docs
+
+#### Tab 1: Data Upload
+
+#### Tab 2: Data Upload
+
+#### Tab 3: Data Upload
+
+#### Tab 4: Data Upload
+
+#### Tab 5: Data Upload
+
+#### Tab 6: Data Upload
+
+
+
+
+
+
+
+
