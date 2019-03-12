@@ -1,6 +1,10 @@
 # A notification ID
 id <- NULL
 
+url <- a("github page!", href="https://github.com/compbiomed/animalcules/")
+output$tab <- renderUI({
+  tagList("Need help? Check docs in our", url)
+})
 
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 # reactive values shared thorough the shiny app

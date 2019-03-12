@@ -7,6 +7,7 @@
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 
+## What does animalcules do?
 
 
 
@@ -31,19 +32,19 @@ run_animalcules()
 
 ## Docs
 
-#### Tab 1: Data Upload
+#### Tab 1: Upload
 
-#### Tab 2: Data Upload
+#### Tab 2: Summary and Filter
 
-#### Tab 3: Data Upload
+#### Tab 3: Abundance
 
-#### Tab 4: Data Upload
+#### Tab 4: Diversity
 
-#### Tab 5: Data Upload
+#### Tab 5: Dimension Reduction
 
-#### Tab 6: Data Upload
+#### Tab 6: Differential analysis
 
-
+#### Tab 7: Biomarker
 
 
 

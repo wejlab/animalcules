@@ -10,7 +10,9 @@ tags$div(
             column(5, br(),br(),img(src = "bu_bioinfo_logo.png", height = 100, width = 100))
 
         ),
-        p("Statistical Microbiome Analysis Toolkit")
+        p("Statistical Microbiome Analysis Toolkit"),
+        uiOutput("tab")
+
     )
 ),
 sidebarLayout(
