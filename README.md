@@ -7,6 +7,26 @@
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
 
+Table of Contents
+=================
+
+      * [What does animalcules do?](#what-does-animalcules-do)
+      * [Installation](#installation)
+      * [Run animalcules](#run-animalcules)
+      * [Docs](#docs)
+            * [Tab 1: Upload](#tab-1-upload)
+            * [Tab 2: Summary and Filter](#tab-2-summary-and-filter)
+            * [Tab 3: Abundance](#tab-3-abundance)
+            * [Tab 4: Diversity](#tab-4-diversity)
+            * [Tab 5: Dimension Reduction](#tab-5-dimension-reduction)
+            * [Tab 6: Differential analysis](#tab-6-differential-analysis)
+            * [Tab 7: Biomarker](#tab-7-biomarker)
+
+
+
+
+
+
 ## What does animalcules do?
 
 **R shiny app for interactive microbiome analysis**
