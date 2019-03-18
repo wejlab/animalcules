@@ -1,5 +1,5 @@
 # A notification ID
-id <- NULL
+# id <- NULL
 
 url <- a("github page!", href="https://github.com/compbiomed/animalcules/")
 output$tab <- renderUI({
@@ -261,6 +261,7 @@ observeEvent(input$uploadDataCount,{
 observeEvent(input$uploadDataPs, {
   withBusyIndicatorServer("uploadDataPs", {
 
+
     df.path.vec <- c()
     df.name.vec <- c()
     for(i in 1:length(input$countsfile.pathoscope[,1])){
@@ -287,6 +288,8 @@ observeEvent(input$uploadDataPs, {
         print(paste("The following samples don't have metadata info:",
                     paste(colnames(count_table)[which(!colnames(count_table) %in% sample_overlap)],
                           collapse = ",")))
+        #shinyalert::shinyalert("Notice!", "Some samples miss", type = "info")
+
         count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
     }
     metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
