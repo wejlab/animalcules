@@ -18,6 +18,7 @@
 #' @import caret
 #' @import plotROC
 #' @import forcats
+#' @importFrom gbm relative.influence
 #' @importFrom ggplot2 geom_col aes coord_flip theme_bw coord_equal annotate
 #'
 #' @examples
