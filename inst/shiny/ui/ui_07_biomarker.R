@@ -26,7 +26,7 @@ tabPanel("Biomarker",
       ),
       conditionalPanel(
         condition = "input.biomarker_adv == true",
-        selectInput("select_model_biomarker", "Select Model", c("logistic regression", "gbm", "random forest"))
+        selectInput("select_model_biomarker", "Select Model", c("logistic regression", "random forest"))
       ),
 
       withBusyIndicatorUI(

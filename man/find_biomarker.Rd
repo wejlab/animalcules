@@ -6,7 +6,7 @@
 \usage{
 find_biomarker(MAE, tax_level, input_select_target_biomarker, nfolds = 3,
   nrepeats = 3, seed = 99, percent_top_biomarker = 0.2,
-  model_name = c("logistic regression", "gbm", "random forest"))
+  model_name = c("logistic regression", "random forest"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -23,7 +23,7 @@ find_biomarker(MAE, tax_level, input_select_target_biomarker, nfolds = 3,
 
 \item{percent_top_biomarker}{Top importance percentage to pick biomarker}
 
-\item{model_name}{one of "logistic regression", "gbm", "random forest"}
+\item{model_name}{one of "logistic regression", "random forest"}
 }
 \value{
 A list
