@@ -7,10 +7,14 @@
 #' @param nrepeats number of CVs with different random splits
 #' @param seed for repeatable research
 #' @param percent_top_biomarker Top importance percentage to pick biomarker
-#' @param model_name one of "svm", "logistic regression", "gbm", "random forest"
+#' @param model_name one of "logistic regression", "gbm", "random forest"
 #'
 #' @return A list
 #'
+#' @import MultiAssayExperiment
+#' @import glmnet
+#' @import gbm
+#' @import DMwR
 #' @import caret
 #' @import plotROC
 #' @import forcats
@@ -29,10 +33,7 @@
 #'                     model_name = "logistic regression")
 #' p
 #'
-#' @import MultiAssayExperiment
-#' @import glmnet
-#' @import gbm
-#' @import DMwR
+
 #'
 #' @export
 
@@ -43,7 +44,7 @@ find_biomarker <- function(MAE,
                            nrepeats = 3,
                            seed = 99,
                            percent_top_biomarker = 0.2,
-                           model_name = c("svm", "logistic regression", "gbm", "random forest")) {
+                           model_name = c("logistic regression", "gbm", "random forest")) {
 
     ## SEED
     # bioC not suggesst add set seed function in R code
