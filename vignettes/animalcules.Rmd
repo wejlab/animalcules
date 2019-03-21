@@ -37,7 +37,7 @@ editor_options:
 ---
 
 
-# Knite options
+# Knit options
 
 ```{r}
 knitr::opts_chunk$set(message = FALSE)
