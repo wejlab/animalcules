@@ -4,7 +4,7 @@ author:
 - name: Yue Zhao
   affiliation:
   - &1 Section of Computational Biomedicine, Boston University School of Medicine, Boston, MA
-  - &2 bioinformatics Program, Boston University, Boston, MA
+  - &2 Bioinformatics Program, Boston University, Boston, MA
 - name: Anthony Federico
   affiliation:
   - *1
@@ -36,12 +36,6 @@ editor_options:
     chunk_output_type: console
 ---
 
-# Knitr Options
-
-```{r}
-knitr::opts_chunk$set(message = FALSE)
-```
-
 # Packages
 
 ```{r}
@@ -65,6 +59,7 @@ library(grid)
 library(lattice)
 library(plotROC)
 library(animalcules)
+knitr::opts_chunk$set(message = FALSE)
 ```
 
 
@@ -168,6 +163,8 @@ p
 
 ## alpha diversity boxplot
 
+Alpha diversity, which describes the richness and evenness of sample microbial community, is a vital indicator in the microbiome analysis. animalcules provides the interactive boxplot comparison of alpha diversity between selected groups of samples. Both taxonomy levels and alpha diversity metrics (Shannon, Gini Simpson, Inverse Simpson) can be changed. Users can also conduct alpha diversity statistical tests including Wilcoxon rank sum test, T test and Kruskal-Wallis test.  
+
 Plot the alpha diversity boxplot between the levels in selected condition.
 
 ```{r}
@@ -190,6 +187,8 @@ do_alpha_div_test(MAE = MAE,
 ```
 
 ## beta diversity heatmap
+
+On the other hand, by defining distances between each sample, beta diversity is another key metric to look at. Users can plot the beta diversity heatmap by selecting different beta diversity dissimilarity metrics including Bray-Curtis and Jaccard. Users can also conduct beta diversity statistical testing between groups including PERMANOVA, Wilcoxon rank sum test and Kruskal-Wallis.
 
 Plot the beta diversity heatmap with selected condition.
 
