@@ -17,7 +17,6 @@ Imports:
     assertthat,
     shiny,
     shinyjs,
-    gbm,
     DESeq2,
     tibble,
     caret,
