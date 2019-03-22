@@ -296,7 +296,7 @@ p
 
 Here in animalcules, we provide a DESeq2-based differential abundance analysis. Users can choose the target variable, covariate variable, taxonomy level, minimum count cut-off, and an adjusted p-value threshold. The analysis report will output not only the adjusted p-value and log2-fold-change of the microbes, but also the percentage, prevalence, and the group size-adjusted fold change.
 
-```{r eval=FALSE}
+```{r}
 p <- differential_abundance(MAE,
                             tax_level="genus",
                             input_da_condition=c("DISEASE"),
