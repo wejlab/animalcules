@@ -13,11 +13,10 @@
 #' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 #' toy_data <- readRDS(data_dir)
 #' p <- differential_abundance(toy_data,
-#' tax_level="genus",
+#' tax_level="phylum",
 #' input_da_condition=c("DISEASE"),
-#' input_da_condition_covariate=c("SEX"),
-#' min_num_filter = 5,
-#' input_da_padj_cutoff = 0.05)
+#' min_num_filter = 2,
+#' input_da_padj_cutoff = 0.5)
 #' p
 #'
 #' @import DESeq2
