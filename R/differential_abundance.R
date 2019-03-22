@@ -44,7 +44,7 @@ differential_abundance <- function(MAE,
                         upsample_counts(tax_table, tax_level)
                         
     colnames_tmp <- colnames(count_table_tax)
-    count_table_tax <- as.data.frame(t(apply(count_table_tax, 1, as.integer)))
+    count_table_tax <- t(apply(count_table_tax, 1, as.integer))
     colnames(count_table_tax) <- colnames_tmp
     # sam table
     sam_table %<>% df_char_to_factor()
