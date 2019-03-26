@@ -57,19 +57,55 @@ run_animalcules()
 
 ## Docs
 
-#### Tab 1: Upload
+### Tab 1: Upload
 
-#### Tab 2: Summary and Filter
+##### Example data
 
-#### Tab 3: Abundance
+A simulated example dataset has been loaded into the package already, and users could use this dataset to try all functions and features in animalcules.
+![](inst/shiny/www/readme_figs/fig_030.png)
 
-#### Tab 4: Diversity
+##### Count file
 
-#### Tab 5: Dimension Reduction
+No matter what techniques generated the dataset (16s, metagenomics), as long as users have 3 required files, they could analyze via animalcules. The three required files are:
 
-#### Tab 6: Differential analysis
+* Counts file: each row is a species/OTU, each column is a sample name.
+* Taxonomy file: each row is a species/OTU, each column is a taxonomy level.
+* Annotation file: each row is a sample name, each column is a variable/feature name.
 
-#### Tab 7: Biomarker
+
+![](inst/shiny/www/readme_figs/fig_031.png)
+
+##### Pathoscope file
+
+To analyze pathoscope outputs, users need to upload pathoscope reports (use browser for multiple reports upload), as well as an annotation file containing metadata for each sample. Note that the sample name in the annotation file must match the non-suffix part of the pathoscope file name. For example, one pathoscope report filename is: "sample_011-sam-report.tsv", then the corresponding sample name in the annotation file must be: "sample_011". 
+
+Also, make sure to provide the correct column number for sample name in the annotation file, as well as the annotation file separator (tab, comma or semicolon).
+
+![](inst/shiny/www/readme_figs/fig_032.png)
+
+##### animalcules-id file
+
+animalcules-id is a separate R pipeline that generates pathoscope-like outputs from fastq files. The required input is the animalcules-id generated .rds file.
+
+![](inst/shiny/www/readme_figs/fig_033.png)
+
+##### animalcules file
+
+In animalcules, users could choose to save their dataset to a .rds file in the Tab 2 (Summary and Filter). Later users could load this saved dataset by uploading this .rds file to animalcules easily via this animalcules file upload option.
+
+![](inst/shiny/www/readme_figs/fig_034.png)
+
+### Tab 2: Summary and Filter
+
+### Tab 3: Abundance
+
+### Tab 4: Diversity
+
+### Tab 5: Dimension Reduction
+
+### Tab 6: Differential analysis
+
+### Tab 7: Biomarker
 
 
 
