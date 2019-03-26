@@ -10,17 +10,31 @@
 Table of Contents
 =================
 
-* [What does animalcules do?](#what-does-animalcules-do)
-* [Installation](#installation)
-* [Run animalcules](#run-animalcules)
-* [Docs](#docs)
-     * [Tab 1: Upload](#tab-1-upload)
-     * [Tab 2: Summary and Filter](#tab-2-summary-and-filter)
-     * [Tab 3: Abundance](#tab-3-abundance)
-     * [Tab 4: Diversity](#tab-4-diversity)
-     * [Tab 5: Dimension Reduction](#tab-5-dimension-reduction)
-     * [Tab 6: Differential analysis](#tab-6-differential-analysis)
-     * [Tab 7: Biomarker](#tab-7-biomarker)
+
+   * [Table of Contents](#table-of-contents)
+      * [What does animalcules do?](#what-does-animalcules-do)
+      * [Installation](#installation)
+      * [Run animalcules](#run-animalcules)
+      * [Docs](#docs)
+         * [Tab 1: Upload](#tab-1-upload)
+               * [Example data](#example-data)
+               * [Count file](#count-file)
+               * [Pathoscope file](#pathoscope-file)
+               * [animalcules-id file](#animalcules-id-file)
+               * [animalcules file](#animalcules-file)
+         * [Tab 2: Summary and Filter](#tab-2-summary-and-filter)
+         * [Tab 3: Abundance](#tab-3-abundance)
+         * [Tab 4: Diversity](#tab-4-diversity)
+               * [Alpha diversity](#alpha-diversity)
+               * [Beta diversity heatmap](#beta-diversity-heatmap)
+               * [Beta diversity statistical test](#beta-diversity-statistical-test)
+         * [Tab 5: Dimension Reduction](#tab-5-dimension-reduction)
+         * [Tab 6: Differential analysis](#tab-6-differential-analysis)
+               * [Run differential analysis](#run-differential-analysis)
+         * [Tab 7: Biomarker](#tab-7-biomarker)
+               * [Run Biomarker](#run-biomarker)
+               * [Importance plot](#importance-plot)
+               * [CV ROC plot](#cv-roc-plot)
 
 
 
@@ -85,7 +99,7 @@ Also, make sure to provide the correct column number for sample name in the anno
 
 ##### animalcules-id file
 
-animalcules-id is a separate R pipeline that generates pathoscope-like outputs from fastq files. The required input is the animalcules-id generated .rds file.
+animalcules-id is a separate R pipeline that generates pathoscope-like outputs from fastq files. The required input is the animalcules-id generated .rds file. Here users could choose either EM count assay or Best hit assay. 
 
 ![](inst/shiny/www/readme_figs/fig_033.png)
 
@@ -101,14 +115,65 @@ In animalcules, users could choose to save their dataset to a .rds file in the T
 
 ### Tab 4: Diversity
 
+##### Alpha diversity
+
+Users could visualize the alpha diversity boxplot comparing different levels within a selected condition by selecting taxonomy levels and target condition. In Advanced options, users could choose different alpha diversity metrics including Shannon, Inverse Simpson and Gini Simpson. 
+
+The statistical test will be performed between levels in the selected target condition. Users could choose different statistical test methods in the Advanced Options, e.g. T-test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Test p-value will be showed in the result table.
+
+![](inst/shiny/www/readme_figs/fig_035.png)
+
+##### Beta diversity heatmap
+
+Users could visualize the beta diversity by selecting taxonomy levels, sample color condition. Samples could also be sorted by the selected condition. In Advanced options, users could choose different beta diversity metrics including Bray-curtis or Jaccard. 
+
+![](inst/shiny/www/readme_figs/fig_036.png)
+
+##### Beta diversity statistical test
+
+To check if there is significant beta diversity difference existing between two communities, users could also perform statistical test like PERMANOVA test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Note that the left panel options apply to both beta diversity heatmap and statistical test. Test p-value will be showed in the "Pr(>F)" column from the result table.
+
+![](inst/shiny/www/readme_figs/fig_037.png)
+
+
 ### Tab 5: Dimension Reduction
 
 ### Tab 6: Differential analysis
 
+##### Run differential analysis
+
+To identify key species/genus/... for a specific variable, users need to specify the taxonomy level and target variable (condition). In the Advanced Options, users could also add covariates to the linear model, add a minimum count cut-off (all features with average read number less than this cut-off will be filtered), and a adjusted p-value cut-off.
+
+After click the "Run" button, users would see a differential abundance analysis output table on the right-hand side. In this table, we show the feature name, adjusted p-value, log2 fold change, number of samples for each class, feature prevalance, and group size adjusted fold change.  
+
+![](inst/shiny/www/readme_figs/fig_038.png)
+
+
 ### Tab 7: Biomarker
 
+##### Run Biomarker
+
+To identify biomarkers for a specific binary classification problem, users need to specify the taxonomy level and target variable. In the Advanced Options, users could also specify the number of CV repeats, number of CV folds, and top biomarker proportion. For example, with a 3-repeats 3-fold cross validation, animalcules will randomly split the dataset into 3 fold and run CV, then this procedure is repeated 3 times (each time has different random data split). The top biomarker proportion defines the threshold for selecting biomarkers: animalcules will generate an classification model based importance score for each feature (species/genus/...), and will choose the top 20% (suppose the proportion is 0.2 as default) features as the biomarkers.
 
 
+Also, users could choose binary classification models including logistic regression and random forest. After clicking the button "Run", the biomarker list will shouw up at the right-hand side.
+
+
+![](inst/shiny/www/readme_figs/fig_039.png)
+
+##### Importance plot
+
+Ranked feature importance score plot for the identified biomarkers is showed here. The higher score is, the more important this feature (species, genus, ..) is regarding the prediction power.
+
+![](inst/shiny/www/readme_figs/fig_040.png)
+
+
+
+##### CV ROC plot
+
+The identified biomarkers were used to re-train the model via a cross-validation, and ROC plot is showed automatically in this subtab. 
+
+![](inst/shiny/www/readme_figs/fig_041.png)
 
 
 
