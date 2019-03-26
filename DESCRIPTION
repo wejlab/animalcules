@@ -1,6 +1,6 @@
 Package: animalcules
 Title: Statistical microbiome analysis on metagenomics data
-Version: 0.99.3
+Version: 0.99.4
 Author:
     Yue Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
