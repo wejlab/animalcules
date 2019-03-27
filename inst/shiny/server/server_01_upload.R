@@ -25,6 +25,7 @@ updateCovariate <- function(session){
     covariates <- colnames(colData(MAE))
     # use experience to choose categorical variables
     covariates.colorbar <- c()
+    covariates_remove_index <- NULL
     for (i in 1:length(covariates)){
         num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
         if (num.levels > 1 & num.levels < 6){
@@ -36,8 +37,19 @@ updateCovariate <- function(session){
             if (num.levels/nrow(colData(MAE)) < 0.1){
                 covariates.colorbar <- c(covariates.colorbar, covariates[i])
             }
+            if (num.levels/nrow(colData(MAE)) == 1 & is.character(colData(MAE)[[covariates[i]]])){
+              if (is.null(covariates_remove_index)){
+                covariates_remove_index <- i
+              }else{
+                covariates_remove_index <- c(covariates_remove_index, i)
+              }
+            }
         }
     }
+    if (!is.null(covariates_remove_index)){
+      covariates <- covariates[-covariates_remove_index]
+    }
+    
     # choose the covariates that has 2 levels
     covariates.two.levels <- c()
     for (i in 1:length(covariates)){

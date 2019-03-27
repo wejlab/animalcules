@@ -51,7 +51,9 @@ filter_summary_bottom <- function(MAE,
     # Use bar plot if the variable has less than 8 unique values
     num_levels <- length(unique(unlist(sam_table[,cov])))
 
-    if (num_levels > 8 & num_levels/nrow(sam_table) >= 0.3) {
+    if (num_levels > 8 & 
+        num_levels/nrow(sam_table) >= 0.3 &
+        !is.character(unlist(sam_table[,cov]))) {
         fit <- density(unlist(sam_table[,cov]))
         num.density <- plot_ly(x=fit$x, y=fit$y,
                                type="scatter",
