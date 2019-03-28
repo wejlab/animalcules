@@ -24,10 +24,16 @@ sidebarLayout(
                       "animalcules-id file" = "animalcules-id",
                       "animalcules file" = "animalcules.file"
                     )),
-       br(),
-       p(" "),
        conditionalPanel(condition = sprintf("input['%s'] == 'example'", "uploadChoice"),
-                        helpText("Example data is loaded and ready to go!")
+                          selectInput("example_data", "Example dataset",
+              c("Toy dataset" = "toy",
+                "TB dataset" = "tb"
+                )),
+                        withBusyIndicatorUI(
+                          actionButton("upload_example",
+                                       "Upload",
+                                       class = "btn-primary")
+                        )
        ),
        conditionalPanel(condition = sprintf("input['%s'] == 'animalcules.file'", "uploadChoice"),
                         fileInput("rdfile", ".rds file (required):",

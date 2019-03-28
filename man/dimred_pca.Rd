@@ -5,7 +5,7 @@
 \title{Dimensionality reduction through PCA}
 \usage{
 dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
-  pcz = NULL, datatype = c("counts", "relabu", "logcpm"))
+  pcz = NULL, datatype = c("logcpm", "relabu", "counts"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -22,7 +22,7 @@ dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
 
 \item{pcz}{Principal component on the z-axis e.g. 3}
 
-\item{datatype}{Datatype to use e.g. c("counts", "relabu", "logcpm")}
+\item{datatype}{Datatype to use e.g. c("logcpm", "relabu", "counts")}
 }
 \value{
 A list with a plotly object and summary table

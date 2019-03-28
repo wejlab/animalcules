@@ -5,8 +5,8 @@
 \title{Dimensionality reduction through t-SNE}
 \usage{
 dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
-  initial_dims = 30, perplexity = 10, datatype = c("counts",
-  "relabu", "logcpm"))
+  initial_dims = 30, perplexity = 10, datatype = c("logcpm",
+  "relabu", "counts"))
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -23,7 +23,7 @@ dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
 
 \item{perplexity}{Optimal number of neighbors}
 
-\item{datatype}{Datatype to use e.g. c("counts", "relabu", "logcpm")}
+\item{datatype}{Datatype to use e.g. c("logcpm", "relabu", "counts")}
 }
 \value{
 A plotly object

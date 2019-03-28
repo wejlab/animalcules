@@ -6,12 +6,35 @@ output$tab <- renderUI({
   tagList("Need help? Check docs in our", url)
 })
 
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+
+
 # reactive values shared thorough the shiny app
+data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 vals <- reactiveValues(
     MAE = readRDS(data_dir),
     MAE_backup = MAE
 )
+
+observeEvent(input$upload_example,{
+  withBusyIndicatorServer("upload_example", {
+    if (input$example_data == "toy"){
+      data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+    } else if (input$example_data == "tb"){
+      data_dir = system.file("extdata/TB_example_dataset.rds", package = "animalcules")
+    }
+    MAE_tmp = readRDS(data_dir)
+    vals$MAE <- MAE_tmp
+    vals$MAE_backup <- MAE_tmp
+    # Update ui
+    update_inputs(session)
+  })
+})
+
+
+
+
+
+
 
 update_inputs <- function(session) {
     updateCovariate(session)
