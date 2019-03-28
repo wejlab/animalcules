@@ -7,7 +7,7 @@
 #' @param k Plot dimensions e.g. c("2D","3D")
 #' @param initial_dims The number of dimensions to use in reduction method
 #' @param perplexity Optimal number of neighbors
-#' @param datatype Datatype to use e.g. c("counts", "relabu", "logcpm")
+#' @param datatype Datatype to use e.g. c("logcpm", "relabu", "counts")
 #' @return A plotly object
 #'
 #' @examples
@@ -38,7 +38,7 @@ dimred_tsne <- function(MAE,
                         k=c("2D","3D"),
                         initial_dims=30,
                         perplexity=10,
-                        datatype=c("counts", "relabu", "logcpm")) {
+                        datatype=c("logcpm", "relabu", "counts")) {
 
     # Default variables
     k <- ifelse(match.arg(k) == "2D", 2, 3)

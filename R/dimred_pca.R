@@ -7,7 +7,7 @@
 #' @param pcx Principal component on the x-axis e.g. 1
 #' @param pcy Principal component on the y-axis e.g. 2
 #' @param pcz Principal component on the z-axis e.g. 3
-#' @param datatype Datatype to use e.g. c("counts", "relabu", "logcpm")
+#' @param datatype Datatype to use e.g. c("logcpm", "relabu", "counts")
 #' @return A list with a plotly object and summary table
 #'
 #' @examples
@@ -37,7 +37,7 @@ dimred_pca <- function(MAE,
                        pcx=1,
                        pcy=2,
                        pcz=NULL,
-                       datatype=c("counts", "relabu", "logcpm")) {
+                       datatype=c("logcpm", "relabu", "counts")) {
 
     # Default variables
     datatype <- match.arg(datatype)
