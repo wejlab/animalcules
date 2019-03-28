@@ -30,13 +30,15 @@ tabPanel("Summary and Filter",
             )
           ),
           conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Relative Abundance'",
-            sliderInput("filter_microbes_rela_inp", "Restrict To", min = 0, max = 1, value = c(0,1), step=0.0001),
+            numericInput("filter_microbes_rela_min_inp", "Set Minimum", 0, min = 0, max = 1),
+            numericInput("filter_microbes_rela_max_inp", "Set Maximum", 1, min = 0, max = 1),
             withBusyIndicatorUI(
               actionButton("filter_microbes_rela_btn", "Filter")
             )
           ),
           conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Prevalence'",
-            sliderInput("filter_microbes_prev_inp", "Restrict To", min = 0, max = 1, value = c(0,1), step=0.001),
+            numericInput("filter_microbes_prev_min_inp", "Set Minimum", 0, min = 0, max = 1),
+            numericInput("filter_microbes_prev_max_inp", "Set Maximum", 1, min = 0, max = 1),
             withBusyIndicatorUI(
               actionButton("filter_microbes_prev_btn", "Filter")
             )

@@ -62,8 +62,8 @@ observeEvent(input$filter_microbes_rela_btn,{
         counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
         relabu_table <- counts_to_relabu(counts_table)
 
-        minval <- input$filter_microbes_rela_inp[1]
-        maxval <- input$filter_microbes_rela_inp[2]
+        minval <- input$filter_microbes_rela_min_inp
+        maxval <- input$filter_microbes_rela_max_inp
         row_means <- apply(relabu_table, 1, mean)
         organisms <- names(row_means[row_means >= minval & row_means <= maxval])
         vals$MAE <- mae_pick_organisms(MAE, isolate_organisms = organisms)
@@ -79,8 +79,8 @@ observeEvent(input$filter_microbes_prev_btn,{
         sam_table <- as.data.frame(colData(microbe)) # sample x condition
         counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-        minval <- input$filter_microbes_prev_inp[1]
-        maxval <- input$filter_microbes_prev_inp[2]
+        minval <- input$filter_microbes_prev_min_inp
+        maxval <- input$filter_microbes_prev_max_inp
         row_means <- apply(counts_table, 1, function(x) (sum(x >= 1)/ncol(counts_table)))
         organisms <- names(row_means[row_means >= minval & row_means <= maxval])
         vals$MAE <- mae_pick_organisms(MAE, isolate_organisms = organisms)
