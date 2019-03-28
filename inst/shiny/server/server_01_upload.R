@@ -343,7 +343,7 @@ observeEvent(input$uploadDataPs, {
       tax_table %>%
       base::data.frame() %>%
       dplyr::mutate_all(as.character) %>%
-      dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+      dplyr::select(superkingdom, phylum, class, order, family, genus, species) %>%
       S4Vectors::DataFrame()
 
   microbe_se <-
