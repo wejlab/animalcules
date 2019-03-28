@@ -134,11 +134,10 @@ tabPanel("Abundance",
       sidebarLayout(
         sidebarPanel(
 
+          selectInput("relabu_box_taxlevs", "Tax Levels", choices=tax.name, selected=tax.default, multiple=TRUE),
+
           # Dynamic choose from organisms based on tax level
           uiOutput("relabu_box_organisms"),
-
-          # Select taxon level
-          selectInput("relabu_box_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
 
           # Select condition
           selectInput("relabu_box_condition", "Select condition", covariates.colorbar),
@@ -154,7 +153,7 @@ tabPanel("Abundance",
           width=3
         ),
         mainPanel(
-          plotlyOutput("relabu_box_plot", width="800px"),
+          uiOutput("relabu_box_plots", height=200),
           width=9
         )
       )

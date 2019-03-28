@@ -17,8 +17,8 @@ do_relabu_bar <- eventReactive(input$relabu_bar_plot_btn, {
 })
 
 # Reaction to button pressing
-output$relabu_bar_plot <- renderPlotly({
-    p <- do_relabu_bar()
+  output$relabu_bar_plot <- renderPlotly({
+  p <- do_relabu_bar()
     return(p)
 })
 
@@ -73,25 +73,39 @@ output$relabu_heatmap_org_iso <- renderUI({
 #
 # Plot when button is pressed
 do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
-    p <- relabu_boxplot(MAE = vals$MAE,
-                        tax_level = input$relabu_box_taxlev,
-                        condition = input$relabu_box_condition,
-                        organisms = input$relabu_box_organisms,
-                        datatype = input$relabu_box_datatype)
-    return(p)
+    tavlevs <- as.list(input$relabu_box_taxlevs)
+    plots <- lapply(tavlevs, function(x) {
+        id <- paste("relabu_box_organisms", x, sep="_")
+        organisms <- input[[id]]
+
+        if (length(organisms) > 0) {
+            relabu_boxplot(MAE = vals$MAE,
+                           tax_level = x,
+                           condition = input$relabu_box_condition,
+                           organisms = organisms,
+                           datatype = input$relabu_box_datatype)
+        } else {
+            plotly_empty()
+        }
+    })
+    return(plots)
 })
 
 # Reaction to button pressing
-output$relabu_box_plot <- renderPlotly({
+output$relabu_box_plots <- renderUI({
     p <- do_relabu_box()
     return(p)
 })
 
-# Return unique organisms for a given tax level
+#plotlyOutput("relabu_box_plot", width="800px"),
+
+# Return a dynamic number of organism choices for each tax level selected
 output$relabu_box_organisms <- renderUI({
-    organisms <- unique(as.data.frame(rowData(experiments(vals$MAE)[[1]]))[,input$relabu_box_taxlev])
-    selectizeInput('relabu_box_organisms', label='Organisms', choices=organisms, selected=organisms[1], multiple=TRUE)
+    tavlevs <- as.list(input$relabu_box_taxlevs)
+    inputs <- lapply(tavlevs, function(x) {
+        id <- paste("relabu_box_organisms", x, sep="_")
+        organisms <- unique(as.data.frame(rowData(experiments(vals$MAE)[[1]]))[,x])
+        selectizeInput(id, label=x, choices=organisms, selected=organisms[1], multiple=TRUE)
+    })
+    return(inputs)
 })
-
-
-
