@@ -135,15 +135,15 @@ output$filter_summary_table <- renderTable({
     dat['Number of Samples'] <- round(nrow(sam_table))
     dat['Number of Covariates'] <- round(ncol(sam_table))
     dat['Number of Organisms'] <- round(nrow(counts_table))
-    dat['Sample Mean Counts'] <- mean(apply(counts_table, 2, mean))
-    dat['Sample Median Counts'] <- median(apply(counts_table, 2, mean))
-    dat['Organism Mean Counts'] <- mean(apply(counts_table, 1, mean))
-    dat['Organism Median Counts'] <- median(apply(counts_table, 1, mean))
+    dat['Sample Mean Counts'] <- mean(apply(counts_table, 2, sum))
+    dat['Sample Median Counts'] <- median(apply(counts_table, 2, sum))
+    dat['Organism Mean Counts'] <- mean(apply(counts_table, 1, sum))
+    dat['Organism Median Counts'] <- median(apply(counts_table, 1, sum))
     df <- as.data.frame(unlist(dat))
 
     # Formatting
     df$temp <- rownames(df)
-    colnames(df) <- c("", "Summary Statistic")
+    colnames(df) <- c("", "Summary Statistics")
     df <- df[,c(2,1)]
     df[,2] <- as.character(round(df[,2]))
     return(df)

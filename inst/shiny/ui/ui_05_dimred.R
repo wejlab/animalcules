@@ -36,7 +36,7 @@ tabPanel("Dimension Reduction",
             selectInput("dimred_pca_datatype", "Select data type", c("Relative Abundance" = "relabu",
                                                                      "Counts"             = "counts",
                                                                      "log(CPM)"           = "logcpm"),
-                                                                     selected             = "relabu")
+                                                                     selected             = "logcpm")
           ),
 
           # Do plot button
@@ -149,7 +149,7 @@ tabPanel("Dimension Reduction",
             selectInput("dimred_tsne_datatype", "Select data type", c("Relative Abundance" = "relabu",
                                                                      "Counts"              = "counts",
                                                                      "log(CPM)"            = "logcpm"),
-                                                                     selected              = "relabu")
+                                                                     selected              = "logcpm")
           ),
 
           # Do plot button
