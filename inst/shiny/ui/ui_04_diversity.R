@@ -6,17 +6,12 @@ tabPanel("Diversity",
         sidebarPanel(
           br(),
           selectizeInput('taxl.alpha', 'Taxonomy Level', choices = tax.name, selected=tax.default),
-          selectInput("select_alpha_div_condition", "Compare between:", covariates.colorbar),
+          selectInput("select_alpha_div_condition", "Compare between:", covariates),
           checkboxInput("alpha_adv", "Advanced Options"),
           conditionalPanel(
             condition = "input.alpha_adv == true",
             selectInput("select_alpha_div_method", "Choose method:", alpha.methods)
           ),
-          conditionalPanel(
-            condition = "input.alpha_adv == true",
-            selectInput("select_alpha_stat_method","Statistical Test", c("Wilcoxon rank sum test","T-test", "Kruskal-Wallis"))
-          ),
-
           actionButton("alpha_boxplot", "Run")
         ),
         mainPanel(

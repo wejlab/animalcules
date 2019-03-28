@@ -65,7 +65,10 @@ plotAlphaBoxplotButton3 <- eventReactive(input$alpha_boxplot,{
 })
 output$alpha.stat.test <- DT::renderDataTable({
   plotAlphaBoxplotButton3()
-}, options = list(sDom  = '<"top">t<"bottom">ip'))
+}, options = list(paging = TRUE, 
+                  scrollX = TRUE, 
+                  pageLength = 5,
+                  sDom  = '<"top">t<"bottom">ip'))
 
 
 ## beta diversity heatmap

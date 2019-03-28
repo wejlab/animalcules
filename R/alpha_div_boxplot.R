@@ -48,17 +48,34 @@ alpha_div_boxplot <- function(MAE,
     colnames(sam_table)[ncol(sam_table)] <- "richness"
     colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
 
-    # plot alpha diversity boxplot
-    g <- ggplot2::ggplot(sam_table,
-                ggplot2::aes(condition,
-                    richness,
-                    text=rownames(sam_table),
-                    color = condition)) +
-            ggplot2::geom_point() +
-            ggplot2::geom_boxplot() +
-            ggplot2::labs(title = paste("Alpha diversity between ",
-                       condition,
-                       " (", alpha_metric, ")", sep = ""))
+    
+    # check if categorical variable
+    if (!is.character(sam_table$condition)){
+          # plot alpha diversity boxplot
+      g <- ggplot2::ggplot(sam_table,
+                  ggplot2::aes(condition,
+                      richness,
+                      text=rownames(sam_table),
+                      color = condition)) +
+              ggplot2::geom_point() +
+              ggplot2::labs(title = paste("Alpha diversity between ",
+                         condition,
+                         " (", alpha_metric, ")", sep = ""))
+    }else{
+        # plot alpha diversity boxplot
+      g <- ggplot2::ggplot(sam_table,
+                  ggplot2::aes(condition,
+                      richness,
+                      text=rownames(sam_table),
+                      color = condition)) +
+              ggplot2::geom_point() +
+              ggplot2::geom_boxplot() +
+              ggplot2::labs(title = paste("Alpha diversity between ",
+                         condition,
+                         " (", alpha_metric, ")", sep = ""))  
+    }
+    
+  
     g <- ggplotly(g, tooltip="text")
     g$elementId <- NULL # To suppress a shiny warning
     return(g)

@@ -49,7 +49,7 @@ do_alpha_div_test <- function(MAE,
     sam_table$richness <- diversities(counts_table, index = alpha_metric)
     colnames(sam_table)[ncol(sam_table)] <- "richness"
     colnames(sam_table)[which(colnames(sam_table) == condition)] <- "condition"
-    sam_table$condition <- as.factor(sam_table$condition)
+    
 
     # do the statistical test
     return(alpha_div_test(sam_table = sam_table,

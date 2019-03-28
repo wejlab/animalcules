@@ -85,7 +85,7 @@ updateCovariate <- function(session){
 
 
     # Diversity
-    updateSelectInput(session, "select_alpha_div_condition", choices = covariates.colorbar)
+    updateSelectInput(session, "select_alpha_div_condition", choices = covariates)
     updateSelectInput(session, "select_beta_condition", choices = covariates.two.levels)
     updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
 
