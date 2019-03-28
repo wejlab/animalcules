@@ -72,77 +72,164 @@ differential_abundance <- function(MAE,
     # filter microbes with less than min_num_filter
     keep <- base::rowSums(DESeq2::counts(dds)) >= min_num_filter
     dds <- dds[keep,]
+    #print(resultsNames(dds))
 
-    res <- DESeq2::results(dds)
-
-    # reorder the result
-    res = res[base::order(res$padj, na.last=NA), ]
-
-
-    # reformat for reporting
-    if (nrow(res) != 0){
-      sigtab = res[(res$padj < input_da_padj_cutoff), ]
-      if (nrow(sigtab) == 0){
-        as.matrix("No differentially abundant items found!")
-      } else{
-        sigtab = as(sigtab, "data.frame")
-        sigtab$padj <- as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
-        sigtab$log2FoldChange <- as.numeric(formatC(sigtab$log2FoldChange, format = "e", digits = 2))
-        sigtab$microbe <- rownames(sigtab)
-        rownames(sigtab) <- 1:nrow(sigtab)
-        sigtab %<>% select(microbe, padj, log2FoldChange)
-
-
-        num.1 <- c()
-        num.2 <- c()
-        # transform label into 1 and 0
-        label.vec.num = as.character((sam_table %>% select(input_da_condition))[,1])
-        label.vec.save <- unique(label.vec.num)
-        label.vec.num[label.vec.num == unique(label.vec.num)[1]] <- 1
-        label.vec.num[label.vec.num != 1] <- 0
-        label.vec.num <- as.numeric(label.vec.num)
-        for (i in 1:nrow(sigtab)){
-          species.index <- which(rownames(count_table_tax) == sigtab[i,1])
-          num.1 <- c(num.1, sum((count_table_tax[species.index,which(label.vec.num == 1)] > 0)))
-          num.2 <- c(num.2, sum((count_table_tax[species.index,which(label.vec.num == 0)] > 0)))
+    # check if the condition has multiple levels
+    if (length(resultsNames(dds)) == 2 | 
+        length(resultsNames(dds)) - length(input_da_condition_covariate) == 2){
+        res <- DESeq2::results(dds)
+        # reorder the result
+        res = res[base::order(res$padj, na.last=NA), ]
+    
+    
+        # reformat for reporting
+        if (nrow(res) != 0){
+          sigtab = res[(res$padj < input_da_padj_cutoff), ]
+          if (nrow(sigtab) == 0){
+            as.matrix("No differentially abundant items found!")
+          } else{
+            sigtab = as(sigtab, "data.frame")
+            sigtab$padj <- as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
+            sigtab$pvalue <- as.numeric(formatC(sigtab$pvalue, format = "e", digits = 2))
+            sigtab$log2FoldChange <- as.numeric(formatC(sigtab$log2FoldChange, format = "e", digits = 2))
+            sigtab$microbe <- rownames(sigtab)
+            rownames(sigtab) <- 1:nrow(sigtab)
+            sigtab %<>% select(microbe, padj, pvalue, log2FoldChange)
+    
+    
+            num.1 <- c()
+            num.2 <- c()
+            # transform label into 1 and 0
+            label.vec.num = as.character((sam_table %>% select(input_da_condition))[,1])
+            label.vec.save <- unique(label.vec.num)
+            label.vec.num[label.vec.num == unique(label.vec.num)[1]] <- 1
+            label.vec.num[label.vec.num != 1] <- 0
+            label.vec.num <- as.numeric(label.vec.num)
+            for (i in 1:nrow(sigtab)){
+              species.index <- which(rownames(count_table_tax) == sigtab[i,1])
+              num.1 <- c(num.1, sum((count_table_tax[species.index,which(label.vec.num == 1)] > 0)))
+              num.2 <- c(num.2, sum((count_table_tax[species.index,which(label.vec.num == 0)] > 0)))
+            }
+    
+            sigtab <- cbind(sigtab, num.1)
+            sigtab <- cbind(sigtab, num.2)
+    
+    
+            df.output.prevalence <- percent(round((num.1 + num.2)/ncol(count_table_tax),4))
+            sigtab <- cbind(sigtab, df.output.prevalence)
+    
+    
+            colnames(sigtab)[ncol(sigtab)-2] <- label.vec.save[1]
+            colnames(sigtab)[ncol(sigtab)-1] <- label.vec.save[2]
+            colnames(sigtab)[ncol(sigtab)] <- "prevalence"
+    
+    
+            foldChange <- c()
+            for (i in 1:nrow(sigtab)){
+            foldChange[i] <- round((max(as.numeric(c((sigtab[i,6] / sum(label.vec.num == 0)),
+                                                     (sigtab[i,5] / sum(label.vec.num == 1))))) /
+                           min(as.numeric(c((sigtab[i,6] / sum(label.vec.num == 0)),
+                                            (sigtab[i,5] / sum(label.vec.num == 1)))))), digits = 2)
+            }
+            sigtab <- cbind(sigtab, foldChange)
+            colnames(sigtab)[ncol(sigtab)] <- "Group Size adjusted fold change"
+    
+    
+            # total num
+            num_total <- length(label.vec.num)
+            sigtab[,5] <- paste0(sigtab[,5], "/", sum(label.vec.num == 1))
+            sigtab[,6] <- paste0(sigtab[,6], "/", sum(label.vec.num == 0))
+            
+            # if y is numeric, make the output table easier
+            if (is.numeric((sam_table %>% select(input_da_condition))[,1])){
+              sigtab <- sigtab[,c(1,2,3,4,7)]
+            }
+    
+            return(sigtab)
+    
+          }
+    
+        }else{
+          return(as.matrix("No differentially abundant items found!"))
         }
-
-        sigtab <- cbind(sigtab, num.1)
-        sigtab <- cbind(sigtab, num.2)
-
-
-        df.output.prevalence <- percent(round((num.1 + num.2)/ncol(count_table_tax),4))
-        sigtab <- cbind(sigtab, df.output.prevalence)
-
-
-        colnames(sigtab)[ncol(sigtab)-2] <- label.vec.save[1]
-        colnames(sigtab)[ncol(sigtab)-1] <- label.vec.save[2]
-        colnames(sigtab)[ncol(sigtab)] <- "prevalence"
-
-
-        foldChange <- c()
-        for (i in 1:nrow(sigtab)){
-        foldChange[i] <- round((max(as.numeric(c((sigtab[i,5] / sum(label.vec.num == 0)),
-                                                 (sigtab[i,4] / sum(label.vec.num == 1))))) /
-                       min(as.numeric(c((sigtab[i,5] / sum(label.vec.num == 0)),
-                                        (sigtab[i,4] / sum(label.vec.num == 1)))))), digits = 2)
-        }
-        sigtab <- cbind(sigtab, foldChange)
-        colnames(sigtab)[ncol(sigtab)] <- "Group Size adjusted fold change"
-
-
-        # total num
-        num_total = length(label.vec.num)
-        sigtab[,4] = paste0(sigtab[,4], "/", num_total)
-        sigtab[,5] = paste0(sigtab[,5], "/", num_total)
-
-
-        return(sigtab)
-
-      }
-
     }else{
-      return(as.matrix("No differentially abundant items found!"))
+      # for multiple levels, we need to combine results for each comparison
+      sigtab <- NULL
+      label.vec = as.character((sam_table %>% select(input_da_condition))[,1])
+      combination_mat <- combn(sort(unique(label.vec)), 2)
+      #print(combination_mat)
+      for (j in seq(ncol(combination_mat))){
+          res <- DESeq2::results(dds, contrast=c(input_da_condition, 
+                                                 combination_mat[1,j], 
+                                                 combination_mat[2,j]))
+          if (nrow(res) > 0){
+              res = res[base::order(res$padj, na.last=NA), ]
+              sigtab_tmp = res[(res$padj < input_da_padj_cutoff), ]
+              if (nrow(sigtab_tmp) > 0){
+                  sigtab_tmp = as(sigtab_tmp, "data.frame")
+                  sigtab_tmp$padj <- as.numeric(formatC(sigtab_tmp$padj, format = "e", digits = 2))
+                  sigtab_tmp$pvalue <- as.numeric(formatC(sigtab_tmp$pvalue, format = "e", digits = 2))
+                  sigtab_tmp$log2FoldChange <- as.numeric(formatC(sigtab_tmp$log2FoldChange, format = "e", digits = 2))
+                  sigtab_tmp$microbe <- rownames(sigtab_tmp)
+                  rownames(sigtab_tmp) <- 1:nrow(sigtab_tmp)
+                  sigtab_tmp %<>% select(microbe, padj, pvalue, log2FoldChange)
+                  
+                  
+                  num.1 <- c()
+                  num.2 <- c()
+                  # transform label into 1 and 0
+                  label.vec.num = as.character((sam_table %>% select(input_da_condition))[,1])
+                  label.vec.num[label.vec.num == combination_mat[1,j]] <- 1
+                  label.vec.num[label.vec.num == combination_mat[2,j]] <- 0
+                  label.vec.num <- as.numeric(label.vec.num)
+                  for (i in 1:nrow(sigtab_tmp)){
+                    species.index <- which(rownames(count_table_tax) == sigtab_tmp[i,1])
+                    num.1 <- c(num.1, sum((count_table_tax[species.index,which(label.vec.num == 1)] > 0)))
+                    num.2 <- c(num.2, sum((count_table_tax[species.index,which(label.vec.num == 0)] > 0)))
+                  }
+                  
+                  sigtab_tmp <- cbind(sigtab_tmp, num.1)
+                  sigtab_tmp <- cbind(sigtab_tmp, num.2)
+                  
+                  
+                  df.output.prevalence <- percent(round((num.1 + num.2)/ncol(count_table_tax),4))
+                  sigtab_tmp <- cbind(sigtab_tmp, df.output.prevalence)
+                  
+                  
+                  colnames(sigtab_tmp)[ncol(sigtab_tmp)-2] <- "experiment"
+                  colnames(sigtab_tmp)[ncol(sigtab_tmp)-1] <- "control"
+                  colnames(sigtab_tmp)[ncol(sigtab_tmp)] <- "prevalence"
+                  
+                  
+                  foldChange <- c()
+                  for (i in 1:nrow(sigtab_tmp)){
+                  foldChange[i] <- round((max(as.numeric(c((sigtab_tmp[i,6] / sum(label.vec == combination_mat[2,j])),
+                                                           (sigtab_tmp[i,5] / sum(label.vec == combination_mat[1,j]))))) /
+                                 min(as.numeric(c((sigtab_tmp[i,6] / sum(label.vec == combination_mat[2,j])),
+                                                  (sigtab_tmp[i,5] / sum(label.vec == combination_mat[1,j])))))), digits = 2)
+                  }
+                  sigtab_tmp <- cbind(sigtab_tmp, foldChange)
+                  colnames(sigtab_tmp)[ncol(sigtab_tmp)] <- "Group Size adjusted fold change"
+                  
+                  
+                  # total num
+                  num_total <- length(label.vec.num)
+                  #print(sigtab_tmp)
+                  #print(combination_mat)
+                  
+                  sigtab_tmp[,5] <- paste0(combination_mat[1,j], ": ", sigtab_tmp[,5], "/", sum(label.vec == combination_mat[1,j]))
+                  sigtab_tmp[,6] <- paste0(combination_mat[2,j], ": ", sigtab_tmp[,6], "/", sum(label.vec == combination_mat[2,j]))
+                  
+                  # group 
+                  sigtab_tmp[,9] <- paste0(combination_mat[1,j], " vs. ", combination_mat[2,j])
+                  colnames(sigtab_tmp)[9] <- "Contrast"
+                  #print(sigtab_tmp)  
+                  # combine
+                  sigtab <- rbind(sigtab, sigtab_tmp)
+            
+            }
+          }
+      }
+      return(sigtab)
     }
-
 }

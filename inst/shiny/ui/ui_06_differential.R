@@ -4,15 +4,11 @@ tabPanel("Differential Analysis",
       selectizeInput('taxl.da', 'Taxonomy Level', choices = tax.name,
                      selected=tax.default),
       selectizeInput('da_condition', 'Select condition',
-                     choices = covariates.colorbar),
-      conditionalPanel(condition = "output.da_condition_type == 'multiple'",
-                       helpText("Please select 2 levels to compare"),
-                       uiOutput("da_condition_options")
-      ),
+                     choices = covariates),
       checkboxInput("da_adv", "Advanced Options"),
       conditionalPanel(
         condition = "input.da_adv == true",
-        selectizeInput('da.condition.covariate', 'Select (multiple) covariates',
+        selectizeInput('da_condition_covariate', 'Select (multiple) covariates',
         choices = covariates, multiple = TRUE)
       ),
       conditionalPanel(
@@ -25,13 +21,13 @@ tabPanel("Differential Analysis",
         numericInput('da.padj.cutoff', 'Choose padj cut-off', 0.5,
                     min = 1e-100, max = 1)
       ),
-      #helpText("Continuous covariates would be automatically cut into factors with 3 levels."),
 
       actionButton("run_deseq2", "Run"),
       width=3
     ),
     mainPanel(
       tabPanel("DeSeq2",
+        helpText("Note: For multi-level target viariable, all significant results will be printed if existed"),
         DT::dataTableOutput("DeSeq2Table.new")
       ), width=9
     )

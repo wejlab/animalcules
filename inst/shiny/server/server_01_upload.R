@@ -113,8 +113,8 @@ updateCovariate <- function(session){
     updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
 
     # Differential
-    updateSelectInput(session, "da_condition", choices = covariates.colorbar)
-    updateSelectInput(session, "da.condition.covariate", choices = covariates)
+    updateSelectInput(session, "da_condition", choices = covariates)
+    updateSelectInput(session, "da_condition_covariate", choices = covariates)
 
     # Biomarker
     updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.colorbar)
