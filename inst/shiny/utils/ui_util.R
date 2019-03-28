@@ -6,6 +6,8 @@ alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon")
 beta.methods <- c("wUniFrac", "bray")
 
 tax.default <- "genus"
+# These are options for rendering datatables
+dtopts <- list(scrollX=TRUE, paging=TRUE)
 
 tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))

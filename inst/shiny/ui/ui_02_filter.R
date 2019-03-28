@@ -118,6 +118,79 @@ tabPanel("Summary and Filter",
           width=7
         )
       )
+    ),
+    tabPanel("Assay dashboard",
+      br(),
+      sidebarLayout(
+        sidebarPanel(
+          selectInput("select_assay", "Select Assay",
+              c("Count table" = "count",
+                "Relative Abundance table" = "ra",
+                "LogCPM table" = "logcpm",
+                "Taxonomy table" = "tax",
+                "Annotation table" = "annot"
+              )),
+        conditionalPanel(condition = sprintf("input['%s'] == 'count'", "select_assay"),
+          selectizeInput("assay_count_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
+          actionButton("view_assay_count",
+             "View",
+             class = "btn-primary"),
+          downloadButton('download_assay_count', 'Download')
+        ),
+        
+        conditionalPanel(condition = sprintf("input['%s'] == 'ra'", "select_assay"),
+          selectizeInput("assay_ra_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
+          actionButton("view_assay_ra",
+             "View",
+             class = "btn-primary"),
+          downloadButton('download_assay_ra', 'Download')
+        ),
+        conditionalPanel(condition = sprintf("input['%s'] == 'logcpm'", "select_assay"),
+          selectizeInput("assay_logcpm_taxlev", "Tax Level", choices=tax.name, selected=tax.default),
+          actionButton("view_assay_logcpm",
+             "View",
+             class = "btn-primary"),
+          downloadButton('download_assay_logcpm', 'Download')
+        ),
+        conditionalPanel(condition = sprintf("input['%s'] == 'tax'", "select_assay"),
+          actionButton("view_assay_tax",
+             "View",
+             class = "btn-primary"),
+          downloadButton('download_assay_tax', 'Download')
+        ),
+        conditionalPanel(condition = sprintf("input['%s'] == 'annot'", "select_assay"),
+          actionButton("view_assay_annot",
+             "View",
+             class = "btn-primary"),
+          downloadButton('download_assay_annot', 'Download')
+        )
+        
+        ),
+        mainPanel(
+          conditionalPanel(condition = sprintf("input['%s'] == 'count'", "select_assay"),
+              DT::dataTableOutput("assay_table_count", width='95%')
+        
+          ),
+          conditionalPanel(condition = sprintf("input['%s'] == 'ra'", "select_assay"),
+              DT::dataTableOutput("assay_table_ra", width='95%')
+        
+          ),
+          conditionalPanel(condition = sprintf("input['%s'] == 'logcpm'", "select_assay"),
+              DT::dataTableOutput("assay_table_logcpm", width='95%')
+        
+          ),
+          conditionalPanel(condition = sprintf("input['%s'] == 'tax'", "select_assay"),
+              DT::dataTableOutput("assay_table_tax", width='95%')
+        
+          ),
+          conditionalPanel(condition = sprintf("input['%s'] == 'annot'", "select_assay"),
+              DT::dataTableOutput("assay_table_annot", width='95%')
+        
+          )
+          
+          
+        )
+      )
     )
   )
 )
