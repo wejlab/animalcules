@@ -5,7 +5,7 @@
 #' @param input_da_condition Which condition is the target condition
 #' @param input_da_condition_covariate Covariates added to linear function
 #' @param min_num_filter Minimum number of counts of reads mapped to this microbe
-#' @param input_da_padj_cutoff adjusted pvalue cutoff
+#' @param input_da_padj_cutoff adjusted pValue cutoff
 #' @param method choose between DESeq2 and limma
 #' 
 #' @return A output dataframe
@@ -13,13 +13,13 @@
 #' @examples
 #' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 #' toy_data <- readRDS(data_dir)
-#' p <- differential_abundance(toy_data,
+#' differential_abundance(toy_data,
 #' tax_level="phylum",
 #' input_da_condition=c("DISEASE"),
 #' min_num_filter = 2,
 #' input_da_padj_cutoff = 0.5,
 #' method = "DESeq2")
-#' p
+#' 
 #'
 #' @importFrom limma lmFit eBayes topTable
 #' @import DESeq2
@@ -92,11 +92,11 @@ differential_abundance <- function(MAE,
               } else{
                 sigtab = as(sigtab, "data.frame")
                 sigtab$padj <- as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
-                sigtab$pvalue <- as.numeric(formatC(sigtab$pvalue, format = "e", digits = 2))
+                sigtab$pValue <- as.numeric(formatC(sigtab$pValue, format = "e", digits = 2))
                 sigtab$log2FoldChange <- as.numeric(formatC(sigtab$log2FoldChange, format = "e", digits = 2))
                 sigtab$microbe <- rownames(sigtab)
                 rownames(sigtab) <- 1:nrow(sigtab)
-                sigtab %<>% select(microbe, padj, pvalue, log2FoldChange)
+                sigtab %<>% select(microbe, padj, pValue, log2FoldChange)
         
         
                 num.1 <- c()
@@ -158,7 +158,7 @@ differential_abundance <- function(MAE,
           # for multiple levels, we need to combine results for each comparison
           sigtab <- NULL
           label.vec = as.character((sam_table %>% select(input_da_condition))[,1])
-          combination_mat <- combn(sort(unique(label.vec)), 2)
+          combination_mat <- utils::combn(sort(unique(label.vec)), 2)
           #print(combination_mat)
           for (j in seq(ncol(combination_mat))){
               res <- DESeq2::results(dds, contrast=c(input_da_condition, 
@@ -170,11 +170,11 @@ differential_abundance <- function(MAE,
                   if (nrow(sigtab_tmp) > 0){
                       sigtab_tmp = as(sigtab_tmp, "data.frame")
                       sigtab_tmp$padj <- as.numeric(formatC(sigtab_tmp$padj, format = "e", digits = 2))
-                      sigtab_tmp$pvalue <- as.numeric(formatC(sigtab_tmp$pvalue, format = "e", digits = 2))
+                      sigtab_tmp$pValue <- as.numeric(formatC(sigtab_tmp$pValue, format = "e", digits = 2))
                       sigtab_tmp$log2FoldChange <- as.numeric(formatC(sigtab_tmp$log2FoldChange, format = "e", digits = 2))
                       sigtab_tmp$microbe <- rownames(sigtab_tmp)
                       rownames(sigtab_tmp) <- 1:nrow(sigtab_tmp)
-                      sigtab_tmp %<>% select(microbe, padj, pvalue, log2FoldChange)
+                      sigtab_tmp %<>% select(microbe, padj, pValue, log2FoldChange)
                       
                       
                       num.1 <- c()
@@ -282,11 +282,11 @@ differential_abundance <- function(MAE,
         }
        
         colnames(sigtab)[which(colnames(sigtab) == "adj.P.Val")] <- "padj"
-        colnames(sigtab)[which(colnames(sigtab) == "P.Value")] <- "pvalue"
-        sigtab <- sigtab[,which(colnames(sigtab) %in% c("padj", "pvalue"))]
+        colnames(sigtab)[which(colnames(sigtab) == "P.Value")] <- "pValue"
+        sigtab <- sigtab[,which(colnames(sigtab) %in% c("padj", "pValue"))]
         sigtab$microbe <- rownames(sigtab)
         rownames(sigtab) <- 1:nrow(sigtab)
-        sigtab %<>% select(microbe, padj, pvalue)
+        sigtab %<>% select(microbe, padj, pValue)
 
         return(sigtab) 
       

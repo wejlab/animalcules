@@ -254,7 +254,7 @@ find_assay_count <- eventReactive(input$view_assay_count, {
 })
 output$assay_table_count <- DT::renderDataTable(find_assay_count(),
                                          options=dtopts, 
-                                         rownames=T)
+                                         rownames=TRUE)
 output$download_assay_count <- downloadHandler(filename = function() {
   paste0("Assay_count_", input$assay_count_taxlev, ".csv", sep = "")
 }, content = function(file) {
@@ -278,7 +278,7 @@ find_assay_ra <- eventReactive(input$view_assay_ra, {
 })
 output$assay_table_ra <- DT::renderDataTable(find_assay_ra(),
                                          options=dtopts, 
-                                         rownames=T)
+                                         rownames=TRUE)
 output$download_assay_ra <- downloadHandler(filename = function() {
   paste0("Assay_ra_", input$assay_ra_taxlev, ".csv", sep = "")
 }, content = function(file) {
@@ -301,7 +301,7 @@ find_assay_logcpm <- eventReactive(input$view_assay_logcpm, {
 })
 output$assay_table_logcpm <- DT::renderDataTable(find_assay_logcpm(),
                                          options=dtopts, 
-                                         rownames=T)
+                                         rownames=TRUE)
 output$download_assay_logcpm <- downloadHandler(filename = function() {
   paste0("Assay_logcpm_", input$assay_logcpm_taxlev, ".csv", sep = "")
 }, content = function(file) {
@@ -319,7 +319,7 @@ find_assay_tax <- eventReactive(input$view_assay_tax, {
 })
 output$assay_table_tax <- DT::renderDataTable(find_assay_tax(),
                                          options=dtopts, 
-                                         rownames=T)
+                                         rownames=TRUE)
 output$download_assay_tax <- downloadHandler(filename = function() {
   "Assay_taxonomy.csv"
 }, content = function(file) {
@@ -337,7 +337,7 @@ find_assay_annot <- eventReactive(input$view_assay_annot, {
 })
 output$assay_table_annot <- DT::renderDataTable(find_assay_annot(),
                                          options=dtopts, 
-                                         rownames=T)
+                                         rownames=TRUE)
 output$download_assay_annot <- downloadHandler(filename = function() {
   "Assay_annotation.csv"
 }, content = function(file) {

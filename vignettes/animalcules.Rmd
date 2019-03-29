@@ -218,7 +218,7 @@ diversity_beta_heatmap(MAE = MAE,
                        input_bdhm_sort_by = 'condition')
 ```
 
-## Beta Boxplot
+## Beta Diversity Boxplot
 
 Plot the beta diversity boxplot within and between conditions.
 
@@ -229,7 +229,7 @@ diversity_beta_boxplot(MAE = MAE,
                        input_select_beta_condition = 'DISEASE')
 ```
 
-## Beta Diversity Stat
+## Beta Diversity Test
 
 Conduct statistical test on the beta diversity between the levels in selected condition.
 
