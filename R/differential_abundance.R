@@ -8,7 +8,7 @@
 #' @param input_da_padj_cutoff adjusted pvalue cutoff
 #' @param method choose between DESeq2 and limma
 #' 
-#' @return A plotly object
+#' @return A output dataframe
 #'
 #' @examples
 #' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
