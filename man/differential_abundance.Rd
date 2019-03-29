@@ -6,7 +6,7 @@
 \usage{
 differential_abundance(MAE, tax_level, input_da_condition = c(),
   input_da_condition_covariate = NULL, min_num_filter = 5,
-  input_da_padj_cutoff = 0.05)
+  input_da_padj_cutoff = 0.05, method = "DESeq2")
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -20,6 +20,8 @@ differential_abundance(MAE, tax_level, input_da_condition = c(),
 \item{min_num_filter}{Minimum number of counts of reads mapped to this microbe}
 
 \item{input_da_padj_cutoff}{adjusted pvalue cutoff}
+
+\item{method}{choose between DESeq2 and limma}
 }
 \value{
 A plotly object
@@ -34,7 +36,8 @@ p <- differential_abundance(toy_data,
 tax_level="phylum",
 input_da_condition=c("DISEASE"),
 min_num_filter = 2,
-input_da_padj_cutoff = 0.5)
+input_da_padj_cutoff = 0.5,
+method = "DESeq2")
 p
 
 }
