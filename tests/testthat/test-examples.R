@@ -9,9 +9,7 @@ test_that("filter_summary_top() is working", {
                             sample_condition = "AGE")
     
     expect_equal(length(p), 7)
-
 })
-
 
 # Summary Plot Bottom
 test_that("filter_summary_bottom() is working", {
@@ -20,10 +18,7 @@ test_that("filter_summary_bottom() is working", {
                                filter_type = "By Metadata",
                                sample_condition = "SEX")
     expect_equal(length(p), 7)
-
 })
-
-
 
 # Categorize
 test_that("filter_categorize() is working", {
@@ -48,9 +43,7 @@ test_that("relabu_barplot() is working", {
                         sample_conditions=c('SEX', 'AGE'),
                         show_legend=TRUE)
     expect_equal(length(p), 7)
-
 })
-
 
 ## Relative Abundance Heatmap
 test_that("relabu_heatmap() is working", {
@@ -59,9 +52,7 @@ test_that("relabu_heatmap() is working", {
                        sort_by="conditions",
                        sample_conditions=c("SEX", "AGE"))
     expect_equal(length(p), 7)
-
 })
-
 
 ## Relative Abundance Boxplot
 test_that("relabu_boxplot() is working", {
@@ -71,9 +62,7 @@ test_that("relabu_boxplot() is working", {
                         condition="SEX",
                         datatype="logcpm")
     expect_equal(length(p), 8)
-
 })
-
 
 ## Alpha Diversity Boxplot
 test_that("alpha_div_boxplot() is working", {
@@ -82,9 +71,7 @@ test_that("alpha_div_boxplot() is working", {
                       condition = "DISEASE",
                       alpha_metric = "shannon")
     expect_equal(length(p), 7)
-
 })
-
 
 ## Alpha Diversity Statistical Test
 test_that("do_alpha_div_test() is working", {
@@ -100,7 +87,6 @@ test_that("do_alpha_div_test() is working", {
     expect_equal(pval_t, 0.49)
 })
 
-
 ## Beta Diversity Heatmap
 test_that("diversity_beta_heatmap() is working", {
     p <- diversity_beta_heatmap(MAE = MAE, 
@@ -109,9 +95,7 @@ test_that("diversity_beta_heatmap() is working", {
                            input_bdhm_select_conditions = 'DISEASE',
                            input_bdhm_sort_by = 'condition')
     expect_equal(length(p), 7)
-
 })
-
 
 ## Beta Diversity Boxplot
 test_that("diversity_beta_boxplot() is working", {
@@ -120,9 +104,7 @@ test_that("diversity_beta_boxplot() is working", {
                            input_beta_method = "bray",
                            input_select_beta_condition = 'DISEASE')
     expect_equal(length(p), 7)
-
 })
-
 
 ## Beta Diversity Test
 test_that("diversity_beta_test() is working", {
@@ -135,9 +117,7 @@ test_that("diversity_beta_test() is working", {
     expect_equal(p$Df[1], 1)
     expect_equal(p$Df[2], 48)
     expect_equal(p$Df[3], 49)
-
 })
-
 
 # PCA
 test_that("dimred_pca() is working", {
@@ -149,11 +129,9 @@ test_that("dimred_pca() is working", {
                          pcy=2,
                          datatype="logcpm")
     expect_equal(dim(result$table), c(50,4))
-
 })
 
-
-## PCOA
+## PCoA
 test_that("dimred_pcoa() is working", {
     result <- dimred_pcoa(MAE,
                           tax_level="genus",
@@ -163,9 +141,7 @@ test_that("dimred_pcoa() is working", {
                           axy=2,
                           method="bray")
     expect_equal(dim(result$table), c(50,4))
-
 })
-
 
 ## tSNE
 test_that("dimred_tsne() is working", {
@@ -178,9 +154,7 @@ test_that("dimred_tsne() is working", {
                      perplexity=10,
                      datatype="logcpm")
     expect_equal(length(p), 8)
-
 })
-
 
 # Differential Analysis
 test_that("differential_abundance() is working", {
@@ -190,9 +164,7 @@ test_that("differential_abundance() is working", {
                                 min_num_filter = 2,
                                 input_da_padj_cutoff = 0.5)
     expect_equal(dim(p), c(6,8))
-
 })
-
 
 # Biomarker
 test_that("find_biomarker() is working", {
@@ -207,9 +179,7 @@ test_that("find_biomarker() is working", {
     expect_equal(length(p$biomarker), 13)
     expect_equal(length(p$importance_plot), 9)
     expect_equal(length(p$roc_plot), 9)
-
 })
-
 
 # inverse_simpson
 test_that("inverse_simpson() is working", {
@@ -217,8 +187,6 @@ test_that("inverse_simpson() is working", {
     p <- round(p, 2)
     expect_equal(p, 7.86)
 })
-
-
 
 # counts_to_relabu
 test_that("counts_to_relabu() is working", {
@@ -238,13 +206,11 @@ test_that("mae_pick_samples() is working", {
     expect_equal(length(p), 2)
 })
 
-
 # mae_pick_organisms
 test_that("mae_pick_organisms() is working", {
     p <- mae_pick_organisms(MAE, isolate_organisms=c("ti|54005", "ti|73001"))
     expect_equal(length(p), 1)
 })
-
 
 # df_char_to_factor
 test_that("df_char_to_factor() is working", {
@@ -252,13 +218,11 @@ test_that("df_char_to_factor() is working", {
     expect_equal(nrow(p), 12)
 })
 
-
 # percent
 test_that("percent() is working", {
     p <- percent(c(0.42, 0.15, 0.4, 0.563, 0.2))
     expect_equal(p[1], "42.00%")
 })
-
 
 # is.categorical
 test_that("is.categorical() is working", {
@@ -278,15 +242,11 @@ test_that("is.integer1() is working", {
     expect_false(p)
 })
 
-
-
 # pct2str
 test_that("pct2str() is working", {
     p <- pct2str(0.23)
     expect_equal(p, "23.00")
 })
-
-
 
 # shannon
 test_that("shannon() is working", {
@@ -314,20 +274,17 @@ test_that("find_taxonomy() is working", {
     expect_equal(p$Taxon$Taxon$TaxId, "131567")
 })
 
-
 # diversities
 test_that("diversities() is working", {
     p <- diversities(matrix(1:12, nrow = 3),index="shannon")
     expect_equal(round(p[1], 2), 1.01)
 })
 
-
 # diversities_help
 test_that("diversities_help() is working", {
     p <- diversities_help(matrix(1:12, nrow = 3),index="shannon")
     expect_equal(round(p[1], 2), 1.01)
 })
-
 
 # alpha_div_test
 test_that("alpha_div_test() is working", {
@@ -337,8 +294,3 @@ test_that("alpha_div_test() is working", {
   p <- alpha_div_test(df_test, alpha_stat="Wilcoxon rank sum test")
   expect_equal(round(as.numeric(as.character(p$output[2])), 4), 0.0011)
 })
-
-
-
-
-
