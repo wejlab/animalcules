@@ -20,19 +20,26 @@ Table of Contents
                * [animalcules-id file](#animalcules-id-file)
                * [animalcules file](#animalcules-file)
           * [Tab 2: Summary and Filter](#tab-2-summary-and-filter)
+               * [Summary Plots](#summary-plots)
+               * [Categorize](#categorize)
           * [Tab 3: Abundance](#tab-3-abundance)
+               * [Relative Abundance Stacked Bar Plot](#relative-abundance-stacked-bar-plot)
+               * [Relative Abundance Heatmap](#relative-abundance-heatmap)
+               * [Relative Abundance Boxplot](#relative-abundance-boxplot)
           * [Tab 4: Diversity](#tab-4-diversity)
                * [Alpha diversity](#alpha-diversity)
                * [Beta diversity heatmap](#beta-diversity-heatmap)
                * [Beta diversity statistical test](#beta-diversity-statistical-test)
           * [Tab 5: Dimension Reduction](#tab-5-dimension-reduction)
+               * [PCA](#pca)
+               * [PCoA](#pcoa)
+               * [t-SNE](#t-sne)
           * [Tab 6: Differential analysis](#tab-6-differential-analysis)
                * [Run differential analysis](#run-differential-analysis)
           * [Tab 7: Biomarker](#tab-7-biomarker)
                * [Run Biomarker](#run-biomarker)
                * [Importance plot](#importance-plot)
                * [CV ROC plot](#cv-roc-plot)
-
 
 ## What does animalcules do?
 
@@ -118,19 +125,19 @@ It is often necessary to bin continuous data into categories when performing ana
 
 ### Tab 3: Abundance
 
-#### Relative Abundance Stacked Bar Plot
+##### Relative Abundance Stacked Bar Plot
 
 The stacked bar plots are used to visualize the relative abundance of microbes at a given taxonomical level in each sample represented as a single bar.
 
 ![](inst/shiny/www/readme_figs/fig_047.png)
 
-#### Relative Abundance Heatmap
+##### Relative Abundance Heatmap
 
 The heatmap represents a sample by organisms matrix that can be visualized at different taxonomic levels.
 
 ![](inst/shiny/www/readme_figs/fig_048.png)
 
-#### Relative Abundance Boxplot
+##### Relative Abundance Boxplot
 
 The boxplot visualization allows users to compare the abundance of one or more organisms at multiple taxonomical levels between categorical attributes.
 
@@ -160,19 +167,19 @@ To check if there is significant beta diversity difference existing between two 
 
 ### Tab 5: Dimension Reduction
 
-#### PCA
+##### PCA
 
 A wrapper for conduction 2D and 3D Principal Component Analysis.
 
 ![](inst/shiny/www/readme_figs/fig_044.png)
 
-#### PCoA
+##### PCoA
 
 A wrapper for conduction 2D and 3D Principal Coordinate Analysis.
 
 ![](inst/shiny/www/readme_figs/fig_045.png)
 
-#### t-SNE
+##### t-SNE
 
 A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
