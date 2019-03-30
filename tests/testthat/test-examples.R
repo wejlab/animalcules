@@ -145,7 +145,7 @@ test_that("dimred_pcoa() is working", {
 
 ## tSNE
 test_that("dimred_tsne() is working", {
-    p <- dimred_tsne(MAE,
+    result <- dimred_tsne(MAE,
                      tax_level="phylum",
                      color="AGE",
                      shape="GROUP",
@@ -153,7 +153,7 @@ test_that("dimred_tsne() is working", {
                      initial_dims=30,
                      perplexity=10,
                      datatype="logcpm")
-    expect_equal(length(p), 8)
+    expect_equal(length(result$plot), 8)
 })
 
 # Differential Analysis

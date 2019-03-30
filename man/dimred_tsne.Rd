@@ -6,7 +6,7 @@
 \usage{
 dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
   initial_dims = 30, perplexity = 10, datatype = c("logcpm",
-  "relabu", "counts"))
+  "relabu", "counts"), tsne_cache = NULL)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
@@ -24,9 +24,11 @@ dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
 \item{perplexity}{Optimal number of neighbors}
 
 \item{datatype}{Datatype to use e.g. c("logcpm", "relabu", "counts")}
+
+\item{tsne_cache}{Pass the cached data back into the function}
 }
 \value{
-A plotly object
+A list with a plotly object and cached data
 }
 \description{
 Dimensionality reduction through t-SNE

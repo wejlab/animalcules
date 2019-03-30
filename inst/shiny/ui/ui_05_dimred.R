@@ -152,6 +152,11 @@ tabPanel("Dimension Reduction",
                                                                      selected              = "logcpm")
           ),
 
+          conditionalPanel(
+            condition = "input.dimred_tsne_adv == true",
+            checkboxInput("dimred_tsne_cached", "Use Cached Data")
+          ),
+
           # Do plot button
           actionButton("dimred_tsne_plot_btn", "Plot"),
           width=3

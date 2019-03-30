@@ -8,7 +8,8 @@
 #' @param initial_dims The number of dimensions to use in reduction method
 #' @param perplexity Optimal number of neighbors
 #' @param datatype Datatype to use e.g. c("logcpm", "relabu", "counts")
-#' @return A plotly object
+#' @param tsne_cache Pass the cached data back into the function
+#' @return A list with a plotly object and cached data
 #'
 #' @examples
 #' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
@@ -38,11 +39,8 @@ dimred_tsne <- function(MAE,
                         k=c("2D","3D"),
                         initial_dims=30,
                         perplexity=10,
-                        datatype=c("logcpm", "relabu", "counts")) {
-
-    # Default variables
-    k <- ifelse(match.arg(k) == "2D", 2, 3)
-    datatype <- match.arg(datatype)
+                        datatype=c("logcpm", "relabu", "counts"),
+                        tsne_cache=NULL) {
 
     # Extract data
     microbe <- MAE[['MicrobeGenetics']]
@@ -51,34 +49,45 @@ dimred_tsne <- function(MAE,
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
-    df <- counts_table %>%
-          # Sum counts by taxon level
-          upsample_counts(tax_table, tax_level) %>%
-          # Choose data type
-          {
-              if (datatype == "relabu") {
-                  counts_to_relabu(.)
-              } else if (datatype == "logcpm") {
-                  counts_to_logcpm(.)
-              } else {
-                  .
-              }
-          } %>%
-          # Fix constant/zero row
-          {
-              if (sum(rowSums(as.matrix(.)) == 0) > 0){
-                  . <- .[-which(rowSums(as.matrix(.)) == 0),]
-              } else {
-                  .
-              }
-          } %>%
-          # Transpose
-          t()
+    if (is.null(tsne_cache)) {
 
-    # t-SNE
-    df.tsne <- tsne(scale(df), k=k, initial_dims=initial_dims, perplexity=perplexity)
-    rownames(df.tsne) <- rownames(df)
-    if (k == 2) {colnames(df.tsne) <- c("X", "Y")} else {colnames(df.tsne) <- c("X", "Y", "Z")}
+        # Default variables
+        k <- ifelse(match.arg(k) == "2D", 2, 3)
+        datatype <- match.arg(datatype)
+
+        df <- counts_table %>%
+              # Sum counts by taxon level
+              upsample_counts(tax_table, tax_level) %>%
+              # Choose data type
+              {
+                  if (datatype == "relabu") {
+                      counts_to_relabu(.)
+                  } else if (datatype == "logcpm") {
+                      counts_to_logcpm(.)
+                  } else {
+                      .
+                  }
+              } %>%
+              # Fix constant/zero row
+              {
+                  if (sum(rowSums(as.matrix(.)) == 0) > 0){
+                      . <- .[-which(rowSums(as.matrix(.)) == 0),]
+                  } else {
+                      .
+                  }
+              } %>%
+              # Transpose
+              t()
+
+        # t-SNE
+        df.tsne <- tsne(scale(df), k=k, initial_dims=initial_dims, perplexity=perplexity)
+        rownames(df.tsne) <- rownames(df)
+        if (k == 2) {colnames(df.tsne) <- c("X", "Y")} else {colnames(df.tsne) <- c("X", "Y", "Z")}
+    
+    } else {
+        df.tsne <- tsne_cache
+        k <- ncol(df.tsne)
+    }
 
     # Merge in covariate information
     if (!is.null(shape)) {
@@ -124,6 +133,5 @@ dimred_tsne <- function(MAE,
     }
 
     p$p <- NULL # To suppress a shiny warning
-
-    return(p)
+    return(list(plot=p, data=df.tsne))
 }
