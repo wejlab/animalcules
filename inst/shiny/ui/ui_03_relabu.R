@@ -139,6 +139,9 @@ tabPanel("Abundance",
           # Dynamic choose from organisms based on tax level
           uiOutput("relabu_box_organisms"),
 
+          # Separate plots
+          checkboxInput("relabu_box_separate", "Separate Plots"),
+
           # Select condition
           selectInput("relabu_box_condition", "Select condition", covariates.colorbar),
 

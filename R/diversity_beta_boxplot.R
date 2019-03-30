@@ -72,7 +72,4 @@ diversity_beta_boxplot <- function(MAE,
     layout(yaxis = y.axis)
     p$elementId <- NULL # To suppress a shiny warning
     return(p)
-
 }
-
-

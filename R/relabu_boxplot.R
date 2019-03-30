@@ -73,6 +73,7 @@ relabu_boxplot <- function(MAE,
                  color = ~df[,condition],
                  type = "box")  %>%
                  layout(boxmode = "group",
+                        xaxis = list(title = ""),
                         yaxis = list(title = datatype))
     p$p <- NULL # To suppress a shiny warning
     return(p)

@@ -78,13 +78,43 @@ do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
         id <- paste("relabu_box_organisms", x, sep="_")
         organisms <- input[[id]]
 
-        if (length(organisms) > 0) {
+        # One organism one plot
+        if (length(organisms) == 1) {
             relabu_boxplot(MAE = vals$MAE,
                            tax_level = x,
                            condition = input$relabu_box_condition,
                            organisms = organisms,
                            datatype = input$relabu_box_datatype)
-        } else {
+        }
+        # Multiple organisms multiple plots
+        else if (length(organisms) > 1) {
+            # Merged plots
+            if (!input$relabu_box_separate) {
+                relabu_boxplot(MAE = vals$MAE,
+                               tax_level = x,
+                               condition = input$relabu_box_condition,
+                               organisms = organisms,
+                               datatype = input$relabu_box_datatype)
+            } 
+            # Separate plots
+            else {
+                subplots <- lapply(as.list(organisms), function(y) {
+                    relabu_boxplot(MAE = vals$MAE,
+                                   tax_level = x,
+                                   condition = input$relabu_box_condition,
+                                   organisms = y,
+                                   datatype = input$relabu_box_datatype)
+                })
+                # Keep only one legend
+                for (i in 2:length(subplots)) {
+                    subplots[[i]] %<>% style(showlegend = FALSE)
+
+                }
+                subplot(subplots)
+            }
+        } 
+        # No organisms selected
+        else {
             plotly_empty()
         }
     })
@@ -96,8 +126,6 @@ output$relabu_box_plots <- renderUI({
     p <- do_relabu_box()
     return(p)
 })
-
-#plotlyOutput("relabu_box_plot", width="800px"),
 
 # Return a dynamic number of organism choices for each tax level selected
 output$relabu_box_organisms <- renderUI({
