@@ -1,4 +1,3 @@
-
 <p align="center"><img width=80% src="https://github.com/compbiomed/animalcules/blob/master/inst/shiny/www/animalcules.jpg"></p>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -6,10 +5,8 @@
 [![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 
-
 Table of Contents
 =================
-
 
    * [Table of Contents](#table-of-contents)
       * [What does animalcules do?](#what-does-animalcules-do)
@@ -35,10 +32,6 @@ Table of Contents
                * [Run Biomarker](#run-biomarker)
                * [Importance plot](#importance-plot)
                * [CV ROC plot](#cv-roc-plot)
-
-
-
-
 
 
 ## What does animalcules do?
@@ -111,7 +104,37 @@ In animalcules, users could choose to save their dataset to a .rds file in the T
 
 ### Tab 2: Summary and Filter
 
+##### Summary Plots
+
+One type of summarization plot returns either a box plot or pie chart for continous or categorical data respectively while another type returns returns either a density plot or bar plot for continous or categorical data respectively.
+
+![](inst/shiny/www/readme_figs/fig_042.png)
+
+##### Categorize
+
+It is often necessary to bin continuous data into categories when performing analyses that require categorical input. To help ease this process, users can automatically categorize categorical data and provide custom bin breaks and labels in doing so.
+
+![](inst/shiny/www/readme_figs/fig_043.png)
+
 ### Tab 3: Abundance
+
+#### Relative Abundance Stacked Bar Plot
+
+The stacked bar plots are used to visualize the relative abundance of microbes at a given taxonomical level in each sample represented as a single bar.
+
+![](inst/shiny/www/readme_figs/fig_047.png)
+
+#### Relative Abundance Heatmap
+
+The heatmap represents a sample by organisms matrix that can be visualized at different taxonomic levels.
+
+![](inst/shiny/www/readme_figs/fig_048.png)
+
+#### Relative Abundance Boxplot
+
+The boxplot visualization allows users to compare the abundance of one or more organisms at multiple taxonomical levels between categorical attributes.
+
+![](inst/shiny/www/readme_figs/fig_049.png)
 
 ### Tab 4: Diversity
 
@@ -135,8 +158,25 @@ To check if there is significant beta diversity difference existing between two 
 
 ![](inst/shiny/www/readme_figs/fig_037.png)
 
-
 ### Tab 5: Dimension Reduction
+
+#### PCA
+
+A wrapper for conduction 2D and 3D Principal Component Analysis.
+
+![](inst/shiny/www/readme_figs/fig_044.png)
+
+#### PCoA
+
+A wrapper for conduction 2D and 3D Principal Coordinate Analysis.
+
+![](inst/shiny/www/readme_figs/fig_045.png)
+
+#### t-SNE
+
+A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
+
+![](inst/shiny/www/readme_figs/fig_046.png)
 
 ### Tab 6: Differential analysis
 
@@ -168,12 +208,8 @@ Ranked feature importance score plot for the identified biomarkers is showed her
 ![](inst/shiny/www/readme_figs/fig_040.png)
 
 
-
 ##### CV ROC plot
 
 The identified biomarkers were used to re-train the model via a cross-validation, and ROC plot is showed automatically in this subtab. 
 
 ![](inst/shiny/www/readme_figs/fig_041.png)
-
-
-
