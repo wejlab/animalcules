@@ -76,7 +76,9 @@ run_animalcules()
 ##### Example Data
 
 A simulated example dataset has been loaded into the package already, and users could use this dataset to try all functions and features in animalcules.
-![](inst/shiny/www/readme_figs/fig_030.png)
+
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_030.png)
+
 
 ##### Count File
 
@@ -87,7 +89,7 @@ No matter what techniques generated the dataset (16s, metagenomics), as long as 
 * Annotation file: each row is a sample name, each column is a variable/feature name.
 
 
-![](inst/shiny/www/readme_figs/fig_031.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_031.png)
 
 ##### Pathoscope File
 
@@ -95,19 +97,19 @@ To analyze pathoscope outputs, users need to upload pathoscope reports (use brow
 
 Also, make sure to provide the correct column number for sample name in the annotation file, as well as the annotation file separator (tab, comma or semicolon).
 
-![](inst/shiny/www/readme_figs/fig_032.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_032.png)
 
 ##### animalcules-id file
 
 animalcules-id is a separate R pipeline that generates pathoscope-like outputs from fastq files. The required input is the animalcules-id generated .rds file. Here users could choose either EM count assay or Best hit assay. 
 
-![](inst/shiny/www/readme_figs/fig_033.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_033.png)
 
 ##### animalcules file
 
 In animalcules, users could choose to save their dataset to a .rds file in the Tab 2 (Summary and Filter). Later users could load this saved dataset by uploading this .rds file to animalcules easily via this animalcules file upload option.
 
-![](inst/shiny/www/readme_figs/fig_034.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_034.png)
 
 ### Tab 2: Summary and Filter
 
@@ -115,13 +117,13 @@ In animalcules, users could choose to save their dataset to a .rds file in the T
 
 One type of summarization plot returns either a box plot or pie chart for continous or categorical data respectively while another type returns returns either a density plot or bar plot for continous or categorical data respectively.
 
-![](inst/shiny/www/readme_figs/fig_042.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_042.png)
 
 ##### Categorize
 
 It is often necessary to bin continuous data into categories when performing analyses that require categorical input. To help ease this process, users can automatically categorize categorical data and provide custom bin breaks and labels in doing so.
 
-![](inst/shiny/www/readme_figs/fig_043.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_043.png)
 
 ### Tab 3: Abundance
 
@@ -129,19 +131,19 @@ It is often necessary to bin continuous data into categories when performing ana
 
 The stacked bar plots are used to visualize the relative abundance of microbes at a given taxonomical level in each sample represented as a single bar.
 
-![](inst/shiny/www/readme_figs/fig_047.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_047.png)
 
 ##### Relative Abundance Heatmap
 
 The heatmap represents a sample by organisms matrix that can be visualized at different taxonomic levels.
 
-![](inst/shiny/www/readme_figs/fig_048.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_048.png)
 
 ##### Relative Abundance Boxplot
 
 The boxplot visualization allows users to compare the abundance of one or more organisms at multiple taxonomical levels between categorical attributes.
 
-![](inst/shiny/www/readme_figs/fig_049.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_049.png)
 
 ### Tab 4: Diversity
 
@@ -151,19 +153,19 @@ Users could visualize the alpha diversity boxplot comparing different levels wit
 
 The statistical test will be performed between levels in the selected target condition. Users could choose different statistical test methods in the Advanced Options, e.g. T-test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Test p-value will be showed in the result table.
 
-![](inst/shiny/www/readme_figs/fig_035.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_035.png)
 
 ##### Beta Diversity Heatmap
 
 Users could visualize the beta diversity by selecting taxonomy levels, sample color condition. Samples could also be sorted by the selected condition. In Advanced options, users could choose different beta diversity metrics including Bray-curtis or Jaccard. 
 
-![](inst/shiny/www/readme_figs/fig_036.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_036.png)
 
 ##### Beta Diversity Statistical Test
 
 To check if there is significant beta diversity difference existing between two communities, users could also perform statistical test like PERMANOVA test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Note that the left panel options apply to both beta diversity heatmap and statistical test. Test p-value will be showed in the "Pr(>F)" column from the result table.
 
-![](inst/shiny/www/readme_figs/fig_037.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_037.png)
 
 ### Tab 5: Dimension Reduction
 
@@ -171,19 +173,19 @@ To check if there is significant beta diversity difference existing between two 
 
 A wrapper for conduction 2D and 3D Principal Component Analysis.
 
-![](inst/shiny/www/readme_figs/fig_044.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_044.png)
 
 ##### PCoA
 
 A wrapper for conduction 2D and 3D Principal Coordinate Analysis.
 
-![](inst/shiny/www/readme_figs/fig_045.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_045.png)
 
 ##### t-SNE
 
 A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
-![](inst/shiny/www/readme_figs/fig_046.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_046.png)
 
 ### Tab 6: Differential Analysis
 
@@ -193,7 +195,7 @@ To identify key species/genus/... for a specific variable, users need to specify
 
 After click the "Run" button, users would see a differential abundance analysis output table on the right-hand side. In this table, we show the feature name, adjusted p-value, log2 fold change, number of samples for each class, feature prevalance, and group size adjusted fold change.  
 
-![](inst/shiny/www/readme_figs/fig_038.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_038.png)
 
 
 ### Tab 7: Biomarker
@@ -206,13 +208,13 @@ To identify biomarkers for a specific binary classification problem, users need 
 Also, users could choose binary classification models including logistic regression and random forest. After clicking the button "Run", the biomarker list will shouw up at the right-hand side.
 
 
-![](inst/shiny/www/readme_figs/fig_039.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_039.png)
 
 ##### Importance Plot
 
 Ranked feature importance score plot for the identified biomarkers is showed here. The higher score is, the more important this feature (species, genus, ..) is regarding the prediction power.
 
-![](inst/shiny/www/readme_figs/fig_040.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_040.png)
 
 
 ##### CV ROC Plot
