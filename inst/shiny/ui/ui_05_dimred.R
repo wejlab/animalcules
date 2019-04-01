@@ -119,7 +119,7 @@ tabPanel("Dimension Reduction",
           selectizeInput('dimred_tsne_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_tsne_color", "Color points by:", covariates),
-          helpText("Note: it will take long time for the first run. 
+          helpText("Note: it will take longer time for the first run. 
          Subsequent plots will use cached assay unless the
          \"Use Cached Data\" is disabled from the advanced option."),
 

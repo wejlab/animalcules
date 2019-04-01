@@ -176,9 +176,7 @@ test_that("find_biomarker() is working", {
                         seed = 99,
                         percent_top_biomarker = 0.2,
                         model_name = "logistic regression")
-    expect_equal(length(p$biomarker), 13)
-    expect_equal(length(p$importance_plot), 9)
-    expect_equal(length(p$roc_plot), 9)
+    expect_equal(length(p), 3)
 })
 
 # inverse_simpson
