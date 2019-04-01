@@ -286,6 +286,10 @@ To identify biomarkers for a specific binary classification problem, users need 
 
 Also, users could choose binary classification models including logistic regression and random forest. After clicking the button "Run", the biomarker list will shouw up at the right-hand side.
 
+Note:
+* If the dataset is too small or unbalanced, cross-validation can't be applied. You will see error messages like: NA/NaN/Inf in foreign function call.
+* The target variable can not contain any special characters, otherwise there will be an error.
+
 Instructions:
 * Select taxonomy level in the menu (default: genus).
 * Select the target variable for biomarker identification.
