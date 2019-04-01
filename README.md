@@ -12,7 +12,8 @@ Table of Contents
       * [What does animalcules do?](#what-does-animalcules-do)
       * [Installation](#installation)
       * [Run animalcules](#run-animalcules)
-      * [Docs](#docs)
+      * [Docs for command line](#docs-for-command-line)
+      * [Docs for shiny app](#docs-for-shiny-app)
           * [Tab 1: Upload](#tab-1-upload)
                * [Example Data](#example-data)
                * [Count File](#count-file)
@@ -52,9 +53,17 @@ Traditional microbiome analysis such as alpha/beta diversity and differential ab
 
 ## Installation
 
-Note: Install devtools first if you haven't installed it yet. 
-You can install animalcules from github with:
+* Install from Bioconductor(not yet!): 
 
+``` r
+if (!requireNamespace("BiocManager", quietly=TRUE))
+  install.packages("BiocManager")
+BiocManager::install("animalcules")
+
+```
+
+* Install from github:
+Note: Install devtools first if you haven't installed it yet. 
 
 ``` r
 # install.packages("devtools")
@@ -69,7 +78,12 @@ library(animalcules)
 run_animalcules()
 ```
 
-## Docs
+## Docs for command line
+
+Please check the documents for command line based animalcules in the [animalcules vignette](https://bioconductor.org/packages/release/bioc/html/animalcules.html) at Bioconductor.
+
+
+## Docs for shiny app
 
 ### Tab 1: Upload
 
