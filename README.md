@@ -53,7 +53,7 @@ Traditional microbiome analysis such as alpha/beta diversity and differential ab
 
 ## Installation
 
-* Install from Bioconductor(not yet!): 
+* Install from Bioconductor(not yet!)
 
 ``` r
 if (!requireNamespace("BiocManager", quietly=TRUE))
@@ -62,7 +62,8 @@ BiocManager::install("animalcules")
 
 ```
 
-* Install from github:
+* Install from github
+
 Note: Install devtools first if you haven't installed it yet. 
 
 ``` r
@@ -78,7 +79,7 @@ library(animalcules)
 run_animalcules()
 ```
 
-## Docs for command line
+## Docs for command line (Not yet!)
 
 Please check the documents for command line based animalcules in the [animalcules vignette](https://bioconductor.org/packages/release/bioc/html/animalcules.html) at Bioconductor.
 
