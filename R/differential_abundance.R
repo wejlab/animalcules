@@ -92,7 +92,7 @@ differential_abundance <- function(MAE,
               } else{
                 sigtab = as(sigtab, "data.frame")
                 sigtab$padj <- as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
-                sigtab$pValue <- as.numeric(formatC(sigtab$pValue, format = "e", digits = 2))
+                sigtab$pValue <- as.numeric(formatC(sigtab$pvalue, format = "e", digits = 2))
                 sigtab$log2FoldChange <- as.numeric(formatC(sigtab$log2FoldChange, format = "e", digits = 2))
                 sigtab$microbe <- rownames(sigtab)
                 rownames(sigtab) <- 1:nrow(sigtab)
@@ -170,7 +170,7 @@ differential_abundance <- function(MAE,
                   if (nrow(sigtab_tmp) > 0){
                       sigtab_tmp = as(sigtab_tmp, "data.frame")
                       sigtab_tmp$padj <- as.numeric(formatC(sigtab_tmp$padj, format = "e", digits = 2))
-                      sigtab_tmp$pValue <- as.numeric(formatC(sigtab_tmp$pValue, format = "e", digits = 2))
+                      sigtab_tmp$pValue <- as.numeric(formatC(sigtab_tmp$pvalue, format = "e", digits = 2))
                       sigtab_tmp$log2FoldChange <- as.numeric(formatC(sigtab_tmp$log2FoldChange, format = "e", digits = 2))
                       sigtab_tmp$microbe <- rownames(sigtab_tmp)
                       rownames(sigtab_tmp) <- 1:nrow(sigtab_tmp)
