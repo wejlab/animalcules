@@ -6,11 +6,11 @@ tabPanel("Biomarker",
       selectizeInput('taxl_biomarker', 'Taxonomy Level', choices = tax.name,
                      selected='genus'),
       selectInput("select_target_condition_biomarker", "Select Target Condition:",
-                  covariates.colorbar),
-      conditionalPanel(condition = "output.biomarker_condition_type == 'multiple'",
-                       helpText("Please select 2 levels to compare"),
-                       uiOutput("biomarker_condition_options")
-      ),
+                  covariates.two.levels),
+      # conditionalPanel(condition = "output.biomarker_condition_type == 'multiple'",
+      #                  helpText("Please select 2 levels to compare"),
+      #                  uiOutput("biomarker_condition_options")
+      # ),
       checkboxInput("biomarker_adv", "Advanced Options"),
       conditionalPanel(
         condition = "input.biomarker_adv == true",

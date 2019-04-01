@@ -118,7 +118,7 @@ updateCovariate <- function(session){
     updateSelectInput(session, "da_condition_limma", choices = covariates)
     updateSelectInput(session, "da_condition_covariate_limma", choices = covariates)
     # Biomarker
-    updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.colorbar)
+    updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.two.levels)
 
 }
 

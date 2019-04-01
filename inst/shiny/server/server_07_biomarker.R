@@ -28,9 +28,9 @@
 
   })
 })
-
-#
-#
+# 
+# 
+# 
 #   ### check whether selected condition for biomarker has two levels or more
 #   output$biomarker_condition_type <- reactive({
 #     MAE = vals$MAE
@@ -45,10 +45,10 @@
 #     } else{
 #       return("multiple")
 #     }
-#
+# 
 #   })
 #   outputOptions(output, "biomarker_condition_type", suspendWhenHidden = FALSE)
-#
+# 
 #   # select 2 levels
 #   output$biomarker_condition_options <- renderUI({
 #     MAE = vals$MAE
