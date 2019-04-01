@@ -111,7 +111,7 @@ Each uploaded table will show up in the right panel.
 
 Running time: < 1s
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_031.png)
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_031.png" width="300">
 
 ##### Pathoscope File
 
@@ -134,7 +134,7 @@ Running time:
 * Test dataset A with 30 samples: 10.8s
 * Test dataset B with 587 samples: 22.1s
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_032.png)
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_032.png" width="300">
 
 ##### animalcules-id file
 
@@ -192,7 +192,15 @@ The boxplot visualization allows users to compare the abundance of one or more o
 
 Users could visualize the alpha diversity boxplot comparing different levels within a selected condition by selecting taxonomy levels and target condition. In Advanced options, users could choose different alpha diversity metrics including Shannon, Inverse Simpson and Gini Simpson. 
 
-The statistical test will be performed between levels in the selected target condition. Users could choose different statistical test methods in the Advanced Options, e.g. T-test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Test p-value will be showed in the result table.
+The statistical test will be performed between levels in the selected target condition. Multiple statistical test methods will be applied automatically, including T-test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Test p-values will be showed in the result table.
+
+Instructions:
+* Select taxonomy level in the menu (default is genus).
+* Select the target variable for alpha diversity comparison.
+* (Optional) Select alpha diversity metrics.
+* Click the button "Run"
+
+Running time: < 1s
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_035.png)
 
@@ -200,11 +208,29 @@ The statistical test will be performed between levels in the selected target con
 
 Users could visualize the beta diversity by selecting taxonomy levels, sample color condition. Samples could also be sorted by the selected condition. In Advanced options, users could choose different beta diversity metrics including Bray-curtis or Jaccard. 
 
+Instructions:
+* Select taxonomy level in the menu (default is genus).
+* Select the target variable for beta diversity comparison.
+* Select if samples will be sorted by the selected variable (default: no sorting).
+* (Optional) Select beta diversity metrics.
+* Click the button "Plot Heatmap"
+
+
+Running time: < 1s
+
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_036.png)
 
 ##### Beta Diversity Statistical Test
 
 To check if there is significant beta diversity difference existing between two communities, users could also perform statistical test like PERMANOVA test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Note that the left panel options apply to both beta diversity heatmap and statistical test. Test p-value will be showed in the "Pr(>F)" column from the result table.
+
+Instructions:
+* Click the tab "Boxplot" in the right panel next to the tab "Heatmap"
+* Select the test type (default is PERMANOVA). 
+* Select the target variable.
+* (Optional) Select the number of permutations if doing PERMANOVA. 
+* Click the button "Run"
+
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_037.png)
 
@@ -232,9 +258,22 @@ A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
 ##### Run Differential Analysis
 
-To identify key species/genus/... for a specific variable, users need to specify the taxonomy level and target variable (condition). In the Advanced Options, users could also add covariates to the linear model, add a minimum count cut-off (all features with average read number less than this cut-off will be filtered), and a adjusted p-value cut-off.
+To identify key microbes for a specific variable, users need to specify the taxonomy level and target variable (condition). In the Advanced Options, users could also add covariates to the linear model, add a minimum count cut-off (all features with average read number less than this cut-off will be filtered), and a adjusted p-value cut-off.
 
-After click the "Run" button, users would see a differential abundance analysis output table on the right-hand side. In this table, we show the feature name, adjusted p-value, log2 fold change, number of samples for each class, feature prevalance, and group size adjusted fold change.  
+After click the "Run" button, users would see a differential abundance analysis output table on the right-hand side. For categorical variables in DESeq2 method, we show the feature name, adjusted p-value, original p-value, log2 fold change, number of samples for each class, feature prevalance, and group size adjusted fold change. For numeric variables in DESeq2 method, number of samples for each class and group size adjusted fold change won't show up. For limma method, only adjusted p-value and original p-value will show up.
+
+Instructions:
+* Select either tab "DESeq2" or "limma" for the analysis (default is DESeq2).
+* Select taxonomy level in the menu (default is genus).
+* Select the target variable for differential abundance analysis.
+* (Optional) Select covariates.
+* (Optional) Select minimum total count cuf-off for microbes (default 500).
+* (Optional) Select adjusted p-value threshold (default 0.8).
+* Click the button "Run"
+
+Running time: 
+* Test dataset with 30 samples and 427 microbes: 2.48s
+* Test dataset with 587 samples and 203 microbes: 46.59s
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_038.png)
 
@@ -243,11 +282,22 @@ After click the "Run" button, users would see a differential abundance analysis 
 
 ##### Run Biomarker
 
-To identify biomarkers for a specific binary classification problem, users need to specify the taxonomy level and target variable. In the Advanced Options, users could also specify the number of CV repeats, number of CV folds, and top biomarker proportion. For example, with a 3-repeats 3-fold cross validation, animalcules will randomly split the dataset into 3 fold and run CV, then this procedure is repeated 3 times (each time has different random data split). The top biomarker proportion defines the threshold for selecting biomarkers: animalcules will generate an classification model based importance score for each feature (species/genus/...), and will choose the top 20% (suppose the proportion is 0.2 as default) features as the biomarkers.
-
+To identify biomarkers for a specific binary classification problem, users need to specify the taxonomy level and target variable. In the Advanced Options, users could also specify the number of CV repeats, number of CV folds, and top biomarker proportion. For example, with a 3-repeats 3-fold cross validation, animalcules will randomly split the dataset into 3 fold and run CV, then this procedure is repeated 3 times (each time has different random data split). The top biomarker proportion defines the threshold for selecting biomarkers: animalcules will generate an classification model based importance score for each microbe/feature, and will choose the top 20% (suppose the proportion is 0.2 as default) features as the biomarkers.
 
 Also, users could choose binary classification models including logistic regression and random forest. After clicking the button "Run", the biomarker list will shouw up at the right-hand side.
 
+Instructions:
+* Select taxonomy level in the menu (default: genus).
+* Select the target variable for biomarker identification.
+* (Optional) Select number of CV folds (default: 3).
+* (Optional) Select number of CV repeats (default: 3).
+* (Optional) Select top biomarker proportion based on importance score (default: 0.2, representing 20%).
+* (Optional) Select model (default: logistic regression).
+* Click the button "Run"
+
+Running time: 
+* Test dataset with 30 samples and 427 microbes: 8.5s
+* Test dataset with 587 samples and 203 microbes: 32.4s
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_039.png)
 
