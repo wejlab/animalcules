@@ -166,7 +166,7 @@ sidebarLayout(
                                          "Upload",
                                          class = "btn-primary")
                         ),
-                        helpText("After click, please wait for 30s until seeing a green check.")
+                        helpText("After click, please wait for up to 30s until seeing a green check.")
 
        )
    ),
@@ -193,7 +193,7 @@ sidebarLayout(
                   condition = "input.example_data == 'toy'",
                   h4("Toy dataset"),
                   h5("Toy dataset is a small synthetic microbiome dataset containing 50 samples and 100 microbes. 
-                     It'e loaded already, so you could simply continue and play with animalcules from this point!")
+                     It's loaded already, so you could simply continue and play with animalcules from this point!")
                   
               )
                         
