@@ -108,7 +108,7 @@ tabPanel("Summary and Filter",
             verbatimTextOutput("filter_bin_to2")
           ),
 
-          actionButton("filter_create_bins", "Create Bins"),
+          actionButton("filter_create_bins", "Create Bins", class = "btn-primary"),
           width=5
         ),
         mainPanel(
