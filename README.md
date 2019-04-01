@@ -77,7 +77,7 @@ run_animalcules()
 
 A simulated example dataset has been loaded into the package already, and users could use this dataset to try all functions and features in animalcules.
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_030.png | width=100)
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_030.png" width="100">
 
 
 ##### Count File
