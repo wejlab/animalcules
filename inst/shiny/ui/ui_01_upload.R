@@ -76,7 +76,7 @@ sidebarLayout(
 
        ),
        conditionalPanel(condition = sprintf("input['%s'] == 'count'", "uploadChoice"),
-                        fileInput("countsfile", "Counts .csv file (required):",
+                        fileInput("countsfile", "Counts file (required):",
                                   accept = c(
                                       "text/csv",
                                       "text/comma-separated-values",
@@ -86,7 +86,7 @@ sidebarLayout(
                                       ".tsv"
                                   )
                         ),
-                        fileInput("taxon.table", "Taxonomy table .csv file (required):",
+                        fileInput("taxon.table", "Taxonomy table file (required):",
                                   accept = c(
                                     "text/csv",
                                     "text/comma-separated-values",
@@ -96,7 +96,7 @@ sidebarLayout(
                                     ".tsv"
                                   )
                         ),
-                        fileInput("annotfile.count", "Annotation .csv file (required):",
+                        fileInput("annotfile.count", "Annotation file (required):",
                                   accept = c(
                                       "text/csv",
                                       "text/comma-separated-values",
@@ -122,8 +122,7 @@ sidebarLayout(
                             actionButton("uploadDataCount",
                                          "Upload",
                                          class = "btn-primary")
-                        ),
-                        helpText("After click Upload, please wait until seeing a green check.")
+                        )
        ),
        conditionalPanel(condition = sprintf("input['%s'] == 'pathofiles'", "uploadChoice"),
                         h5("Upload PathoScope generated .tsv files:"),
@@ -166,7 +165,7 @@ sidebarLayout(
                                          "Upload",
                                          class = "btn-primary")
                         ),
-                        helpText("After click, please wait for up to 30s until seeing a green check.")
+                        helpText("This might take 10-20 seconds to upload.")
 
        )
    ),
