@@ -119,14 +119,15 @@ tabPanel("Dimension Reduction",
           selectizeInput('dimred_tsne_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
 
           selectInput("dimred_tsne_color", "Color points by:", covariates),
-          helpText("Note: it will take longer time for the first run. 
-         Subsequent plots will use cached assay unless the
-         \"Use Cached Data\" is disabled from the advanced option."),
 
           checkboxInput("dimred_tsne_adv", "Advanced Options (3D)"),
-
           conditionalPanel(
             condition = "input.dimred_tsne_adv == true",
+            checkboxInput("dimred_tsne_cached", "Use Cached Data", TRUE)
+          ),
+          conditionalPanel(
+            condition = "input.dimred_tsne_adv == true",
+            helpText("Note: Uncheck the \"Use Cached Data\" first to run 3D tSNE"),
             selectInput("dimred_tsne_k", "Select Final Dimensions", c("2D" = "2D",
                                                                       "3D" = "3D"),
                                                                       selected = "2D")
@@ -139,6 +140,7 @@ tabPanel("Dimension Reduction",
 
           conditionalPanel(
             condition = "input.dimred_tsne_adv == true",
+            helpText("Note: Uncheck the \"Use Cached Data\" first to change perplexity"),
             numericInput('dimred_tsne_perplexity', 'Perplexity', 10, min=1, max=1000, step=0.1)
           ),
 
@@ -155,11 +157,6 @@ tabPanel("Dimension Reduction",
                                                                      selected              = "logcpm")
           ),
 
-          conditionalPanel(
-            condition = "input.dimred_tsne_adv == true",
-            checkboxInput("dimred_tsne_cached", "Use Cached Data", TRUE)
-          ),
-
           # Do plot button
           withBusyIndicatorUI(
           actionButton("dimred_tsne_plot_btn", "Plot",class = "btn-primary")
@@ -167,6 +164,9 @@ tabPanel("Dimension Reduction",
           width=3
         ),
         mainPanel(
+          helpText("Note: it will take longer time for the first run. 
+         Subsequent plots will use cached assay unless the
+         \"Use Cached Data\" is disabled from the advanced option."),
           fluidRow(
             plotlyOutput("dimred_tsne_plot", height="500px", width="500px")
           ),
