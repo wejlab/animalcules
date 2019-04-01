@@ -28,7 +28,9 @@ tabPanel("Biomarker",
         condition = "input.biomarker_adv == true",
         selectInput("select_model_biomarker", "Select Model", c("logistic regression", "random forest"))
       ),
-
+      helpText("If the dataset is too small or unbalanced, 
+                cross-validation can't be applied. You will see
+                error messages like: NA/NaN/Inf in foreign function call."),
       withBusyIndicatorUI(
         actionButton("goButtonBiomarker",
                      "Run",
