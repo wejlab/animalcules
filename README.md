@@ -77,7 +77,7 @@ run_animalcules()
 
 A simulated example dataset has been loaded into the package already, and users could use this dataset to try all functions and features in animalcules.
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_030.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_030.png | width=100)
 
 
 ##### Count File
@@ -221,4 +221,4 @@ Ranked feature importance score plot for the identified biomarkers is showed her
 
 The identified biomarkers were used to re-train the model via a cross-validation, and ROC plot is showed automatically in this subtab. 
 
-![](inst/shiny/www/readme_figs/fig_041.png)
+![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_041.png)
