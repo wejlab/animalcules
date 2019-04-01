@@ -24,8 +24,9 @@ tabPanel("Differential Analysis",
         numericInput('da.padj.cutoff', 'Choose padj cut-off', 0.8,
                     min = 1e-100, max = 1)
       ),
-
-      actionButton("run_deseq2", "Run"),
+      withBusyIndicatorUI(
+      actionButton("run_deseq2", "Run", class = "btn-primary")
+      ),
       width=3
     ),
     mainPanel(
@@ -61,8 +62,9 @@ tabPanel("Differential Analysis",
         numericInput('da.padj.cutoff_limma', 'Choose padj cut-off', 0.8,
                     min = 1e-100, max = 1)
       ),
-
-      actionButton("run_limma", "Run"),
+      withBusyIndicatorUI(
+      actionButton("run_limma", "Run", class = "btn-primary")
+      ),
       width=3
     ),
     mainPanel(

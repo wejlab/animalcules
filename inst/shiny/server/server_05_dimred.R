@@ -79,6 +79,7 @@ output$dimred_pcoa_table <- renderDataTable({
 #
 # Plot
 do_dimred_tsne_plot <- eventReactive(input$dimred_tsne_plot_btn, {
+  withBusyIndicatorServer("dimred_tsne_plot_btn", {
     if (input$dimred_tsne_shape == "None") {shape <- NULL} else {shape <- input$dimred_tsne_shape}
     if (input$dimred_tsne_cached & !is.null(vals$tsne)) {
         # Used cached t-SNE results
@@ -99,6 +100,7 @@ do_dimred_tsne_plot <- eventReactive(input$dimred_tsne_plot_btn, {
     }
     vals$tsne <- result # Cache results
     return(result$plot)
+  })
 })
 output$dimred_tsne_plot <- renderPlotly({
     p <- do_dimred_tsne_plot()

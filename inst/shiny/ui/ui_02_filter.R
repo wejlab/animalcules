@@ -12,7 +12,7 @@ tabPanel("Summary and Filter",
             selectizeInput('filter_type_metadata', 'Select a Condition', choices=covariates, multiple=FALSE),
             uiOutput("filter_metadata_params"),
             withBusyIndicatorUI(
-              actionButton("filter_metadata_btn", "Filter")
+              actionButton("filter_metadata_btn", "Filter", class = "btn-primary")
             )
           ),
 
@@ -26,21 +26,21 @@ tabPanel("Summary and Filter",
           conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Read Number'",
             numericInput("filter_microbes_read_inp", "Set Minimum", 0, min = 0, max = 10000),
             withBusyIndicatorUI(
-              actionButton("filter_microbes_read_btn", "Filter")
+              actionButton("filter_microbes_read_btn", "Filter", class = "btn-primary")
             )
           ),
           conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Relative Abundance'",
             numericInput("filter_microbes_rela_min_inp", "Set Minimum", 0, min = 0, max = 1),
             numericInput("filter_microbes_rela_max_inp", "Set Maximum", 1, min = 0, max = 1),
             withBusyIndicatorUI(
-              actionButton("filter_microbes_rela_btn", "Filter")
+              actionButton("filter_microbes_rela_btn", "Filter", class = "btn-primary")
             )
           ),
           conditionalPanel(condition = "input.filter_type == 'Microbes' & input.filter_type_microbes == 'Average Prevalence'",
             numericInput("filter_microbes_prev_min_inp", "Set Minimum", 0, min = 0, max = 1),
             numericInput("filter_microbes_prev_max_inp", "Set Maximum", 1, min = 0, max = 1),
             withBusyIndicatorUI(
-              actionButton("filter_microbes_prev_btn", "Filter")
+              actionButton("filter_microbes_prev_btn", "Filter", class = "btn-primary")
             )
           ),
 

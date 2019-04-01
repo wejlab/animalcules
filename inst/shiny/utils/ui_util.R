@@ -46,23 +46,3 @@ for (i in 1:length(covariates)){
     covariates.two.levels <- c(covariates.two.levels, covariates[i])
   }
 }
-
-
-# # numeric cov
-#     sam_temp <- as.data.frame(pstat@sam_data)
-#     num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
-#     num_covariates <- covariates[!unlist(num_select)]
-#
-#
-#
-# maxbatchElems <- minbatch(c(pstat@sam_data[,1])[[1]])
-# maxcondElems <- minbatch(c(pstat@sam_data[,2])[[1]])
-# defaultDisp <- 30
-# defaultGenesDisp <- 10
-# maxGenes <- dim(pstat@otu_table)[1]
-#
-#
-#
-#
-# #sample name
-# sample.names.all <- colnames(pstat@otu_table@.Data)

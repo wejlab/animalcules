@@ -1,5 +1,6 @@
 
   run.deseq2 <- eventReactive(input$run_deseq2, {
+    withBusyIndicatorServer("run_deseq2", {
     MAE = vals$MAE
     differential_abundance(MAE = MAE,
                           tax_level=input$taxl.da,
@@ -8,6 +9,7 @@
                           min_num_filter = input$da.count.cutoff,
                           input_da_padj_cutoff = input$da.padj.cutoff,
                           method = "DESeq2")
+    })
 
   })
 
@@ -19,6 +21,7 @@
 
 
   run.limma <- eventReactive(input$run_limma, {
+    withBusyIndicatorServer("run_limma", {
     MAE = vals$MAE
     differential_abundance(MAE = MAE,
                           tax_level=input$taxl.da_limma,
@@ -27,6 +30,7 @@
                           min_num_filter = input$da.count.cutoff_limma,
                           input_da_padj_cutoff = input$da.padj.cutoff_limma,
                           method = "limma")
+    })
 
   })
 

@@ -40,7 +40,7 @@ tabPanel("Dimension Reduction",
           ),
 
           # Do plot button
-          actionButton("dimred_pca_plot_btn", "Plot"),
+          actionButton("dimred_pca_plot_btn", "Plot", class = "btn-primary"),
           actionButton("dimred_pca_table_btn", "Table"),
           width=3
         ),
@@ -94,7 +94,7 @@ tabPanel("Dimension Reduction",
           ),
 
           # Do plot button
-          actionButton("dimred_pcoa_plot_btn", "Plot"),
+          actionButton("dimred_pcoa_plot_btn", "Plot", class = "btn-primary"),
           actionButton("dimred_pcoa_table_btn", "Table"),
           width=3
         ),
@@ -161,7 +161,9 @@ tabPanel("Dimension Reduction",
           ),
 
           # Do plot button
-          actionButton("dimred_tsne_plot_btn", "Plot"),
+          withBusyIndicatorUI(
+          actionButton("dimred_tsne_plot_btn", "Plot",class = "btn-primary")
+          ),
           width=3
         ),
         mainPanel(

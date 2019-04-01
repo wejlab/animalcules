@@ -127,6 +127,11 @@ updateTaxLevel <- function(session){
     MAE <- vals$MAE
     tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 
+    # Filter Dashboard
+    updateSelectInput(session, "assay_count_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "assay_ra_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "assay_logcpm_taxlev", choices = tax.name, selected=tax.default)
+    
     # Relabu
     updateSelectInput(session, "relabu_bar_taxlev", choices = tax.name, selected=tax.default)
     updateSelectInput(session, "relabu_heatmap_taxlev", choices = tax.name, selected=tax.default)

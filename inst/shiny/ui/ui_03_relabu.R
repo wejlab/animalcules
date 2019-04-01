@@ -59,7 +59,9 @@ tabPanel("Abundance",
           ),
 
           # Do plot button
-          actionButton("relabu_bar_plot_btn", "Plot"),
+          withBusyIndicatorUI(
+          actionButton("relabu_bar_plot_btn", "Plot", class = "btn-primary")
+          ),
           width=3
         ),
         mainPanel(
@@ -120,7 +122,9 @@ tabPanel("Abundance",
           ),
 
           # Do plot button
-          actionButton("relabu_heatmap_plot_btn", "Plot"),
+          withBusyIndicatorUI(
+          actionButton("relabu_heatmap_plot_btn", "Plot", class = "btn-primary")
+          ),
           width=3
         ),
         mainPanel(
@@ -152,7 +156,9 @@ tabPanel("Abundance",
                                                                       selected             = "logcpm"),
 
           # Do plot button
-          actionButton("relabu_box_plot_btn", "Plot"),
+          withBusyIndicatorUI(
+          actionButton("relabu_box_plot_btn", "Plot", class = "btn-primary")
+          ),
           width=3
         ),
         mainPanel(

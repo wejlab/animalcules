@@ -26,8 +26,10 @@ sidebarLayout(
                     )),
        conditionalPanel(condition = sprintf("input['%s'] == 'example'", "uploadChoice"),
                           selectInput("example_data", "Example dataset",
-              c("Toy dataset" = "toy",
+              c(
+                "Toy dataset" = "toy",
                 "TB dataset" = "tb"
+
                 )),
                         withBusyIndicatorUI(
                           actionButton("upload_example",
@@ -175,6 +177,28 @@ sidebarLayout(
                         DT::dataTableOutput("contents.count"),
                         helpText("Annotation table"),
                         DT::dataTableOutput("contents.meta")
+       ),
+       conditionalPanel(condition = "input.uploadChoice === 'example'",
+                        
+              conditionalPanel(
+                  condition = "input.example_data == 'tb'",
+                  h4("TB dataset"),
+                  h5("TB dataset is a real dataset containing 30 samples and 417 microbes. "),
+                 h6("Reference: Botero LE, Delgado-Serrano L, Cepeda ML, Bustos JR, Anzola JM, 
+                 Del Portillo P, Robledo J, Zambrano MM. Respiratory tract clinical sample selection for 
+                 microbiota analysis in patients with pulmonary tuberculosis. Microbiome. 2014 Aug 25. 
+                 doi: 10.1186/2049-2618-2-29.")
+              ),
+              conditionalPanel(
+                  condition = "input.example_data == 'toy'",
+                  h4("Toy dataset"),
+                  h5("Toy dataset is a small synthetic microbiome dataset containing 50 samples and 100 microbes. 
+                     It'e loaded already, so you could simply continue and play with animalcules from this point!")
+                  
+              )
+                        
+
+                        
        ),
        conditionalPanel(condition = "input.uploadChoice === 'count'",
 

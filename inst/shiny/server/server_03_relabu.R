@@ -3,6 +3,7 @@
 #
 # Plot when button is pressed
 do_relabu_bar <- eventReactive(input$relabu_bar_plot_btn, {
+    withBusyIndicatorServer("relabu_bar_plot_btn", {
     p <- relabu_barplot(MAE = vals$MAE,
                         tax_level = input$relabu_bar_taxlev,
                         order_organisms = input$relabu_bar_org_order,
@@ -14,6 +15,7 @@ do_relabu_bar <- eventReactive(input$relabu_bar_plot_btn, {
                         discard_samples = input$relabu_bar_sample_dis,
                         show_legend = input$relabu_bar_legend)
     return(p)
+    })
 })
 
 # Reaction to button pressing
@@ -39,6 +41,7 @@ output$relabu_bar_org_order <- renderUI({
 #
 # Plot when button is pressed
 do_relabu_heatmap <- eventReactive(input$relabu_heatmap_plot_btn, {
+    withBusyIndicatorServer("relabu_heatmap_plot_btn", {
     p <- relabu_heatmap(MAE = vals$MAE,
                         tax_level = input$relabu_heatmap_taxlev,
                         sort_by = input$relabu_heatmap_sort,
@@ -48,6 +51,7 @@ do_relabu_heatmap <- eventReactive(input$relabu_heatmap_plot_btn, {
                         discard_samples = input$relabu_heatmap_sample_dis,
                         log_cpm = input$relabu_heatmap_logcpm)
     return(p)
+    })
 })
 
 # Reaction to button pressing
@@ -73,6 +77,7 @@ output$relabu_heatmap_org_iso <- renderUI({
 #
 # Plot when button is pressed
 do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
+    withBusyIndicatorServer("relabu_box_plot_btn", {
     tavlevs <- as.list(input$relabu_box_taxlevs)
     plots <- lapply(tavlevs, function(x) {
         id <- paste("relabu_box_organisms", x, sep="_")
@@ -119,6 +124,7 @@ do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
         }
     })
     return(plots)
+    })
 })
 
 # Reaction to button pressing

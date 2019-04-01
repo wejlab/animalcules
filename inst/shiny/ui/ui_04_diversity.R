@@ -12,7 +12,7 @@ tabPanel("Diversity",
             condition = "input.alpha_adv == true",
             selectInput("select_alpha_div_method", "Choose method:", alpha.methods)
           ),
-          actionButton("alpha_boxplot", "Run")
+          actionButton("alpha_boxplot", "Run", class = "btn-primary")
         ),
         mainPanel(
           tabsetPanel(
@@ -42,7 +42,7 @@ tabPanel("Diversity",
             condition = "input.beta_adv == true",
             selectInput("beta_method", "Choose distance metric:", choices = c("bray", "jaccard"), selected="bray")
           ),
-          actionButton("beta_heatmap", "Plot Heatmap")
+          actionButton("beta_heatmap", "Plot Heatmap", class = "btn-primary")
         ),
         mainPanel(
           tabsetPanel(
@@ -61,7 +61,7 @@ tabPanel("Diversity",
                 column(8,
                   br(),
                   DT::dataTableOutput("beta.stat.test"),
-                  actionButton("beta_boxplot", "Run")
+                  actionButton("beta_boxplot", "Run", class = "btn-primary")
                 )
               ),
               plotlyOutput("BetaDiversityBoxplot")
