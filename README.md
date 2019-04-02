@@ -333,6 +333,8 @@ Instructions:
 
 ##### t-SNE
 
+A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
+
 Instructions:
 * Select one or more taxonomy levels in the menu (default is genus)
 * Color data points by a condition
@@ -343,8 +345,6 @@ Instructions:
 * Select a datatype to use
 * Click the button "Plot" to plot
 * Select "Use Cached Data" to change color/shape of data points without re-running t-SNE
-
-A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_046.png)
 
