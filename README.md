@@ -173,11 +173,32 @@ Running time: < 0.5s
 
 One type of summarization plot returns either a box plot or pie chart for continous or categorical data respectively while another type returns returns either a density plot or bar plot for continous or categorical data respectively.
 
+Instructions:
+* Filter by either metadata or microbe information
+* Select a condition to filter by
+* Choose a cutoff point or range of acceptable values
+* (Optional) Discard samples or organisms
+* Click filter to filter the datasaet
+* Click reset to remove all previous applied filters
+* Click download to export the modified animacules file for later use
+
+Running time: < 1s
+
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_042.png)
 
 ##### Categorize
 
 It is often necessary to bin continuous data into categories when performing analyses that require categorical input. To help ease this process, users can automatically categorize categorical data and provide custom bin breaks and labels in doing so.
+
+Instructions:
+* Select a continous variable to categorize
+* (Optional) Choose the number of bins
+* (Optional) Choose a new variable name
+* (Optional) Set custom breaks to define the new bins
+* (Optional) Add custom labels to each of the bins
+* Click "Create Bins"
+
+Running time: < 1s
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_043.png)
 
@@ -187,17 +208,44 @@ It is often necessary to bin continuous data into categories when performing ana
 
 The stacked bar plots are used to visualize the relative abundance of microbes at a given taxonomical level in each sample represented as a single bar.
 
+Instructions:
+* Select taxonomy level in the menu (default is genus)
+* (Optional) Add a color bar for one of more sample conditions
+* (Optional) Group samples and aggregate abundances by a condition
+* (Optional) Sort samples by conditions or the presence of specific organisms
+* (Optional) Isolate or discard samples
+* (Optional) Hide or show legend
+* (Optional) Adjust plot height
+* Click the button "Plot"
+
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_047.png)
 
 ##### Relative Abundance Heatmap
 
 The heatmap represents a sample by organisms matrix that can be visualized at different taxonomic levels.
 
+Instructions:
+* Select taxonomy level in the menu (default is genus)
+* (Optional) Add a color bar for one of more sample conditions
+* (Optional) Sort samples by conditions or the presence of specific organisms
+* (Optional) Isolate or discard samples
+* (Optional) Use raw counts or log(CPM)
+* (Optional) Adjust plot height
+* Click the button "Plot"
+
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_048.png)
 
 ##### Relative Abundance Boxplot
 
 The boxplot visualization allows users to compare the abundance of one or more organisms at multiple taxonomical levels between categorical attributes.
+
+Instructions:
+* Select one or more taxonomy levels in the menu (default is genus)
+* For each taxonomy level select one or more organisms to compare
+* (Optional) Separate plots when viewing multiple organisms on the same taxonomy level
+* Select a condition to compare organisms across
+* Select a datatype to use
+* Click the button "Plot"
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_049.png)
 
@@ -230,7 +278,6 @@ Instructions:
 * (Optional) Select beta diversity metrics.
 * Click the button "Plot Heatmap"
 
-
 Running time: < 1s
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_036.png)
@@ -246,7 +293,6 @@ Instructions:
 * (Optional) Select the number of permutations if doing PERMANOVA. 
 * Click the button "Run"
 
-
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_037.png)
 
 ### Tab 5: Dimension Reduction
@@ -255,15 +301,48 @@ Instructions:
 
 A wrapper for conduction 2D and 3D Principal Component Analysis.
 
+Instructions:
+* Select one or more taxonomy levels in the menu (default is genus)
+* Color data points by a condition
+* Select variable on x-axis (default is PC1)
+* Select variable on y-axis (default is PC1)
+* (Optional) Select variable on z-axis for 3D plotting
+* (Optional) Shape data points by a condition
+* Select a datatype to use
+* Click the button "Plot" to plot
+* Click the button "Table" to see PCA data
+
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_044.png)
 
 ##### PCoA
 
 A wrapper for conduction 2D and 3D Principal Coordinate Analysis.
 
+Instructions:
+* Select one or more taxonomy levels in the menu (default is genus)
+* Color data points by a condition
+* Select variable on x-axis (default is PC1)
+* Select variable on y-axis (default is PC1)
+* (Optional) Select variable on z-axis for 3D plotting
+* (Optional) Shape data points by a condition
+* Select a distance metric to use
+* Click the button "Plot" to plot
+* Click the button "Table" to see PCoA data
+
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_045.png)
 
 ##### t-SNE
+
+Instructions:
+* Select one or more taxonomy levels in the menu (default is genus)
+* Color data points by a condition
+* (Optional) Select final dimensions (2D or 3D)
+* (Optional) Shape data points by a condition
+* (Optional) Select t-SNE perplexity
+* (Optional) Select t-SNE initial dimensions
+* Select a datatype to use
+* Click the button "Plot" to plot
+* Select "Use Cached Data" to change color/shape of data points without re-running t-SNE
 
 A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
@@ -291,7 +370,6 @@ Running time:
 * Test dataset with 587 samples and 203 microbes: 46.59s
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_038.png)
-
 
 ### Tab 7: Biomarker
 
@@ -325,7 +403,6 @@ Running time:
 Ranked feature importance score plot for the identified biomarkers is showed here. The higher score is, the more important this feature (species, genus, ..) is regarding the prediction power.
 
 ![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_040.png)
-
 
 ##### CV ROC Plot
 
