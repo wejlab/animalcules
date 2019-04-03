@@ -1,6 +1,8 @@
 Meta
 doc
 
+*.Rproj
+
 # General
 .DS_Store
 .AppleDouble
