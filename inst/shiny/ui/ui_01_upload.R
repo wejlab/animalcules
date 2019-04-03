@@ -6,28 +6,41 @@ tags$div(
     tags$div(
         class = "container",
         fluidRow(
-            column(7, h1("animalcules")),
-            column(5, br(),br(),img(src = "bu_bioinfo_logo.png", height = 100, width = 100))
+            column(7, h1("animalcules"))
 
         ),
-        p("Statistical Microbiome Analysis Toolkit"),
+        p("Interactive Microbiome Analysis Toolkit"),
         uiOutput("tab")
 
     )
 ),
 sidebarLayout(
    sidebarPanel(
+        conditionalPanel(
+            condition = "input.upload_adv == false",
        radioButtons("uploadChoice", "Upload:",
-                    c("example data" = "example",
-                      "count file" = "count",
-                      "pathoScope file" = "pathofiles",
-                      "animalcules-id file" = "animalcules-id",
-                      "animalcules file" = "animalcules.file"
-                    )),
+                    c("Count file" = "count",
+                      "Example data" = "example",
+                      "animalcules object" = "animalcules.file"
+                    ))
+        ),
+       
+       checkboxInput("upload_adv", "Advanced Options"),
+       conditionalPanel(
+            condition = "input.upload_adv == true",
+                    radioButtons("uploadChoiceAdv", "Upload:",
+            c(
+              "PathoScope file" = "pathofiles",
+              "animalcules-id file" = "animalcules-id"
+        
+            ))
+        ),
+    conditionalPanel(
+            condition = "input.upload_adv == false",
        conditionalPanel(condition = sprintf("input['%s'] == 'example'", "uploadChoice"),
                           selectInput("example_data", "Example dataset",
               c(
-                "Toy dataset" = "toy",
+                "Simulated dataset" = "toy",
                 "TB dataset" = "tb"
 
                 )),
@@ -56,25 +69,7 @@ sidebarLayout(
                         )
 
        ),
-       conditionalPanel(condition = sprintf("input['%s'] == 'animalcules-id'", "uploadChoice"),
-                        fileInput("rdfile_id", ".rds file (required):",
-                                  accept = c(
-                                    ".rds"
-                                  )
-                        ),
-                        radioButtons("mae_data_type", "Choose count type",
-                                     choices = c(
-                                                 "EM count" = "em",
-                                                 "Best hit" = 'hit'
-                                     )
-                        ),
-                        withBusyIndicatorUI(
-                          actionButton("upload_mae",
-                                       "Upload",
-                                       class = "btn-primary")
-                        )
 
-       ),
        conditionalPanel(condition = sprintf("input['%s'] == 'count'", "uploadChoice"),
                         fileInput("countsfile", "Counts file (required):",
                                   accept = c(
@@ -123,8 +118,30 @@ sidebarLayout(
                                          "Upload",
                                          class = "btn-primary")
                         )
+       )
        ),
-       conditionalPanel(condition = sprintf("input['%s'] == 'pathofiles'", "uploadChoice"),
+        conditionalPanel(
+            condition = "input.upload_adv == true",
+       conditionalPanel(condition = sprintf("input['%s'] == 'animalcules-id'", "uploadChoiceAdv"),
+                        fileInput("rdfile_id", ".rds file (required):",
+                                  accept = c(
+                                    ".rds"
+                                  )
+                        ),
+                        radioButtons("mae_data_type", "Choose count type",
+                                     choices = c(
+                                                 "EM count" = "em",
+                                                 "Best hit" = 'hit'
+                                     )
+                        ),
+                        withBusyIndicatorUI(
+                          actionButton("upload_mae",
+                                       "Upload",
+                                       class = "btn-primary")
+                        )
+
+       ),
+       conditionalPanel(condition = sprintf("input['%s'] == 'pathofiles'", "uploadChoiceAdv"),
                         h5("Upload PathoScope generated .tsv files:"),
                         fileInput("countsfile.pathoscope", "PathoScope outputs (required):",
                                   multiple = TRUE,
@@ -168,15 +185,21 @@ sidebarLayout(
                         helpText("This might take 10-20 seconds to upload.")
 
        )
+        )
    ),
    mainPanel(
-       conditionalPanel(condition = "input.uploadChoice === 'pathofiles'",
+             conditionalPanel(
+            condition = "input.upload_adv == true",
+       conditionalPanel(condition = "input.uploadChoiceAdv === 'pathofiles'",
                         h4("Please click \"open in browser\" for enabling functions like multiple files upload."),
                         helpText("Counts Table: column names must be sample name"),
                         DT::dataTableOutput("contents.count"),
                         helpText("Annotation table"),
                         DT::dataTableOutput("contents.meta")
-       ),
+       )),
+       
+             conditionalPanel(
+            condition = "input.upload_adv == false",
        conditionalPanel(condition = "input.uploadChoice === 'example'",
                         
               conditionalPanel(
@@ -190,8 +213,8 @@ sidebarLayout(
               ),
               conditionalPanel(
                   condition = "input.example_data == 'toy'",
-                  h4("Toy dataset"),
-                  h5("Toy dataset is a small synthetic microbiome dataset containing 50 samples and 100 microbes. 
+                  h4("Simulated dataset"),
+                  h5("Simulated dataset is a small synthetic microbiome dataset containing 50 samples and 100 microbes. 
                      It's loaded already, so you could simply continue and play with animalcules from this point!")
                   
               )
@@ -214,6 +237,7 @@ sidebarLayout(
 
                         DT::dataTableOutput("contents.meta.2")
         )
-      )
+      ))
    )
+
 )

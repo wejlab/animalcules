@@ -148,6 +148,8 @@ updateTaxLevel <- function(session){
 
     # Differential
     updateSelectInput(session, "taxl.da", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "taxl.da_limma", choices = tax.name, selected=tax.default)
+    
 
     # Biomarker
     updateSelectInput(session, "taxl_biomarker", choices = tax.name, selected="genus")

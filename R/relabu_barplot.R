@@ -151,20 +151,24 @@ relabu_barplot <- function(MAE,
 
     # Plotly | Stacked Bar Plots
     relabu_table$samples <- rownames(relabu_table)
+
     sbp <- plotly::plot_ly(relabu_table,
                    y = ~samples,
                    x = relabu_table[[colnames(relabu_table)[1]]],
                    type = 'bar',
+                   textposition= 'outside',
                    orientation = 'h',
                    name = substr(colnames(relabu_table)[1], 1, 40)) %>%
                    layout(font = list(size = 10),
-                          xaxis = list(title = 'Relative Abundance'),
+                          xaxis = list(title = 'Relative Abundance',
+                                       automargin = TRUE),
                           yaxis = list(title = '',
                                        type = 'category',
                                        tickmode = "array",
                                        tickvals = rownames(relabu_table),
                                        showticklabels = FALSE,
-                                       categoryorder = 'trace'),
+                                       categoryorder = 'trace',
+                                       automargin = TRUE),
                           barmode = 'stack',
                           showlegend = show_legend)
     for (i in 2:(ncol(relabu_table)-1)) {

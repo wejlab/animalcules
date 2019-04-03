@@ -138,7 +138,7 @@ tabPanel("Abundance",
       sidebarLayout(
         sidebarPanel(
 
-          selectInput("relabu_box_taxlevs", "Tax Levels", choices=tax.name, selected=tax.default, multiple=TRUE),
+          selectInput("relabu_box_taxlev", "Tax Levels", choices=tax.name, selected=tax.default, multiple=FALSE),
 
           # Dynamic choose from organisms based on tax level
           uiOutput("relabu_box_organisms"),

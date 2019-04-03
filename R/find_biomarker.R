@@ -233,6 +233,8 @@ find_biomarker <- function(MAE,
     roc_plot <- g + annotate("text", x=0.75, y=0.25,
                              label=paste("AUC =", round((calc_auc(g))$AUC, 4)))
 
+    
+    biomarker <- data.frame(biomarker_list = biomarker)
     # output a list
     list_output <- list(biomarker = biomarker,
                         importance_plot = importance_plot,

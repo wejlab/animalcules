@@ -78,7 +78,7 @@ output$relabu_heatmap_org_iso <- renderUI({
 # Plot when button is pressed
 do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
     withBusyIndicatorServer("relabu_box_plot_btn", {
-    tavlevs <- as.list(input$relabu_box_taxlevs)
+    tavlevs <- as.list(input$relabu_box_taxlev)
     plots <- lapply(tavlevs, function(x) {
         id <- paste("relabu_box_organisms", x, sep="_")
         organisms <- input[[id]]
@@ -135,7 +135,7 @@ output$relabu_box_plots <- renderUI({
 
 # Return a dynamic number of organism choices for each tax level selected
 output$relabu_box_organisms <- renderUI({
-    tavlevs <- as.list(input$relabu_box_taxlevs)
+    tavlevs <- as.list(input$relabu_box_taxlev)
     inputs <- lapply(tavlevs, function(x) {
         id <- paste("relabu_box_organisms", x, sep="_")
         organisms <- unique(as.data.frame(rowData(experiments(vals$MAE)[[1]]))[,x])

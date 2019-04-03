@@ -79,13 +79,17 @@ alpha_div_test <- function(sam_table, alpha_stat){
         
   
         tmp <- kruskal.test(richness ~ condition, data = sam_table)
+        Overall <- c(tmp$method, tmp$p.value)
+        output.table.k <- data.frame(Overall)
+        rownames(output.table.k) <- c("Method", "P-value")
+        output.table <- cbind(output.table.k, output.table)
+        output.table <- cbind(output.table, output.table.t)      
+        return(output.table)
+    } else{
+      tmp <- kruskal.test(richness ~ condition, data = sam_table)
         output <- c(tmp$method, tmp$p.value)
         output.table.k <- data.frame(output)
         rownames(output.table.k) <- c("Method", "P-value")
-        output.table <- cbind(output.table, output.table.t)
-        output.table <- cbind(output.table, output.table.k)      
-        return(output.table)
-    } else{
-        return(data.frame(note = "Only boxplot will show here due to too many levels."))
+        return(output.table.k)
     }
 }
