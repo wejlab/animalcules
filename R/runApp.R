@@ -2,12 +2,6 @@
 #'
 #' @return None
 #' @import assertthat
-#' @import shiny
-#' @import tibble
-#' @import ape
-#' @import vegan
-#' @import S4Vectors
-#' @import scales
 #' @import covr
 #' @import lattice
 #' @import DT

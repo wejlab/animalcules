@@ -31,6 +31,7 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
 #'
 #' @import magrittr
 #' @import SummarizedExperiment
+#'
 #' @export
 counts_to_relabu <- function(counts_table) {
     sapply(counts_table, prop.table) %>%
