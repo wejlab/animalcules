@@ -1,6 +1,6 @@
 Package: animalcules
 Title: Statistical microbiome analysis on metagenomics data
-Version: 0.99.52
+Version: 0.99.53
 Author:
     Yue Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
@@ -19,7 +19,7 @@ Description:
     understand their data better and discover new insights.
 License: Artistic-2.0
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Depends:
     R (>= 3.6.0)
 Imports:
@@ -51,11 +51,11 @@ Imports:
     plotROC,
     DT,
     utils,
-    limma
+    limma,
+    stats,
+    methods
 Suggests:
-    BiocCheck,
     BiocStyle,
-    devtools,
     knitr,
     rmarkdown,
     testthat,
