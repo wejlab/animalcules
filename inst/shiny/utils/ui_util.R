@@ -1,7 +1,6 @@
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 
-
 alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon")
 beta.methods <- c("wUniFrac", "bray")
 
@@ -21,13 +20,11 @@ minbatch <- function(batch1){
         function(x) length(batch3[[x]])))))
 }
 
-
 covariates = colnames(colData(MAE))
 
 sam_temp <- as.data.frame(colData(MAE[['MicrobeGenetics']]))
 num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
 num_covariates <- covariates[!unlist(num_select)]
-
 
 # choose the covariates that has less than 8 levels
 covariates.colorbar <- c()

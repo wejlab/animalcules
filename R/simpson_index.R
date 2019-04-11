@@ -8,9 +8,7 @@
 #'
 #' @export
 
-
 simpson_index <- function(x) {
-
     # Relative abundances
     p <- x/sum(x)
 
@@ -18,5 +16,4 @@ simpson_index <- function(x) {
     lambda <- sum(p^2)
 
     lambda
-
 }

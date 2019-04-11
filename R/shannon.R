@@ -8,8 +8,6 @@
 #'
 #' @export
 
-
-
 # x: Species count vector
 shannon <- function(x) {
 
@@ -24,5 +22,4 @@ shannon <- function(x) {
 
     # Shannon index
     (-sum(p * log(p)))
-
 }
