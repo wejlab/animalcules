@@ -33,4 +33,4 @@ mae_experiments <- S4Vectors::SimpleList(MicrobeGenetics = microbe_se,
 MAE <- MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments, 
                                                   colData = se_colData)
 
-saveRDS(MAE, "extdata/MAE.rds")
+usethis::use_data(MAE)
