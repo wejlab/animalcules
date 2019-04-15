@@ -59,9 +59,9 @@ Suggests:
     testthat,
     usethis
 biocViews:
-    MicrobiomeData,
-    ReproducibleResearch,
-    SequencingData
+    Microbiome,
+    Metagenomics,
+    Visualization
 VignetteBuilder: knitr
 URL: https://github.com/compbiomed/animalcules
 BugReports: https://github.com/compbiomed/animalcules/issues
