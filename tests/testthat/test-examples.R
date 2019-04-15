@@ -228,15 +228,15 @@ test_that("is.categorical() is working", {
     expect_true(p)
 })
 
-# is.integer0
-test_that("is.integer0() is working", {
-    p <- is.integer0(2)
+# is_integer0
+test_that("is_integer0() is working", {
+    p <- is_integer0(2)
     expect_false(p)
 })
 
-# is.integer1
-test_that("is.integer1() is working", {
-    p <- is.integer1(2)
+# is_integer1
+test_that("is_integer1() is working", {
+    p <- is_integer1(2)
     expect_false(p)
 })
 

@@ -10,9 +10,9 @@ mae_pick_organisms(MAE, isolate_organisms = NULL,
 \arguments{
 \item{MAE}{A multi-assay experiment object}
 
-\item{isolate_organisms}{Isolate specific organisms e.g. c("ti|001", "ti|002")}
+\item{isolate_organisms}{Isolate specific organisms e.g. ti|001, ti|002}
 
-\item{discard_organisms}{Discard specific organisms e.g. c("ti|001", "ti|002")}
+\item{discard_organisms}{Discard specific organisms e.g. ti|001, ti|002}
 }
 \value{
 A multi-assay experiment object
@@ -21,8 +21,9 @@ A multi-assay experiment object
 Modify organisms of multi-assay experiment object
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
-subset <- mae_pick_organisms(toy_data, isolate_organisms=c("ti|001", "ti|002"))
+subset <- mae_pick_organisms(toy_data, 
+isolate_organisms=c('ti|001', 'ti|002'))
 
 }

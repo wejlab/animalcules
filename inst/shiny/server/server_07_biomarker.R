@@ -35,7 +35,7 @@
 #   output$biomarker_condition_type <- reactive({
 #     MAE = vals$MAE
 #     target.var.index <- which(colnames(colData(MAE)) == input$select_target_condition_biomarker)
-#     if (is.integer0(target.var.index)){
+#     if (is_integer0(target.var.index)){
 #       target.var.index <- 1
 #     }
 #     label.vec <- colData(MAE)[[target.var.index]]

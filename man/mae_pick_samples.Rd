@@ -9,9 +9,9 @@ mae_pick_samples(MAE, isolate_samples = NULL, discard_samples = NULL)
 \arguments{
 \item{MAE}{A multi-assay experiment object}
 
-\item{isolate_samples}{Isolate specific samples e.g. c("SAM_01", "SAM_02")}
+\item{isolate_samples}{Isolate specific samples e.g. c('SAM_01', 'SAM_02')}
 
-\item{discard_samples}{Discard specific samples e.g. c("SAM_01", "SAM_02")}
+\item{discard_samples}{Discard specific samples e.g. c('SAM_01', 'SAM_02')}
 }
 \value{
 A multi-assay experiment object
@@ -20,8 +20,10 @@ A multi-assay experiment object
 Modify samples of multi-assay experiment object
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
-subset <- mae_pick_samples(toy_data, isolate_samples=c("subject_9", "subject_14"))
+subset <- mae_pick_samples(toy_data, 
+isolate_samples=c('subject_9', 
+'subject_14'))
 
 }

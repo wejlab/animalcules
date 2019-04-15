@@ -23,12 +23,12 @@ A plotly object
 Beta diversity boxplot
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
 p <- diversity_beta_boxplot(toy_data,
-                            tax_level = "genus",
-                            input_beta_method = "bray",
-                            input_select_beta_condition = "DISEASE")
+                            tax_level = 'genus',
+                            input_beta_method = 'bray',
+                            input_select_beta_condition = 'DISEASE')
 p
 
 }

@@ -15,15 +15,15 @@ relabu_barplot(MAE, tax_level, order_organisms = c(),
 
 \item{tax_level}{The taxon level used for organisms}
 
-\item{order_organisms}{A character list of organisms to send to top e.g. c("Retroviridae", "Didymellaceae")}
+\item{order_organisms}{A character list of organisms to send to top}
 
 \item{sort_by}{Sort bars by one of c("nosort", "conditions", "organisms")}
 
 \item{group_samples}{A bool specifying whether to group samples}
 
-\item{group_conditions}{If grouping samples, group by one or more conditions e.g. "ALL" or "SEX"}
+\item{group_conditions}{Group by one or more conditions e.g. "ALL" or "SEX"}
 
-\item{sample_conditions}{Plot associatied conditions with samples e.g. c("SEX", "AGE")}
+\item{sample_conditions}{Plot associatied conditions with samples.}
 
 \item{isolate_samples}{Isolate specific samples e.g. c("SAM_01", "SAM_02")}
 

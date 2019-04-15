@@ -22,12 +22,12 @@ A plotly object
 Data visualization by barplot
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
 result <- filter_summary_bottom(toy_data,
-                                samples_discard = c("subject_2", "subject_4"),
-                                filter_type = "By Metadata",
-                                sample_condition = "SEX")
+                           samples_discard = c('subject_2', 'subject_4'),
+                           filter_type = 'By Metadata',
+                           sample_condition = 'SEX')
 result
 
 }

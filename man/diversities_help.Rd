@@ -20,6 +20,6 @@ A list of alpha diversity
 Get alpha diversity
 }
 \examples{
-diversities_help(matrix(1:12, nrow = 3),index="shannon")
+diversities_help(matrix(1:12, nrow = 3),index='shannon')
 
 }

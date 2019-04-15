@@ -13,15 +13,15 @@ relabu_heatmap(MAE, tax_level, sort_by = c("nosort", "conditions",
 
 \item{tax_level}{The taxon level used for organisms}
 
-\item{sort_by}{Sort bars by one of c("nosort", "conditions", "organisms")}
+\item{sort_by}{Sort bars by one of c('nosort', 'conditions', 'organisms')}
 
-\item{sample_conditions}{Plot associatied conditions with samples e.g. c("SEX", "AGE")}
+\item{sample_conditions}{Plot conditions e.g. c('SEX', 'AGE')}
 
-\item{isolate_organisms}{Isolate specific organisms e.g. c("Hepacivirus")}
+\item{isolate_organisms}{Isolate specific organisms e.g. c('Hepacivirus')}
 
-\item{isolate_samples}{Isolate specific samples e.g. c("SAM_01", "SAM_02")}
+\item{isolate_samples}{Isolate specific samples e.g. c('SAM_01', 'SAM_02')}
 
-\item{discard_samples}{Discard specific samples e.g. c("SAM_01", "SAM_02")}
+\item{discard_samples}{Discard specific samples e.g. c('SAM_01', 'SAM_02')}
 
 \item{log_cpm}{Convert counts to logcpm}
 }
@@ -32,12 +32,12 @@ A plotly object
 Plot heatmap of sample level counts in logcpm
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
 p <- relabu_heatmap(toy_data,
-                   tax_level="genus",
-                   sort_by="conditions",
-                   sample_conditions=c("SEX", "AGE"))
+                   tax_level='genus',
+                   sort_by='conditions',
+                   sample_conditions=c('SEX', 'AGE'))
 p
 
 }

@@ -17,7 +17,7 @@ differential_abundance(MAE, tax_level, input_da_condition = c(),
 
 \item{input_da_condition_covariate}{Covariates added to linear function}
 
-\item{min_num_filter}{Minimum number of counts of reads mapped to this microbe}
+\item{min_num_filter}{Minimum number reads mapped to this microbe}
 
 \item{input_da_padj_cutoff}{adjusted pValue cutoff}
 

@@ -47,42 +47,42 @@ dimred_tsne <- function(MAE,
     #host <- MultiAssayExperiment::experiments(MAE)[[2]]
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
-    counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
-
+    counts_table <- 
+    as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
     if (is.null(tsne_cache)) {
-
         # Default variables
         k <- ifelse(match.arg(k) == "2D", 2, 3)
         datatype <- match.arg(datatype)
-
         df <- counts_table %>%
-              # Sum counts by taxon level
-              upsample_counts(tax_table, tax_level) %>%
-              # Choose data type
-              {
-                  if (datatype == "relabu") {
-                      counts_to_relabu(.)
-                  } else if (datatype == "logcpm") {
-                      counts_to_logcpm(.)
-                  } else {
-                      .
-                  }
-              } %>%
-              # Fix constant/zero row
-              {
-                  if (sum(rowSums(as.matrix(.)) == 0) > 0){
-                      . <- .[-which(rowSums(as.matrix(.)) == 0),]
-                  } else {
-                      .
-                  }
-              } %>%
-              # Transpose
-              t()
+            # Sum counts by taxon level
+            upsample_counts(tax_table, tax_level) %>%
+            # Choose data type
+            {
+                if (datatype == "relabu") {
+                    counts_to_relabu(.)
+                } else if (datatype == "logcpm") {
+                    counts_to_logcpm(.)
+                } else {
+                .
+                }
+                } %>%
+            # Fix constant/zero row
+            {
+                if (sum(rowSums(as.matrix(.)) == 0) > 0){
+                    . <- .[-which(rowSums(as.matrix(.)) == 0),]
+                } else {
+                    .
+                }
+            } %>%
+                # Transpose
+                t()
 
         # t-SNE
-        df.tsne <- tsne(scale(df), k=k, initial_dims=initial_dims, perplexity=perplexity)
+        df.tsne <- 
+        tsne(scale(df), k=k, initial_dims=initial_dims, perplexity=perplexity)
         rownames(df.tsne) <- rownames(df)
-        if (k == 2) {colnames(df.tsne) <- c("X", "Y")} else {colnames(df.tsne) <- c("X", "Y", "Z")}
+        if (k == 2) {colnames(df.tsne) <- 
+        c("X", "Y")} else {colnames(df.tsne) <- c("X", "Y", "Z")}
     
     } else {
         df.tsne <- tsne_cache
@@ -91,14 +91,18 @@ dimred_tsne <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.tsne.m <- merge(df.tsne, sam_table[, c(color, shape), drop=FALSE], by=0, all=TRUE)
+        df.tsne.m <- 
+        merge(df.tsne, sam_table[, c(color, shape), 
+        drop=FALSE], by=0, all=TRUE)
 
         # When shape is required
-        shape <- colnames(df.tsne.m)[ncol(df.tsne.m)] # Bypass duplicate colnames if color == shape
+        # Bypass duplicate colnames if color == shape
+        shape <- colnames(df.tsne.m)[ncol(df.tsne.m)] 
         df.tsne.m[[shape]] <- as.factor(df.tsne.m[[shape]])
 
     } else {
-        df.tsne.m <- merge(df.tsne, sam_table[, color, drop=FALSE], by=0, all=TRUE)
+        df.tsne.m <- 
+        merge(df.tsne, sam_table[, color, drop=FALSE], by=0, all=TRUE)
         shape <- 'shape' # Referenced by plotly later
         df.tsne.m[[shape]] <- 1 # Constant results in omitting shape
     }
@@ -108,30 +112,31 @@ dimred_tsne <- function(MAE,
 
         # 2D Plot
         p <- plot_ly(df.tsne.m,
-                     x = as.formula("~X"),
-                     y = as.formula("~Y"),
-                     mode = "markers",
-                     color = as.formula(paste("~", color, sep = "")),
-                     symbol = as.formula(paste("~", shape, sep = "")),
-                     type = "scatter",
-                     text = df.tsne.m$Row.names,
-                     marker = list(size = 10))
+                    x = as.formula("~X"),
+                    y = as.formula("~Y"),
+                    mode = "markers",
+                    color = as.formula(paste("~", color, sep = "")),
+                    symbol = as.formula(paste("~", shape, sep = "")),
+                    type = "scatter",
+                    text = df.tsne.m$Row.names,
+                    marker = list(size = 10))
     } else {
 
         # 3D Plot
         p <- plot_ly(df.tsne.m,
-                     x = as.formula("~X"),
-                     y = as.formula("~Y"),
-                     z = as.formula("~Z"),
-                     mode = "markers",
-                     color = as.formula(paste("~", color, sep = "")),
-                     symbol = as.formula(paste("~", shape, sep = "")),
-                     symbols = c("circle", "square", "diamond", "cross", "square-open", "circle-open", "diamond-open", "x"),
-                     type = "scatter3d",
-                     text = df.tsne.m$Row.names,
-                     marker = list(size = 6))
+                    x = as.formula("~X"),
+                    y = as.formula("~Y"),
+                    z = as.formula("~Z"),
+                    mode = "markers",
+                    color = as.formula(paste("~", color, sep = "")),
+                    symbol = as.formula(paste("~", shape, sep = "")),
+                    symbols = c("circle", "square", "diamond", 
+                            "cross", "square-open", "circle-open", 
+                            "diamond-open", "x"),
+                    type = "scatter3d",
+                    text = df.tsne.m$Row.names,
+                    marker = list(size = 6))
     }
-
     p$p <- NULL # To suppress a shiny warning
     return(list(plot=p, data=df.tsne))
 }

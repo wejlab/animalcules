@@ -20,6 +20,6 @@ Get alpha diversity
 \examples{
 df_test <- data.frame(richness = 1:10,
 condition = c(rep(1,5), rep(0,5)))
-alpha_div_test(df_test,alpha_stat="Wilcoxon rank sum test")
+alpha_div_test(df_test,alpha_stat='Wilcoxon rank sum test')
 
 }

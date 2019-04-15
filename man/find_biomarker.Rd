@@ -23,7 +23,7 @@ find_biomarker(MAE, tax_level, input_select_target_biomarker, nfolds = 3,
 
 \item{percent_top_biomarker}{Top importance percentage to pick biomarker}
 
-\item{model_name}{one of "logistic regression", "random forest"}
+\item{model_name}{one of 'logistic regression', 'random forest'}
 }
 \value{
 A list
@@ -32,16 +32,16 @@ A list
 Identify biomarkers
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
 p <- find_biomarker(toy_data,
-                    tax_level="genus",
-                    input_select_target_biomarker=c("DISEASE"),
+                    tax_level='genus',
+                    input_select_target_biomarker=c('DISEASE'),
                     nfolds = 3,
                     nrepeats = 3,
                     seed = 99,
                     percent_top_biomarker = 0.2,
-                    model_name = "logistic regression")
+                    model_name = 'logistic regression')
 p
 
 

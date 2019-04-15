@@ -17,7 +17,7 @@ diversity_beta_test(MAE, tax_level, input_beta_method,
 
 \item{input_select_beta_condition}{Which condition to group samples}
 
-\item{input_select_beta_stat_method}{"PERMANOVA", "Kruskal-Wallis", "Wilcoxon rank sum test"}
+\item{input_select_beta_stat_method}{PERMANOVA,Kruskal-Wallis,Wilcoxon test}
 
 \item{input_num_permutation_permanova}{number of permutations}
 }
@@ -28,13 +28,13 @@ A plotly object
 Beta diversity test (by default we use bray-curtis distance)
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
 p <- diversity_beta_test(toy_data,
-                         tax_level = "genus",
-                         input_beta_method = "bray",
-                         input_select_beta_condition = "DISEASE",
-                         input_select_beta_stat_method = "PERMANOVA",
+                         tax_level = 'genus',
+                         input_beta_method = 'bray',
+                         input_select_beta_condition = 'DISEASE',
+                         input_select_beta_stat_method = 'PERMANOVA',
                          input_num_permutation_permanova = 999)
 p
 

@@ -46,22 +46,23 @@ dimred_pcoa <- function(MAE,
     microbe <- MAE[['MicrobeGenetics']]
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
-    counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+    counts_table <- 
+    as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
 
     # Sum counts by taxon level and return counts
     df <- counts_table %>%
-          # Sum counts by taxon level
-          upsample_counts(tax_table, tax_level) %>%
-          # Fix constant/zero row
-          {
-              if (sum(rowSums(as.matrix(.)) == 0) > 0){
-                  . <- .[-which(rowSums(as.matrix(.)) == 0),]
-              } else {
-                  .
-              }
-          } %>%
-          # Transpose
-          t()
+        # Sum counts by taxon level
+        upsample_counts(tax_table, tax_level) %>%
+        # Fix constant/zero row
+        {
+            if (sum(rowSums(as.matrix(.)) == 0) > 0){
+            . <- .[-which(rowSums(as.matrix(.)) == 0),]
+            } else {
+            .
+            }
+        } %>%
+        # Transpose
+        t()
 
     # Distance metrics
     if (method == "bray") {
@@ -79,14 +80,18 @@ dimred_pcoa <- function(MAE,
 
     # Merge in covariate information
     if (!is.null(shape)) {
-        df.pcoa.m <- merge(df.pcoa, sam_table[, c(color, shape), drop=FALSE], by=0, all=TRUE)
+        df.pcoa.m <- 
+        merge(df.pcoa, sam_table[, c(color, shape), drop=FALSE], 
+        by=0, all=TRUE)
 
         # When shape is required
-        shape <- colnames(df.pcoa.m)[ncol(df.pcoa.m)] # Bypass duplicate colnames if color == shape
+        # Bypass duplicate colnames if color == shape
+        shape <- colnames(df.pcoa.m)[ncol(df.pcoa.m)] 
         df.pcoa.m[[shape]] <- as.factor(df.pcoa.m[[shape]])
 
     } else {
-        df.pcoa.m <- merge(df.pcoa, sam_table[, color, drop=FALSE], by=0, all=TRUE)
+        df.pcoa.m <- merge(df.pcoa, 
+        sam_table[, color, drop=FALSE], by=0, all=TRUE)
         shape <- 'shape' # Referenced by plotly later
         df.pcoa.m[[shape]] <- 1 # Constant results in omitting shape
     }
@@ -96,38 +101,41 @@ dimred_pcoa <- function(MAE,
 
         # 2D Plot
         p <- plot_ly(df.pcoa.m,
-                     x = as.formula(paste("~Axis.", axx, sep = "")),
-                     y = as.formula(paste("~Axis.", axy, sep = "")),
-                     mode = "markers",
-                     color = as.formula(paste("~", color, sep = "")),
-                     symbol = as.formula(paste("~", shape, sep = "")),
-                     type = "scatter",
-                     text = df.pcoa.m$Row.names,
-                     marker = list(size = 10))
+                    x = as.formula(paste("~Axis.", axx, sep = "")),
+                    y = as.formula(paste("~Axis.", axy, sep = "")),
+                    mode = "markers",
+                    color = as.formula(paste("~", color, sep = "")),
+                    symbol = as.formula(paste("~", shape, sep = "")),
+                    type = "scatter",
+                    text = df.pcoa.m$Row.names,
+                    marker = list(size = 10))
     } else {
 
         # 3D Plot
         p <- plot_ly(df.pcoa.m,
-                     x = as.formula(paste("~Axis.", axx, sep = "")),
-                     y = as.formula(paste("~Axis.", axy, sep = "")),
-                     z = as.formula(paste("~Axis.", axz, sep = "")),
-                     mode = "markers",
-                     color = as.formula(paste("~", color, sep = "")),
-                     symbol = as.formula(paste("~", shape, sep = "")),
-                     symbols = c("circle", "square", "diamond", "cross", "square-open", "circle-open", "diamond-open", "x"),
-                     type = "scatter3d",
-                     text = df.pcoa.m$Row.names,
-                     marker = list(size = 6))
+                    x = as.formula(paste("~Axis.", axx, sep = "")),
+                    y = as.formula(paste("~Axis.", axy, sep = "")),
+                    z = as.formula(paste("~Axis.", axz, sep = "")),
+                    mode = "markers",
+                    color = as.formula(paste("~", color, sep = "")),
+                    symbol = as.formula(paste("~", shape, sep = "")),
+                    symbols = c("circle", 
+                                "square", "diamond", "cross", 
+                                "square-open", "circle-open", 
+                                "diamond-open", "x"),
+                    type = "scatter3d",
+                    text = df.pcoa.m$Row.names,
+                    marker = list(size = 6))
     }
 
     p$p <- NULL # To suppress a shiny warning
 
     # Formatting importance table
     df.imp <- df.imp[,c(1,3,5)]
-    rownames(df.imp) <- paste("Axis", 1:nrow(df.imp), sep = ".")
+    rownames(df.imp) <- paste("Axis", seq_len(nrow(df.imp)), sep = ".")
     colnames(df.imp) <- c("Eigenvalue",
-                          "Variance Explained",
-                          "Cumulative Variance")
+                        "Variance Explained",
+                        "Cumulative Variance")
 
     # Show variance as a percentage
     df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
