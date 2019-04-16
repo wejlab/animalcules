@@ -168,10 +168,10 @@ percent <- function(x, digits = 2, format = "f") {
 #'
 #' @examples
 #' nums <- 2
-#' is.categorical(nums)
+#' is_categorical(nums)
 #'
 #' @export
-is.categorical <- function(v) {
+is_categorical <- function(v) {
     if (is.integer(v) || is.numeric(v)) {
         if (length(unique(v)) > 3) {
             return(FALSE)
@@ -211,7 +211,6 @@ is_integer0 <- function(x) {
 is_integer1 <- function(x) {
     is.integer(x) && length(x) == 1L
 }
-
 
 #' Converts decimal percentage to string with specified digits
 #'

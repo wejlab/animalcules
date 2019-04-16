@@ -84,7 +84,7 @@ updateCovariate <- function(session){
 
     ## numeric cov
     sam_temp <- colData(MAE)
-    num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
+    num_select <- lapply(covariates, function(x) is_categorical(unlist(sam_temp[,x])))
     num_covariates <- covariates[!unlist(num_select)]
 
     # Filter

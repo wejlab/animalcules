@@ -222,9 +222,9 @@ test_that("percent() is working", {
     expect_equal(p[1], "42.00%")
 })
 
-# is.categorical
-test_that("is.categorical() is working", {
-    p <- is.categorical(2)
+# is_categorical
+test_that("is_categorical() is working", {
+    p <- is_categorical(2)
     expect_true(p)
 })
 

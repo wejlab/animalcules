@@ -6,7 +6,7 @@ output$filter_metadata_params <- renderUI({
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     covdat <- sam_table[,input$filter_type_metadata]
 
-    if (!is.categorical(covdat)) {
+    if (!is_categorical(covdat)) {
         sliderInput("filter_metadata_inp", "Include", min = min(covdat), max = max(covdat), value = c(min(covdat), max(covdat)))
     } else {
         selectizeInput("filter_metadata_inp", "Include", choices=unique(covdat), selected=unique(covdat), multiple=TRUE)
@@ -21,7 +21,7 @@ observeEvent(input$filter_metadata_btn,{
         cov <- input$filter_type_metadata
         covdat <- sam_table[,cov]
 
-        if (!is.categorical(covdat)) {
+        if (!is_categorical(covdat)) {
             minval <- input$filter_metadata_inp[1]
             maxval <- input$filter_metadata_inp[2]
             sam_table <- sam_table[covdat >= minval & covdat <= maxval,,drop=FALSE]
