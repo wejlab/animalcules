@@ -9,9 +9,9 @@ diversities(counts_table, index = "all", zeroes = TRUE)
 \arguments{
 \item{counts_table}{A dataframe with organism x sample}
 
-\item{index}{one of inverse_simpson,gini_simpson,shannon,fisher,coverage}
+\item{index}{One of inverse_simpson,gini_simpson,shannon,fisher,coverage}
 
-\item{zeroes}{if ignore zero values}
+\item{zeroes}{A boolean for whether to ignore zero values}
 }
 \value{
 A list of alpha diversity

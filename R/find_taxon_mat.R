@@ -3,6 +3,13 @@
 #' @param names Row names of the taxonomy matrix
 #' @param taxonLevels Taxon Levels of all tids
 #' @return taxmat Taxonomy Information Matrix
+#'
+#' @examples
+#' ids <- c("ti|54005", "ti|73001", "ti|573", "ti|228277", "ti|53458")
+#' tids <- c("54005", "73001", "573", "228277", "53458")
+#' taxonLevels <- find_taxonomy(tids)
+#' tax_table <- find_taxon_mat(ids, taxonLevels)
+#'
 #' @export
 
 find_taxon_mat <- function(names, taxonLevels) {
@@ -30,8 +37,6 @@ find_taxon_mat <- function(names, taxonLevels) {
         }
         taxmat <- rbind(taxmat, taxrow)
     }
-
     rownames(taxmat) <- names
-    #print(taxmat)
     return(taxmat)
 }

@@ -10,10 +10,7 @@
 #' alpha_div_test(df_test,alpha_stat='Wilcoxon rank sum test')
 #'
 #' @export
-
 alpha_div_test <- function(sam_table, alpha_stat) {
-    
-    
     
     if (!is.character(sam_table$condition)) {
         tmp <- cor.test(sam_table$richness, sam_table$condition)
@@ -24,7 +21,6 @@ alpha_div_test <- function(sam_table, alpha_stat) {
         
     }
     sam_table$condition <- as.factor(sam_table$condition)
-    
     
     if (length(unique(sam_table$condition)) == 2) {
         tmp <- wilcox.test(richness ~ condition, data = sam_table)
@@ -63,8 +59,6 @@ alpha_div_test <- function(sam_table, alpha_stat) {
         rownames(output.table) <- c("Method", "P-value")
         colnames(output.table) <- group.name
         
-        
-        
         result.list <- list()
         sam_table.list <- list()
         for (i in seq_len(length(unique(sam_table$condition)))) {
@@ -85,7 +79,6 @@ alpha_div_test <- function(sam_table, alpha_stat) {
         }
         rownames(output.table.t) <- c("Method", "P-value")
         colnames(output.table.t) <- group.name
-        
         
         tmp <- kruskal.test(richness ~ condition, data = sam_table)
         Overall <- c(tmp$method, tmp$p.value)

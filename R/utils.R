@@ -5,6 +5,15 @@
 #' @param higher_level Higher taxon level to upsample to
 #' @return A organism x sample data frame of counts
 #'
+#' @examples
+#' data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+#' toy_data <- readRDS(data_dir)
+#' microbe <- toy_data[["MicrobeGenetics"]] 
+#' tax_table <- as.data.frame(SummarizedExperiment::rowData(microbe))
+#' sam_table <- as.data.frame(SummarizedExperiment::colData(microbe)) 
+#' counts_table <- as.data.frame(assays(microbe))[, rownames(sam_table)] 
+#' counts_table %<>% upsample_counts(tax_table, "phylum")
+#'
 #' @import magrittr
 #' @import reshape2
 #' @import SummarizedExperiment

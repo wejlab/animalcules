@@ -13,7 +13,7 @@ filter_summary_top(MAE, samples_discard, filter_type, sample_condition)
 
 \item{filter_type}{Either 'By Microbes' or 'By Metadata'}
 
-\item{sample_condition}{Which condition to check e.g. 'AGE}
+\item{sample_condition}{Which condition to check e.g. 'SEX'}
 }
 \value{
 A plotly object
@@ -27,7 +27,7 @@ toy_data <- readRDS(data_dir)
 result <- filter_summary_top(toy_data,
                              samples_discard = c('subject_2', 'subject_4'),
                              filter_type = 'By Microbes',
-                             sample_condition = 'AGE')
+                             sample_condition = 'SEX')
 result
 
 }

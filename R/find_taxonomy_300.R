@@ -4,22 +4,21 @@
 #' @return taxondata Data with the taxonomy information
 #' @import rentrez
 #' @import XML
-#' @export
+#'
 #' @examples
-#' taxonLevels <- find_taxonomy_300(1200)
-
+#' taxonLevels <- find_taxonomy_300(tids=1200)
+#'
+#' @export
 find_taxonomy_300 <- function(tids) {
     if (is.null(tids)) {
         return(NULL)
     }
-
     na.vec <- c()
     for (i in seq_len(length(tids))){
         if(is.na(tids[i])){
             na.vec <- c(na.vec, i)
         }
     }
-
     r_fetch <- entrez_fetch(db = "taxonomy", id = tids, rettype = "xml")
     dat <- xmlToList(r_fetch)
     taxonLevels <- lapply(dat, function(x) x$LineageEx)
@@ -28,7 +27,5 @@ find_taxonomy_300 <- function(tids) {
         taxonLevels <- append(taxonLevels, list(NA), na.vec[i]-1)
         }
     }
-
-
     return(taxonLevels)
 }

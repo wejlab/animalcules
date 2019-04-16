@@ -3,7 +3,7 @@
 #' @param MAE A multi-assay experiment object
 #' @param samples_discard The list of samples to filter
 #' @param filter_type Either 'By Microbes' or 'By Metadata'
-#' @param sample_condition Which condition to check e.g. 'AGE
+#' @param sample_condition Which condition to check e.g. 'SEX'
 #' @return A plotly object
 #'
 #' @examples
@@ -12,7 +12,7 @@
 #' result <- filter_summary_top(toy_data,
 #'                              samples_discard = c('subject_2', 'subject_4'),
 #'                              filter_type = 'By Microbes',
-#'                              sample_condition = 'AGE')
+#'                              sample_condition = 'SEX')
 #' result
 #'
 #' @import dplyr
@@ -23,9 +23,9 @@
 #'
 #' @export
 filter_summary_top <- function(MAE, 
-                            samples_discard, 
-                            filter_type, 
-                            sample_condition) {
+                               samples_discard, 
+                               filter_type, 
+                               sample_condition) {
     # Subset the data
     MAE_subset <- 
     mae_pick_samples(MAE = MAE, discard_samples = samples_discard)

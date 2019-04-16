@@ -16,5 +16,6 @@ taxondata Data with the taxonomy information
 Find the taxonomy for unlimited tids
 }
 \examples{
-taxonLevels <- find_taxonomy(1200)
+taxonLevels <- find_taxonomy(tids=1200)
+
 }

@@ -17,3 +17,10 @@ taxmat Taxonomy Information Matrix
 \description{
 Find the Taxonomy Information Matrix
 }
+\examples{
+ids <- c("ti|54005", "ti|73001", "ti|573", "ti|228277", "ti|53458")
+tids <- c("54005", "73001", "573", "228277", "53458")
+taxonLevels <- find_taxonomy(tids)
+tax_table <- find_taxon_mat(ids, taxonLevels)
+
+}

@@ -23,7 +23,7 @@ minbatch <- function(batch1){
 covariates = colnames(colData(MAE))
 
 sam_temp <- as.data.frame(colData(MAE[['MicrobeGenetics']]))
-num_select <- lapply(covariates, function(x) is.categorical(unlist(sam_temp[,x])))
+num_select <- lapply(covariates, function(x) is_categorical(unlist(sam_temp[,x])))
 num_covariates <- covariates[!unlist(num_select)]
 
 # choose the covariates that has less than 8 levels

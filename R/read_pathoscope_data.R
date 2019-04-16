@@ -11,10 +11,10 @@
 #' @importFrom utils read.table
 #' @export
 read_pathoscope_data <- function(input_dir = ".", 
-                                pathoreport_file_suffix = "-sam-report.tsv", 
-                                use.input.files = FALSE, 
-                                input.files.path.vec = NULL, 
-                                input.files.name.vec = NULL) {
+                                 pathoreport_file_suffix = "-sam-report.tsv", 
+                                 use.input.files = FALSE, 
+                                 input.files.path.vec = NULL, 
+                                 input.files.name.vec = NULL) {
     if (use.input.files == FALSE) {
         if (input_dir == ".") {
             input_dir <- getwd()

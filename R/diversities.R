@@ -1,8 +1,8 @@
 #' Get alpha diversity
 #'
 #' @param counts_table A dataframe with organism x sample
-#' @param index one of inverse_simpson,gini_simpson,shannon,fisher,coverage
-#' @param zeroes if ignore zero values
+#' @param index One of inverse_simpson,gini_simpson,shannon,fisher,coverage
+#' @param zeroes A boolean for whether to ignore zero values
 #' @return A list of alpha diversity
 #'
 #' @examples
