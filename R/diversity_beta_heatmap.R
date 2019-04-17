@@ -143,7 +143,4 @@ diversity_beta_heatmap <- function(MAE,
         hm.beta$elementId <- NULL # To suppress a shiny warning
         return(hm.beta)
     }
-
-
 }
-
