@@ -25,8 +25,9 @@ editor_options:
     chunk_output_type: console
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(message = FALSE)
+```{r, include=FALSE}
+knitr::opts_chunk$set(comment="#",
+                      message=FALSE)
 devtools::load_all(".")
 ```
 
@@ -57,7 +58,7 @@ BiocManager::install("compbiomed/animalcules")
 ```
 
 Load the package into R session.
-```{r load, message=FALSE}
+```{r load}
 library(animalcules)
 ```
 
@@ -79,7 +80,7 @@ To run the shiny app, just call: run_animalcules().
 The rest of the vignette is for the command line
 version of animalcules. 
 
-```{r, eval = FALSE}
+```{r, eval=FALSE}
 run_animalcules()
 ```
 
@@ -126,7 +127,7 @@ and provide custom bin breaks and labels in doing so.
 microbe <- MAE[['MicrobeGenetics']]
 samples <- as.data.frame(colData(microbe))
 result <- filter_categorize(samples,
-                            sample_condition = "AGE",
+                            sample_condition="AGE",
                             new_label="AGE_GROUP",
                             bin_breaks=c(0,55,75,100),
                             bin_labels=c('Young','Adult',"Elderly"))
@@ -302,15 +303,15 @@ head(result$table)
 A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
 ```{r}
-p <- dimred_tsne(MAE,
-                 tax_level="phylum",
-                 color="AGE",
-                 shape="GROUP",
-                 k="3D",
-                 initial_dims=30,
-                 perplexity=10,
-                 datatype="logcpm")
-p
+result <- dimred_tsne(MAE,
+                      tax_level="phylum",
+                      color="AGE",
+                      shape="GROUP",
+                      k="3D",
+                      initial_dims=30,
+                      perplexity=10,
+                      datatype="logcpm")
+result$plot
 ```
 
 # Differential Analysis
@@ -339,14 +340,14 @@ model from logistic regression, gradient boosting machine, or random
 forest to identify a microbes biomarker list. The feature importance 
 score for each microbe will be provided. To evaluate the biomarker 
 performance, the ROC plot and the AUC value using cross-validation 
-outputs are shown to users. 
+outputs are shown to users. Note: Results may vary each run.
 
 ## Train biomarker
 
 ```{r}
 p <- find_biomarker(MAE,
-                    tax_level="genus",
-                    input_select_target_biomarker=c("SEX"),
+                    tax_level = "genus",
+                    input_select_target_biomarker = c("SEX"),
                     nfolds = 3,
                     nrepeats = 3,
                     seed = 99,

@@ -33,4 +33,15 @@ mae_experiments <- S4Vectors::SimpleList(MicrobeGenetics = microbe_se,
 MAE <- MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments, 
                                                   colData = se_colData)
 
-usethis::use_data(MAE)
+saveRDS(MAE, "extdata/MAE.rds")
+
+microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
+tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.data.frame(assays(microbe))[,rownames(sam_table)] # organism x sample
+
+toy_data <- list("tax_table"=tax_table,
+                 "sam_table"=sam_table,
+                 "counts_table"=counts_table)     
+
+saveRDS(toy_data, "extdata/toy_data.rds")

@@ -218,9 +218,7 @@ sidebarLayout(
                      It's loaded already, so you could simply continue and play with animalcules from this point!")
                   
               )
-                        
-
-                        
+  
        ),
        conditionalPanel(condition = "input.uploadChoice === 'count'",
 
@@ -233,7 +231,8 @@ sidebarLayout(
                         helpText("The first column must be microbe name"),
 
                         DT::dataTableOutput("contents.taxonomy"),
-                        helpText("Annotation table"),
+                        helpText("Annotation table: row names must be sample name"),
+                        helpText("The first row must sample attribute labels"),
 
                         DT::dataTableOutput("contents.meta.2")
         )

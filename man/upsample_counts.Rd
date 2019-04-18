@@ -20,12 +20,10 @@ A organism x sample data frame of counts
 Upsample a counts table to a higher taxon level
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
-toy_data <- readRDS(data_dir)
-microbe <- toy_data[["MicrobeGenetics"]] 
-tax_table <- as.data.frame(SummarizedExperiment::rowData(microbe))
-sam_table <- as.data.frame(SummarizedExperiment::colData(microbe)) 
-counts_table <- as.data.frame(assays(microbe))[, rownames(sam_table)] 
-counts_table \%<>\% upsample_counts(tax_table, "phylum")
+toy_data <- readRDS(system.file("extdata/toy_data.rds", package = "animalcules"))
+tax_table <- toy_data$tax_table
+sam_table <- toy_data$sam_table
+counts_table <- toy_data$counts_table 
+counts_table <- upsample_counts(counts_table, tax_table, "phylum")
 
 }
