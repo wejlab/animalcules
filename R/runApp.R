@@ -1,12 +1,15 @@
-#' Find the taxonomy for maximum 300 tids
+#' Run animalcules shiny app
 #'
-#' @return None
 #' @import assertthat
 #' @import covr
 #' @import lattice
 #' @import DT
 #' @importFrom shinyjs addClass
+#' @return The shiny app will open
 #' @export
+#' @examples 
+#' run_animalcules()
+#' 
 run_animalcules <- function() {
     appDir <- system.file("shiny", package = "animalcules")
     if (appDir == "") {
