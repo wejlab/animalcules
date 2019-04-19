@@ -10,7 +10,7 @@ find_taxonomy(tids)
 \item{tids}{Given taxonomy ids}
 }
 \value{
-taxondata Data with the taxonomy information
+A list of taxon levels with information
 }
 \description{
 Find the taxonomy for unlimited tids

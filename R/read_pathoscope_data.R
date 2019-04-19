@@ -9,7 +9,7 @@
 #' @param input.files.name.vec vector of pathoscope file names
 #' @return List of final guess relative abundance and count data
 #' @importFrom utils read.table
-#' @export
+#' @keywords internal
 read_pathoscope_data <- function(input_dir = ".", 
                                  pathoreport_file_suffix = "-sam-report.tsv", 
                                  use.input.files = FALSE, 

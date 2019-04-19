@@ -1,12 +1,12 @@
 #' Find the taxonomy for unlimited tids
 #'
 #' @param tids Given taxonomy ids
-#' @return taxondata Data with the taxonomy information
-#' @import rentrez
+#' @return A list of taxon levels with information
 #'
 #' @examples
 #' taxonLevels <- find_taxonomy(tids=1200)
 #'
+#' @import rentrez
 #' @export
 find_taxonomy <- function(tids) {
     if (is.null(tids)) {

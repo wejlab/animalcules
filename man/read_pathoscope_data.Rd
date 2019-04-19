@@ -28,3 +28,4 @@ List of final guess relative abundance and count data
 Reads the data from PathoScope reports and returns a list of
 final guess relative abundance and count data
 }
+\keyword{internal}
