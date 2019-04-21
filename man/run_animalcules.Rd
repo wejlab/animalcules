@@ -13,6 +13,7 @@ The shiny app will open
 Run animalcules shiny app
 }
 \examples{
+\dontrun{
 run_animalcules()
-
+}
 }

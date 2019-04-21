@@ -6,10 +6,12 @@
 #' @import DT
 #' @importFrom shinyjs addClass
 #' @return The shiny app will open
-#' @export
+#'
 #' @examples 
+#' \dontrun{
 #' run_animalcules()
-#' 
+#' }
+#' @export
 run_animalcules <- function() {
     appDir <- system.file("shiny", package = "animalcules")
     if (appDir == "") {
