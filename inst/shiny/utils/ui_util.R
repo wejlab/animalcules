@@ -16,7 +16,7 @@ measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){
     batch2 <- as.factor(batch1)
     batch3 <- split(batch1,batch2)
-    return(min(unlist(lapply(1:length(batch3),
+    return(min(unlist(lapply(seq_len(length(batch3)),
         function(x) length(batch3[[x]])))))
 }
 
@@ -28,7 +28,7 @@ num_covariates <- covariates[!unlist(num_select)]
 
 # choose the covariates that has less than 8 levels
 covariates.colorbar <- c()
-for (i in 1:length(covariates)){
+for (i in seq_len(length(covariates))){
   num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
   if (num.levels < 8){
     covariates.colorbar <- c(covariates.colorbar, covariates[i])
@@ -37,7 +37,7 @@ for (i in 1:length(covariates)){
 
 # choose the covariates that has 2 levels
 covariates.two.levels <- c()
-for (i in 1:length(covariates)){
+for (i in seq_len(length(covariates))){
   num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
   if (num.levels == 2){
     covariates.two.levels <- c(covariates.two.levels, covariates[i])

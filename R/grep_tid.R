@@ -8,6 +8,6 @@
 
 grep_tid <- function(id) {
     tid <- strsplit(id, "\\|")
-    tid <- sapply(tid, function(x) x[2])
+    tid <- vapply(tid, function(x) x[2], "test")
     return(tid)
 }

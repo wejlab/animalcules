@@ -16,6 +16,6 @@ A organism x sample data frame of relative abundances
 Covert a counts table to a relative abundances table
 }
 \examples{
-counts_to_relabu(matrix(1:12,4))
+counts_to_relabu(matrix(seq_len(12),4))
 
 }

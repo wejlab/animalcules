@@ -18,6 +18,7 @@
 #' @import dplyr
 #' @import plotly
 #' @importFrom ggplot2 ggplot aes geom_point geom_boxplot labs
+#' @importFrom stats model.matrix quantile t.test wilcox.test
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment

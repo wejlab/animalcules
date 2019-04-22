@@ -4,7 +4,7 @@
 #' @return A single value
 #'
 #' @examples
-#' simpson_index(c(1:10))
+#' simpson_index(seq_len(10))
 #'
 #' @export
 

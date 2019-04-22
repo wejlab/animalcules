@@ -49,7 +49,7 @@ updateCovariate <- function(session){
     # use experience to choose categorical variables
     covariates.colorbar <- c()
     covariates_remove_index <- NULL
-    for (i in 1:length(covariates)){
+    for (i in seq_len(length(covariates))){
         num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
         if (num.levels > 1 & num.levels < 6){
             if (num.levels/nrow(colData(MAE)) < 0.7){
@@ -75,7 +75,7 @@ updateCovariate <- function(session){
     
     # choose the covariates that has 2 levels
     covariates.two.levels <- c()
-    for (i in 1:length(covariates)){
+    for (i in seq_len(length(covariates))){
         num.levels <- length(unique(colData(MAE)[[covariates[i]]]))
         if (num.levels == 2){
             covariates.two.levels <- c(covariates.two.levels, covariates[i])
@@ -307,7 +307,7 @@ observeEvent(input$uploadDataPs, {
 
     df.path.vec <- c()
     df.name.vec <- c()
-    for(i in 1:length(input$countsfile.pathoscope[,1])){
+    for(i in seq_len(length(input$countsfile.pathoscope[,1]))){
         df.path.vec[i] <- input$countsfile.pathoscope[[i, 'datapath']]
         df.name.vec[i] <- input$countsfile.pathoscope[[i, 'name']]
     }

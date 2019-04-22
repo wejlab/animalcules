@@ -4,7 +4,7 @@
 #' @return A single value
 #'
 #' @examples
-#' gini_simpson(c(1:10))
+#' gini_simpson(seq_len(10))
 #'
 #' @export
 

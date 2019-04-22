@@ -16,7 +16,7 @@ A sample x condition data frame
 Factorize all categorical columns
 }
 \examples{
-df_char_to_factor(matrix(1:12))
+df_char_to_factor(matrix(seq_len(12)))
 
 
 }

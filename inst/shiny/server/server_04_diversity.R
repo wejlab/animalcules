@@ -23,7 +23,7 @@ output$AlphaDiversity <- renderPlotly({
 #   meta.data$sample.name <- rownames(meta.data)
 #   meta.data$richness <- suppressWarnings(estimate_richness(physeq = physeq1, split = T, measures = input$select_alpha_div_method)[,1])
 #   colnames(meta.data)[which(colnames(meta.data) == input$select_alpha_div_condition)] <- "condition"
-#   rownames(meta.data) <- 1:nrow(meta.data)
+#   rownames(meta.data) <- seq_len(nrow(meta.data))
 #   DT::datatable(meta.data %>% dplyr::select(sample.name, condition, richness))
 # }
 #
@@ -48,7 +48,7 @@ output$AlphaDiversity <- renderPlotly({
 #     meta.data$sample.name <- rownames(meta.data)
 #     meta.data$richness <- suppressWarnings(estimate_richness(physeq = physeq1, split = T, measures = input$select_alpha_div_method)[,1])
 #     colnames(meta.data)[which(colnames(meta.data) == input$select_alpha_div_condition)] <- "condition"
-#     rownames(meta.data) <- 1:nrow(meta.data)
+#     rownames(meta.data) <- seq_len(nrow(meta.data))
 #     meta.data <- as_tibble(meta.data)
 #     meta.data <- meta.data %>% select(sample.name, condition, richness)
 #     write.csv(data.frame(meta.data), file)

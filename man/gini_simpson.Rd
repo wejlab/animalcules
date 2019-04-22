@@ -16,6 +16,6 @@ A single value
 Get alpha diversity using gini
 }
 \examples{
-gini_simpson(c(1:10))
+gini_simpson(seq_len(10))
 
 }

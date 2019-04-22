@@ -219,7 +219,7 @@ do_categorize <- eventReactive(input$filter_create_bins, {
     # Modify sample table
     MAE@colData <- DataFrame(result$sam_table)
 
-    for (i in 1:length(MAE)){
+    for (i in seq_len(length(MAE))){
         colData(MAE[[i]]) <- DataFrame(result$sam_table)
     }
 

@@ -181,20 +181,20 @@ test_that("find_biomarker() is working", {
 
 # inverse_simpson
 test_that("inverse_simpson() is working", {
-    p <- inverse_simpson(c(1:10))
+    p <- inverse_simpson(seq_len(10))
     p <- round(p, 2)
     expect_equal(p, 7.86)
 })
 
 # counts_to_relabu
 test_that("counts_to_relabu() is working", {
-    p <- counts_to_relabu(matrix(1:12,4))
+    p <- counts_to_relabu(matrix(seq_len(12),4))
     expect_equal(nrow(p), 12)
 })
 
 # counts_to_logcpm
 test_that("counts_to_logcpm() is working", {
-    p <- counts_to_logcpm(matrix(1:12,4))
+    p <- counts_to_logcpm(matrix(seq_len(12),4))
     expect_equal(nrow(p), 12)
 })
 
@@ -212,7 +212,7 @@ test_that("mae_pick_organisms() is working", {
 
 # df_char_to_factor
 test_that("df_char_to_factor() is working", {
-    p <- df_char_to_factor(matrix(1:12))
+    p <- df_char_to_factor(matrix(seq_len(12)))
     expect_equal(nrow(p), 12)
 })
 
@@ -248,14 +248,14 @@ test_that("pct2str() is working", {
 
 # shannon
 test_that("shannon() is working", {
-    p <- shannon(c(1:10))
+    p <- shannon(seq_len(10))
     p <- round(p, 2)
     expect_equal(p, 2.15)
 })
 
 # gini_simpson
 test_that("gini_simpson() is working", {
-    p <- gini_simpson(c(1:10))
+    p <- gini_simpson(seq_len(10))
     p <- round(p, 2)
     expect_equal(p, 0.87)
 })
@@ -274,19 +274,19 @@ test_that("find_taxonomy() is working", {
 
 # diversities
 test_that("diversities() is working", {
-    p <- diversities(matrix(1:12, nrow = 3),index="shannon")
+    p <- diversities(matrix(seq_len(12), nrow = 3),index="shannon")
     expect_equal(round(p[1], 2), 1.01)
 })
 
 # diversities_help
 test_that("diversities_help() is working", {
-    p <- diversities_help(matrix(1:12, nrow = 3),index="shannon")
+    p <- diversities_help(matrix(seq_len(12), nrow = 3),index="shannon")
     expect_equal(round(p[1], 2), 1.01)
 })
 
 # alpha_div_test
 test_that("alpha_div_test() is working", {
-  df_test <- data.frame(richness = 1:10,
+  df_test <- data.frame(richness = seq_len(10),
                         condition = c(rep(1,5), 
                                       rep(0,5)))
   p <- alpha_div_test(df_test, alpha_stat="Wilcoxon rank sum test")

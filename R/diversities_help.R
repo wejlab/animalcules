@@ -6,7 +6,7 @@
 #' @return A list of alpha diversity
 #'
 #' @examples
-#' diversities_help(matrix(1:12, nrow = 3),index='shannon')
+#' diversities_help(matrix(seq_len(12), nrow = 3),index='shannon')
 #'
 #' @export
 

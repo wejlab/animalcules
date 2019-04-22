@@ -28,12 +28,11 @@ editor_options:
 ```{r, include=FALSE}
 knitr::opts_chunk$set(comment="#",
                       message=FALSE)
-devtools::load_all(".")
 ```
 
 # Introduction
 
-Animalcules is an R package for utilizing up-to-date data analytics, 
+animalcules is an R package for utilizing up-to-date data analytics, 
 visualization methods, and machine learning models to provide users 
 an easy-to-use interactive microbiome analysis framework. It can be 
 used as a standalone software package or users can explore their data 
@@ -60,6 +59,7 @@ BiocManager::install("compbiomed/animalcules")
 Load the package into R session.
 ```{r load}
 library(animalcules)
+library(SummarizedExperiment)
 ```
 
 # Load Toy Dataset

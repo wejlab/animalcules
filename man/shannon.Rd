@@ -16,6 +16,6 @@ A single value
 Get alpha diversity using shannon
 }
 \examples{
-shannon(c(1:10))
+shannon(seq_len(10))
 
 }

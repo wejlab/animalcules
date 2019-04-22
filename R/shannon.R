@@ -4,7 +4,7 @@
 #' @return A single value
 #'
 #' @examples
-#' shannon(c(1:10))
+#' shannon(seq_len(10))
 #'
 #' @export
 

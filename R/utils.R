@@ -35,14 +35,14 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
 #' @return A organism x sample data frame of relative abundances
 #'
 #' @examples
-#' counts_to_relabu(matrix(1:12,4))
+#' counts_to_relabu(matrix(seq_len(12),4))
 #'
 #' @import magrittr
 #' @import SummarizedExperiment
 #'
 #' @export
 counts_to_relabu <- function(counts_table) {
-    sapply(counts_table, prop.table) %>% 
+    prop.table(as.matrix(counts_table), 2) %>% 
     as.data.frame() %>% 
     magrittr::set_colnames(colnames(counts_table)) %>% 
     magrittr::set_rownames(rownames(counts_table))
@@ -54,14 +54,16 @@ counts_to_relabu <- function(counts_table) {
 #' @return A organism x sample data frame of logcpm counts
 #'
 #' @examples
-#' logcpm <- counts_to_logcpm(matrix(1:12,4))
+#' logcpm <- counts_to_logcpm(as.data.frame(matrix(seq_len(12),4)))
 #'
 #' @import magrittr
 #' @import SummarizedExperiment
 #'
 #' @export
 counts_to_logcpm <- function(counts_table) {
-    sapply(counts_table, function(x) log10(x * 1e+06/sum(x) + 1)) %>%
+    vapply(counts_table, 
+           function(x) log10(x * 1e+06/sum(x) + 1),
+           c(rep(1.0,nrow(counts_table)))) %>%
     as.data.frame() %>% 
     magrittr::set_colnames(colnames(counts_table)) %>% 
     magrittr::set_rownames(rownames(counts_table))
@@ -139,7 +141,7 @@ mae_pick_organisms <- function(MAE,
 #' @return A sample x condition data frame
 #'
 #' @examples
-#' df_char_to_factor(matrix(1:12))
+#' df_char_to_factor(matrix(seq_len(12)))
 #'
 #'
 #' @export

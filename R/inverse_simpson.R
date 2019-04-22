@@ -4,7 +4,7 @@
 #' @return A single value
 #'
 #' @examples
-#' inverse_simpson(c(1:10))
+#' inverse_simpson(seq_len(10))
 #'
 #' @export
 

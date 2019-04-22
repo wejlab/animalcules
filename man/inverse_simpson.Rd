@@ -16,6 +16,6 @@ A single value
 Get alpha diversity using inverse simpson
 }
 \examples{
-inverse_simpson(c(1:10))
+inverse_simpson(seq_len(10))
 
 }

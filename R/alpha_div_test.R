@@ -3,9 +3,10 @@
 #' @param sam_table A dataframe with 2 cols, richness and condition
 #' @param alpha_stat Wilcoxon rank sum test or T-test for the test
 #' @return A dataframe
-#'
+#' @importFrom methods as
+#' @importFrom stats as.formula cor.test density kruskal.test
 #' @examples
-#' df_test <- data.frame(richness = 1:10,
+#' df_test <- data.frame(richness = seq_len(10),
 #' condition = c(rep(1,5), rep(0,5)))
 #' alpha_div_test(df_test,alpha_stat='Wilcoxon rank sum test')
 #'
