@@ -4,7 +4,7 @@
 \name{animalcules-package}
 \alias{animalcules}
 \alias{animalcules-package}
-\title{animalcules: Statistical microbiome analysis on metagenomics data}
+\title{animalcules: Interactive microbiome analysis toolkit}
 \description{
 animalcules is an R package for utilizing up-to-date data analytics,
     visualization methods, and machine learning models to provide users

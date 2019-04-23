@@ -1,3 +1,22 @@
+# animalcules.rds is an R list object that contains three dataframe: 
+# count_table, gene_expression_table and metadata_table. These three
+# tables come from a simulated dataset we built that contains 50 samples.
+# All values are simulated using rnorm().
+
+
+# TB_example_dataset.rds is an R list object that contains two dataframe: 
+# count_table and metadata_table. These two tables come from a published
+# dataset from the paper:
+# Botero LE, Delgado-Serrano L, Cepeda ML, Bustos JR, Anzola JM, 
+# Del Portillo P, Robledo J, Zambrano MM. Respiratory tract clinical 
+# sample selection for microbiota analysis in patients with pulmonary 
+# tuberculosis. Microbiome. 2014 Aug 25;2:29. doi: 10.1186/2049-2618-2-29. 
+# eCollection 2014. PubMed PMID: 25225609; PubMed Central PMCID: PMC4164332.
+# Then we used a tool called PathoScope to process and generate the dataset.
+
+
+
+
 data_raw <- base::system.file("extdata/animalcules.rds", package = "animalcules") %>%
             base::readRDS()
 

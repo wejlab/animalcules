@@ -195,7 +195,7 @@ test_that("counts_to_relabu() is working", {
 # counts_to_logcpm
 test_that("counts_to_logcpm() is working", {
     p <- counts_to_logcpm(matrix(seq_len(12),4))
-    expect_equal(nrow(p), 12)
+    expect_equal(nrow(p), 4)
 })
 
 # mae_pick_samples

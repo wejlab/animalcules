@@ -61,7 +61,7 @@ counts_to_relabu <- function(counts_table) {
 #'
 #' @export
 counts_to_logcpm <- function(counts_table) {
-    vapply(counts_table, 
+    vapply(as.data.frame(counts_table), 
            function(x) log10(x * 1e+06/sum(x) + 1),
            c(rep(1.0,nrow(counts_table)))) %>%
     as.data.frame() %>% 

@@ -1,6 +1,6 @@
 Package: animalcules
-Title: Statistical microbiome analysis on metagenomics data
-Version: 0.99.67
+Title: Interactive microbiome analysis toolkit
+Version: 0.99.68
 Author:
     Yue Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
@@ -52,7 +52,8 @@ Imports:
     utils,
     limma,
     methods,
-    stats
+    stats,
+    tibble
 Suggests:
     BiocStyle,
     knitr,

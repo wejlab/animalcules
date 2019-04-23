@@ -17,6 +17,7 @@
 #' @import caret
 #' @import plotROC
 #' @import forcats
+#' @importFrom tibble rownames_to_column
 #' @importFrom ggplot2 geom_col aes coord_flip theme_bw coord_equal annotate
 #'
 #' @examples
@@ -92,14 +93,14 @@ find_biomarker <- function(MAE,
         svm_importance <- caret::varImp(model_fit)$importance
         svm_importance[, 2] <- NULL
         colnames(svm_importance) <- "importance"
-        biomarker <- svm_importance %>% tibble::rownames_to_column() %>% 
+        biomarker <- svm_importance %>% rownames_to_column() %>% 
             dplyr::rename(biomarker = rowname) %>% 
             dplyr::arrange(importance) %>% 
             dplyr::filter(importance > quantile(importance, 
             1 - percent_top_biomarker)) %>% 
             dplyr::select(biomarker) %>% .$biomarker
         importance_plot <- svm_importance %>% 
-            tibble::rownames_to_column() %>% 
+            rownames_to_column() %>% 
             dplyr::rename(biomarker = rowname) %>% 
             dplyr::arrange(importance) %>% 
             dplyr::filter(importance > quantile(importance, 
@@ -110,7 +111,7 @@ find_biomarker <- function(MAE,
     } else {
         biomarker <- caret::varImp(model_fit)$importance %>% 
         base::as.data.frame() %>% 
-            tibble::rownames_to_column() %>% 
+            rownames_to_column() %>% 
             dplyr::rename(importance = Overall) %>% 
             dplyr::rename(biomarker = rowname) %>% 
             dplyr::arrange(importance) %>% 
@@ -119,7 +120,7 @@ find_biomarker <- function(MAE,
             dplyr::select(biomarker) %>% .$biomarker
         importance_plot <- caret::varImp(model_fit)$importance %>% 
             base::as.data.frame() %>% 
-            tibble::rownames_to_column() %>% 
+            rownames_to_column() %>% 
             dplyr::rename(importance = Overall) %>% 
             dplyr::rename(biomarker = rowname) %>% 
             dplyr::arrange(importance) %>% 
