@@ -27,7 +27,6 @@ Imports:
     shiny,
     shinyjs,
     DESeq2,
-    tibble,
     caret,
     plotly,
     ggplot2,
@@ -63,6 +62,7 @@ Suggests:
 biocViews:
     Microbiome,
     Metagenomics,
+    Coverage,
     Visualization
 VignetteBuilder: knitr
 URL: https://github.com/compbiomed/animalcules

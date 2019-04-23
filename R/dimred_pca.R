@@ -24,6 +24,7 @@
 #' result$table
 #'
 #' @import dplyr
+#' @import scales
 #' @import plotly
 #' @import magrittr
 #' @import reshape2

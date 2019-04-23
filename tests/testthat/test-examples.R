@@ -188,8 +188,8 @@ test_that("inverse_simpson() is working", {
 
 # counts_to_relabu
 test_that("counts_to_relabu() is working", {
-    p <- counts_to_relabu(matrix(seq_len(12),4))
-    expect_equal(nrow(p), 12)
+    p <- counts_to_relabu(matrix(seq_len(12), 4))
+    expect_equal(nrow(p), 4)
 })
 
 # counts_to_logcpm
