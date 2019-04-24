@@ -7,8 +7,10 @@
 #' taxonLevels <- find_taxonomy(tids=1200)
 #'
 #' @import rentrez
+#' @importFrom httr set_config
 #' @export
 find_taxonomy <- function(tids) {
+    set_config(httr::config(http_version = 0))
     if (is.null(tids)) {
         return(NULL)
     }
