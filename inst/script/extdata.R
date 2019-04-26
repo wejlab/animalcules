@@ -4,17 +4,30 @@
 # All values are simulated using rnorm().
 
 
-# TB_example_dataset.rds is an R list object that contains two dataframe: 
-# count_table and metadata_table. These two tables come from a published
-# dataset from the paper:
+# TB_example_dataset.rds is an R MultiAssayExperiment object that contains
+# two dataframe: count_table and metadata_table. These two tables come 
+# from a published dataset from the paper:
+
 # Botero LE, Delgado-Serrano L, Cepeda ML, Bustos JR, Anzola JM, 
 # Del Portillo P, Robledo J, Zambrano MM. Respiratory tract clinical 
 # sample selection for microbiota analysis in patients with pulmonary 
 # tuberculosis. Microbiome. 2014 Aug 25;2:29. doi: 10.1186/2049-2618-2-29. 
 # eCollection 2014. PubMed PMID: 25225609; PubMed Central PMCID: PMC4164332.
+
 # Then we used a tool called PathoScope to process and generate the dataset.
 
 
+# asthma_example_dataset.rds is an R MultiAssayExperiment object that 
+# contains two dataframe: count_table and metadata_table. These two tables 
+# come from a published dataset from the paper:
+
+# Castro-Nallar E, Shen Y, Freishtat RJ, Pérez-Losada M, Manimaran S, Liu G, 
+# Johnson WE, Crandall KA. Integrating microbial and host transcriptomics to 
+# characterize asthma-associated microbial communities. BMC Med Genomics. 
+# 2015 Aug 16;8:50. doi: 10.1186/s12920-015-0121-1. PubMed PMID: 26277095; 
+# PubMed Central PMCID: PMC4537781.
+
+# Then we used a tool called PathoScope to process and generate the dataset.
 
 
 data_raw <- base::system.file("extdata/animalcules.rds", package = "animalcules") %>%

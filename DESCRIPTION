@@ -1,6 +1,6 @@
 Package: animalcules
 Title: Interactive microbiome analysis toolkit
-Version: 0.99.70
+Version: 0.99.71
 Author:
     Yue Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
@@ -21,7 +21,7 @@ License: Artistic-2.0
 Encoding: UTF-8
 LazyData: false
 Depends:
-    R (>= 3.6.0)
+    R (>= 3.5.0)
 Imports:
     assertthat,
     shiny,
@@ -53,8 +53,7 @@ Imports:
     limma,
     methods,
     stats,
-    tibble,
-    httr
+    tibble
 Suggests:
     BiocStyle,
     knitr,

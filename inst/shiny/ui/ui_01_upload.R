@@ -41,7 +41,8 @@ sidebarLayout(
                           selectInput("example_data", "Example dataset",
               c(
                 "Simulated dataset" = "toy",
-                "TB dataset" = "tb"
+                "TB 16S profiling" = "tb",
+                "Asthma metatranscriptomics" = "asthma"
 
                 )),
                         withBusyIndicatorUI(
@@ -204,12 +205,22 @@ sidebarLayout(
                         
               conditionalPanel(
                   condition = "input.example_data == 'tb'",
-                  h4("TB dataset"),
-                  h5("TB dataset is a real dataset containing 30 samples and 417 microbes. "),
+                  h4("TB 16S profiling"),
+                  h5("TB 16S profiling is a real dataset containing 30 samples and 417 microbes. "),
                  h6("Reference: Botero LE, Delgado-Serrano L, Cepeda ML, Bustos JR, Anzola JM, 
                  Del Portillo P, Robledo J, Zambrano MM. Respiratory tract clinical sample selection for 
                  microbiota analysis in patients with pulmonary tuberculosis. Microbiome. 2014 Aug 25. 
                  doi: 10.1186/2049-2618-2-29.")
+              ),
+              conditionalPanel(
+                  condition = "input.example_data == 'asthma'",
+                  h4("Asthma metatranscriptomics"),
+                  h5("Nasal swabs metatranscriptomic data from 8 asthma children and 6 control children."),
+                 h6("Castro-Nallar E, Shen Y, Freishtat RJ, Pérez-Losada M, Manimaran S, Liu G, 
+                Johnson WE, Crandall KA. Integrating microbial and host transcriptomics to 
+                characterize asthma-associated microbial communities. BMC Med Genomics. 
+                2015 Aug 16;8:50. doi: 10.1186/s12920-015-0121-1. PubMed PMID: 26277095; 
+                PubMed Central PMCID: PMC4537781.")
               ),
               conditionalPanel(
                   condition = "input.example_data == 'toy'",
