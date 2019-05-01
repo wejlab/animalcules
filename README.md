@@ -30,10 +30,9 @@ BiocManager::install("compbiomed/animalcules")
 
 * Install the development version of the package from Github
 
-Note: Install devtools first if you haven't installed it yet. 
-
 ``` r
-# install.packages("devtools")
+if (!requireNamespace("devtools", quietly=TRUE))
+  install.packages("devtools")
 devtools::install_github("compbiomed/animalcules")
 ```
 
