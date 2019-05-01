@@ -1,4 +1,7 @@
 ^doc$
+^docs$
+^pkgdown$
+^\.git$
 ^Meta$
 ^.*\.Rproj$
 ^\.Rproj\.user$
