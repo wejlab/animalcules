@@ -50,6 +50,8 @@ reference:
 navbar:
   title: "animalcules"
   left:
+    - text: "Home"
+      href: index.html
     - text: "Interactive Shiny Analysis"
       menu:
         - text: "1: Upload"
