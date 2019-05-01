@@ -1,4 +1,4 @@
-## animalcules <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_logo.png?raw=true" align="right" width="120" />
+## animalcules <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_logo.png?raw=true" align="right" width="170" />
 
 
 [![](https://img.shields.io/badge/bioconductor-3.9-3a6378.svg)](https://doi.org/doi:10.18129/B9.bioc.animalcules)
