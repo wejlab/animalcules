@@ -1,6 +1,7 @@
 ^doc$
 ^docs$
 ^pkgdown$
+vignettes/rmd
 ^\.git$
 ^Meta$
 ^.*\.Rproj$

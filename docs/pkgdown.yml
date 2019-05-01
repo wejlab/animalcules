@@ -3,4 +3,11 @@ pkgdown: 1.3.0
 pkgdown_sha: ~
 articles:
   animalcules: animalcules.html
+  abundance: rmd/abundance.html
+  biomarker: rmd/biomarker.html
+  differential: rmd/differential.html
+  dimension: rmd/dimension.html
+  diversity: rmd/diversity.html
+  summary: rmd/summary.html
+  upload: rmd/upload.html
 

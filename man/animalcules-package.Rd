@@ -25,4 +25,14 @@ Useful links:
 }
 
 }
+\author{
+\strong{Maintainer}: Yue Zhao \email{yuezh@bu.edu} (0000-0001-5257-5103)
+
+Authors:
+\itemize{
+  \item Anthony Federico \email{anfed@bu.edu} (0000-0002-9200-1689)
+  \item W. Evan Johnson \email{wej@bu.edu} (0000-0002-6247-6595)
+}
+
+}
 \keyword{internal}
