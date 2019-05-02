@@ -1,6 +1,7 @@
 pkgdown/favicon
 Meta
 doc
+/docs
 
 *.Rproj
 
