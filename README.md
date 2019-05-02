@@ -17,7 +17,7 @@ Traditional microbiome analysis such as alpha/beta diversity and differential ab
 
 ## Documentation
 
-Please check our website at https://compbiomed.github.io/animalcules/
+Please check our website at https://compbiomed.github.io/animalcules-docs/
 
 ## Installation
 
