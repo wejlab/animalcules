@@ -1,6 +1,6 @@
 Package: animalcules
 Title: Interactive microbiome analysis toolkit
-Version: 0.99.70
+Version: 1.0.0
 Author:
     Yue Zhao <yuezh@bu.edu>,
     Anthony Federico <anfed@bu.edu>,
