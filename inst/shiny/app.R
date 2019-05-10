@@ -4,6 +4,7 @@ library(MultiAssayExperiment)
 library(ggplot2)
 library(plotly)
 library(vegan)
+library(dplyr)
 
 source(file.path("utils", "helpers.R"),  local = TRUE)
 # source(file.path("utils", "server_util.R"),  local = TRUE)
