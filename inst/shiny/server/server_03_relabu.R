@@ -112,7 +112,8 @@ do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
                 })
                 # Keep only one legend
                 for (i in 2:length(subplots)) {
-                    subplots[[i]] %<>% style(showlegend = FALSE)
+                    subplots[[i]] < subplots[[i]] %>% 
+                        style(showlegend = FALSE)
 
                 }
                 subplot(subplots)
