@@ -217,7 +217,7 @@ observeEvent(input$upload_mae,{
 observeEvent(input$uploadDataCount,{
   withBusyIndicatorServer("uploadDataCount", {
 
-  count_table <- read.csv(input$countsfile$datapath,
+  count_table <- read.table(input$countsfile$datapath,
                        header = input$header.count,
                        row.names = 1,
                        stringsAsFactors = FALSE,
@@ -225,7 +225,7 @@ observeEvent(input$uploadDataCount,{
                        comment.char="",
                        check.names = FALSE)
 
-  tax_table <- read.csv(input$taxon.table$datapath,
+  tax_table <- read.table(input$taxon.table$datapath,
                             header = input$header.count,
                             sep = input$sep.count,
                             row.names= 1,
@@ -233,7 +233,7 @@ observeEvent(input$uploadDataCount,{
                             comment.char="",
                             check.names = FALSE)
 
-  metadata_table <- read.csv(input$annotfile.count$datapath,
+  metadata_table <- read.table(input$annotfile.count$datapath,
                             header = input$header.count,
                             sep = input$sep.count,
                             row.names=input$metadata_sample_name_col_count,
@@ -260,7 +260,16 @@ observeEvent(input$uploadDataCount,{
       row.remove.index <- which(rowSums(as.matrix(count_table)) == 0)
       count_table <- count_table[-row.remove.index,]
   }
-
+  # Choose only the species in count that have taxonomy 
+  species_overlap <- intersect(rownames(count_table), rownames(tax_table))
+  if (length(species_overlap) < length(rownames(count_table))){
+    print(paste("The following species don't have taxonomy info:",
+    paste(rownames(count_table)[which(!rownames(count_table) %in% species_overlap)],
+    collapse = ",")))
+    count_table <- count_table[which(rownames(count_table) %in% species_overlap),]
+  }
+  tax_table <- tax_table[match(rownames(count_table), rownames(tax_table)), ]
+  
   # create MAE object
   se_mgx <-
       count_table %>%
@@ -415,10 +424,11 @@ output$contents.count <- DT::renderDataTable({
     if (!is.null(input$countsfile.pathoscope)){
         if (input$uploadChoice == "pathofiles"){
         req(input$countsfile.pathoscope)
-        df <- read.csv(input$countsfile.pathoscope[[1, 'datapath']],
+        df <- read.table(input$countsfile.pathoscope[[1, 'datapath']],
                        skip = 1,
                        header = TRUE,
-                       sep = input$sep.ps)
+                       sep = input$sep.ps,
+                       check.names = FALSE)
         return(df)
         }
     }
@@ -461,7 +471,8 @@ output$contents.count.2 <- DT::renderDataTable({
       req(input$countsfile)
       df <- read.csv(input$countsfile$datapath,
                      header = input$header.count,
-                     sep = input$sep.count)
+                     sep = input$sep.count,
+                     check.names = FALSE)
       return(df)
     }
   }
