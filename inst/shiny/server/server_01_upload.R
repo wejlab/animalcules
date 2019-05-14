@@ -1,7 +1,7 @@
 # A notification ID
 # id <- NULL
 
-url <- a("github page!", href="https://github.com/compbiomed/animalcules/")
+url <- a("website!", href="https://compbiomed.github.io/animalcules-docs/")
 output$tab <- renderUI({
   tagList("Need help? Check docs in our", url)
 })
@@ -20,7 +20,11 @@ observeEvent(input$upload_example,{
     if (input$example_data == "toy"){
       data_dir = system.file("extdata/MAE.rds", package = "animalcules")
     } else if (input$example_data == "tb"){
-      data_dir = system.file("extdata/TB_example_dataset.rds", package = "animalcules")
+      data_dir = system.file("extdata/TB_example_dataset.rds", 
+                             package = "animalcules")
+    } else if (input$example_data == "asthma"){
+      data_dir = system.file("extdata/asthma_example_dataset.rds", 
+                             package = "animalcules")
     }
     MAE_tmp = readRDS(data_dir)
     vals$MAE <- MAE_tmp
@@ -422,7 +426,7 @@ output$contents.count <- DT::renderDataTable({
     # or all rows if selected, will be shown.
 
     if (!is.null(input$countsfile.pathoscope)){
-        if (input$uploadChoice == "pathofiles"){
+        if (input$uploadChoiceAdv == "pathofiles"){
         req(input$countsfile.pathoscope)
         df <- read.table(input$countsfile.pathoscope[[1, 'datapath']],
                        skip = 1,
@@ -444,7 +448,7 @@ output$contents.meta <- DT::renderDataTable({
     # or all rows if selected, will be shown.
 
     if (!is.null(input$annotfile.ps)){
-        if (input$uploadChoice == "pathofiles"){
+        if (input$uploadChoiceAdv == "pathofiles"){
         req(input$countsfile.pathoscope)
 
         df <- read.csv(input$annotfile.ps$datapath,
@@ -492,7 +496,8 @@ output$contents.meta.2 <- DT::renderDataTable({
       req(input$annotfile.count)
       df <- read.csv(input$annotfile.count$datapath,
                      header = input$header.count,
-                     sep = input$sep.count)
+                     sep = input$sep.count,
+                     check.names = FALSE)
       return(df)
     }
   }
