@@ -265,6 +265,16 @@ observeEvent(input$uploadDataCount,{
       count_table <- count_table[-row.remove.index,]
   }
 
+    # Choose only the species in count that have taxonomy 
+  species_overlap <- intersect(rownames(count_table), rownames(tax_table))
+  if (length(species_overlap) < length(rownames(count_table))){
+    print(paste("The following species don't have taxonomy info:",
+    paste(rownames(count_table)[which(!rownames(count_table) %in% species_overlap)],
+    collapse = ",")))
+    count_table <- count_table[which(rownames(count_table) %in% species_overlap),]
+  }
+  tax_table <- tax_table[match(rownames(count_table), rownames(tax_table)), ]
+  
   # create MAE object
   se_mgx <-
       count_table %>%
