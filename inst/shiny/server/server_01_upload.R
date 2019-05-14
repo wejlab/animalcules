@@ -1,7 +1,7 @@
 # A notification ID
 # id <- NULL
 
-url <- a("github page!", href="https://github.com/compbiomed/animalcules/")
+url <- a("website!", href="https://compbiomed.github.io/animalcules-docs/")
 output$tab <- renderUI({
   tagList("Need help? Check docs in our", url)
 })
@@ -20,7 +20,11 @@ observeEvent(input$upload_example,{
     if (input$example_data == "toy"){
       data_dir = system.file("extdata/MAE.rds", package = "animalcules")
     } else if (input$example_data == "tb"){
-      data_dir = system.file("extdata/TB_example_dataset.rds", package = "animalcules")
+      data_dir = system.file("extdata/TB_example_dataset.rds", 
+                             package = "animalcules")
+    } else if (input$example_data == "asthma"){
+      data_dir = system.file("extdata/asthma_example_dataset.rds", 
+                             package = "animalcules")
     }
     MAE_tmp = readRDS(data_dir)
     vals$MAE <- MAE_tmp
@@ -217,7 +221,7 @@ observeEvent(input$upload_mae,{
 observeEvent(input$uploadDataCount,{
   withBusyIndicatorServer("uploadDataCount", {
 
-  count_table <- read.table(input$countsfile$datapath,
+  count_table <- read.csv(input$countsfile$datapath,
                        header = input$header.count,
                        row.names = 1,
                        stringsAsFactors = FALSE,
@@ -225,7 +229,7 @@ observeEvent(input$uploadDataCount,{
                        comment.char="",
                        check.names = FALSE)
 
-  tax_table <- read.table(input$taxon.table$datapath,
+  tax_table <- read.csv(input$taxon.table$datapath,
                             header = input$header.count,
                             sep = input$sep.count,
                             row.names= 1,
@@ -233,7 +237,7 @@ observeEvent(input$uploadDataCount,{
                             comment.char="",
                             check.names = FALSE)
 
-  metadata_table <- read.table(input$annotfile.count$datapath,
+  metadata_table <- read.csv(input$annotfile.count$datapath,
                             header = input$header.count,
                             sep = input$sep.count,
                             row.names=input$metadata_sample_name_col_count,
@@ -260,7 +264,8 @@ observeEvent(input$uploadDataCount,{
       row.remove.index <- which(rowSums(as.matrix(count_table)) == 0)
       count_table <- count_table[-row.remove.index,]
   }
-  # Choose only the species in count that have taxonomy 
+
+    # Choose only the species in count that have taxonomy 
   species_overlap <- intersect(rownames(count_table), rownames(tax_table))
   if (length(species_overlap) < length(rownames(count_table))){
     print(paste("The following species don't have taxonomy info:",
@@ -330,10 +335,10 @@ observeEvent(input$uploadDataPs, {
     metadata_table <- read.csv(input$annotfile.ps$datapath,
                               header = input$header.ps,
                               sep = input$sep.ps,
-                              row.names=input$metadata_sample_name_col,
                               stringsAsFactors=FALSE,
                               strip.white=TRUE)
 
+    rownames(metadata_table) <- metadata_table[,input$metadata_sample_name_col]
     # Choose only the samples in metadata that have counts data as well
     sample_overlap <- intersect(colnames(count_table), rownames(metadata_table))
     if (length(sample_overlap) < length(colnames(count_table))){
@@ -422,13 +427,12 @@ output$contents.count <- DT::renderDataTable({
     # or all rows if selected, will be shown.
 
     if (!is.null(input$countsfile.pathoscope)){
-        if (input$uploadChoice == "pathofiles"){
+        if (input$uploadChoiceAdv == "pathofiles"){
         req(input$countsfile.pathoscope)
-        df <- read.table(input$countsfile.pathoscope[[1, 'datapath']],
+        df <- read.csv(input$countsfile.pathoscope[[1, 'datapath']],
                        skip = 1,
                        header = TRUE,
-                       sep = input$sep.ps,
-                       check.names = FALSE)
+                       sep = input$sep.ps)
         return(df)
         }
     }
@@ -444,7 +448,7 @@ output$contents.meta <- DT::renderDataTable({
     # or all rows if selected, will be shown.
 
     if (!is.null(input$annotfile.ps)){
-        if (input$uploadChoice == "pathofiles"){
+        if (input$uploadChoiceAdv == "pathofiles"){
         req(input$countsfile.pathoscope)
 
         df <- read.csv(input$annotfile.ps$datapath,
@@ -471,8 +475,7 @@ output$contents.count.2 <- DT::renderDataTable({
       req(input$countsfile)
       df <- read.csv(input$countsfile$datapath,
                      header = input$header.count,
-                     sep = input$sep.count,
-                     check.names = FALSE)
+                     sep = input$sep.count)
       return(df)
     }
   }
