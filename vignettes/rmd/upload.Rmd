@@ -7,20 +7,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+There are 5 data upload methods:
 
-### Example Data
-
-There are two example datasets available in animalcules: a synthetic toy dataset (already loaded) containing 50 samples and a real TB dataset containing 30 samples. Users could use any dataset to try all functions and features in animalcules.
-
-Instructions: 
-
-* Use the pulldown menu to select the example dataset.
-* Click the "Upload" button.
-
-Running time: < 0.5s
-
-<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_030.png?raw=true" width="400">
-
+* Count File (Mostly used for uploading new dataset)
+* Example Data (For exploring animalcules)
+* animalcules file (Re-upload previously uploaded dataset quickly)
+* Pathoscope File 
+* animalcules-id file
 
 ### Count File
 
@@ -35,6 +28,9 @@ Make sure:
 * The sample names in the counts file agree with the one in annotation file.
 * The microbe names in the counts file agree with the ones in the taxonomy file. 
 * All three files have the same file separator / same file type (e.g. csv).
+* All three files have the same format as seen in the example below:
+
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/count2.PNG?raw=true" width="1200">
 
 Instructions: 
 
@@ -49,7 +45,30 @@ Each uploaded table will show up in the right panel.
 
 Running time: < 1s
 
-<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_031.png?raw=true" width="300">
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/count.PNG?raw=true" width="500">
+
+### Example Data
+
+There are three example datasets available in animalcules: a synthetic toy dataset (already loaded), a TB dataset, and an asthma dataset. Users could use any dataset to try all functions and features in animalcules.
+
+Instructions: 
+
+* Use the pulldown menu to select the example dataset.
+* Click the "Upload" button.
+
+Running time: < 0.5s
+
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/example.PNG?raw=true" width="500">
+
+
+### animalcules file
+
+In animalcules, users could choose to save their dataset to a .rds file in the Tab 2 (Summary and Filter). Later, users could load this saved dataset by uploading the .rds file to animalcules easily via this animalcules file upload option.
+
+Running time: < 0.5s
+
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_file.PNG?raw=true" width="500">
+
 
 ### Pathoscope File
 
@@ -57,6 +76,7 @@ To analyze pathoscope outputs, users need to upload pathoscope reports (use brow
 
 Instructions: 
 
+* Click the "Advanced Options" checkbox and select "PathoScope file"
 * Click the "Browse..." button to upload required files.
 * Specify the pathoscope report file suffix (default is -sam-report.tsv).
 * Input which column in the annotation file is the sample name (default is 1).
@@ -74,20 +94,17 @@ Running time:
 * Test dataset A with 30 samples: 10.8s
 * Test dataset B with 587 samples: 22.1s
 
-<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_032.png?raw=true" width="300">
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/pathoscope.PNG?raw=true" width="500">
 
 ### animalcules-id file
 
 animalcules-id is a separate R pipeline that generates pathoscope-like outputs from fastq files. The required input is the animalcules-id generated .rds file. Here users could choose either EM count assay or Best hit assay. 
 
+* Click the "Advanced Options" checkbox and select "animalcules-id file"
+* Click the "Browse..." button to upload required files.
+* Choose EM count or best hit option
+
 Running time: < 1s
 
-<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_033.png?raw=true" width="400">
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_id.PNG?raw=true" width="500">
 
-### animalcules file
-
-In animalcules, users could choose to save their dataset to a .rds file in the Tab 2 (Summary and Filter). Later, users could load this saved dataset by uploading the .rds file to animalcules easily via this animalcules file upload option.
-
-Running time: < 0.5s
-
-<img src="https://github.com/compbiomed/materials/blob/master/animalcules/fig_034.png?raw=true" width="400">
