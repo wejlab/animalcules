@@ -274,6 +274,14 @@ observeEvent(input$uploadDataCount,{
   }
   tax_table <- tax_table[match(rownames(count_table), rownames(tax_table)), ]
   
+  
+  # replace spaces in tax name with underscore
+  tax_table <- as.data.frame(apply(tax_table,
+                                   2,
+                                   function(x)gsub('\\s+', '_',x)))
+  
+  
+  
   # create MAE object
   se_mgx <-
       count_table %>%
@@ -372,6 +380,13 @@ observeEvent(input$uploadDataPs, {
     taxonLevels <- find_taxonomy(tids)
     tax_table <- find_taxon_mat(ids, taxonLevels)
 
+    
+    # replace spaces in tax name with underscore
+   tax_table <- as.data.frame(apply(tax_table,
+                                    2,
+                                    function(x)gsub('\\s+', '_',x)))
+  
+    
   # create MAE object
   se_mgx <-
       count_table %>%
