@@ -26,6 +26,7 @@ tabPanel("Abundance",
                                                            "Organisms"  = "organisms"),
                                                            selected     = "nosort"),
 
+          # Advanced options
           checkboxInput("relabu_bar_adv", "Advanced Options"),
 
           # Isolate samples
@@ -55,7 +56,8 @@ tabPanel("Abundance",
           # Adjust height of plot
           conditionalPanel(
             condition = "input.relabu_bar_adv == true",
-            sliderInput("relabu_bar_height", "Plot Height", 600, 1000, value=600, step=50, post="px")
+            sliderInput("relabu_bar_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
+            sliderInput("relabu_bar_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
           ),
 
           # Do plot button
@@ -87,6 +89,7 @@ tabPanel("Abundance",
                                                            "Organisms"  = "organisms"),
                                                            selected     = "nosort"),
 
+          # Advanced options
           checkboxInput("relabu_heatmap_adv", "Advanced Options"),
 
           # Dynamically generate based on tax level
@@ -118,7 +121,8 @@ tabPanel("Abundance",
           # Adjust height of plot
           conditionalPanel(
             condition = "input.relabu_heatmap_adv == true",
-            sliderInput("relabu_heatmap_height", "Plot Height", 600, 1000, value=600, step=50, post="px")
+            sliderInput("relabu_heatmap_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
+            sliderInput("relabu_heatmap_width", "Plot Width", 600, 1000, value=800, step=50, post="px")
           ),
 
           # Do plot button
@@ -155,14 +159,24 @@ tabPanel("Abundance",
                                                                       "log(CPM)"           = "logcpm"),
                                                                       selected             = "logcpm"),
 
+          # Advanced options
+          checkboxInput("relabu_box_adv", "Advanced Options"),
+
+          # Adjust height of plot
+          conditionalPanel(
+            condition = "input.relabu_box_adv == true",
+            sliderInput("relabu_box_height", "Plot Height", 200, 1000, value=400, step=50, post="px"),
+            sliderInput("relabu_box_width", "Plot Width", 600, 1400, value=1000, step=50, post="px")
+          ),
+
           # Do plot button
           withBusyIndicatorUI(
-          actionButton("relabu_box_plot_btn", "Plot", class = "btn-primary")
+            actionButton("relabu_box_plot_btn", "Plot", class = "btn-primary")
           ),
           width=3
         ),
         mainPanel(
-          uiOutput("relabu_box_plots", height=200),
+          uiOutput("relabu_box_plots"),
           width=9
         )
       )
