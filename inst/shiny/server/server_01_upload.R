@@ -254,7 +254,7 @@ observeEvent(input$uploadDataCount,{
                           collapse = ",")))
         count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
     }
-    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
+    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)),,drop=FALSE]
 
 
 
@@ -353,7 +353,7 @@ observeEvent(input$uploadDataPs, {
 
         count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
     }
-    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)), ]
+    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)),,drop=FALSE]
 
 
 
@@ -442,7 +442,9 @@ output$contents.count <- DT::renderDataTable({
                        skip = 1,
                        header = TRUE,
                        sep = input$sep.ps,
-                       check.names = FALSE)
+                       comment.char="",
+                       check.names = FALSE
+                       )
         return(df)
         }
     }
