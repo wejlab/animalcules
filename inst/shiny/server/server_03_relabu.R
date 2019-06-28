@@ -24,10 +24,11 @@ do_relabu_bar <- eventReactive(input$relabu_bar_plot_btn, {
     return(p)
 })
 
-# Used to dynamically adjust plot height
+# Used to dynamically adjust plot height/width
 output$relabu_bar_dynamic_plot <- renderUI({
     height = paste(input$relabu_bar_height, "px", sep="")
-    plotlyOutput("relabu_bar_plot", width="800px", height=height)
+    width = paste(input$relabu_bar_width, "px", sep="")
+    plotlyOutput("relabu_bar_plot", width=width, height=height)
 })
 
 # Return unique organisms for a given tax level
@@ -60,10 +61,11 @@ output$relabu_heatmap_plot <- renderPlotly({
     return(p)
 })
 
-# Used to dynamically adjust plot height
+# Used to dynamically adjust plot height/width
 output$relabu_heatmap_dynamic_plot <- renderUI({
     height = paste(input$relabu_heatmap_height, "px", sep="")
-    plotlyOutput("relabu_heatmap_plot", width="800px", height=height)
+    width = paste(input$relabu_heatmap_width, "px", sep="")
+    plotlyOutput("relabu_heatmap_plot", width=width, height=height)
 })
 
 # Return unique organisms for a given tax level
@@ -89,7 +91,9 @@ do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
                            tax_level = x,
                            condition = input$relabu_box_condition,
                            organisms = organisms,
-                           datatype = input$relabu_box_datatype)
+                           datatype = input$relabu_box_datatype) %>%
+            # Dynamic sizing
+            plotly::layout(height=input$relabu_box_height, width=input$relabu_box_width)
         }
         # Multiple organisms multiple plots
         else if (length(organisms) > 1) {
@@ -99,7 +103,9 @@ do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
                                tax_level = x,
                                condition = input$relabu_box_condition,
                                organisms = organisms,
-                               datatype = input$relabu_box_datatype)
+                               datatype = input$relabu_box_datatype) %>%
+                # Dynamic sizing
+                plotly::layout(height=input$relabu_box_height, width=input$relabu_box_width)
             } 
             # Separate plots
             else {
@@ -115,9 +121,10 @@ do_relabu_box <- eventReactive(input$relabu_box_plot_btn, {
                     subplots[[i]] %<>% style(showlegend = FALSE)
 
                 }
-                subplot(subplots)
+                # Subplot and Dynamic sizing
+                plotly::subplot(subplots) %>% layout(height=input$relabu_box_height, width=input$relabu_box_width)
             }
-        } 
+        }
         # No organisms selected
         else {
             plotly_empty()
