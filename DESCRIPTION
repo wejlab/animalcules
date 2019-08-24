@@ -48,7 +48,7 @@ Imports:
     magrittr,
     MultiAssayExperiment,
     SummarizedExperiment,
-    S4Vectors,
+    S4Vectors (>= 0.23.19),
     XML,
     forcats,
     scales,
