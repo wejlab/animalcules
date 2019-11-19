@@ -108,15 +108,15 @@ observeEvent(input$filter_reset_btn,{
 
 ## Plots
 output$filter_summary_top_plot <- renderPlotly({
-    p <- filter_summary_top(MAE = vals$MAE,
-                            samples_discard = c(),
-                            filter_type = input$filter_type,
-                            sample_condition = input$filter_type_metadata)
+    p <- filter_summary_barplot(MAE = vals$MAE,
+                                samples_discard = c(),
+                                filter_type = input$filter_type,
+                                sample_condition = input$filter_type_metadata)
     return(p)
 })
 
 output$filter_summary_bottom_plot <- renderPlotly({
-    p <- filter_summary_bottom(MAE = vals$MAE,
+    p <- filter_summary_piechart(MAE = vals$MAE,
                                samples_discard = c(),
                                filter_type = input$filter_type,
                                sample_condition = input$filter_type_metadata)

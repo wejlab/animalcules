@@ -22,10 +22,10 @@
 #' @import MultiAssayExperiment
 #'
 #' @export
-filter_summary_top <- function(MAE, 
-                               samples_discard, 
-                               filter_type, 
-                               sample_condition) {
+filter_summary_piechart <- function(MAE, 
+                                    samples_discard, 
+                                    filter_type, 
+                                    sample_condition) {
     # Subset the data
     MAE_subset <- 
     mae_pick_samples(MAE = MAE, discard_samples = samples_discard)

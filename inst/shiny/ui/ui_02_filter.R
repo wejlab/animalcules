@@ -119,7 +119,7 @@ tabPanel("Summary and Filter",
         )
       )
     ),
-    tabPanel("Assay dashboard",
+    tabPanel("Assay Dashboard",
       br(),
       sidebarLayout(
         sidebarPanel(

@@ -22,10 +22,10 @@
 #' @import MultiAssayExperiment
 #'
 #' @export
-filter_summary_bottom <- function(MAE, 
-                                  samples_discard, 
-                                  filter_type, 
-                                  sample_condition) {
+filter_summary_barplot <- function(MAE, 
+                                   samples_discard, 
+                                   filter_type, 
+                                   sample_condition) {
     
     # Subset the data
     MAE_subset <- 
