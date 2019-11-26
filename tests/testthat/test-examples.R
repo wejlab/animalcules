@@ -2,21 +2,21 @@ data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 
 # Summary Plot Top
-test_that("filter_summary_top() is working", {
-    p <- filter_summary_top(MAE,
-                            samples_discard = c("subject_2", "subject_4"),
-                            filter_type = "By Metadata",
-                            sample_condition = "AGE")
+test_that("filter_summary_bar_density() is working", {
+    p <- filter_summary_bar_density(MAE,
+                                    samples_discard = c("subject_2", "subject_4"),
+                                    filter_type = "By Metadata",
+                                    sample_condition = "AGE")
     
     expect_equal(length(p), 7)
 })
 
 # Summary Plot Bottom
-test_that("filter_summary_bottom() is working", {
-    p <- filter_summary_bottom(MAE,
-                               samples_discard = c("subject_2", "subject_4"),
-                               filter_type = "By Metadata",
-                               sample_condition = "SEX")
+test_that("filter_summary_bar_density() is working", {
+    p <- filter_summary_bar_density(MAE,
+                                    samples_discard = c("subject_2", "subject_4"),
+                                    filter_type = "By Metadata",
+                                    sample_condition = "SEX")
     expect_equal(length(p), 7)
 })
 

@@ -1,4 +1,4 @@
-#' Data visualization by pie chart
+#' Data visualization by pie chart / box plot
 #'
 #' @param MAE A multi-assay experiment object
 #' @param samples_discard The list of samples to filter
@@ -9,10 +9,10 @@
 #' @examples
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
-#' result <- filter_summary_top(toy_data,
-#'                              samples_discard = c('subject_2', 'subject_4'),
-#'                              filter_type = 'By Microbes',
-#'                              sample_condition = 'SEX')
+#' result <- filter_summary_pie_box(toy_data,
+#'                                  samples_discard = c('subject_2', 'subject_4'),
+#'                                  filter_type = 'By Microbes',
+#'                                  sample_condition = 'SEX')
 #' result
 #'
 #' @import dplyr
@@ -22,10 +22,10 @@
 #' @import MultiAssayExperiment
 #'
 #' @export
-filter_summary_piechart <- function(MAE, 
-                                    samples_discard, 
-                                    filter_type, 
-                                    sample_condition) {
+filter_summary_pie_box <- function(MAE, 
+                                   samples_discard, 
+                                   filter_type, 
+                                   sample_condition) {
     # Subset the data
     MAE_subset <- 
     mae_pick_samples(MAE = MAE, discard_samples = samples_discard)

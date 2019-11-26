@@ -1,4 +1,4 @@
-#' Data visualization by barplot
+#' Data visualization by bar plot / density plot
 #'
 #' @param MAE A multi-assay experiment object
 #' @param samples_discard The list of samples to filter
@@ -9,10 +9,10 @@
 #' @examples
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
-#' result <- filter_summary_bottom(toy_data,
-#'                            samples_discard = c('subject_2', 'subject_4'),
-#'                            filter_type = 'By Metadata',
-#'                            sample_condition = 'SEX')
+#' result <- filter_summary_bar_density(toy_data,
+#'                                  samples_discard = c('subject_2', 'subject_4'),
+#'                                  filter_type = 'By Metadata',
+#'                                  sample_condition = 'SEX')
 #' result
 #'
 #' @import dplyr
@@ -22,10 +22,10 @@
 #' @import MultiAssayExperiment
 #'
 #' @export
-filter_summary_barplot <- function(MAE, 
-                                   samples_discard, 
-                                   filter_type, 
-                                   sample_condition) {
+filter_summary_bar_density <- function(MAE, 
+                                       samples_discard, 
+                                       filter_type, 
+                                       sample_condition) {
     
     # Subset the data
     MAE_subset <- 
