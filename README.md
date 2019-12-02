@@ -5,7 +5,7 @@
 [![](https://img.shields.io/badge/platforms-linux%20%7C%20osx%20%7C%20win-2a89a1.svg)](https://bioconductor.org/checkResults/3.9/bioc-LATEST/animalcules/)
 [![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
-[![](https://bioconductor.org/shields/build/devel/bioc/animalcules.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/animalcules/)
+[![](https://bioconductor.org/shields/build/release/bioc/animalcules.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/animalcules/)
 
 ## What does animalcules do?
 
