@@ -65,8 +65,8 @@ dimred_pca <- function(MAE,
             } %>%
             # Fix constant/zero row
             {
-                if (sum(rowSums(as.matrix(.)) == 0) > 0){
-                . <- .[-which(rowSums(as.matrix(.)) == 0),]
+                if (sum(base::rowSums(as.matrix(.)) == 0) > 0){
+                . <- .[-which(base::rowSums(as.matrix(.)) == 0),]
             } else {
                 .
             }
