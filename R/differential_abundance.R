@@ -290,7 +290,7 @@ differential_abundance <- function(MAE,
         sam_table %<>% df_char_to_factor()
         # filter low count microbes
         count_table_tax <- 
-        count_table_tax[rowSums(count_table_tax) >= log10(min_num_filter),]
+        count_table_tax[base::rowSums(count_table_tax) >= log10(min_num_filter),]
         #print(rowSums(count_table_tax))
         #print(min_num_filter)
         #print(rowSums(count_table_tax) >= min_num_filter)
