@@ -57,8 +57,8 @@ dimred_pcoa <- function(MAE,
         upsample_counts(tax_table, tax_level) %>%
         # Fix constant/zero row
         {
-            if (sum(rowSums(as.matrix(.)) == 0) > 0){
-            . <- .[-which(rowSums(as.matrix(.)) == 0),]
+            if (sum(base::rowSums(as.matrix(.)) == 0) > 0){
+            . <- .[-which(base::rowSums(as.matrix(.)) == 0),]
             } else {
             .
             }

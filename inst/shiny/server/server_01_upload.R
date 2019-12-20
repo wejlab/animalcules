@@ -307,8 +307,8 @@ observeEvent(input$uploadDataCount,{
 
   # Test and fix the constant/zero row
   row.remove.index <- c()
-  if (sum(rowSums(as.matrix(count_table)) == 0) > 0){
-      row.remove.index <- which(rowSums(as.matrix(count_table)) == 0)
+  if (sum(base::rowSums(as.matrix(count_table)) == 0) > 0){
+      row.remove.index <- which(base::rowSums(as.matrix(count_table)) == 0)
       count_table <- count_table[-row.remove.index,]
   }
   
@@ -410,8 +410,8 @@ observeEvent(input$uploadDataPs, {
     # print("read in done!")
     # Test and fix the constant/zero row
     row.remove.index <- c()
-    if (sum(rowSums(as.matrix(count_table)) == 0) > 0){
-        row.remove.index <- which(rowSums(as.matrix(count_table)) == 0)
+    if (sum(base::rowSums(as.matrix(count_table)) == 0) > 0){
+        row.remove.index <- which(base::rowSums(as.matrix(count_table)) == 0)
         count_table <- count_table[-row.remove.index,]
     }
 
