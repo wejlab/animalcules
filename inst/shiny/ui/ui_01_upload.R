@@ -31,8 +31,8 @@ sidebarLayout(
                     radioButtons("uploadChoiceAdv", "Upload:",
             c(
               "PathoScope file" = "pathofiles",
-              "animalcules-id file" = "animalcules-id"
-        
+              "animalcules-id file" = "animalcules-id",
+              "BIOM file" = "biom"
             ))
         ),
     conditionalPanel(
@@ -142,6 +142,19 @@ sidebarLayout(
                         )
 
        ),
+       conditionalPanel(condition = sprintf("input['%s'] == 'biom'", "uploadChoiceAdv"),
+                        fileInput("biom_id", "biom file (required):",
+                                  accept = c(
+                                    ".biom"
+                                  )
+                        ),
+                        withBusyIndicatorUI(
+                          actionButton("upload_biom",
+                                       "Upload",
+                                       class = "btn-primary")
+                        )
+
+       ),
        conditionalPanel(condition = sprintf("input['%s'] == 'pathofiles'", "uploadChoiceAdv"),
                         h5("Upload PathoScope generated .tsv files:"),
                         fileInput("countsfile.pathoscope", "PathoScope outputs (required):",
@@ -197,6 +210,15 @@ sidebarLayout(
                         DT::dataTableOutput("contents.count"),
                         helpText("Annotation table"),
                         DT::dataTableOutput("contents.meta")
+       ),
+       
+       conditionalPanel(condition = "input.uploadChoiceAdv === 'biom'",
+                        helpText("Counts Table"),
+                        DT::dataTableOutput("biom.count"),
+                        helpText("Annotation table"),
+                        DT::dataTableOutput("biom.meta"),
+                        helpText("Taxonomy table"),
+                        DT::dataTableOutput("biom.tax")
        )),
        
              conditionalPanel(

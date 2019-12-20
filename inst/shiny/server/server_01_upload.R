@@ -218,6 +218,53 @@ observeEvent(input$upload_mae,{
 })
 
 
+### BIOM
+observeEvent(input$upload_biom,{
+  withBusyIndicatorServer("upload_biom", {
+  biom_obj <- biomformat::read_biom(input$biom_id$datapath)
+  count_table <- biomformat::biom_data(biom_obj)
+  tax_table <- biomformat::observation_metadata(biom_obj)
+  metadata_table <- biomformat::sample_metadata(biom_obj)    
+  # create MAE object
+  se_mgx <-
+      count_table %>%
+      base::data.matrix() %>%
+      S4Vectors::SimpleList() %>%
+      magrittr::set_names("MGX")
+
+  se_colData <-
+      metadata_table %>%
+      S4Vectors::DataFrame()
+
+  se_rowData <-
+      tax_table %>%
+      base::data.frame() %>%
+      dplyr::mutate_all(as.character) %>%
+      #dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+      S4Vectors::DataFrame()
+
+  microbe_se <-
+      SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
+                                               colData = se_colData,
+                                               rowData = se_rowData)
+  mae_experiments <-
+      S4Vectors::SimpleList(MicrobeGenetics = microbe_se)
+
+  MAE <-
+      MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
+                                               colData = se_colData)
+    vals$MAE <- MAE
+    vals$MAE_backup <- MAE
+    # Update ui
+    update_inputs(session)
+  })
+})
+
+
+
+
+
+
 observeEvent(input$uploadDataCount,{
   withBusyIndicatorServer("uploadDataCount", {
 
