@@ -4,9 +4,16 @@
 \alias{relabu_heatmap}
 \title{Plot heatmap of sample level counts in logcpm}
 \usage{
-relabu_heatmap(MAE, tax_level, sort_by = c("nosort", "conditions",
-  "organisms"), sample_conditions = c(), isolate_organisms = c(),
-  isolate_samples = c(), discard_samples = c(), log_cpm = TRUE)
+relabu_heatmap(
+  MAE,
+  tax_level,
+  sort_by = c("nosort", "conditions", "organisms"),
+  sample_conditions = c(),
+  isolate_organisms = c(),
+  isolate_samples = c(),
+  discard_samples = c(),
+  log_cpm = TRUE
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

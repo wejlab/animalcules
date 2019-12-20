@@ -222,9 +222,10 @@ observeEvent(input$upload_mae,{
 observeEvent(input$upload_biom,{
   withBusyIndicatorServer("upload_biom", {
   biom_obj <- biomformat::read_biom(input$biom_id$datapath)
-  count_table <- biomformat::biom_data(biom_obj)
-  tax_table <- biomformat::observation_metadata(biom_obj)
-  metadata_table <- biomformat::sample_metadata(biom_obj)    
+  count_table <- as.data.frame(as(biomformat::biom_data(biom_obj), "matrix"))
+  tax_table <- as.data.frame(as(biomformat::observation_metadata(biom_obj), "matrix"))
+  metadata_table <- as.data.frame(as(biomformat::sample_metadata(biom_obj), "matrix"))
+  
   # create MAE object
   se_mgx <-
       count_table %>%
@@ -505,6 +506,26 @@ options = list(
     paging = TRUE, scrollX = TRUE, pageLength = 5
 ))
 
+
+output$biom.count <- DT::renderDataTable({
+
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+
+    if (!is.null(input$biom_id)){
+        if (input$uploadChoiceAdv == "biom"){
+        req(input$biom_id)
+        df <- as.data.frame(as(biom_data(read_biom(input$biom_id$datapath)), "matrix"))
+        return(df)
+        }
+    }
+},
+options = list(
+    paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+
 output$contents.meta <- DT::renderDataTable({
 
     # input$file1 will be NULL initially. After the user selects
@@ -518,6 +539,44 @@ output$contents.meta <- DT::renderDataTable({
         df <- read.csv(input$annotfile.ps$datapath,
                        header = input$header.ps,
                        sep = input$sep.ps)
+        return(df)
+        }
+    }
+},
+options = list(
+    paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+
+output$biom.meta <- DT::renderDataTable({
+
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+
+    if (!is.null(input$biom_id)){
+        if (input$uploadChoiceAdv == "biom"){
+        req(input$biom_id)
+        df <- as.data.frame(as(sample_metadata(read_biom(input$biom_id$datapath)), "matrix"))
+        return(df)
+        }
+    }
+},
+options = list(
+    paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+
+output$biom.tax <- DT::renderDataTable({
+
+    # input$file1 will be NULL initially. After the user selects
+    # and uploads a file, head of that data file by default,
+    # or all rows if selected, will be shown.
+
+    if (!is.null(input$biom_id)){
+        if (input$uploadChoiceAdv == "biom"){
+        req(input$biom_id)
+        df <- as.data.frame(as(observation_metadata(read_biom(input$biom_id$datapath)), "matrix"))
         return(df)
         }
     }

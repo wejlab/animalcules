@@ -4,8 +4,13 @@
 \alias{relabu_boxplot}
 \title{Plot boxplots comparing different organism prevalence across conditions}
 \usage{
-relabu_boxplot(MAE, tax_level, condition, organisms = c(),
-  datatype = c("counts", "relative abundance", "logcpm"))
+relabu_boxplot(
+  MAE,
+  tax_level,
+  condition,
+  organisms = c(),
+  datatype = c("counts", "relative abundance", "logcpm")
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

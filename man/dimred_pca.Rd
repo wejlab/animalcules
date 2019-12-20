@@ -4,8 +4,16 @@
 \alias{dimred_pca}
 \title{Dimensionality reduction through PCA}
 \usage{
-dimred_pca(MAE, tax_level, color, shape = NULL, pcx = 1, pcy = 2,
-  pcz = NULL, datatype = c("logcpm", "relabu", "counts"))
+dimred_pca(
+  MAE,
+  tax_level,
+  color,
+  shape = NULL,
+  pcx = 1,
+  pcy = 2,
+  pcz = NULL,
+  datatype = c("logcpm", "relabu", "counts")
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

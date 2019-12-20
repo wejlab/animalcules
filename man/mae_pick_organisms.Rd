@@ -4,8 +4,7 @@
 \alias{mae_pick_organisms}
 \title{Modify organisms of multi-assay experiment object}
 \usage{
-mae_pick_organisms(MAE, isolate_organisms = NULL,
-  discard_organisms = NULL)
+mae_pick_organisms(MAE, isolate_organisms = NULL, discard_organisms = NULL)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

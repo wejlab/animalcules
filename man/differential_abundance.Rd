@@ -4,9 +4,15 @@
 \alias{differential_abundance}
 \title{Differential abundance analysis}
 \usage{
-differential_abundance(MAE, tax_level, input_da_condition = c(),
-  input_da_condition_covariate = NULL, min_num_filter = 5,
-  input_da_padj_cutoff = 0.05, method = "DESeq2")
+differential_abundance(
+  MAE,
+  tax_level,
+  input_da_condition = c(),
+  input_da_condition_covariate = NULL,
+  min_num_filter = 5,
+  input_da_padj_cutoff = 0.05,
+  method = "DESeq2"
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

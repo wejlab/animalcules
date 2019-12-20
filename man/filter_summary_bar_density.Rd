@@ -4,8 +4,7 @@
 \alias{filter_summary_bar_density}
 \title{Data visualization by bar plot / density plot}
 \usage{
-filter_summary_bar_density(MAE, samples_discard, filter_type,
-  sample_condition)
+filter_summary_bar_density(MAE, samples_discard, filter_type, sample_condition)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

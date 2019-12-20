@@ -6,6 +6,7 @@ library(plotly)
 library(vegan)
 library(dplyr)
 library(magrittr)
+library(biomformat)
 
 source(file.path("utils", "helpers.R"),  local = TRUE)
 # source(file.path("utils", "server_util.R"),  local = TRUE)

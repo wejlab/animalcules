@@ -4,10 +4,13 @@
 \alias{do_alpha_div_test}
 \title{Alpha diversity statistical test}
 \usage{
-do_alpha_div_test(MAE, tax_level, condition,
-  alpha_metric = c("inverse_simpson", "gini_simpson", "shannon",
-  "fisher", "coverage"), alpha_stat = c("Wilcoxon rank sum test",
-  "T-test", "Kruskal-Wallis"))
+do_alpha_div_test(
+  MAE,
+  tax_level,
+  condition,
+  alpha_metric = c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage"),
+  alpha_stat = c("Wilcoxon rank sum test", "T-test", "Kruskal-Wallis")
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

@@ -4,8 +4,12 @@
 \alias{diversity_beta_boxplot}
 \title{Beta diversity boxplot}
 \usage{
-diversity_beta_boxplot(MAE, tax_level, input_beta_method,
-  input_select_beta_condition)
+diversity_beta_boxplot(
+  MAE,
+  tax_level,
+  input_beta_method,
+  input_select_beta_condition
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

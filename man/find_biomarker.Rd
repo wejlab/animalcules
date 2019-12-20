@@ -4,9 +4,16 @@
 \alias{find_biomarker}
 \title{Identify biomarkers}
 \usage{
-find_biomarker(MAE, tax_level, input_select_target_biomarker, nfolds = 3,
-  nrepeats = 3, seed = 99, percent_top_biomarker = 0.2,
-  model_name = c("logistic regression", "random forest"))
+find_biomarker(
+  MAE,
+  tax_level,
+  input_select_target_biomarker,
+  nfolds = 3,
+  nrepeats = 3,
+  seed = 99,
+  percent_top_biomarker = 0.2,
+  model_name = c("logistic regression", "random forest")
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

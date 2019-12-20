@@ -4,9 +4,17 @@
 \alias{dimred_tsne}
 \title{Dimensionality reduction through t-SNE}
 \usage{
-dimred_tsne(MAE, tax_level, color, shape = NULL, k = c("2D", "3D"),
-  initial_dims = 30, perplexity = 10, datatype = c("logcpm",
-  "relabu", "counts"), tsne_cache = NULL)
+dimred_tsne(
+  MAE,
+  tax_level,
+  color,
+  shape = NULL,
+  k = c("2D", "3D"),
+  initial_dims = 30,
+  perplexity = 10,
+  datatype = c("logcpm", "relabu", "counts"),
+  tsne_cache = NULL
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

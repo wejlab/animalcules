@@ -4,9 +4,13 @@
 \alias{diversity_beta_heatmap}
 \title{Beta diversity heatmap}
 \usage{
-diversity_beta_heatmap(MAE, tax_level, input_beta_method,
-  input_bdhm_select_conditions, input_bdhm_sort_by = c("nosort",
-  "conditions"))
+diversity_beta_heatmap(
+  MAE,
+  tax_level,
+  input_beta_method,
+  input_bdhm_select_conditions,
+  input_bdhm_sort_by = c("nosort", "conditions")
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

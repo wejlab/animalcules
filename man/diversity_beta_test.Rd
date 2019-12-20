@@ -4,9 +4,14 @@
 \alias{diversity_beta_test}
 \title{Beta diversity test (by default we use bray-curtis distance)}
 \usage{
-diversity_beta_test(MAE, tax_level, input_beta_method,
-  input_select_beta_condition, input_select_beta_stat_method,
-  input_num_permutation_permanova = 999)
+diversity_beta_test(
+  MAE,
+  tax_level,
+  input_beta_method,
+  input_select_beta_condition,
+  input_select_beta_stat_method,
+  input_num_permutation_permanova = 999
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

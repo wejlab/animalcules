@@ -4,11 +4,18 @@
 \alias{relabu_barplot}
 \title{Plot bar plots of sample and group level relative abundance}
 \usage{
-relabu_barplot(MAE, tax_level, order_organisms = c(),
+relabu_barplot(
+  MAE,
+  tax_level,
+  order_organisms = c(),
   sort_by = c("nosort", "conditions", "organisms"),
-  group_samples = FALSE, group_conditions = "ALL",
-  sample_conditions = c(), isolate_samples = c(),
-  discard_samples = c(), show_legend = TRUE)
+  group_samples = FALSE,
+  group_conditions = "ALL",
+  sample_conditions = c(),
+  isolate_samples = c(),
+  discard_samples = c(),
+  show_legend = TRUE
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

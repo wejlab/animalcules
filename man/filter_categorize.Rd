@@ -4,8 +4,14 @@
 \alias{filter_categorize}
 \title{Categorize continuous variables}
 \usage{
-filter_categorize(sam_table, sample_condition, new_label, nbins = NULL,
-  bin_breaks = c(), bin_labels = c())
+filter_categorize(
+  sam_table,
+  sample_condition,
+  new_label,
+  nbins = NULL,
+  bin_breaks = c(),
+  bin_labels = c()
+)
 }
 \arguments{
 \item{sam_table}{A sample x condition dataframe}

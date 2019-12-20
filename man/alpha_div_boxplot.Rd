@@ -4,9 +4,12 @@
 \alias{alpha_div_boxplot}
 \title{Alpha diversity boxplot}
 \usage{
-alpha_div_boxplot(MAE, tax_level, condition,
-  alpha_metric = c("inverse_simpson", "gini_simpson", "shannon",
-  "fisher", "coverage"))
+alpha_div_boxplot(
+  MAE,
+  tax_level,
+  condition,
+  alpha_metric = c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage")
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}
