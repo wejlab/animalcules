@@ -30,9 +30,10 @@ sidebarLayout(
             condition = "input.upload_adv == true",
                     radioButtons("uploadChoiceAdv", "Upload:",
             c(
+              "BIOM file" = "biom",
               "PathoScope file" = "pathofiles",
-              "animalcules-id file" = "animalcules-id",
-              "BIOM file" = "biom"
+              "animalcules-id file" = "animalcules-id"
+              
             ))
         ),
     conditionalPanel(
@@ -148,6 +149,7 @@ sidebarLayout(
                                     ".biom"
                                   )
                         ),
+                        helpText('Make sure the .biom file has sample metadata included.'),
                         withBusyIndicatorUI(
                           actionButton("upload_biom",
                                        "Upload",
@@ -205,7 +207,7 @@ sidebarLayout(
              conditionalPanel(
             condition = "input.upload_adv == true",
        conditionalPanel(condition = "input.uploadChoiceAdv === 'pathofiles'",
-                        h4("Please click \"open in browser\" for enabling functions like multiple files upload."),
+                        h4("Note: please click \"open in browser\" for enabling functions like multiple files upload."),
                         helpText("Counts Table: column names must be sample name"),
                         DT::dataTableOutput("contents.count"),
                         helpText("Annotation table"),
@@ -213,6 +215,8 @@ sidebarLayout(
        ),
        
        conditionalPanel(condition = "input.uploadChoiceAdv === 'biom'",
+                        h5('Note: Please check http://biom-format.org/documentation/adding_metadata.html 
+                                 to add sample metadate into .biom file if sample metadata is missing.'),
                         helpText("Counts Table"),
                         DT::dataTableOutput("biom.count"),
                         helpText("Annotation table"),
@@ -256,16 +260,19 @@ sidebarLayout(
        conditionalPanel(condition = "input.uploadChoice === 'count'",
 
                         tags$img(src='count_table_example.png', height = 180, width = 800),
-                        helpText("Counts Table: column names must be sample name"),
-                        helpText("The first column must be microbe name"),
+                        helpText("Counts Table: "),
+                        helpText("1. Column names must be sample name"),
+                        helpText("2. The first column must be microbe name"),
 
                         DT::dataTableOutput("contents.count.2"),
-                        helpText("Taxonomy Table: column names must be taxonomy levels, like family, genus, species..."),
-                        helpText("The first column must be microbe name"),
+                        helpText("Taxonomy Table: "),
+                        helpText("1. Column names must be taxonomy levels, like family, genus, species..."),
+                        helpText("2. The first column must be microbe name"),
 
                         DT::dataTableOutput("contents.taxonomy"),
-                        helpText("Annotation table: row names must be sample name"),
-                        helpText("The first row must sample attribute labels"),
+                        helpText("Annotation table: "),
+                        helpText("1. Row names must be sample name"),
+                        helpText("2. The first row must sample attribute labels"),
 
                         DT::dataTableOutput("contents.meta.2")
         )
