@@ -80,8 +80,8 @@ test_that("do_alpha_div_test() is working", {
                       condition = "DISEASE",
                       alpha_metric = "shannon",
                       alpha_stat = "T-test")
-    pval_wil <- round(p$`Wilcoxon rank sum test`, 2)
-    pval_t <- round(p$`Welch Two Sample t-test`, 2)
+    pval_wil <- round(p[1,1,drop=TRUE], 2)
+    pval_t <- round(p[1,1,drop=TRUE], 2)
     
     expect_equal(pval_wil, 0.37)
     expect_equal(pval_t, 0.49)
