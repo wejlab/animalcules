@@ -31,6 +31,7 @@ sidebarLayout(
                     radioButtons("uploadChoiceAdv", "Upload:",
             c(
               "BIOM file" = "biom",
+              "Count file with tax id" = 'countTi',
               "PathoScope file" = "pathofiles",
               "animalcules-id file" = "animalcules-id"
               
@@ -157,6 +158,45 @@ sidebarLayout(
                         )
 
        ),
+       conditionalPanel(condition = sprintf("input['%s'] == 'countTi'", "uploadChoiceAdv"),
+                        fileInput("countsfileTi", "Counts file (required):",
+                                  accept = c(
+                                      "text/csv",
+                                      "text/comma-separated-values",
+                                      "text/tab-separated-values",
+                                      "text/plain",
+                                      ".csv",
+                                      ".tsv"
+                                  )
+                        ),
+                        fileInput("annotfile.countTi", "Annotation file (required):",
+                                  accept = c(
+                                      "text/csv",
+                                      "text/comma-separated-values",
+                                      "text/tab-separated-values",
+                                      "text/plain",
+                                      ".csv",
+                                      ".tsv"
+                                  )
+                        ),
+                        numericInput("metadata_sample_name_col_countTi", "Which column in metadata is sample name?",
+                                     value = 1),
+                        # Input: Checkbox if file has header ----
+                        checkboxInput("header.countTi", "Header", TRUE),
+
+                        # Input: Select separator ----
+                        radioButtons("sep.countTi", "Separator",
+                                     choices = c(Tab = "\t",
+                                                 Comma = ",",
+                                                 Semicolon = ";"
+                                     ),
+                                     selected = ","),
+                        withBusyIndicatorUI(
+                            actionButton("uploadDataCountTi",
+                                         "Upload",
+                                         class = "btn-primary")
+                        )
+       ),
        conditionalPanel(condition = sprintf("input['%s'] == 'pathofiles'", "uploadChoiceAdv"),
                         h5("Upload PathoScope generated .tsv files:"),
                         fileInput("countsfile.pathoscope", "PathoScope outputs (required):",
@@ -213,6 +253,21 @@ sidebarLayout(
                         helpText("Annotation table"),
                         DT::dataTableOutput("contents.meta")
        ),
+       conditionalPanel(condition = "input.uploadChoiceAdv === 'countTi'",
+
+                        #tags$img(src='count_table_example.png', height = 180, width = 800),
+                        helpText("Counts Table: "),
+                        helpText("1. Column names must be sample name"),
+                        helpText("2. The first column must be Tax id"),
+
+                        DT::dataTableOutput("contents.count.2Ti"),
+
+                        helpText("Annotation table: "),
+                        helpText("1. Row names must be sample name"),
+                        helpText("2. The first row must sample attribute labels"),
+
+                        DT::dataTableOutput("contents.meta.2Ti")
+        ),
        
        conditionalPanel(condition = "input.uploadChoiceAdv === 'biom'",
                         h5('Note: Please check http://biom-format.org/documentation/adding_metadata.html 

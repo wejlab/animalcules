@@ -7,11 +7,13 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-There are 5 data upload methods:
+There are 7 data upload methods:
 
 * Count File (Mostly used for uploading new dataset)
 * Example Data (For exploring animalcules)
 * animalcules file (Re-upload previously uploaded dataset quickly)
+* BIOM file
+* Count file with taxonomy id (this is the option if taxonomy table is not available)
 * Pathoscope File 
 * animalcules-id file
 
@@ -68,6 +70,62 @@ In animalcules, users could choose to save their dataset to a .rds file in the T
 Running time: < 0.5s
 
 <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_file.PNG?raw=true" width="500">
+
+
+### Biom file
+
+Make sure:
+
+* The BIOM file must contain the sample metadata info (annotation for each sample)
+* Please check http://biom-format.org/documentation/adding_metadata.html to add sample metadate into .biom file if sample metadata is missing.
+
+
+Instructions: 
+
+* Click the "Advanced Options" checkbox and select "BIOM file"
+* Click the "Browse..." button to upload required .biom file.
+* Click the button "Upload". 
+
+Running time: < 0.5s
+
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/biom.PNG?raw=true" width="500">
+
+
+
+
+### Count File with Taxonomy id
+
+Both 16s and metagenomics generated data are supported here. The two required files are:
+
+* Counts file: each row is a tax id, each column is a sample name.
+* Annotation file: each row is a sample name, each column is a variable/feature name.
+
+Make sure:
+
+* The sample names in the counts file agree with the one in annotation file.
+* The first element in eaah row is the taxonomy id, e.g. ti|657314
+* Both files have the same file separator and same file type (e.g. csv).
+
+
+Instructions: 
+
+* Click the "Advanced Options" checkbox and select "Count file with tax id"
+* Click the "Browse..." button to upload required two files.
+* Input which column in the annotation file is the sample name (default is 1).
+* Check if the annotation file has header (default is TRUE).
+* Select the separator (default is comma AKA .csv file).
+* Click the button "Upload". 
+
+Note: 
+Each uploaded table will show up in the right panel. 
+
+Running time: < 1s
+
+<img src="https://github.com/compbiomed/materials/blob/master/animalcules/countTi.PNG?raw=true" width="500">
+
+
+
+
 
 
 ### Pathoscope File

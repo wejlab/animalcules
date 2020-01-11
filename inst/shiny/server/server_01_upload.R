@@ -370,6 +370,122 @@ observeEvent(input$uploadDataCount,{
   })
 })
 
+
+
+
+
+
+observeEvent(input$uploadDataCountTi,{
+  withBusyIndicatorServer("uploadDataCountTi", {
+
+  count_table <- read.table(input$countsfileTi$datapath,
+                       header = input$header.countTi,
+                       row.names = 1,
+                       stringsAsFactors = FALSE,
+                       sep = input$sep.countTi,
+                       comment.char="",
+                       check.names = FALSE)
+  metadata_table <- read.table(input$annotfile.countTi$datapath,
+                            header = input$header.countTi,
+                            sep = input$sep.countTi,
+                            row.names=input$metadata_sample_name_col_countTi,
+                            stringsAsFactors=FALSE,
+                            comment.char="",
+                            check.names = FALSE)
+
+
+  # Choose only the samples in metadata that have counts data as well
+    sample_overlap <- intersect(colnames(count_table), rownames(metadata_table))
+    if (length(sample_overlap) < length(colnames(count_table))){
+        print(paste("The following samples don't have metadata info:",
+                    paste(colnames(count_table)[which(!colnames(count_table) %in% sample_overlap)],
+                          collapse = ",")))
+        count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
+    }
+    metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)),,drop=FALSE]
+
+
+
+  # Test and fix the constant/zero row
+  row.remove.index <- c()
+  if (sum(base::rowSums(as.matrix(count_table)) == 0) > 0){
+      row.remove.index <- which(base::rowSums(as.matrix(count_table)) == 0)
+      count_table <- count_table[-row.remove.index,]
+  }
+  
+  ids <- rownames(count_table)
+  if (startsWith(ids[1],'ti|')){
+      tids <- unlist(lapply(ids, FUN = grep_tid))
+  }
+  
+  if (sum(is.na(tids)) > 0){
+      tid_remove <- which(is.na(tids))
+      ids <- ids[-tid_remove]
+      tids <- tids[-tid_remove]
+      count_table <- count_table[-tid_remove,]
+  }
+
+  taxonLevels <- find_taxonomy(tids)
+  tax_table <- find_taxon_mat(ids, taxonLevels)
+
+
+  # replace spaces in tax name with underscore
+  tax_table <- as.data.frame(apply(tax_table,
+                                  2,
+                                  function(x)gsub('\\s+', '_',x)))
+  
+  species_overlap <- intersect(rownames(count_table), rownames(tax_table))
+  if (length(species_overlap) < length(rownames(count_table))){
+    print(paste("The following species don't have taxonomy info:",
+    paste(rownames(count_table)[which(!rownames(count_table) %in% species_overlap)],
+    collapse = ",")))
+    count_table <- count_table[which(rownames(count_table) %in% species_overlap),]
+  }
+  tax_table <- tax_table[match(rownames(count_table), rownames(tax_table)), ]
+
+ 
+  # create MAE object
+  se_mgx <-
+      count_table %>%
+      base::data.matrix() %>%
+      S4Vectors::SimpleList() %>%
+      magrittr::set_names("MGX")
+
+  se_colData <-
+      metadata_table %>%
+      S4Vectors::DataFrame()
+
+  se_rowData <-
+      tax_table %>%
+      base::data.frame() %>%
+      dplyr::mutate_all(as.character) %>%
+      dplyr::select(superkingdom, phylum, class, order, family, genus) %>%
+      S4Vectors::DataFrame()
+
+  microbe_se <-
+      SummarizedExperiment::SummarizedExperiment(assays = se_mgx,
+                                               colData = se_colData,
+                                               rowData = se_rowData)
+  mae_experiments <-
+      S4Vectors::SimpleList(MicrobeGenetics = microbe_se)
+
+  MAE <-
+      MultiAssayExperiment::MultiAssayExperiment(experiments = mae_experiments,
+                                               colData = se_colData)
+
+  # update vals
+  vals$MAE <- MAE
+  vals$MAE_backup <- MAE
+
+
+  # Update ui
+  update_inputs(session)
+  })
+})
+
+
+
+
 observeEvent(input$uploadDataPs, {
   withBusyIndicatorServer("uploadDataPs", {
 
@@ -628,6 +744,52 @@ output$contents.meta.2 <- DT::renderDataTable({
 options = list(
   paging = TRUE, scrollX = TRUE, pageLength = 5
 ))
+
+
+### data input summary
+output$contents.count.2Ti <- DT::renderDataTable({
+
+  # input$file1 will be NULL initially. After the user selects
+  # and uploads a file, head of that data file by default,
+  # or all rows if selected, will be shown.
+
+  if (!is.null(input$countsfileTi)){
+    if (input$uploadChoiceAdv == "countTi"){
+      req(input$countsfileTi)
+      df <- read.csv(input$countsfileTi$datapath,
+                     header = input$header.countTi,
+                     sep = input$sep.countTi,
+                     check.names = FALSE)
+      return(df)
+    }
+  }
+},
+options = list(
+  paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+output$contents.meta.2Ti <- DT::renderDataTable({
+
+  # input$file1 will be NULL initially. After the user selects
+  # and uploads a file, head of that data file by default,
+  # or all rows if selected, will be shown.
+
+  if (!is.null(input$annotfile.countTi)){
+    if (input$uploadChoiceAdv == "countTi"){
+      req(input$annotfile.countTi)
+      df <- read.csv(input$annotfile.countTi$datapath,
+                     header = input$header.countTi,
+                     sep = input$sep.countTi,
+                     check.names = FALSE)
+      return(df)
+    }
+  }
+},
+options = list(
+  paging = TRUE, scrollX = TRUE, pageLength = 5
+))
+
+
 
 output$contents.taxonomy <- DT::renderDataTable({
 
