@@ -21,21 +21,22 @@ Please check our website at https://compbiomed.github.io/animalcules-docs/
 
 ## Installation
 
-* Install the development version of the package from Bioconductor
+
+* Install the development version of the package from Github (recommended)
+
+``` r
+if (!requireNamespace("devtools", quietly=TRUE))
+  install.packages("devtools")
+devtools::install_github("compbiomed/animalcules")
+```
+
+* Install the release version of the package from Bioconductor
 
 ``` r
 if (!requireNamespace("BiocManager", quietly=TRUE))
   install.packages("BiocManager")
 BiocManager::install("compbiomed/animalcules")
 
-```
-
-* Install the development version of the package from Github
-
-``` r
-if (!requireNamespace("devtools", quietly=TRUE))
-  install.packages("devtools")
-devtools::install_github("compbiomed/animalcules")
 ```
 
 ## Run animalcules shiny app
