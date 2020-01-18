@@ -124,17 +124,17 @@ tabPanel("Dimension Reduction",
 
           conditionalPanel(
             condition = "input.dimred_umap_adv == true",
-            numericInput('dimred_umap_x', 'Principal Component (x-axis)', 1, min=1, max=50)
+            numericInput('dimred_umap_x', 'Component (x-axis)', 1, min=1, max=50)
           ),
 
           conditionalPanel(
             condition = "input.dimred_umap_adv == true",
-            numericInput('dimred_umap_y', 'Principal Component (y-axis)', 2, min=1, max=50)
+            numericInput('dimred_umap_y', 'Component (y-axis)', 2, min=1, max=50)
           ),
 
           conditionalPanel(
             condition = "input.dimred_umap_adv == true",
-            numericInput('dimred_umap_z', 'Principal Component (z-axis)', NA, min=1, max=50)
+            numericInput('dimred_umap_z', 'Component (z-axis)', NA, min=1, max=50)
           ),
 
           conditionalPanel(
@@ -180,7 +180,7 @@ tabPanel("Dimension Reduction",
           width=3
         ),
         mainPanel(
-          plotlyOutput("dimred_umap_plot", width="800px", height="800px"),
+          plotlyOutput("dimred_umap_plot", width="700px", height="700px"),
           width=9
         )
       )
@@ -242,7 +242,7 @@ tabPanel("Dimension Reduction",
          Subsequent plots will use cached assay unless the
          \"Use Cached Data\" is disabled from the advanced option."),
           fluidRow(
-            plotlyOutput("dimred_tsne_plot", height="500px", width="500px")
+            plotlyOutput("dimred_tsne_plot", width="700px", height="700px")
           ),
           width=9
         )

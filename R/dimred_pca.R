@@ -137,8 +137,10 @@ dimred_pca <- function(MAE,
 
     # Formatting importance table
     colnames(df.imp) = c("Standard Deviation",
-                        "Variance Explained",
-                        "Cumulative Variance")
+                         "Variance Explained",
+                         "Cumulative Variance")
+
+    df.imp[,"Standard Deviation"] <- signif(df.imp[,"Standard Deviation"], 3)
 
     # Show variance as a percentage
     df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))
