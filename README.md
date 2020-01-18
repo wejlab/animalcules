@@ -19,10 +19,21 @@ Traditional microbiome analysis such as alpha/beta diversity and differential ab
 
 Please check our website at https://compbiomed.github.io/animalcules-docs/
 
+
+## Before Installation
+
+* Make sure R version is >= 3.6.0 and Bioconductor version is 3.10. Bioconductor could be updated by :
+
+``` r
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install(version = "3.10")
+```
+
 ## Installation
 
 
-* Install the development version of the package from Github (recommended)
+* Install the development version of the package from Github 
 
 ``` r
 if (!requireNamespace("devtools", quietly=TRUE))
@@ -38,6 +49,8 @@ if (!requireNamespace("BiocManager", quietly=TRUE))
 BiocManager::install("compbiomed/animalcules")
 
 ```
+
+
 
 ## Run animalcules shiny app
 
