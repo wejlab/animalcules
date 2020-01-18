@@ -14,6 +14,7 @@ reference:
   - '`differential_abundance`'
   - '`dimred_pca`'
   - '`dimred_pcoa`'
+  - '`dimred_umap`'
   - '`dimred_tsne`'
   - '`diversities`'
   - '`diversities_help`'

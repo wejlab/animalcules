@@ -323,6 +323,23 @@ result$plot
 head(result$table)
 ```
 
+## UMAP
+
+A wrapper for conduction 2D and 3D Uniform Manifold Approximation and Projection.
+
+```{r}
+result <- dimred_umap(MAE,
+                      tax_level="genus",
+                      color="AGE",
+                      shape="DISEASE",
+                      cx=1,
+                      cy=2,
+                      n_neighbors=15,
+                      metric="euclidean",
+                      datatype="logcpm")
+result$plot
+```
+
 ## t-SNE
 
 A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.

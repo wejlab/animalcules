@@ -107,9 +107,10 @@ updateCovariate <- function(session){
     updateSelectInput(session, "dimred_pca_shape", choices = c("None", covariates.colorbar))
     updateSelectInput(session, "dimred_pcoa_color", choices = covariates)
     updateSelectInput(session, "dimred_pcoa_shape", choices = c("None", covariates.colorbar))
+    updateSelectInput(session, "dimred_umap_color", choices = covariates)
+    updateSelectInput(session, "dimred_umap_shape", choices = c("None", covariates.colorbar))
     updateSelectInput(session, "dimred_tsne_color", choices = covariates)
     updateSelectInput(session, "dimred_tsne_shape", choices = c("None", covariates.colorbar))
-
 
     # Diversity
     updateSelectInput(session, "select_alpha_div_condition", choices = covariates)
@@ -148,6 +149,7 @@ updateTaxLevel <- function(session){
     # Dim Reduction
     updateSelectInput(session, "dimred_pca_taxlev", choices = tax.name, selected=tax.default)
     updateSelectInput(session, "dimred_pcoa_taxlev", choices = tax.name, selected=tax.default)
+    updateSelectInput(session, "dimred_umap_taxlev", choices = tax.name, selected=tax.default)
     updateSelectInput(session, "dimred_tsne_taxlev", choices = tax.name, selected=tax.default)
 
     # Differential
@@ -194,8 +196,6 @@ observeEvent(input$upload_animalcules,{
   })
 })
 
-
-
 observeEvent(input$upload_mae,{
   withBusyIndicatorServer("upload_mae", {
     MAE_list <- readRDS(input$rdfile_id$datapath)
@@ -216,7 +216,6 @@ observeEvent(input$upload_mae,{
     update_inputs(session)
   })
 })
-
 
 ### BIOM
 observeEvent(input$upload_biom,{
@@ -260,11 +259,6 @@ observeEvent(input$upload_biom,{
     update_inputs(session)
   })
 })
-
-
-
-
-
 
 observeEvent(input$uploadDataCount,{
   withBusyIndicatorServer("uploadDataCount", {

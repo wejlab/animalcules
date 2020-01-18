@@ -111,6 +111,80 @@ tabPanel("Dimension Reduction",
         )
       )
     ),
+    tabPanel("UMAP",
+      tags$br(),
+      sidebarLayout(
+        sidebarPanel(
+
+          selectizeInput('dimred_umap_taxlev', 'Taxonomy Level', choices = tax.name, selected=tax.default),
+
+          selectInput("dimred_umap_color", "Color points by:", covariates),
+
+          checkboxInput("dimred_umap_adv", "Advanced Options (3D)"),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            numericInput('dimred_umap_x', 'Principal Component (x-axis)', 1, min=1, max=50)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            numericInput('dimred_umap_y', 'Principal Component (y-axis)', 2, min=1, max=50)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            numericInput('dimred_umap_z', 'Principal Component (z-axis)', NA, min=1, max=50)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            numericInput('dimred_umap_n_neighbors', 'Nearest Neighbors', 15)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            selectizeInput('dimred_umap_metric', 'Distance Metric', c("euclidean", "manhattan"), selected="euclidean")
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            numericInput('dimred_umap_n_epochs', 'Iterations', 200)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            selectizeInput('dimred_umap_init', 'Initial Embedding', c("spectral", "random"), selected="spectral")
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            numericInput('dimred_umap_min_dist', 'Min Distance', 0.1)
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            selectInput("dimred_umap_shape", "Shape points by:", c("None", covariates.colorbar))
+          ),
+
+          conditionalPanel(
+            condition = "input.dimred_umap_adv == true",
+            selectInput("dimred_umap_datatype", "Select data type", c("Relative Abundance" = "relabu",
+                                                                      "Counts"             = "counts",
+                                                                      "log(CPM)"           = "logcpm"),
+                                                                      selected             = "logcpm")
+          ),
+
+          # Do plot button
+          actionButton("dimred_umap_plot_btn", "Plot", class = "btn-primary"),
+          width=3
+        ),
+        mainPanel(
+          plotlyOutput("dimred_umap_plot", width="800px", height="800px"),
+          width=9
+        )
+      )
+    ),
     tabPanel("t-SNE",
       tags$br(),
       sidebarLayout(
