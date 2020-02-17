@@ -26,6 +26,8 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
         as.data.frame()
     rownames(counts_table) <- counts_table$higher_level
     counts_table$higher_level <- NULL
+    # remove others
+    counts_table <- counts_table[which(rownames(counts_table) != "others"),]
     return(counts_table)
 }
 
