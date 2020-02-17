@@ -136,8 +136,10 @@ dimred_pcoa <- function(MAE,
     df.imp <- df.imp[,c(1,3,5)]
     rownames(df.imp) <- paste("Axis", seq_len(nrow(df.imp)), sep = ".")
     colnames(df.imp) <- c("Eigenvalue",
-                        "Variance Explained",
-                        "Cumulative Variance")
+                          "Variance Explained",
+                          "Cumulative Variance")
+
+    df.imp[,"Eigenvalue"] <- signif(df.imp[,"Eigenvalue"], 3)
 
     # Show variance as a percentage
     df.imp[,2] <- scales::percent(as.numeric(df.imp[,2]))

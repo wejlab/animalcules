@@ -3,10 +3,8 @@
 
 url <- a("website!", href="https://compbiomed.github.io/animalcules-docs/")
 output$tab <- renderUI({
-  tagList("Need help? Check docs in our", url)
+  tagList("Need help? Check the docs on our", url)
 })
-
-
 
 # reactive values shared thorough the shiny app
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")
@@ -33,12 +31,6 @@ observeEvent(input$upload_example,{
     update_inputs(session)
   })
 })
-
-
-
-
-
-
 
 update_inputs <- function(session) {
     updateCovariate(session)
@@ -94,7 +86,6 @@ updateCovariate <- function(session){
     # Filter
     updateSelectInput(session, "filter_type_metadata", choices = covariates)
     updateSelectInput(session, "filter_bin_cov", choices = num_covariates)
-
 
     # Relabu
     updateSelectInput(session, "relabu_bar_sample_conditions", choices = covariates)
@@ -364,11 +355,6 @@ observeEvent(input$uploadDataCount,{
   })
 })
 
-
-
-
-
-
 observeEvent(input$uploadDataCountTi,{
   withBusyIndicatorServer("uploadDataCountTi", {
 
@@ -471,14 +457,10 @@ observeEvent(input$uploadDataCountTi,{
   vals$MAE <- MAE
   vals$MAE_backup <- MAE
 
-
   # Update ui
   update_inputs(session)
   })
 })
-
-
-
 
 observeEvent(input$uploadDataPs, {
   withBusyIndicatorServer("uploadDataPs", {
@@ -515,8 +497,6 @@ observeEvent(input$uploadDataPs, {
         count_table <- count_table[,which(colnames(count_table) %in% sample_overlap)]
     }
     metadata_table <- metadata_table[match(colnames(count_table), rownames(metadata_table)),,drop = FALSE]
-
-
 
     # print("read in done!")
     # Test and fix the constant/zero row
@@ -586,10 +566,6 @@ observeEvent(input$uploadDataPs, {
 
   })
 })
-
-
-
-
 
 # Data input summary
 output$contents.count <- DT::renderDataTable({
@@ -739,7 +715,6 @@ options = list(
   paging = TRUE, scrollX = TRUE, pageLength = 5
 ))
 
-
 ### data input summary
 output$contents.count.2Ti <- DT::renderDataTable({
 
@@ -782,8 +757,6 @@ output$contents.meta.2Ti <- DT::renderDataTable({
 options = list(
   paging = TRUE, scrollX = TRUE, pageLength = 5
 ))
-
-
 
 output$contents.taxonomy <- DT::renderDataTable({
 

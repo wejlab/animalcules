@@ -53,6 +53,7 @@ Imports:
     DMwR,
     plotROC,
     DT,
+    reactable,
     utils,
     limma,
     methods,

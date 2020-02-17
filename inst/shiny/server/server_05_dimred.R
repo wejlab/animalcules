@@ -33,7 +33,12 @@ do_dimred_pca_table <- eventReactive(input$dimred_pca_table_btn, {
 })
 output$dimred_pca_table <- renderDataTable({
     t <- do_dimred_pca_table()
-    return(t)
+    DT::datatable(t, 
+                  rownames = FALSE,
+                  options = list(paging=TRUE, 
+                                 pageLength=15, 
+                                 searching=FALSE, 
+                                 lengthChange=FALSE))
 })
 
 #
@@ -71,7 +76,12 @@ do_dimred_pcoa_table <- eventReactive(input$dimred_pcoa_table_btn, {
 })
 output$dimred_pcoa_table <- renderDataTable({
     t <- do_dimred_pcoa_table()
-    return(t)
+    DT::datatable(t, 
+                  rownames = FALSE,
+                  options = list(paging=TRUE, 
+                                 pageLength=15, 
+                                 searching=FALSE, 
+                                 lengthChange=FALSE))
 })
 
 #
