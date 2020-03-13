@@ -53,6 +53,8 @@ tabPanel("Summary and Filter",
           width=5,
           br(),
           downloadButton('download_rds', 'Download Animalcules File'),
+          br(),
+          downloadButton('download_biom', 'Download Biom File'),
 
 
           checkboxInput("filter_adv", "Advanced Options"),

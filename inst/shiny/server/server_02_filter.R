@@ -158,6 +158,12 @@ output$download_rds <- downloadHandler(filename = function() {
   saveRDS(vals$MAE, file=file)
 })
 
+output$download_biom <- downloadHandler(filename = function() {
+  paste("animalcules_data_", Sys.Date(), ".biom", sep="")
+}, content = function(file) {
+  write_to_biom(vals$MAE, path_to_output=file)
+})
+
 
 ## Categorize
 output$filter_nbins <- renderUI({
