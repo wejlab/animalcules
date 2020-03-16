@@ -83,8 +83,8 @@ test_that("do_alpha_div_test() is working", {
     pval_wil <- round(p[1,1,drop=TRUE], 2)
     pval_t <- round(p[1,2,drop=TRUE], 2)
     
-    expect_equal(pval_wil, 0.37)
-    expect_equal(pval_t, 0.49)
+    expect_equal(pval_wil, 0.33)
+    expect_equal(pval_t, 0.42)
 })
 
 ## Beta Diversity Heatmap
@@ -162,8 +162,8 @@ test_that("differential_abundance() is working", {
                                 tax_level="phylum",
                                 input_da_condition=c("DISEASE"),
                                 min_num_filter = 2,
-                                input_da_padj_cutoff = 0.5)
-    expect_equal(dim(p), c(6,8))
+                                input_da_padj_cutoff = 0.8)
+    expect_equal(dim(p), c(8,8))
 })
 
 # Biomarker

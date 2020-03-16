@@ -4,14 +4,10 @@
 #' @param path_to_output The folder to output biom file
 #' @return A message
 #'
-#' @examples
-#' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
-#' toy_data <- readRDS(data_dir)
-#' write_to_biom(toy_data, "./test.biom")
-#' 
-#'
 #' @import biomformat
 #' @import MultiAssayExperiment
+#' @importFrom Matrix Matrix
+#' 
 #' @export
 
 write_to_biom <- function(MAE, path_to_output){
