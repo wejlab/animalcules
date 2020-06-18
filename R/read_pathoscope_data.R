@@ -32,7 +32,8 @@ read_pathoscope_data <- function(input_dir = ".",
             header = TRUE, sep = "\t", nrow = 100,
             comment.char = "", check.names = FALSE)
     lgenomes <- lapply(ltbl, function(tbl) {
-        return(levels(tbl[, 1]))
+        return((tbl[, 1]))
+        #return(levels(tbl[, 1]))
     })
     genomes <- unique(unlist(lgenomes))
     # genomes <- c(genomes, 'others')
