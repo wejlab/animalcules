@@ -20,6 +20,8 @@
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment
+#' @import ape
+#' @import GUniFrac
 #' @export
 
 diversity_beta_boxplot <- function(MAE, 
@@ -39,10 +41,46 @@ diversity_beta_boxplot <- function(MAE,
     counts_table %<>% # Sum counts by taxon level
     upsample_counts(tax_table, tax_level)
     
-    # Then use vegdist from vegan to generate a bray distance object:
-    dist.mat <- vegan::vegdist(t(counts_table), method = input_beta_method)
-    dist.mat <- as.matrix(dist.mat)
+    # change tax table size
+    tax_table <- tax_table[,1:which(colnames(tax_table) %in% tax_level)]
     
+    # generate beta diversity
+    if (input_beta_method %in% c("bray", "jaccard")){
+        # Then use vegdist from vegan to generate a bray distance object:
+        dist.mat <- vegan::vegdist(t(counts_table), method = input_beta_method)
+        dist.mat <- as.matrix(dist.mat)        
+    } else {
+        # unifrac
+        # factorize each column
+        tax_table[sapply(tax_table, is.character)] <- lapply(tax_table[sapply(tax_table, is.character)], 
+                                               as.factor)
+        # create formula
+        frm = as.formula(paste0("~", paste(colnames(tax_table), collapse ="/")))
+        
+        # create phylo object
+        tr <- as.phylo(frm, data = tax_table)
+        
+        # add branch length
+        tr <- suppressWarnings(compute.brlen(tr))
+        
+        # root phylo
+        tr <- suppressWarnings(root(tr,1,resolve.root = TRUE))
+
+        
+        # count table
+        ct_table <- as.data.frame(t(counts_table))
+        ct_table[sapply(ct_table, is.numeric)] <- lapply(ct_table[sapply(ct_table, is.numeric)], 
+                                               as.integer)
+        
+        unifracs <- suppressWarnings(GUniFrac(ct_table,tr)$unifracs)
+        dw <- unifracs[, , "d_1"]		# Weighted UniFrac
+        du <- unifracs[, , "d_UW"]		# Unweighted UniFrac	
+        if (input_beta_method == 'unweighted unifrac'){
+            dist.mat <- du
+        } else {
+            dist.mat <- dw
+        }
+    }
     
     # change condition name
     colnames(sam_table)[which(colnames(sam_table) == 
@@ -66,7 +104,7 @@ diversity_beta_boxplot <- function(MAE,
             }
         }
     }
-    y.axis <- list(title = paste("Bray-Curtis", "Distance", sep = " "))
+    y.axis <- list(title = paste(input_beta_method, "Distance", sep = " "))
     p <- plot_ly(y = ~dist.within.a, type = "box", 
             name = paste("Within", unique(sam_table$condition)[1])) %>% 
         add_trace(y = ~dist.within.b, 

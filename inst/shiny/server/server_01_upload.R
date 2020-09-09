@@ -187,6 +187,8 @@ observeEvent(input$upload_animalcules,{
   })
 })
 
+
+## animalcules-id
 observeEvent(input$upload_mae,{
   withBusyIndicatorServer("upload_mae", {
     MAE_list <- readRDS(input$rdfile_id$datapath)

@@ -40,7 +40,7 @@ tabPanel("Diversity",
           checkboxInput("beta_adv", "Advanced Options"),
           conditionalPanel(
             condition = "input.beta_adv == true",
-            selectInput("beta_method", "Choose distance metric:", choices = c("bray", "jaccard"), selected="bray")
+            selectInput("beta_method", "Choose distance metric:", choices = c("bray", "jaccard", 'unweighted unifrac', 'weighted unifrac'), selected="bray")
           ),
           actionButton("beta_heatmap", "Plot Heatmap", class = "btn-primary")
         ),
