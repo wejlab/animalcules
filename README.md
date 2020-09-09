@@ -50,7 +50,7 @@ if (!requireNamespace("devtools", quietly=TRUE))
 devtools::install_github("compbiomed/animalcules")
 ```
 
-* Install with docker
+* Install with Docker
 
 ``` bash
 docker pull cbm/animalcules:latest
