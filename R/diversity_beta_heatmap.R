@@ -27,11 +27,11 @@
 #' @export
 
 diversity_beta_heatmap <- function(MAE,
-                                    tax_level,
-                                    input_beta_method,
-                                    input_bdhm_select_conditions,
-                                    input_bdhm_sort_by = 
-                                    c("nosort", "conditions")){
+                                   tax_level,
+                                   input_beta_method,
+                                   input_bdhm_select_conditions,
+                                   input_bdhm_sort_by = 
+                                   c("nosort", "conditions")){
 
     # Extract data
     microbe <- MAE[['MicrobeGenetics']] #double bracket subsetting is easier
@@ -111,6 +111,7 @@ diversity_beta_heatmap <- function(MAE,
     }
 
     m <- data.matrix(dist.mat)
+    title <- paste(tax_level, " (", input_beta_method, ")", sep="")
     hover.txt <- c()
     for (i in seq_len(ncol(dist.mat))) {
     hover.txt <- cbind(hover.txt, dist.mat[[i]])
@@ -119,7 +120,7 @@ diversity_beta_heatmap <- function(MAE,
                     type = "heatmap",
                     colors= "RdPu",
                     hoverinfo = "x+y+z") %>%
-    layout(xaxis = list(showticklabels = FALSE, 
+    layout(title = title, xaxis = list(showticklabels = FALSE, 
     title = "", ticks = "", tickangle = -45),
     yaxis = list(showticklabels = FALSE, type = 'category', ticks = ""))
 
@@ -161,10 +162,13 @@ diversity_beta_heatmap <- function(MAE,
                         hoverinfo = "x+y+text",
                         transpose=FALSE,
                         text=t(hover.txt)) %>%
-        layout(xaxis = list(showticklabels = FALSE, type = 'category',
-                    ticks = "", autorange="reversed"),
-            yaxis = list(title = "", tickangle = -45),
-            orientation=TRUE)
+        layout(xaxis = list(showticklabels = FALSE, 
+                            type = 'category',
+                            ticks = "", 
+                            autorange="reversed"),
+               yaxis = list(title = "", 
+                            tickangle = -45),
+               orientation = TRUE)
     }
 
     empty <- plotly_empty(type = "scatter")

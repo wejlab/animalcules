@@ -26,13 +26,13 @@
 #'
 #' @export
 relabu_heatmap <- function(MAE, 
-                        tax_level, 
-                        sort_by = c("nosort", "conditions", "organisms"), 
-                        sample_conditions = c(), 
-                        isolate_organisms = c(), 
-                        isolate_samples = c(), 
-                        discard_samples = c(), 
-                        log_cpm = TRUE) {
+                           tax_level, 
+                           sort_by = c("nosort", "conditions", "organisms"), 
+                           sample_conditions = c(), 
+                           isolate_organisms = c(), 
+                           isolate_samples = c(), 
+                           discard_samples = c(), 
+                           log_cpm = TRUE) {
     
     # Default variables
     sort_by <- match.arg(sort_by)
@@ -98,14 +98,16 @@ relabu_heatmap <- function(MAE,
     
     # Plotly | Heatmap Counts
     mat <- data.matrix(counts_table)
+    title <- tax_level
     hm_c <- plot_ly(x = colnames(mat), y = rownames(mat), z = mat, 
                     type = "heatmap", 
                     colors = "RdPu", hoverinfo = "x+y+z") %>% 
-                    layout(xaxis = list(showticklabels = FALSE, 
+                    layout(title = title,
+                           xaxis = list(showticklabels = FALSE, 
                                         title = "", 
                                         ticks = "", 
                                         tickangle = -45), 
-                    yaxis = list(showticklabels = FALSE, 
+                           yaxis = list(showticklabels = FALSE, 
                                         type = "category", ticks = ""))
     
     # Plotly | Heatmap Samples
