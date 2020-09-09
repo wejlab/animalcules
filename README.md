@@ -50,6 +50,15 @@ if (!requireNamespace("devtools", quietly=TRUE))
 devtools::install_github("compbiomed/animalcules")
 ```
 
+* Install with docker
+
+``` bash
+docker pull cbm/animalcules:latest
+docker run -d -p 8787:8787 -e PASSWORD=animalcules cbm/animalcules:latest
+```
+
+Go to http://localhost:8787/ in browser
+Username: rstudio / Password animalcules
 
 ## Run animalcules shiny app
 
