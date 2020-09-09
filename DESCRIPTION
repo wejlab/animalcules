@@ -77,4 +77,4 @@ biocViews:
 VignetteBuilder: knitr
 URL: https://github.com/compbiomed/animalcules
 BugReports: https://github.com/compbiomed/animalcules/issues
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.1

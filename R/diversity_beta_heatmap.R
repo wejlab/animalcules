@@ -22,6 +22,8 @@
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment
+#' @import ape
+#' @import GUniFrac
 #' @export
 
 diversity_beta_heatmap <- function(MAE,
