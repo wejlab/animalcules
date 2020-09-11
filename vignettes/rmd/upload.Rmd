@@ -34,6 +34,12 @@ Make sure:
 
 <img src="https://github.com/compbiomed/materials/blob/master/animalcules/count2.PNG?raw=true" width="1200">
 
+Example files:
+
+* Counts file: https://github.com/compbiomed/animalcules-docs/blob/master/example_data/count_example.csv
+* Taxonomy file: https://github.com/compbiomed/animalcules-docs/blob/master/example_data/taxonomy_table.csv
+* Annotation file: https://github.com/compbiomed/animalcules-docs/blob/master/example_data/annotation_example.csv
+
 Instructions: 
 
 * Click the "Browse..." button to upload required three files.
