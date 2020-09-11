@@ -1,7 +1,7 @@
 #' Get alpha diversity
 #'
 #' @param counts_table A dataframe with organism x sample
-#' @param index one of inverse_simpson,gini_simpson,shannon,fisher,coverage
+#' @param index one of inverse_simpson,gini_simpson,shannon,fisher,coverage,unit
 #' @param zeroes A boolean for whether to ignore zero values
 #' @return A list of alpha diversity
 #'
@@ -33,6 +33,10 @@ diversities_help <- function(counts_table, index = "all", zeroes = TRUE) {
         ev <- apply(counts_table, 2, function(x) {
             shannon(x)
         })
+    } else if (index == "unit") {
+        ev <- apply(counts_table, 2, function(x) {
+            sum(x>0)
+        })        
     } else if (index == "fisher") {
         if (length(setdiff(unique(as.vector(counts_table)%%1), 0)) == 0) {
             ev <- vegan::fisher.alpha(counts_table, MARGIN = 2)

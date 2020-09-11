@@ -29,7 +29,7 @@ alpha_div_boxplot <- function(MAE,
                         tax_level, 
                         condition, 
                         alpha_metric = c("inverse_simpson", 
-    "gini_simpson", "shannon", "fisher", "coverage")) {
+    "gini_simpson", "shannon", "fisher", "coverage", "unit")) {
     
     # Extract data
     microbe <- MAE[["MicrobeGenetics"]]  #double bracket subsetting is easier
@@ -70,6 +70,8 @@ alpha_div_boxplot <- function(MAE,
                         alpha_metric, ")", sep = ""))
     }
     
+    # change y title
+    g <- g + labs(y = alpha_metric)
     
     g <- ggplotly(g, tooltip = "text")
     g$elementId <- NULL  # To suppress a shiny warning

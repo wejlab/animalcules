@@ -1,7 +1,7 @@
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 
-alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon")
+alpha.methods <-  c("inverse_simpson", "gini_simpson", "shannon", "unit")
 beta.methods <- c("wUniFrac", "bray")
 
 tax.default <- "genus"

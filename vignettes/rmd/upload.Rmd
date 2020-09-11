@@ -72,6 +72,21 @@ Running time: < 0.5s
 <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_file.PNG?raw=true" width="500">
 
 
+### Phyloseq data
+
+Phyloseq object can be easily read into animalcules with the following steps. Suppose the phyloseq object in R is called 'physeq'. First, write count table, taxonomy table, and sample data table to csv files:
+
+```{r eval = FALSE}
+library(phyloseq)
+write.csv(otu_table(physeq), "count.csv")
+write.csv(tax_table(physeq), "tax.csv")
+write.csv(sample_data(physeq), "sample.csv")
+
+```
+
+Then, follow the same count file upload steps as shown above with the three csv files. 
+
+
 ### Biom file
 
 Make sure:
