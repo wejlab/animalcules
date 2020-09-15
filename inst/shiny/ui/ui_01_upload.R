@@ -14,28 +14,33 @@ tags$div(
     )
 ),
 sidebarLayout(
-   sidebarPanel(
-        conditionalPanel(
-            condition = "input.upload_adv == false",
-       radioButtons("uploadChoice", "Upload:",
-                    c("Count file" = "count",
-                      "Example data" = "example",
-                      "animalcules object" = "animalcules.file"
-                    ))
-        ),
-       
-       checkboxInput("upload_adv", "Advanced Options"),
+    sidebarPanel(
+        tags$span(style="color:#72bcd4", "Application Settings"),
+        checkboxInput("global_adv", "Always Show Advanced"),
+        checkboxInput("upload_adv", "Alternative Upload"),
+
+        conditionalPanel(condition = "input.upload_adv == false",
+            tags$span(style="color:#72bcd4", "Upload"),
+            radioButtons("uploadChoice", "",
+                        c("Count file" = "count",
+                          "Example data" = "example",
+                          "animalcules object" = "animalcules.file"
+                        ))
+            ),
+
        conditionalPanel(
             condition = "input.upload_adv == true",
-                    radioButtons("uploadChoiceAdv", "Upload:",
-            c(
-              "BIOM file" = "biom",
-              "Count file with tax id" = 'countTi',
-              "PathoScope file" = "pathofiles",
-              "animalcules-id file" = "animalcules-id"
-              
-            ))
-        ),
+            tags$span(style="color:#72bcd4", "Upload"),
+
+            radioButtons("uploadChoiceAdv", "",
+              c(
+                "BIOM file" = "biom",
+                "Count file with tax id" = 'countTi',
+                "PathoScope file" = "pathofiles",
+                "animalcules-id file" = "animalcules-id"
+                
+              ))
+          ),
     conditionalPanel(
             condition = "input.upload_adv == false",
        conditionalPanel(condition = sprintf("input['%s'] == 'example'", "uploadChoice"),

@@ -59,7 +59,7 @@ tabPanel("Summary and Filter",
 
           checkboxInput("filter_adv", "Advanced Options"),
           conditionalPanel(
-            condition = "input.filter_adv == true",
+            condition = "input.filter_adv == true | input.global_adv == true",
           # Discard samples
           selectizeInput("filter_sample_dis", "Discard Samples", choices=sam.name, multiple=TRUE),
           # Discard organisms
@@ -99,13 +99,9 @@ tabPanel("Summary and Filter",
           checkboxInput("filter_bin_adv", "Advanced Options"),
 
           conditionalPanel(
-            condition = "input.filter_bin_adv == true",
+            condition = "input.filter_bin_adv == true | input.global_adv == true",
             textInput('filter_bin_breaks', 'Custom Breaks (Comma Delimited)'),
-            verbatimTextOutput("filter_bin_to1")
-          ),
-
-          conditionalPanel(
-            condition = "input.filter_bin_adv == true",
+            verbatimTextOutput("filter_bin_to1"),
             textInput('filter_bin_labels', 'Custom Labels (Comma Delimited)'),
             verbatimTextOutput("filter_bin_to2")
           ),
