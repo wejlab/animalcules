@@ -8,7 +8,8 @@ do_alpha_div_test(
   MAE,
   tax_level,
   condition,
-  alpha_metric = c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage"),
+  alpha_metric = c("inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage",
+    "unit"),
   alpha_stat = c("Wilcoxon rank sum test", "T-test", "Kruskal-Wallis")
 )
 }

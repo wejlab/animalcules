@@ -4,7 +4,10 @@
 \alias{run_animalcules}
 \title{Run animalcules shiny app}
 \usage{
-run_animalcules()
+run_animalcules(dev = FALSE)
+}
+\arguments{
+\item{dev}{Run the applicaiton in developer mode}
 }
 \value{
 The shiny app will open
