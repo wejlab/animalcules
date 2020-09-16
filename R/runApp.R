@@ -15,7 +15,7 @@
 #' }
 #' @export
 run_animalcules <- function(dev=FALSE) {
-    appDir <- system.file("shiny", package = "animalcules")
+    appDir <- system.file("shiny", package="animalcules")
     if (appDir == "") {
         stop("Could not find myapp. Try re-installing `mypackage`.", 
             call. = FALSE)
@@ -23,5 +23,5 @@ run_animalcules <- function(dev=FALSE) {
     if (dev) {
         options(shiny.autoreload=TRUE)
     }
-    shiny::runApp(appDir, display.mode = "normal")
+    shiny::runApp(appDir, display.mode="normal")
 }

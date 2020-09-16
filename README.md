@@ -50,34 +50,36 @@ if (!requireNamespace("devtools", quietly=TRUE))
 devtools::install_github("compbiomed/animalcules")
 ```
 
-* Build Docker image
+## Preview
 
-``` bash
+## Installing w/ Docker
 
-git clone https://github.com/compbiomed/animalcules
-cd animalcules
-docker build --tag cbm/animalcules:latest .
+First, make sure you have [Docker installed](https://docs.docker.com/get-docker/) on your machine.
+
+* Pull the pre-built Docker image
 
 ```
+docker pull bucbm/animalcules:latest
+```
 
-* Pull from Docker Hub
+* Or if you'd like to build the Docker image from scratch
 
 ``` bash
-docker pull cbm/animalcules:latest
+git clone https://github.com/compbiomed/animalcules
+cd animalcules
+docker build --tag bucbm/animalcules:latest .
 ```
 
 * Run with Docker
 ``` bash
-docker run -d -p 8787:8787 -e PASSWORD=animalcules cbm/animalcules:latest
+docker run -d -p 8787:8787 -e PASSWORD=animalcules bucbm/animalcules:latest
 ```
 
-- Go to http://localhost:8787/ in browser  
-- Username: rstudio / Password animalcules  
+Go to http://localhost:8787/ in browser and enter username: rstudio / password: animalcules  
 
-## Run animalcules shiny app
+Run animalcules shiny app!
 
 ``` r
 library(animalcules)
 run_animalcules()
 ```
-
