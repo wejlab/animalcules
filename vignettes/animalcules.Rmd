@@ -92,7 +92,7 @@ we will use the data structure MultiAssayExperiment (MAE) as the input
 to all functions.
 
 ```{r}
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir = system.file("extdata/TB_example_dataset.rds", package = "animalcules")
 MAE = readRDS(data_dir)
 ```
 
@@ -122,9 +122,9 @@ continous or categorical data respectively.
 
 ```{r}
 p <- filter_summary_pie_box(MAE,
-                            samples_discard = c("subject_2", "subject_4"),
+                            samples_discard = c("SRR1204622"),
                             filter_type = "By Metadata",
-                            sample_condition = "AGE")
+                            sample_condition = "age_s")
 p
 ```
 
@@ -135,9 +135,9 @@ for continous or categorical data respectively.
 
 ```{r}
 p <- filter_summary_bar_density(MAE,
-                                samples_discard = c("subject_2", "subject_4"),
+                                samples_discard = c("SRR1204622"),
                                 filter_type = "By Metadata",
-                                sample_condition = "SEX")
+                                sample_condition = "sex_s")
 p
 ```
 
@@ -152,10 +152,10 @@ and provide custom bin breaks and labels in doing so.
 microbe <- MAE[['MicrobeGenetics']]
 samples <- as.data.frame(colData(microbe))
 result <- filter_categorize(samples,
-                            sample_condition="AGE",
+                            sample_condition="age_s",
                             new_label="AGE_GROUP",
-                            bin_breaks=c(0,55,75,100),
-                            bin_labels=c('Young','Adult',"Elderly"))
+                            bin_breaks=c(0,30,40,100),
+                            bin_labels=c('a','b',"c"))
 head(result$sam_table)
 result$plot.unbinned
 result$plot.binned
@@ -176,10 +176,9 @@ as a single bar.
 
 ```{r}
 p <- relabu_barplot(MAE,
-                    tax_level="family",
-                    order_organisms=c('Retroviridae'),
-                    sort_by="organisms",
-                    sample_conditions=c('SEX', 'AGE'),
+                    tax_level="genus",
+                    sort_by="conditions",
+                    sample_conditions=c('Disease'),
                     show_legend=TRUE)
 p
 ```
@@ -193,7 +192,7 @@ at different taxonomic levels.
 p <- relabu_heatmap(MAE,
                    tax_level="genus",
                    sort_by="conditions",
-                   sample_conditions=c("SEX", "AGE"))
+                   sample_conditions=c("sex_s", "age_s"))
 p
 ```
 
@@ -205,8 +204,8 @@ more organisms between categorical attributes.
 ```{r}
 p <- relabu_boxplot(MAE,
                     tax_level="genus",
-                    organisms=c("Escherichia", "Actinomyces"),
-                    condition="SEX",
+                    organisms=c("Streptococcus", "Staphylococcus"),
+                    condition="sex_s",
                     datatype="logcpm")
 p
 ```
@@ -228,7 +227,7 @@ Plot the alpha diversity boxplot between the levels in selected condition.
 ```{r}
 alpha_div_boxplot(MAE = MAE,
                   tax_level = "genus",
-                  condition = "DISEASE",
+                  condition = "Disease",
                   alpha_metric = "shannon")
 ```
 
@@ -240,7 +239,7 @@ in selected condition.
 ```{r}
 do_alpha_div_test(MAE = MAE,
                   tax_level = "genus",
-                  condition = "DISEASE",
+                  condition = "Disease",
                   alpha_metric = "shannon",
                   alpha_stat = "T-test")
 ```
@@ -260,7 +259,7 @@ Plot the beta diversity heatmap with selected condition.
 diversity_beta_heatmap(MAE = MAE, 
                        tax_level = 'genus', 
                        input_beta_method = "bray",
-                       input_bdhm_select_conditions = 'DISEASE',
+                       input_bdhm_select_conditions = 'Disease',
                        input_bdhm_sort_by = 'condition')
 ```
 
@@ -272,7 +271,7 @@ Plot the beta diversity boxplot within and between conditions.
 diversity_beta_boxplot(MAE = MAE, 
                        tax_level = 'genus', 
                        input_beta_method = "bray",
-                       input_select_beta_condition = 'DISEASE')
+                       input_select_beta_condition = 'Disease')
 ```
 
 ## Beta Diversity Test
@@ -284,7 +283,7 @@ selected condition.
 diversity_beta_test(MAE = MAE, 
                     tax_level = 'genus',
                     input_beta_method = "bray",
-                    input_select_beta_condition =  'DISEASE',
+                    input_select_beta_condition =  'Disease',
                     input_select_beta_stat_method = 'PERMANOVA',
                     input_num_permutation_permanova = 999)
 ```
@@ -298,8 +297,8 @@ A wrapper for conduction 2D and 3D Principal Component Analysis.
 ```{r}
 result <- dimred_pca(MAE,
                      tax_level="genus",
-                     color="AGE",
-                     shape="DISEASE",
+                     color="age_s",
+                     shape="Disease",
                      pcx=1,
                      pcy=2,
                      datatype="logcpm")
@@ -314,8 +313,8 @@ A wrapper for conduction 2D and 3D Principal Coordinate Analysis.
 ```{r}
 result <- dimred_pcoa(MAE,
                       tax_level="genus",
-                      color="AGE",
-                      shape="DISEASE",
+                      color="age_s",
+                      shape="Disease",
                       axx=1,
                       axy=2,
                       method="bray")
@@ -330,8 +329,8 @@ A wrapper for conduction 2D and 3D Uniform Manifold Approximation and Projection
 ```{r}
 result <- dimred_umap(MAE,
                       tax_level="genus",
-                      color="AGE",
-                      shape="DISEASE",
+                      color="age_s",
+                      shape="Disease",
                       cx=1,
                       cy=2,
                       n_neighbors=15,
@@ -347,8 +346,8 @@ A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 ```{r}
 result <- dimred_tsne(MAE,
                       tax_level="phylum",
-                      color="AGE",
-                      shape="GROUP",
+                      color="age_s",
+                      shape="Disease",
                       k="3D",
                       initial_dims=30,
                       perplexity=10,
@@ -368,7 +367,7 @@ and the group size-adjusted fold change.
 ```{r}
 p <- differential_abundance(MAE,
                             tax_level="phylum",
-                            input_da_condition=c("DISEASE"),
+                            input_da_condition=c("Disease"),
                             min_num_filter = 2,
                             input_da_padj_cutoff = 0.5)
 p
@@ -389,7 +388,7 @@ outputs are shown to users. Note: Results may vary each run.
 ```{r}
 p <- find_biomarker(MAE,
                     tax_level = "genus",
-                    input_select_target_biomarker = c("SEX"),
+                    input_select_target_biomarker = c("Disease"),
                     nfolds = 3,
                     nrepeats = 3,
                     seed = 99,

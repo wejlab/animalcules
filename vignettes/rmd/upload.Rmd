@@ -7,11 +7,12 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-There are 7 data upload methods:
+There are 8 data upload methods:
 
 * Count File (Mostly used for uploading new dataset)
 * Example Data (For exploring animalcules)
 * animalcules file (Re-upload previously uploaded dataset quickly)
+* phyloseq object
 * BIOM file
 * Count file with taxonomy id (this is the option if taxonomy table is not available)
 * Pathoscope File 
@@ -78,7 +79,7 @@ Running time: < 0.5s
 <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_file.PNG?raw=true" width="500">
 
 
-### Phyloseq data
+### Phyloseq object
 
 Phyloseq object can be easily read into animalcules with the following steps. Suppose the phyloseq object in R is called 'physeq'. First, write count table, taxonomy table, and sample data table to csv files:
 
