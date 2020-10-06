@@ -71,8 +71,8 @@ relabu_heatmap <- function(MAE,
     
     # Put organisms alphabetically requested
     if (sort_by == "alphabetically") {
-        org_order <- sort(colnames(relabu_table), decreasing=TRUE)
-        relabu_table <- relabu_table[,org_order]
+        org_order <- sort(colnames(counts_table), decreasing=TRUE)
+        counts_table <- counts_table[, org_order, drop=FALSE]
     }       
     
     # Order samples by organisms if not by conditons
