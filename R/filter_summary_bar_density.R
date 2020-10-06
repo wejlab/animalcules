@@ -23,7 +23,7 @@
 #'
 #' @export
 filter_summary_bar_density <- function(MAE, 
-                                       samples_discard, 
+                                       samples_discard=NULL, 
                                        filter_type, 
                                        sample_condition) {
     

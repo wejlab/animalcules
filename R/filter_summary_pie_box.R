@@ -23,7 +23,7 @@
 #'
 #' @export
 filter_summary_pie_box <- function(MAE, 
-                                   samples_discard, 
+                                   samples_discard=NULL, 
                                    filter_type, 
                                    sample_condition) {
     # Subset the data
