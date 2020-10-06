@@ -7,7 +7,7 @@
 relabu_heatmap(
   MAE,
   tax_level,
-  sort_by = c("nosort", "conditions", "organisms"),
+  sort_by = c("nosort", "conditions", "organisms", "alphabetically"),
   sample_conditions = c(),
   isolate_organisms = c(),
   isolate_samples = c(),
@@ -20,7 +20,7 @@ relabu_heatmap(
 
 \item{tax_level}{The taxon level used for organisms}
 
-\item{sort_by}{Sort bars by one of c('nosort', 'conditions', 'organisms')}
+\item{sort_by}{Sort bars by one of c('nosort', 'conditions', 'organisms', 'alphabetically')}
 
 \item{sample_conditions}{Plot conditions e.g. c('SEX', 'AGE')}
 

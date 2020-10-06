@@ -2,7 +2,7 @@
 #'
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
-#' @param sort_by Sort bars by one of c('nosort', 'conditions', 'organisms')
+#' @param sort_by Sort bars by one of c('nosort', 'conditions', 'organisms', 'alphabetically')
 #' @param sample_conditions Plot conditions e.g. c('SEX', 'AGE')
 #' @param isolate_organisms Isolate specific organisms e.g. c('Hepacivirus')
 #' @param isolate_samples Isolate specific samples e.g. c('SAM_01', 'SAM_02')
@@ -27,7 +27,7 @@
 #' @export
 relabu_heatmap <- function(MAE, 
                            tax_level, 
-                           sort_by = c("nosort", "conditions", "organisms"), 
+                           sort_by = c("nosort", "conditions", "organisms", "alphabetically"), 
                            sample_conditions = c(), 
                            isolate_organisms = c(), 
                            isolate_samples = c(), 
@@ -68,6 +68,12 @@ relabu_heatmap <- function(MAE,
     
     # Reorder by most prominent organisms
     counts_table <- counts_table[, order(colSums(counts_table)), drop = FALSE]
+    
+    # Put organisms alphabetically requested
+    if (sort_by == "alphabetically") {
+        org_order <- sort(colnames(relabu_table), decreasing=TRUE)
+        relabu_table <- relabu_table[,org_order]
+    }       
     
     # Order samples by organisms if not by conditons
     if (sort_by == "organisms") {

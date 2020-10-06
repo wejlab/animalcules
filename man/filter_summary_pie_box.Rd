@@ -4,7 +4,12 @@
 \alias{filter_summary_pie_box}
 \title{Data visualization by pie chart / box plot}
 \usage{
-filter_summary_pie_box(MAE, samples_discard, filter_type, sample_condition)
+filter_summary_pie_box(
+  MAE,
+  samples_discard = NULL,
+  filter_type,
+  sample_condition
+)
 }
 \arguments{
 \item{MAE}{A multi-assay experiment object}

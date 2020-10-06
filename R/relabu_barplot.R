@@ -3,7 +3,7 @@
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
 #' @param order_organisms A character list of organisms to send to top 
-#' @param sort_by Sort bars by one of c("nosort", "conditions", "organisms")
+#' @param sort_by Sort bars by one of c("nosort", "conditions", "organisms", "alphabetically")
 #' @param group_samples A bool specifying whether to group samples
 #' @param group_conditions Group by one or more conditions e.g. "ALL" or "SEX"
 #' @param sample_conditions Plot associatied conditions with samples.
@@ -32,7 +32,7 @@
 relabu_barplot <- function(MAE,
                             tax_level,
                             order_organisms=c(),
-                            sort_by=c("nosort", "conditions", "organisms"),
+                            sort_by=c("nosort", "conditions", "organisms", "alphabetically"),
                             group_samples=FALSE,
                             group_conditions="ALL",
                             sample_conditions=c(),
@@ -100,14 +100,20 @@ relabu_barplot <- function(MAE,
                     rev(order_organisms))
         relabu_table <- relabu_table[,org_order]
     }
-
+    
+    # Put organisms alphabetically requested
+    if (sort_by == "alphabetically") {
+        org_order <- sort(colnames(relabu_table), decreasing=TRUE)
+        relabu_table <- relabu_table[,org_order]
+    }   
+    
     # Order samples by organisms if not by conditons
     if (sort_by == "organisms") {
         for (i in seq_len(ncol(relabu_table))) {
             relabu_table <- relabu_table[order(relabu_table[,i]),]
         }
     }
-
+    
     # If any conditions are selected make a side bar
     if (!is.null(sample_conditions) || 
         (group_samples && group_conditions != "ALL")) {

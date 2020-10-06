@@ -22,9 +22,10 @@ tabPanel("Abundance",
 
           # Sort the bars
           radioButtons("relabu_bar_sort", "Sort By", c("No Sorting" = "nosort",
-                                                           "Conditions" = "conditions",
-                                                           "Organisms"  = "organisms"),
-                                                           selected     = "nosort"),
+                                                       "Conditions" = "conditions",
+                                                       "Organisms" = "organisms",
+                                                       "Alphabetically" = "alphabetically"),
+                                                        selected = "nosort"),
 
           # Advanced options
           checkboxInput("relabu_bar_adv", "Advanced Options"),
@@ -66,8 +67,9 @@ tabPanel("Abundance",
           # Column sort
           radioButtons("relabu_heatmap_sort", "Sort By", c("No Sorting" = "nosort",
                                                            "Conditions" = "conditions",
-                                                           "Organisms"  = "organisms"),
-                                                           selected     = "nosort"),
+                                                           "Organisms" = "organisms",
+                                                           "Alphabetically" = "alphabetically"),
+                                                           selected = "nosort"),
 
           # Advanced options
           checkboxInput("relabu_heatmap_adv", "Advanced Options"),

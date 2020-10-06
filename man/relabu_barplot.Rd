@@ -8,7 +8,7 @@ relabu_barplot(
   MAE,
   tax_level,
   order_organisms = c(),
-  sort_by = c("nosort", "conditions", "organisms"),
+  sort_by = c("nosort", "conditions", "organisms", "alphabetically"),
   group_samples = FALSE,
   group_conditions = "ALL",
   sample_conditions = c(),
@@ -24,7 +24,7 @@ relabu_barplot(
 
 \item{order_organisms}{A character list of organisms to send to top}
 
-\item{sort_by}{Sort bars by one of c("nosort", "conditions", "organisms")}
+\item{sort_by}{Sort bars by one of c("nosort", "conditions", "organisms", "alphabetically")}
 
 \item{group_samples}{A bool specifying whether to group samples}
 
