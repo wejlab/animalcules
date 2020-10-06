@@ -91,7 +91,29 @@ write.csv(sample_data(physeq), "sample.csv")
 
 ```
 
-Then, follow the same count file upload steps as shown above with the three csv files. 
+Then, follow the same 'count file' upload steps as shown above with the three csv files. 
+
+To generate a phyloseq object from the animalcules MAE object is also very simple:
+
+```{r eval = FALSE}
+library("phyloseq")
+
+# Extract data
+microbe <- MAE[["MicrobeGenetics"]] 
+
+# host <- MAE[['HostGenetics']]
+tax_table <- as.matrix(as.data.frame(rowData(microbe)))  # organism x taxlev
+sam_table <- as.data.frame(colData(microbe)) # sample x condition
+counts_table <- as.matrix(as.data.frame(assays(microbe))[, rownames(sam_table)])  # organism x sample
+
+# build phyloseq objecy
+OTU = otu_table(counts_table, taxa_are_rows = TRUE)
+TAX = tax_table(tax_table)
+SAM = sample_data(sam_table)
+physeq = phyloseq(OTU, TAX, SAM)
+    
+```
+
 
 
 ### Biom file

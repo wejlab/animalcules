@@ -12,9 +12,8 @@ tabPanel("Biomarker",
         numericInput("percent_top_biomarker", "Top biomarker proportion", value = 0.2, max = 1, min = 0.01),
         selectInput("select_model_biomarker", "Select Model", c("logistic regression", "random forest")
       ),
-      helpText("If the dataset is too small or unbalanced, 
-                cross-validation can't be applied. You will see
-                error messages like: NA/NaN/Inf in foreign function call."),
+      helpText("Note: we recommend to use this section only when sample size is larger than 100. 
+                Smaller dataset might be biased to imbalanced class in split folds."),
       withBusyIndicatorUI(
         actionButton("goButtonBiomarker",
                      "Run",
