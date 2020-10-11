@@ -52,11 +52,15 @@ filter_summary_pie_box <- function(MAE,
         0.3 & !is.character(unlist(sam_table[, 
         cov]))) {
         vec <- unlist(sam_table[, cov])
+        hover.txt <- paste(rownames(sam_table), ", ", vec, sep="")
         num.scatter <- plotly::plot_ly(y = vec, jitter = 0.3, 
             pointpos = -1.8, boxpoints = "all", 
+            hoverinfo = "text",
+            text=hover.txt,
             marker = list(color = "rgb(7,40,89)"), 
             line = list(color = "rgb(7,40,89)"), 
-            name = cov, type = "box") %>% layout(title = cov)
+            name = cov, type = "box") %>% 
+            layout(title = cov, yaxis=list(title=cov))
         num.scatter$elementId <- NULL
         return(num.scatter)
     } else {

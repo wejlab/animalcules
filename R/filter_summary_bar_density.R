@@ -60,7 +60,8 @@ filter_summary_bar_density <- function(MAE,
         fit <- density(unlist(sam_table[, cov]))
         num.density <- plot_ly(x = fit$x, y = fit$y, 
                 type = "scatter", mode = "lines", 
-                fill = "tozeroy") %>% layout(title = cov)
+                fill = "tozeroy") %>% 
+            layout(title = cov, xaxis=list(title=cov), yaxis=list(title="Density"))
         num.density$elementId <- NULL
         return(num.density)
     } else {
