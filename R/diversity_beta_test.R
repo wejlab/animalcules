@@ -100,8 +100,7 @@ diversity_beta_test <- function(MAE,
         # bioconductor not allow set seed within R code set.seed(99)
         beta.div <- vegan::adonis2(dist.mat ~ condition, 
             data = sam_table, 
-            permutations = input_num_permutation_permanova, 
-            strata = "PLOT")
+            permutations = input_num_permutation_permanova)
         beta.div
     } else {
         dist.within.a <- c()

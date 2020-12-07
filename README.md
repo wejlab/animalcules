@@ -1,7 +1,7 @@
 ## animalcules <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_logo.png?raw=true" align="right" width="170" />
 
 
-[![](https://img.shields.io/badge/bioconductor-3.11-3a6378.svg)](https://doi.org/doi:10.18129/B9.bioc.animalcules)
+[![](https://img.shields.io/badge/Bioconductor-3.12-blue)](https://doi.org/doi:10.18129/B9.bioc.animalcules)
 [![](https://img.shields.io/badge/platforms-linux%20%7C%20osx%20%7C%20win-2a89a1.svg)](https://bioconductor.org/checkResults/3.9/bioc-LATEST/animalcules/)
 [![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
 [![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
@@ -22,12 +22,12 @@ Please check our website at https://compbiomed.github.io/animalcules-docs/
 
 ## Before Installation
 
-* Make sure R version is >= 4.0.0 and Bioconductor version is 3.11. Bioconductor could be updated by :
+* Make sure R version is >= 4.0.0 and Bioconductor version is 3.12. Bioconductor could be updated by :
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(version = "3.11")
+BiocManager::install(version = "3.12")
 ```
 
 ## Installation
