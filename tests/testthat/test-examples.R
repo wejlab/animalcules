@@ -204,12 +204,6 @@ test_that("mae_pick_samples() is working", {
     expect_equal(length(p), 2)
 })
 
-# mae_pick_organisms
-test_that("mae_pick_organisms() is working", {
-    p <- mae_pick_organisms(MAE, isolate_organisms=c("ti|54005", "ti|73001"))
-    expect_equal(length(p), 1)
-})
-
 # df_char_to_factor
 test_that("df_char_to_factor() is working", {
     p <- df_char_to_factor(matrix(seq_len(12)))
