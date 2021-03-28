@@ -12,6 +12,15 @@ tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
 org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))
 
+# assays
+mae.assays <- names(MAE)
+
+# enrichR dbList
+dbList <- c("GO_Biological_Process_2018", 
+            "WikiPathways_2019_Human", 
+            "KEGG_2019_Human", 
+            "Panther_2016")
+
 measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){
     batch2 <- as.factor(batch1)
