@@ -37,6 +37,7 @@ update_inputs <- function(session) {
     updateSample(session)
     updateTaxLevel(session)
     updateOrganisms(session)
+    updateAssays(session)
 }
 
 updateCovariate <- function(session){
@@ -115,7 +116,6 @@ updateCovariate <- function(session){
     updateSelectInput(session, "da_condition_covariate_limma", choices = covariates)
     # Biomarker
     updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.two.levels)
-
 }
 
 # update taxonomy levels
@@ -174,6 +174,15 @@ updateOrganisms <- function(session){
 
     # Filter
     updateSelectInput(session, "filter_organism_dis", choices = org.name)
+}
+
+# update Assays
+updateAssays <- function(session){
+  MAE <- vals$MAE
+  mae.assays <- names(MAE)
+  # Correlations
+  updateSelectInput(session, "assay1", choices = mae.assays)
+  updateSelectInput(session, "assay2", choices = mae.assays)
 }
 
 observeEvent(input$upload_animalcules,{
