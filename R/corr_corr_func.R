@@ -17,7 +17,7 @@
 #'
 #' @export
 
-corr_func_test <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "bonferroni", alpha = 0) {
+corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "bonferroni", alpha = 0) {
   # Used to correlate microbe abundance against itself
   if (length(asys) == 1 & length(tax_level)>1) {
     # Read in the assays
