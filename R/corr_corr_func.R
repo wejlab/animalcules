@@ -44,7 +44,7 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
     df2 <- df2[rowMeans(df2)>0, ]
 
     # Calculating correlations + p-values
-    cors_res <- calc_cors_test(df1, df2, no.samples)
+    cors_res <- calc_cors(df1, df2, no.samples)
     cors <- cors_res[[1]]
     ts <- cors_res[[2]]
     ts <- abs(ts)
@@ -105,7 +105,7 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
     df2 <- df2[rowMeans(df2)>0, ]  # genes with non-zero expression
 
     # Correlations
-    cors_res <- calc_cors_test(df1, df2, no.samples)
+    cors_res <- calc_cors(df1, df2, no.samples)
     cors <- cors_res[[1]]
     ts <- cors_res[[2]]
     ts <- abs(ts)
