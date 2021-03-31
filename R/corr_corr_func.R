@@ -51,9 +51,9 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
     if (correction == "bonferroni") {
       alpha <- 0.05/dim(ts)[2]
       t_crit <- abs(stats::qt(alpha, no.samples-2))
-      sig_cors <- calc_sig(cors, ts, no.sig, alpha)
+      sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
     } else {
-      sig_cors <- calc_sig(cors, ts, no.sig, alpha)
+      sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
     }
     return(sig_cors)
   }
