@@ -1,6 +1,6 @@
 tabPanel("Upload",
 useShinyjs(),
-tags$style(appCSS),
+#tags$style(appCSS),
 tags$div(
     class = "jumbotron",
     tags$div(
