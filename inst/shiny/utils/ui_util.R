@@ -12,15 +12,6 @@ tax.name <- colnames(rowData(MAE[['MicrobeGenetics']]))
 sam.name <- rownames(colData(MAE[['MicrobeGenetics']]))
 org.name <- rownames(as.data.frame(assays(MAE[['MicrobeGenetics']])))
 
-# assays
-mae.assays <- names(MAE)
-
-# enrichR dbList
-dbList <- c("GO_Biological_Process_2018", 
-            "WikiPathways_2019_Human", 
-            "KEGG_2019_Human", 
-            "Panther_2016")
-
 measure.type <- c('Final Guess', 'Final Best Hit', 'Final High Confidence Hit')
 minbatch <- function(batch1){
     batch2 <- as.factor(batch1)
@@ -52,3 +43,53 @@ for (i in seq_len(length(covariates))){
     covariates.two.levels <- c(covariates.two.levels, covariates[i])
   }
 }
+
+# assays
+mae.assays <- names(MAE)
+
+# enrichR dbList
+dbList <- c("GO_Biological_Process_2018", 
+            "WikiPathways_2019_Human", 
+            "KEGG_2019_Human", 
+            "Panther_2016")
+
+# msigdb gene set collections and sub-collections
+collections <- c(
+  "H = Hallmark",
+  "C1 = Positional",
+  "C2 = Curated",
+  "C3 = Regulatory Targets",
+  "C4 = Computational",
+  "C5 = Ontology",
+  "C6 = Oncogenic",
+  "C7 = Immunologic",
+  "C8 = Cell Type"
+)
+
+sub_collections <- list(
+  "C2" = c(
+    "CGP",
+    "CP:BIOCARTA",
+    "CP:KEGG",
+    "CP:PID",
+    "CP:REACTOME",
+    "CP:WIKIPATHWAYS"
+  ),
+  "C3"= c(
+    "MIR:MIR_Legacy",
+    "MIR:MIRDB",
+    "TFT:GTRD",
+    "TFT:TFT_Legacy"
+  ),
+  "C4" = c(
+    "CGN",
+    "CM"
+  ),
+  "C5" = c(
+    "GO:BP",
+    "GO:CC",
+    "GO:MF",
+    "HPO"
+  )
+)
+
