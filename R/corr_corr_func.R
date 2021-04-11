@@ -11,13 +11,23 @@
 #' library(SummarizedExperiment)
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
-#' correlation_matrix <- corr_func(MAE = toy_data, asys = c(MicrobeGenetics, HostExpression), tax_level = "genus")
+#' results <- corr_func(MAE = toy_data, asys = c("MicrobeGenetics", "hostExpression"))
+#' results$plot # heatmap of significant correlations
+#' result$summary # summary of the significantly correlated groups
 #'
 #' @import MultiAssayExperiment
+#' @import heatmaply
+#' @import ggplot2
 #'
 #' @export
 
-corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "bonferroni", alpha = 0) {
+corr_func <- function(MAE, 
+                      asys, 
+                      tax_level = "genus", 
+                      no.sig = 1, 
+                      correction = "bonferroni",
+                      hide_ax=NULL) {
+  
   # Used to correlate microbe abundance against itself
   if (length(asys) == 1 & length(tax_level)>1) {
     # Read in the assays
@@ -42,7 +52,7 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
     # Getting rid of rows with 0
     df1 <- df1[rowMeans(df1)>0, ]
     df2 <- df2[rowMeans(df2)>0, ]
-
+    
     # Calculating correlations + p-values
     cors_res <- calc_cors(df1, df2, no.samples)
     cors <- cors_res[[1]]
@@ -51,20 +61,19 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
     if (correction == "bonferroni") {
       alpha <- 0.05/dim(ts)[2]
       t_crit <- abs(stats::qt(alpha, no.samples-2))
-      sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
+      sig_cors <- calc_sig(cors, ts, no.sig, alpha)
     } else {
-      sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
+      sig_cors <- calc_sig(cors, ts, no.sig, alpha)
     }
-    return(sig_cors)
   }
-
+  
   # Using multiple assays
   if (length(asys) > 1) {
     # Read the MultiAssayExperiment
     MAE_res <- rd_MAE(MAE, asys)
     subMAE <- MAE_res[[1]]
     no.samples <- MAE_res[[2]]
-
+    
     # assay 1
     asy1 <- subMAE[[asys[1]]]
     if(asys[1] == "MicrobeGenetics"){
@@ -84,7 +93,7 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
         counts_to_logcpm()
     }
     df1 <- df1[rowMeans(df1)>0, ]
-
+    
     # assay 2
     asy2 <- subMAE[[asys[2]]]
     if(asys[2] == "MicrobeGenetics"){
@@ -103,7 +112,7 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
         counts_to_logcpm()
     }
     df2 <- df2[rowMeans(df2)>0, ]  # genes with non-zero expression
-
+    
     # Correlations
     cors_res <- calc_cors(df1, df2, no.samples)
     cors <- cors_res[[1]]
@@ -116,6 +125,58 @@ corr_func <- function(MAE, asys, tax_level = "genus", no.sig = 1, correction = "
     } else {
       sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
     }
-    return(sig_cors)
   }
+  
+  # Plotting Heat map
+  if(is.null(hide_ax)){
+    p <- heatmaply(sig_cors,
+                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+                     low = "red", 
+                     high = "blue", 
+                     midpoint = 0, 
+                     limits = c(-1, 1)))
+  }else if(hide_ax == "xax") {
+    p <- heatmaply(sig_cors,
+                   showticklabels = c(FALSE, TRUE),
+                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+                     low = "red", 
+                     high = "blue", 
+                     midpoint = 0, 
+                     limits = c(-1, 1)))
+  } else if(hide_ax == "yax"){
+    p <- heatmaply(sig_cors,
+                   showticklabels = c(TRUE, FALSE),
+                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+                     low = "red", 
+                     high = "blue", 
+                     midpoint = 0, 
+                     limits = c(-1, 1)))
+  } else if(hide_ax == "bax"){
+    p <- heatmaply(sig_cors,
+                   showticklabels = c(FALSE, FALSE),
+                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
+                     low = "darkblue", 
+                     high = "darkred", 
+                     midpoint = 0, 
+                     limits = c(-1, 1)))
+  } 
+  
+  # Summary Table
+  ns <- c()
+  os <- c()
+  gs <- c()
+  for(otu in rownames(sig_cors)){
+    grp <- names(which(sig_cors[otu,]>0))
+    num <- length(grp)
+    if(num > 0){
+      ns <- c(ns, num)
+      os <- c(os, otu)
+      grp <- paste0(grp, sep = ";", collapse = "")
+      gs <- c(gs, grp)
+    }
+  }
+  s <- data.frame(OTU = os,
+                  Group_Size = ns,
+                  Group = gs)
+  return(list(plot=p, summary=s))
 }
