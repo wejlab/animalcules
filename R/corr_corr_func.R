@@ -26,7 +26,7 @@ corr_func <- function(MAE,
                       tax_level = "genus", 
                       no.sig = 1, 
                       correction = "bonferroni",
-                      hide_ax=NULL) {
+                      hide_ax=NA) {
   
   # Used to correlate microbe abundance against itself
   if (length(asys) == 1 & length(tax_level)>1) {
@@ -128,7 +128,7 @@ corr_func <- function(MAE,
   }
   
   # Plotting Heat map
-  if(is.null(hide_ax)){
+  if(is.na(hide_ax)){
     p <- heatmaply(sig_cors,
                    scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
                      low = "red", 
@@ -178,5 +178,5 @@ corr_func <- function(MAE,
   s <- data.frame(OTU = os,
                   Group_Size = ns,
                   Group = gs)
-  return(list(plot=p, summary=s))
+  return(list(plot=p, summary=s, cormat=sig_cors))
 }

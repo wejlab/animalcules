@@ -21,7 +21,7 @@
 
 calc_sig <- function(cors, ts, no.sig, t_crit){
   # Creating empty, subset correlation matrix, same dimensions as cors
-  sub_cors <- matrix(0,
+  sub_cors <- matrix(0, 
                      nrow=nrow(cors),
                      ncol=ncol(cors))
   rownames(sub_cors) <- rownames(cors)
@@ -30,8 +30,8 @@ calc_sig <- function(cors, ts, no.sig, t_crit){
   sig_ts <- which(ts>=t_crit, arr.ind = T)
   sig_ts <- as.data.frame(sig_ts)
   # Only selecting rows that have no. significant t-values > no.sig
-  sig_rows <- sig_ts %>%
-    dplyr::count(row) %>%
+  sig_rows <- sig_ts %>% 
+    dplyr::count(row) %>% 
     dplyr::filter(n>=no.sig)
   # Extracting row + column indices from sig_rows + sig_ts,
   # finding them in cors,
@@ -44,6 +44,7 @@ calc_sig <- function(cors, ts, no.sig, t_crit){
   # trimming out all the 0's
   colz <- which(colSums2(sub_cors, na.rm = T)!=0)
   rowz <- which(rowSums2(sub_cors, na.rm=T)!=0)
-  tc <- sub_cors[rowz, colz]
-  return(tc)
+  sub_cors <- sub_cors[rowz, colz]
+  return(sub_cors)
 }
+
