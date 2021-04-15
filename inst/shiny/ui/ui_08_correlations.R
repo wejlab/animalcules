@@ -39,17 +39,25 @@ tabPanel("Correlation Analysis",
                             ),
                           # Button to run the correlation
                           withBusyIndicatorUI(
-                            actionButton("runCorr", "Run Correlation Analysis")
+                            actionButton("do_corr_btn", "Run Correlation Analysis", class = "btn-primary")
                           ),
-
                         ),
                         mainPanel(
                           # Display the results
-                          tabsetPanel(
-                            tabPanel("Data Summary", dataTableOutput("corr_summary")),
-                            tabPanel("Heat map", plotlyOutput("corr_plot",
-                                                              height = "800px"))
+                          fluidRow(
+                            column(7,
+                                   plotlyOutput("corr_plot", height = "800px")
+                                   ),
+                            column(5,
+                                   dataTableOutput("corr_summary", width = "60%")
+                                   )
+                            
                           )
+                          # tabsetPanel(
+                          #   tabPanel("Data Summary", dataTableOutput("corr_summary")),
+                          #   tabPanel("Heat map", plotlyOutput("corr_plot",
+                          #                                     height = "800px"))
+                          # )
                         )
                       )
                     )
@@ -58,17 +66,33 @@ tabPanel("Correlation Analysis",
                     fluidPage(
                       sidebarLayout(
                         sidebarPanel(
-                          uiOutput("mList"),
+                          uiOutput("gList"),
                           selectInput("db", "Select database for enrichR:",
                                       dbList),
                           withBusyIndicatorUI(
-                            actionButton("enrich", "Run enrichment analysis")
-                            ),
-                        ),
+                            actionButton("do_enrich_btn", "Calculate Enrichment", class = "btn-primary")
+                            ), 
+                          ),
                         mainPanel(
-                          dataTableOutput("enrichmentTable")
+                          plotOutput("enrichmentTable")
                         )
                       )
                     )
+                    
+                    # fluidPage(
+                    #   sidebarLayout(
+                    #     sidebarPanel(
+                    #       uiOutput("mList"),
+                    #       selectInput("db", "Select database for enrichR:",
+                    #                   dbList),
+                    #       withBusyIndicatorUI(
+                    #         actionButton("enrich", "Run enrichment analysis")
+                    #         ),
+                    #     ),
+                        # mainPanel(
+                        #   dataTableOutput("enrichmentTable")
+                        # )
+                    #   )
+                    # )
            )
          ))
