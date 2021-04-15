@@ -7,6 +7,8 @@
 #' @param correction Method for p-value correction for multiple hypotheses. Default is bonferroni
 #' @param alpha If no correction is specified, will use alpha to determine significance
 #'
+#' @return a list with plotly heatmap, summary tables, and correlation matrix
+#' 
 #' @examples
 #' library(SummarizedExperiment)
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
@@ -14,6 +16,8 @@
 #' results <- corr_func(MAE = toy_data, asys = c("MicrobeGenetics", "hostExpression"))
 #' results$plot # heatmap of significant correlations
 #' result$summary # summary of the significantly correlated groups
+#' results$summary_t10 # top 10 groups (by size)
+#' results$cormat # correlation matrix
 #'
 #' @import MultiAssayExperiment
 #' @import heatmaply
@@ -23,7 +27,7 @@
 
 corr_func <- function(MAE, 
                       asys, 
-                      tax_level = "genus", 
+                      tax_level, 
                       no.sig = 1, 
                       correction = "bonferroni",
                       hide_ax=NA) {
@@ -76,7 +80,7 @@ corr_func <- function(MAE,
     
     # assay 1
     asy1 <- subMAE[[asys[1]]]
-    if(asys[1] == "MicrobeGenetics"){
+    if(asys[1] == "MicrobeGenetics" & length(tax_level)==1){
       # Aggregate count + normalize
       tax_table <- as.data.frame(rowData(asy1)) # organism x taxlev
       sam_table1 <- as.data.frame(colData(asy1)) # sample x condition
@@ -96,7 +100,7 @@ corr_func <- function(MAE,
     
     # assay 2
     asy2 <- subMAE[[asys[2]]]
-    if(asys[2] == "MicrobeGenetics"){
+    if(asys[2] == "MicrobeGenetics" & length(tax_level)==1){
       tax_table <- as.data.frame(rowData(asy2)) # organism x taxlev
       sam_table2 <- as.data.frame(colData(asy2)) # sample x condition
       counts_table2 <-
@@ -161,10 +165,11 @@ corr_func <- function(MAE,
                      limits = c(-1, 1)))
   } 
   
-  # Summary Table
+  # Summary Table (lists the top 10% of groups, by size)
   ns <- c()
   os <- c()
   gs <- c()
+  # Get the names 
   for(otu in rownames(sig_cors)){
     grp <- names(which(sig_cors[otu,]>0))
     num <- length(grp)
@@ -177,6 +182,8 @@ corr_func <- function(MAE,
   }
   s <- data.frame(OTU = os,
                   Group_Size = ns,
-                  Group = gs)
-  return(list(plot=p, summary=s, cormat=sig_cors))
+                  Groups = gs)
+  s10 <- s[order(s$Group_Size, decreasing = TRUE), ]
+  s10 <- s10[1:round(0.1*nrow(s)),]
+  return(list(plot=p, summary=s, summary_t10=s10, cormat=sig_cors))
 }
