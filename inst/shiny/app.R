@@ -7,11 +7,12 @@ library(vegan)
 library(dplyr)
 library(magrittr)
 library(biomformat)
-library(enrichR)
+#library(enrichR)
 library(heatmaply)
 library(DT)
 library(msigdbr)
 library(GSVA)
+library(hypeR)
 
 # Getting all the functions
 devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Scripts/correlations_shinyapp/animalcules/R")
