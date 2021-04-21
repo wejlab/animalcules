@@ -22,47 +22,48 @@
 #' @import MultiAssayExperiment
 #' @import heatmaply
 #' @import ggplot2
+#' @import dplyr
+#' @import zeallot
 #'
 #' @export
 
 corr_func <- function(MAE, 
                       asys, 
-                      tax_level, 
-                      no.sig = 1, 
-                      correction = "bonferroni",
+                      tax_level=NA, 
+                      no.sig=1,
+                      correction="bonferroni",
                       hide_ax=NA) {
   
   # Used to correlate microbe abundance against itself
   if (length(asys) == 1 & length(tax_level)>1) {
+    #print("Only 1 asssay")
     # Read in the assays
-    MAE_res <- rd_MAE(MAE, asys)
-    subMAE <- MAE_res[[1]]
-    no.samples <- MAE_res[[2]]
+    c(subMAE, no.samples) %<-% rd_MAE(MAE, asys)
     asy1 <- subMAE[[asys[1]]] # assay 1
     # Grouping together samples using upsample
     if("MicrobeGenetics" %in% asys){
       tax_table <- as.data.frame(rowData(asy1)) # organism x taxlev
       sam_table <- as.data.frame(colData(asy1)) # sample x condition
-      counts_table <-
-        as.data.frame(assays(asy1))[,rownames(sam_table)] # organism x sample
+      df <- as.data.frame(assays(asy1))[,rownames(sam_table)] # organism x sample
       # Aggregate according to tax_level + normalize
-      df1 <- counts_table %>%
+      df1 <- df %>%
         upsample_counts(tax_table, tax_level[1]) %>%
         counts_to_logcpm()
-      df2 <- counts_table %>%
+      df2 <- df %>%
         upsample_counts(tax_table, tax_level[2]) %>%
         counts_to_logcpm()
     }
+    #print("Getting dfs")
     # Getting rid of rows with 0
     df1 <- df1[rowMeans(df1)>0, ]
     df2 <- df2[rowMeans(df2)>0, ]
     
     # Calculating correlations + p-values
-    cors_res <- calc_cors(df1, df2, no.samples)
-    cors <- cors_res[[1]]
-    ts <- cors_res[[2]]
+    #print("Calculating correlations")
+    c(cors, ts) %<-% calc_cors(df1, df2, no.samples)
     ts <- abs(ts)
-    if (correction == "bonferroni") {
+    print(correction)
+    if(correction == "bonferroni") {
       alpha <- 0.05/dim(ts)[2]
       t_crit <- abs(stats::qt(alpha, no.samples-2))
       sig_cors <- calc_sig(cors, ts, no.sig, alpha)
@@ -73,10 +74,9 @@ corr_func <- function(MAE,
   
   # Using multiple assays
   if (length(asys) > 1) {
+    #print("more than 1 assay")
     # Read the MultiAssayExperiment
-    MAE_res <- rd_MAE(MAE, asys)
-    subMAE <- MAE_res[[1]]
-    no.samples <- MAE_res[[2]]
+    c(subMAE, no.samples) %<-% rd_MAE(MAE, asys)
     
     # assay 1
     asy1 <- subMAE[[asys[1]]]
@@ -84,16 +84,15 @@ corr_func <- function(MAE,
       # Aggregate count + normalize
       tax_table <- as.data.frame(rowData(asy1)) # organism x taxlev
       sam_table1 <- as.data.frame(colData(asy1)) # sample x condition
-      counts_table1 <-
-        as.data.frame(assays(asy1))[,rownames(sam_table1)] # organism x sample
-      df1 <- counts_table1 %>%
+      df1 <- as.data.frame(assays(asy1))[,rownames(sam_table1)] # organism x sample
+      df1 <- df1 %>%
         upsample_counts(tax_table, tax_level) %>%
         counts_to_logcpm()
     } else {
       sam_table1 <- as.data.frame(colData(asy1)) # sample x condition
-      counts_table1 <-
+      df1 <-
         as.data.frame(assays(asy1))[,rownames(sam_table1)] # organism x sample
-      df1 <- counts_table1 %>%
+      df1 <- df1 %>%
         counts_to_logcpm()
     }
     df1 <- df1[rowMeans(df1)>0, ]
@@ -103,26 +102,24 @@ corr_func <- function(MAE,
     if(asys[2] == "MicrobeGenetics" & length(tax_level)==1){
       tax_table <- as.data.frame(rowData(asy2)) # organism x taxlev
       sam_table2 <- as.data.frame(colData(asy2)) # sample x condition
-      counts_table2 <-
-        as.data.frame(assays(asy2))[,rownames(sam_table2)] # organism x sample
-      df2 <- counts_table2 %>%
+      df2 <- as.data.frame(assays(asy2))[,rownames(sam_table2)] # organism x sample
+      df2 <- df2 %>%
         upsample_counts(tax_table, tax_level) %>%
         counts_to_logcpm()
     } else{
       sam_table2 <- as.data.frame(colData(asy2)) # sample x condition
-      counts_table2 <-
-        as.data.frame(assays(asy2))[,rownames(sam_table2)] # organism x sample
-      df2 <- counts_table2 %>%
+      df2 <- as.data.frame(assays(asy2))[,rownames(sam_table2)] # organism x sample
+      df2 <- df2 %>%
         counts_to_logcpm()
     }
     df2 <- df2[rowMeans(df2)>0, ]  # genes with non-zero expression
     
     # Correlations
-    cors_res <- calc_cors(df1, df2, no.samples)
-    cors <- cors_res[[1]]
-    ts <- cors_res[[2]]
+    #print("Calculating correlations")
+    c(cors, ts) %<-% calc_cors(df1, df2, no.samples)
     ts <- abs(ts)
     if (correction == "bonferroni") {
+      #print("Finding significant cors")
       alpha <- 0.05/dim(ts)[2]
       t_crit <- abs(stats::qt(alpha, no.samples-2))
       sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
@@ -131,59 +128,14 @@ corr_func <- function(MAE,
     }
   }
   
-  # Plotting Heat map
-  if(is.na(hide_ax)){
-    p <- heatmaply(sig_cors,
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "red", 
-                     high = "blue", 
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  }else if(hide_ax == "xax") {
-    p <- heatmaply(sig_cors,
-                   showticklabels = c(FALSE, TRUE),
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "red", 
-                     high = "blue", 
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  } else if(hide_ax == "yax"){
-    p <- heatmaply(sig_cors,
-                   showticklabels = c(TRUE, FALSE),
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "red", 
-                     high = "blue", 
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  } else if(hide_ax == "bax"){
-    p <- heatmaply(sig_cors,
-                   showticklabels = c(FALSE, FALSE),
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "darkblue", 
-                     high = "darkred", 
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  } 
-  
   # Summary Table (lists the top 10% of groups, by size)
-  ns <- c()
-  os <- c()
-  gs <- c()
-  # Get the names 
-  for(otu in rownames(sig_cors)){
-    grp <- names(which(sig_cors[otu,]>0))
-    num <- length(grp)
-    if(num > 0){
-      ns <- c(ns, num)
-      os <- c(os, otu)
-      grp <- paste0(grp, sep = ";", collapse = "")
-      gs <- c(gs, grp)
-    }
-  }
-  s <- data.frame(OTU = os,
-                  Group_Size = ns,
-                  Groups = gs)
+  #print("getting summary table")
+  s <- summary_cors(sig_cors)
   s10 <- s[order(s$Group_Size, decreasing = TRUE), ]
   s10 <- s10[1:round(0.1*nrow(s)),]
+  
+  # Plotting Heat map
+  #print("Plotting heatmap")
+  p <- heatmap_cors(sig_cors, hide_ax)
   return(list(plot=p, summary=s, summary_t10=s10, cormat=sig_cors))
 }
