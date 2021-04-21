@@ -49,7 +49,7 @@ tabPanel("Correlation Analysis",
                                    plotlyOutput("corr_plot", height = "800px")
                                    ),
                             column(5,
-                                   dataTableOutput("corr_summary", width = "60%")
+                                   dataTableOutput("corr_summary", width = "90%")
                                    )
                             
                           )
@@ -74,7 +74,7 @@ tabPanel("Correlation Analysis",
                             ), 
                           ),
                         mainPanel(
-                          plotOutput("enrichmentTable")
+                          plotlyOutput("enrichmentTable")
                         )
                       )
                     )
