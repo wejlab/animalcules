@@ -13,45 +13,63 @@
 #   }
 # })
 
-summary_table <- reactiveValues(data = NULL)
+# Correlation analysis
 
+summary_table <- reactiveValues(data = NULL)
 observeEvent(input$do_corr_btn, {
   withBusyIndicatorServer("do_corr_btn", {
-    if(input$assay1 == input$assay2){
+    if(input$assay1 == input$assay2){ # Correlating microbes
       asy=c(input$assay1)
       tx.lvls <- c(input$tax.level1, input$tax.level2)
     } else{
       asy=c(input$assay1, input$assay2)
       tx.lvls <- input$tax.level1
     }
-    if(input$dispOpt==FALSE){
+    if(input$dispOpt==FALSE){ 
       result <- suppressWarnings(corr_func(MAE = vals$MAE,
                                            asys = asy,
                                            no.sig = input$no.sig,
                                            tax_level = tx.lvls))
-    } else{
+    } else{ # if Advanced Options is selected
       result <- suppressWarnings(corr_func(MAE = vals$MAE,
                                            asys = asy,
                                            no.sig = input$no.sig,
                                            tax_level = tx.lvls,
                                            hide_ax = input$axis_lab))
     }
-    summary_table$data <- result$summary
     # Heat map
     output$corr_plot <- renderPlotly({result$plot})
     # Summary table
-    output$corr_summary <- renderDataTable({DT::datatable(result$summary_t10)})
+    output$corr_summary <- renderDataTable({DT::datatable(result$summary_t10,
+                                                          options = list(scrollX = T))})
     })
+  summary_table$data <- result
   output$gList <- renderUI({
     if(input$assay2 == 'hostExpression'){
       selectInput("OTU", "Select Group for enrichR analysis:",
-                  summary_table$data$OTU)
+                  result$summary$OTU)
     } else {
       "Gene Expression data not selected"
     }
   })
 })
 
+# Enrichment Analysis
+observeEvent(input$do_enrich_btn, {
+  withBusyIndicatorServer("do_enrich_btn", {
+    p <- enrich_cors(summary_table$data, input$OTU, input$db)
+    # gsets <- hypeR::enrichr_gsets(input$db, db="Enrichr")
+    # signature <- summary_table$data %>% 
+    #   dplyr::filter(OTU == input$OTU) %>% 
+    #   dplyr::pull(Groups)
+    # signature <- strsplit(signature, split=";")[[1]]
+    # hyp <- hypeR::hypeR(signature, gsets, test="hypergeometric")
+    # p <- hypeR::hyp_dots(hyp, top=10, fdr=0.25)
+    # # These are just ggplot objects you could customize
+    # p <- p + theme(axis.text=element_text(size=12, face="bold"))
+    output$enrichmentTable <- renderPlotly({p})
+  })
+})
 
 
 # do_corr <- eventReactive(input$do_plot_btn, {
@@ -134,23 +152,6 @@ observeEvent(input$do_corr_btn, {
 #   #cormat$summary[order(cormat$summary$Group_Size, decreasing = TRUE),]
 # )})
 
-
-# Enrichment Analysis
-
-observeEvent(input$do_enrich_btn, {
-  withBusyIndicatorServer("do_enrich_btn", {
-    gsets <- hypeR::enrichr_gsets(input$db, db="Enrichr")
-    signature <- summary_table$data %>% 
-      dplyr::filter(OTU == input$OTU) %>% 
-      dplyr::pull(Groups)
-    signature <- strsplit(signature, split=";")[[1]]
-    hyp <- hypeR::hypeR(signature, gsets, test="hypergeometric")
-    p <- hypeR::hyp_dots(hyp, top=10, fdr=0.25)
-    # These are just ggplot objects you could customize
-    p <- p + theme(axis.text=element_text(size=12, face="bold"))
-    output$enrichmentTable <- renderPlot({p})
-  })
-})
 
 
 # output$mList <- renderUI({
