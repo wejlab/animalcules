@@ -7,10 +7,10 @@
 corr_func(
   MAE,
   asys,
-  tax_level = "genus",
+  tax_level = NA,
   no.sig = 1,
   correction = "bonferroni",
-  alpha = 0
+  hide_ax = NA
 )
 }
 \arguments{
@@ -26,6 +26,9 @@ corr_func(
 
 \item{alpha}{If no correction is specified, will use alpha to determine significance}
 }
+\value{
+a list with plotly heatmap, summary tables, and correlation matrix
+}
 \description{
 Calculate significant correlations between microbial abundance and another assay
 }
@@ -33,6 +36,10 @@ Calculate significant correlations between microbial abundance and another assay
 library(SummarizedExperiment)
 data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
-correlation_matrix <- corr_func(MAE = toy_data, asys = c(MicrobeGenetics, HostExpression), tax_level = "genus")
+results <- corr_func(MAE = toy_data, asys = c("MicrobeGenetics", "hostExpression"))
+results$plot # heatmap of significant correlations
+result$summary # summary of the significantly correlated groups
+results$summary_t10 # top 10 groups (by size)
+results$cormat # correlation matrix
 
 }
