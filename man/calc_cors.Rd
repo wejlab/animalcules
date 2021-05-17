@@ -7,14 +7,14 @@
 calc_cors(df1, df2, no.samples)
 }
 \arguments{
-\item{df1}{Dataframe containing sample data, where each sample has its own row}
+\item{df1}{Dataframe containing sample data, separating samples by columns}
 
-\item{df2}{Second dataframe, against which df1 will be correlated}
+\item{df2}{Second dataframe, same format as df1}
 
 \item{no.samples}{Number of samples being considered}
 }
 \value{
-A list containing the correlation matrix and its associated t-values
+A list containing the correlation matrix and its associated p-values
 }
 \description{
 Calculates Spearman rank-based correlation and corresponding p values
@@ -22,9 +22,8 @@ Calculates Spearman rank-based correlation and corresponding p values
 \examples{
 x <- matrix(rnorm(200), ncol = 10, nrow = 20)
 y <- matrix(rnorm(200), ncol = 10, nrow = 20)
-results <- calc_cors(x, y, no.samples = 20)
-
-results$cors
-results$ts
+results <- calc_cors(x, y, no.samples = 10)
+results[[1]] # correlation matrix
+results[[2]] # p-value matrix
 
 }

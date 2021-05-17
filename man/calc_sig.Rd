@@ -4,14 +4,14 @@
 \alias{calc_sig}
 \title{Calculate significant correlations, given hostExpression data and microbial abundance data}
 \usage{
-calc_sig(cors, ts, no.sig, t_crit)
+calc_sig(cors, ps, adjust, no.sig = 1, alpha = 0.05)
 }
 \arguments{
 \item{cors}{A matrix of correlation coefficients}
 
-\item{ts}{A matrix of t-values, associated with each correlation coefficient in cors}
-
 \item{no.sig}{Minimum number of significant correlations to be extracted}
+
+\item{ts}{A matrix of t-values, associated with each correlation coefficient in cors}
 
 \item{t_crit}{Critical t-value for determining significance}
 }
@@ -26,10 +26,16 @@ x <- matrix(rnorm(200), ncol = 10, nrow = 20)
 y <- matrix(rnorm(200), ncol = 10, nrow = 20)
 no.samples <- 20
 total_correlations <- calc_cors(x, y, no.samples = 20)
-cors <- total_correlations$cors
-ts <- total_correlations$ts
+cors <- total_correlations[[1]]
+ps <- total_correlations[[2]]
+adjust <- "bonferroni"
+no.sig <- 10
 alpha <- 0.05
-t_crit <- abs(stats::qt(alpha, no.samples-2))
-sig_correlations <- calc_sig(cors, ts, no.sig, t_crit)
+sig_correlations <- calc_sig(cors,
+                             ps,
+                             adjust,
+                             no.sig,
+                             alpha
+                             )
 
 }
