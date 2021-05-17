@@ -1,22 +1,26 @@
-#' Calculate significant correlations between microbial abundance and another assay
+#' Calculate significant correlations two assays
 #'
 #' @param MAE A MultiAssayExperiment object
 #' @param asys List of assays to calculate correlations for. Minimum length = 1
-#' @param tax_level Taxonomic level of interest. Maximum length = 2, default is set to "genus"
-#' @param no.sig Minimum number of significant correlations to be extracted
-#' @param correction Method for p-value correction for multiple hypotheses. Default is bonferroni
-#' @param alpha If no correction is specified, will use alpha to determine significance
+#' @param tax_level Taxonomic level of interest. Maximum length = 2.
+#' @param no.sig Minimum number of significant correlations
+#' @param correction Method for p-value correction for multiple hypotheses, selecting from one of `stats::p.value.methods`. Default is "bonferroni".
+#' @param alpha Significance threshold. Default is 0.05
 #'
-#' @return a list with plotly heatmap, summary tables, and correlation matrix
+#' @return a list with summary tables and correlation matrix
 #' 
 #' @examples
 #' library(SummarizedExperiment)
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
-#' results <- corr_func(MAE = toy_data, asys = c("MicrobeGenetics", "hostExpression"))
-#' results$plot # heatmap of significant correlations
+#' results <- corr_func(MAE = toy_data, 
+#'                      asys = c("MicrobeGenetics", "hostExpression"),
+#'                      tax_level="genus",
+#'                      correction="BH", # Benjamini-Hochberg
+#'                      alpha=0.1,
+#'                      no.sig=20 # only want microbes correlated with =>20 genes
+#'                      )
 #' result$summary # summary of the significantly correlated groups
-#' results$summary_t10 # top 10 groups (by size)
 #' results$cormat # correlation matrix
 #'
 #' @import MultiAssayExperiment
@@ -32,7 +36,7 @@ corr_func <- function(MAE,
                       tax_level=NA, 
                       no.sig=1,
                       correction="bonferroni",
-                      hide_ax=NA) {
+                      alpha=0.05) {
   
   # Used to correlate microbe abundance against itself
   if (length(asys) == 1 & length(tax_level)>1) {
@@ -60,16 +64,23 @@ corr_func <- function(MAE,
     
     # Calculating correlations + p-values
     #print("Calculating correlations")
-    c(cors, ts) %<-% calc_cors(df1, df2, no.samples)
-    ts <- abs(ts)
-    print(correction)
-    if(correction == "bonferroni") {
-      alpha <- 0.05/dim(ts)[2]
-      t_crit <- abs(stats::qt(alpha, no.samples-2))
-      sig_cors <- calc_sig(cors, ts, no.sig, alpha)
-    } else {
-      sig_cors <- calc_sig(cors, ts, no.sig, alpha)
-    }
+    c(cors, ps) %<-% calc_cors(df1, df2, no.samples)
+    #print("performing signifcance tests...")
+    sig_cors <- calc_sig(cors, 
+                         ps, 
+                         adjust=correction, 
+                         no.sig, 
+                         alpha)
+    # c(cors, ts) %<-% calc_cors(df1, df2, no.samples)
+    # ts <- abs(ts)
+    # print(correction)
+    # if(correction == "bonferroni") {
+    #   alpha <- 0.05/dim(ts)[2]
+    #   t_crit <- abs(stats::qt(alpha, no.samples-2))
+    #   sig_cors <- calc_sig(cors, ts, no.sig, alpha)
+    # } else {
+    #   sig_cors <- calc_sig(cors, ts, no.sig, alpha)
+    # }
   }
   
   # Using multiple assays
@@ -115,27 +126,30 @@ corr_func <- function(MAE,
     df2 <- df2[rowMeans(df2)>0, ]  # genes with non-zero expression
     
     # Correlations
-    #print("Calculating correlations")
-    c(cors, ts) %<-% calc_cors(df1, df2, no.samples)
-    ts <- abs(ts)
-    if (correction == "bonferroni") {
-      #print("Finding significant cors")
-      alpha <- 0.05/dim(ts)[2]
-      t_crit <- abs(stats::qt(alpha, no.samples-2))
-      sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
-    } else {
-      sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
-    }
+    #print("Calculating correlations...")
+    c(cors, ps) %<-% calc_cors(df1, df2, no.samples)
+    #print("performing signifcance tests...")
+    sig_cors <- calc_sig(cors, 
+                         ps, 
+                         adjust=correction, 
+                         no.sig, 
+                         alpha)
+    # if (correction == "bonferroni") {
+    #   #print("Finding significant cors")
+    #   alpha <- 0.05/dim(ts)[2]
+    #   t_crit <- abs(stats::qt(alpha, no.samples-2))
+    #   sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
+    # } else {
+    #   sig_cors <- calc_sig(cors, ts, no.sig, t_crit)
+    # }
   }
   
   # Summary Table (lists the top 10% of groups, by size)
-  #print("getting summary table")
+  #print("getting summary table...")
   s <- summary_cors(sig_cors)
-  s10 <- s[order(s$Group_Size, decreasing = TRUE), ]
-  s10 <- s10[1:round(0.1*nrow(s)),]
   
   # Plotting Heat map
   #print("Plotting heatmap")
-  p <- heatmap_cors(sig_cors, hide_ax)
-  return(list(plot=p, summary=s, summary_t10=s10, cormat=sig_cors))
+  #p <- heatmap_cors(sig_cors, hide_ax)
+  return(list(summary=s, cormat=sig_cors))
 }

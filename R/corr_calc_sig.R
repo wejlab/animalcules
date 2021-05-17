@@ -11,34 +11,50 @@
 #' y <- matrix(rnorm(200), ncol = 10, nrow = 20)
 #' no.samples <- 20
 #' total_correlations <- calc_cors(x, y, no.samples = 20)
-#' cors <- total_correlations$cors
-#' ts <- total_correlations$ts
+#' cors <- total_correlations[[1]]
+#' ps <- total_correlations[[2]]
+#' adjust <- "bonferroni"
+#' no.sig <- 10
 #' alpha <- 0.05
-#' t_crit <- abs(stats::qt(alpha, no.samples-2))
-#' sig_correlations <- calc_sig(cors, ts, no.sig, t_crit)
+#' sig_correlations <- calc_sig(cors,
+#'                              ps,
+#'                              adjust,
+#'                              no.sig,
+#'                              alpha
+#'                              )
 #'
 #' @export
 
-calc_sig <- function(cors, ts, no.sig, t_crit){
-  # Creating empty, subset correlation matrix, same dimensions as cors
-  sub_cors <- matrix(0, 
+calc_sig <- function(cors, ps, adjust, no.sig=1, alpha=0.05){
+  # Pre-allocating memory
+  # Empty correlation matrix
+  sub_cors <- matrix(0,
                      nrow=nrow(cors),
                      ncol=ncol(cors))
   rownames(sub_cors) <- rownames(cors)
   colnames(sub_cors) <- colnames(cors)
-  # Finding indices of t-values above t_crit (abs(ts) is done beforehand)
-  sig_ts <- which(ts>=t_crit, arr.ind = T)
-  sig_ts <- as.data.frame(sig_ts)
-  # Only selecting rows that have no. significant t-values > no.sig
-  sig_rows <- sig_ts %>% 
-    dplyr::count(row) %>% 
+  # Empty p-value matrix
+  corrected_ps <- matrix(0,
+                         nrow=nrow(ps),
+                         ncol=ncol(ps))
+  rownames(corrected_ps) <- rownames(ps)
+  colnames(corrected_ps) <- colnames(ps)
+  # applying selected p-value adjustment method
+  for(i in 1:dim(ps)[2]){
+    corrected_ps[,i] <- stats::p.adjust(ps[,i], method=adjust)
+  }
+  # Finding corrected p-values that satisfy significance threshold
+  sig_ps <- data.frame(which(corrected_ps<=alpha, arr.ind = T))
+  # Only selecting rows that have # sig. ps > no.sig
+  sig_rows <- sig_ps %>%
+    dplyr::count(row) %>%
     dplyr::filter(n>=no.sig)
-  # Extracting row + column indices from sig_rows + sig_ts,
-  # finding them in cors,
-  # putting them in sub_cors
+  # 1) Extracting row + column indices from sig_rows + sig_ps
+  # 2) finding them in cors
+  # 3) putting them into sub_cors
   for(i in 1:length(sig_rows[,1])){
     r <- sig_rows[i,1]
-    cols <- dplyr::filter(sig_ts, row==r)[,2]
+    cols <- dplyr::filter(sig_ps, row==r)[,2]
     sub_cors[i, cols] <- cors[r, cols]
   }
   # trimming out all the 0's
@@ -47,4 +63,3 @@ calc_sig <- function(cors, ts, no.sig, t_crit){
   sub_cors <- sub_cors[rowz, colz]
   return(sub_cors)
 }
-
