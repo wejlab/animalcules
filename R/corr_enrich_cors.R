@@ -25,7 +25,7 @@
 #' @export
 
 enrich_cors <- function(corr_results, group_selected, geneset_db) {
-  signature <- corr_results$summary %>% 
+  signature <- corr_results %>% 
     dplyr::filter(OTU == group_selected) %>% 
     dplyr::pull(Groups)
   signature <- strsplit(signature, split=";")[[1]]
