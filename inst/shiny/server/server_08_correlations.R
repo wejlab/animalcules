@@ -13,10 +13,14 @@
 #   }
 # })
 
-# Correlation analysis
 
+# Correlations ------------------------------------------------------------
+
+# Placeholders
 data <- reactiveValues(summary_table = NULL,
                        cormat = NULL)
+
+# Do the correlation
 observeEvent(input$do_corr_btn, {
   withBusyIndicatorServer("do_corr_btn", {
     if(input$assay1 == input$assay2){ # Correlating microbes
@@ -72,26 +76,28 @@ observeEvent(input$do_corr_btn, {
   })
 })
 
+# Plotting heatmap
 observeEvent(input$do_plot_btn, {
   withBusyIndicatorServer("do_plot_btn", {
-    h <- heatmap_cors(data$cormat, hide_ax = "bax")
+    #h <- heatmap_cors(data$cormat, hide_ax = "bax")
+    h <- heatmaply::heatmaply_cor(data$cormat,
+                                  #showticklabels = c(FALSE, TRUE)
+                                  )
     output$corr_plot <- renderPlotly({h})
   })
+})
+
+# Making dynamic adjustments to heatmap
+output$dynamic_corr_plot <- renderUI({
+  height = paste(input$corr_plot_height, "px", sep="")
+  width = paste(input$corr_plot_width, "px", sep="")
+  plotlyOutput("corr_plot", width=width, height=height)
 })
 
 # Enrichment Analysis
 observeEvent(input$do_enrich_btn, {
   withBusyIndicatorServer("do_enrich_btn", {
     p <- enrich_cors(data$summary_table, input$OTU, input$db)
-    # gsets <- hypeR::enrichr_gsets(input$db, db="Enrichr")
-    # signature <- summary_table$data %>% 
-    #   dplyr::filter(OTU == input$OTU) %>% 
-    #   dplyr::pull(Groups)
-    # signature <- strsplit(signature, split=";")[[1]]
-    # hyp <- hypeR::hypeR(signature, gsets, test="hypergeometric")
-    # p <- hypeR::hyp_dots(hyp, top=10, fdr=0.25)
-    # # These are just ggplot objects you could customize
-    # p <- p + theme(axis.text=element_text(size=12, face="bold"))
     output$enrichmentTable <- renderPlotly({p})
   })
 })
