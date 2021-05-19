@@ -66,14 +66,23 @@ tabPanel("Correlation Analysis",
                sidebarLayout(
                  sidebarPanel(
                    withBusyIndicatorUI(
-                     actionButton("do_plot_btn", "Plot heatmap"))
+                     actionButton("do_plot_btn", "Plot heatmap")
+                     ),
+                   checkboxInput("adv_plot_options", "Advanced plot options", value = FALSE),
+                   conditionalPanel(condition = "input.adv_plot_options == true",
+                                    sliderInput("corr_plot_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
+                                    sliderInput("corr_plot_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
+                   )
+                                    
                  ),
                  mainPanel(
-                   fluidRow(
-                     column(12,
-                            plotlyOutput("corr_plot")
-                     )
-                   )
+#                   fluidRow(
+#                     column(12,
+                            #plotlyOutput("corr_plot")
+                   uiOutput("dynamic_corr_plot"),
+                   width=9
+#                     )
+#                   )
                  )
                )
              )
