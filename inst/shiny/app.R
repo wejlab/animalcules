@@ -54,7 +54,7 @@ ui <- navbarPage(
   tabPanel("Host Expression Workflow",
            tabsetPanel(
              #source(file.path("ui", "ui_03_relabu.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_09_pathred.R"), local = TRUE)$value
+             source(file.path("ui", "ui_09_pathproj.R"), local = TRUE)$value
              )),
   tabPanel("Integrative Analysis Workflow",
            tabsetPanel(
@@ -74,7 +74,7 @@ server <- function(input, output, session) {
   source(file.path("server", "server_06_differential.R"),  local = TRUE)$value
   source(file.path("server", "server_07_biomarker.R"),  local = TRUE)$value
   source(file.path("server", "server_08_correlations.R"),  local = TRUE)$value
-  source(file.path("server", "server_09_pathred.R"),  local = TRUE)$value
+  source(file.path("server", "server_09_pathproj.R"),  local = TRUE)$value
 }
 
 shinyApp(ui = ui, server = server)
