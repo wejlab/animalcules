@@ -15,35 +15,53 @@
 
 # Correlation analysis
 
-summary_table <- reactiveValues(data = NULL)
+data <- reactiveValues(summary_table = NULL,
+                       cormat = NULL)
 observeEvent(input$do_corr_btn, {
   withBusyIndicatorServer("do_corr_btn", {
     if(input$assay1 == input$assay2){ # Correlating microbes
-      asy=c(input$assay1)
-      tx.lvls <- c(input$tax.level1, input$tax.level2)
+      as <- c(input$assay1)
+      t <- c(input$tax.level1, input$tax.level2)
     } else{
-      asy=c(input$assay1, input$assay2)
-      tx.lvls <- input$tax.level1
+      as <- c(input$assay1, input$assay2)
+      t <- c(input$tax.level1)
     }
-    if(input$dispOpt==FALSE){ 
-      result <- suppressWarnings(corr_func(MAE = vals$MAE,
-                                           asys = asy,
-                                           no.sig = input$no.sig,
-                                           tax_level = tx.lvls))
-    } else{ # if Advanced Options is selected
-      result <- suppressWarnings(corr_func(MAE = vals$MAE,
-                                           asys = asy,
-                                           no.sig = input$no.sig,
-                                           tax_level = tx.lvls,
-                                           hide_ax = input$axis_lab))
+    if(input$advOptions==F){
+      print("AdvOptions not selected")
+      n <- 1
+      c <- p.adjust.methods[4]
+      al <- 0.05
+    } else {
+      n <- input$no.sig
+      c <- input$correction
+      al <- input$alpha
     }
+    result <- suppressWarnings(corr_func(MAE = vals$MAE,
+                                         asys = as,
+                                         tax_level = t,
+                                         no.sig = n,
+                                         correction = c,
+                                         alpha = al))
+    # if(input$advOpt==FALSE){ 
+    #   result <- suppressWarnings(corr_func(MAE = vals$MAE,
+    #                                        asys = asy,
+    #                                        no.sig = input$no.sig,
+    #                                        tax_level = tx.lvls))
+    # } else if(input$dispOpt==TRUE) { # if Advanced Options is selected
+    #   result <- suppressWarnings(corr_func(MAE = vals$MAE,
+    #                                        asys = asy,
+    #                                        no.sig = input$no.sig,
+    #                                        tax_level = tx.lvls,
+    #                                        hide_ax = input$axis_lab))
+    # }
     # Heat map
-    output$corr_plot <- renderPlotly({result$plot})
+    # output$corr_plot <- renderPlotly({result$plot})
     # Summary table
-    output$corr_summary <- renderDataTable({DT::datatable(result$summary_t10,
+    output$corr_summary <- renderDataTable({DT::datatable(result$summary,
                                                           options = list(scrollX = T))})
     })
-  summary_table$data <- result
+  data$summary_table <- result$summary
+  data$cormat <- result$cormat
   output$gList <- renderUI({
     if(input$assay2 == 'hostExpression'){
       selectInput("OTU", "Select Group for enrichR analysis:",
@@ -54,10 +72,17 @@ observeEvent(input$do_corr_btn, {
   })
 })
 
+observeEvent(input$do_plot_btn, {
+  withBusyIndicatorServer("do_plot_btn", {
+    h <- heatmap_cors(data$cormat, hide_ax = "bax")
+    output$corr_plot <- renderPlotly({h})
+  })
+})
+
 # Enrichment Analysis
 observeEvent(input$do_enrich_btn, {
   withBusyIndicatorServer("do_enrich_btn", {
-    p <- enrich_cors(summary_table$data, input$OTU, input$db)
+    p <- enrich_cors(data$summary_table, input$OTU, input$db)
     # gsets <- hypeR::enrichr_gsets(input$db, db="Enrichr")
     # signature <- summary_table$data %>% 
     #   dplyr::filter(OTU == input$OTU) %>% 
@@ -70,6 +95,8 @@ observeEvent(input$do_enrich_btn, {
     output$enrichmentTable <- renderPlotly({p})
   })
 })
+
+
 
 
 # do_corr <- eventReactive(input$do_plot_btn, {

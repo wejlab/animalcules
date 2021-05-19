@@ -1,6 +1,6 @@
 tabPanel("Correlation Analysis",
          tabsetPanel(
-           tabPanel("Correlation Matrix",
+           tabPanel("Correlating Assays",
                     fluidPage(
                       sidebarLayout(
                         sidebarPanel(
@@ -21,46 +21,62 @@ tabPanel("Correlation Analysis",
                             selectInput("tax.level2", "Select taxonomic level for assay 2:",
                                          choices = tax.name, selected = tax.default)
                             ),
-                          conditionalPanel(
-                            condition = 'input.assay2 == "hostExpression" | input.assay2 == "hervAbundance"',
-                            sliderInput('no.sig', "Select correlation group size \n(min is 1, max is 100):",
-                                        value = 50, min = 1, max = 150, step = 10)
-                            ),
-                          checkboxInput("dispOpt", "Show Plot Display Options",
+                          checkboxInput("advOptions", "Show Advanced Options",
                                         FALSE
                           ),
                           conditionalPanel(
-                            condition = 'input.dispOpt == true',
-                            radioButtons("axis_lab", "Choose axis labels to hide:",
-                                         choices = c("None selected" = "na",
-                                                     "Hide y axis labels" = "yax",
-                                                     "Hide x axis labels" = "xax",
-                                                     "Hide both" = "bax"))
+                            condition = 'input.advOptions == true',
+                            #conditionalPanel(
+                              #condition = 'input.assay2 == "hostExpression" | input.assay2 == "hervAbundance"',
+                              sliderInput('no.sig', "Select correlation group size \n(min is 1, max is 100):",
+                                          value = 50, min = 1, max = 150, step = 10),
+                            #),
+                            selectInput("correction", "Select p-value correction method",
+                                        choices = stats::p.adjust.methods,
+                                        selected =stats::p.adjust.methods[4]),
+                            numericInput("alpha", "Select significance threshold",
+                                        value = 0.05, min = 0.001, max = 0.1, step=0.001)
                             ),
+                            # radioButtons("axis_lab", "Choose axis labels to hide:",
+                            #              choices = c("None selected" = "na",
+                            #                          "Hide y axis labels" = "yax",
+                            #                          "Hide x axis labels" = "xax",
+                            #                          "Hide both" = "bax"))
                           # Button to run the correlation
                           withBusyIndicatorUI(
-                            actionButton("do_corr_btn", "Run Correlation Analysis", class = "btn-primary")
+                            actionButton("do_corr_btn", "Run correlation analysis", class = "btn-primary"))
                           ),
-                        ),
-                        mainPanel(
-                          # Display the results
-                          fluidRow(
-                            column(7,
-                                   plotlyOutput("corr_plot", height = "800px")
-                                   ),
-                            column(5,
-                                   dataTableOutput("corr_summary", width = "90%")
-                                   )
-                            
-                          )
+                    mainPanel(
+                      # Display the results
+                      fluidRow(
+                        column(12,
+                               dataTableOutput("corr_summary"))
+                        )
                           # tabsetPanel(
                           #   tabPanel("Data Summary", dataTableOutput("corr_summary")),
                           #   tabPanel("Heat map", plotlyOutput("corr_plot",
                           #                                     height = "800px"))
                           # )
                         )
-                      )
                     )
+                    )
+                    ),
+           tabPanel("Heatmap",
+             fluidPage(
+               sidebarLayout(
+                 sidebarPanel(
+                   withBusyIndicatorUI(
+                     actionButton("do_plot_btn", "Plot heatmap"))
+                 ),
+                 mainPanel(
+                   fluidRow(
+                     column(12,
+                            plotlyOutput("corr_plot")
+                     )
+                   )
+                 )
+               )
+             )
            ),
            tabPanel("Enrichment Analysis",
                     fluidPage(
@@ -75,9 +91,12 @@ tabPanel("Correlation Analysis",
                           ),
                         mainPanel(
                           plotlyOutput("enrichmentTable")
+                          )
                         )
                       )
                     )
+           )
+         )
                     
                     # fluidPage(
                     #   sidebarLayout(
@@ -93,6 +112,4 @@ tabPanel("Correlation Analysis",
                         #   dataTableOutput("enrichmentTable")
                         # )
                     #   )
-                    # )
-           )
-         ))
+                    # ))
