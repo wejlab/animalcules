@@ -24,5 +24,6 @@ summary_cors <- function(cormat){
   s <- data.frame(OTU = os,
                   Group_Size = ns,
                   Groups = gs)
+  s <- s[sort(s$Group_Size, decreasing=T, index.return=T)[[2]],]
   return(s)
 }
