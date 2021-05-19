@@ -54,16 +54,16 @@ dbList <- c("GO_Biological_Process_2018",
             "Panther_2016")
 
 # msigdb gene set collections and sub-collections
-collections <- c(
-  "H = Hallmark",
-  "C1 = Positional",
-  "C2 = Curated",
-  "C3 = Regulatory Targets",
-  "C4 = Computational",
-  "C5 = Ontology",
-  "C6 = Oncogenic",
-  "C7 = Immunologic",
-  "C8 = Cell Type"
+collections <- list(
+  "H" = "Hallmark",
+  "C1" = "Positional",
+  "C2" = "Curated",
+  "C3" = "Regulatory Targets",
+  "C4" = "Computational",
+  "C5" = "Ontology",
+  "C6" = "Oncogenic",
+  "C7" = "Immunologic",
+  "C8" = "Cell Type"
 )
 
 sub_collections <- list(
