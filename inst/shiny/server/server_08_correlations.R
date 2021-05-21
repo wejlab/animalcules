@@ -103,8 +103,6 @@ observeEvent(input$do_enrich_btn, {
 })
 
 
-
-
 # do_corr <- eventReactive(input$do_plot_btn, {
 #   withBusyIndicatorServer("do_plot_btn", {
 #     if(input$assay1 == input$assay2){
