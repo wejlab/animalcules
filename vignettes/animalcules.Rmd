@@ -404,6 +404,29 @@ p$importance_plot
 p$roc_plot
 ```
 
+# Correlation
+
+animalcules also allows users to investigate the correlations between different 
+assays. This makes animalcules a true meta-omics analysis tool, giving users
+insight into the complex relationships between the microbiome, host genome, 
+metabolome, etc. A summary of the correlation analysis is produced, alongside 
+the (significant) correlation matrix
+
+```{r}
+result <- corr_func(MAE, 
+                    asys=c("MicrobeGenetics", "hostExpression"), 
+                    tax_level = "genus",
+                    correction = "bonferroni",
+                    no.sig=20,
+                    alpha=0.01)
+# summary
+result$summary
+
+# correlation matrix
+result$cormat
+```
+
+
 # Session Info
 
 ```{r}
