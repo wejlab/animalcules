@@ -37,6 +37,11 @@ tabPanel("Correlation Analysis",
                             numericInput("alpha", "Select significance threshold",
                                         value = 0.05, min = 0.001, max = 0.1, step=0.001)
                             ),
+                          checkboxInput("adv_plot_options", "Advanced plot options", value = FALSE),
+                          conditionalPanel(condition = "input.adv_plot_options == true",
+                                           sliderInput("corr_plot_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
+                                           sliderInput("corr_plot_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
+                          ),
                             # radioButtons("axis_lab", "Choose axis labels to hide:",
                             #              choices = c("None selected" = "na",
                             #                          "Hide y axis labels" = "yax",
@@ -44,14 +49,23 @@ tabPanel("Correlation Analysis",
                             #                          "Hide both" = "bax"))
                           # Button to run the correlation
                           withBusyIndicatorUI(
-                            actionButton("do_corr_btn", "Run correlation analysis", class = "btn-primary"))
+                            actionButton("do_corr_btn", "Run correlation analysis", class = "btn-primary")
+                            ),
+                          withBusyIndicatorUI(
+                            actionButton("do_plot_btn", "Plot heatmap")
+                          )
                           ),
+                        
                     mainPanel(
                       # Display the results
                       fluidRow(
                         column(12,
                                dataTableOutput("corr_summary"))
-                        )
+                        ),
+                      fluidRow(
+                        column(12,
+                               uiOutput("dynamic_corr_plot"))
+                      )
                           # tabsetPanel(
                           #   tabPanel("Data Summary", dataTableOutput("corr_summary")),
                           #   tabPanel("Heat map", plotlyOutput("corr_plot",
@@ -61,32 +75,32 @@ tabPanel("Correlation Analysis",
                     )
                     )
                     ),
-           tabPanel("Heatmap",
-             fluidPage(
-               sidebarLayout(
-                 sidebarPanel(
-                   withBusyIndicatorUI(
-                     actionButton("do_plot_btn", "Plot heatmap")
-                     ),
-                   checkboxInput("adv_plot_options", "Advanced plot options", value = FALSE),
-                   conditionalPanel(condition = "input.adv_plot_options == true",
-                                    sliderInput("corr_plot_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
-                                    sliderInput("corr_plot_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
-                   )
-                                    
-                 ),
-                 mainPanel(
-#                   fluidRow(
-#                     column(12,
-                            #plotlyOutput("corr_plot")
-                   uiOutput("dynamic_corr_plot"),
-                   width=9
-#                     )
-#                   )
-                 )
-               )
-             )
-           ),
+#            tabPanel("Heatmap",
+#              fluidPage(
+#                sidebarLayout(
+#                  sidebarPanel(
+#                    withBusyIndicatorUI(
+#                      actionButton("do_plot_btn", "Plot heatmap")
+#                      ),
+#                    checkboxInput("adv_plot_options", "Advanced plot options", value = FALSE),
+#                    conditionalPanel(condition = "input.adv_plot_options == true",
+#                                     sliderInput("corr_plot_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
+#                                     sliderInput("corr_plot_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
+#                    )
+#                                     
+#                  ),
+#                  mainPanel(
+# #                   fluidRow(
+# #                     column(12,
+#                             #plotlyOutput("corr_plot")
+#                    uiOutput("dynamic_corr_plot"),
+#                    width=9
+# #                     )
+# #                   )
+#                  )
+#                )
+#              )
+#            ),
            tabPanel("Enrichment Analysis",
                     fluidPage(
                       sidebarLayout(
