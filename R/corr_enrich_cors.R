@@ -22,7 +22,7 @@
 #' 
 #' @import hypeR
 #' @import dplyr
-#' @importFrom ggplot2 theme
+#' @importFrom ggplot2 theme element_text
 #' 
 #' @export
 
