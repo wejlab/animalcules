@@ -19,40 +19,23 @@
 #' p <- heatmap_cors(sig_correlations)
 #' p
 #' 
+#' @import heatmaply
+#' 
 #' @export
 
-heatmap_cors <- function(cormat, hide_ax){
-  if(is.na(hide_ax)){
-    p <- heatmaply(cormat,
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "darkblue", 
-                     high = "darkred",
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  }else if(hide_ax == "xax") {
-    p <- heatmaply(cormat,
-                   showticklabels = c(FALSE, TRUE),
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "darkblue", 
-                     high = "darkred",
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  } else if(hide_ax == "yax"){
-    p <- heatmaply(cormat,
-                   showticklabels = c(TRUE, FALSE),
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "darkblue", 
-                     high = "darkred",
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
-  } else if(hide_ax == "bax"){
-    p <- heatmaply(cormat,
-                   showticklabels = c(FALSE, FALSE),
-                   scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(
-                     low = "darkblue", 
-                     high = "darkred",
-                     midpoint = 0, 
-                     limits = c(-1, 1)))
+heatmap_cors <- function(cormat, hide_ax) {
+  if (is.na(hide_ax)) {
+    p <- heatmaply(cormat, scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "darkblue", 
+                                                                                   high = "darkred", midpoint = 0, limits = c(-1, 1)))
+  } else if (hide_ax == "xax") {
+    p <- heatmaply(cormat, showticklabels = c(FALSE, TRUE), scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "darkblue", 
+                                                                                                                    high = "darkred", midpoint = 0, limits = c(-1, 1)))
+  } else if (hide_ax == "yax") {
+    p <- heatmaply(cormat, showticklabels = c(TRUE, FALSE), scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "darkblue", 
+                                                                                                                    high = "darkred", midpoint = 0, limits = c(-1, 1)))
+  } else if (hide_ax == "bax") {
+    p <- heatmaply(cormat, showticklabels = c(FALSE, FALSE), scale_fill_gradient_fun = ggplot2::scale_fill_gradient2(low = "darkblue", 
+                                                                                                                     high = "darkred", midpoint = 0, limits = c(-1, 1)))
   }
   return(p)
 }

@@ -20,16 +20,16 @@ Plotly displaying enrichment terms and scores
 Run enrichR analysis on significantly correlated groups using hypeR
 }
 \examples{
-results <- corr_func(MAE, asys = c("MicrobeGenetics", "hostExpression")) 
-# second assay must contain genes
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+toy_data <- readRDS(data_dir)
+results <- corr_func(toy_data, 
+                     asys = c('MicrobeGenetics', 'HostGenetics'),
+                     tax_level="genus")
+                     
+group <- 'Acinetobacter' # microbe from results
 
-group <- "Acidobacter" 
-# a microbe from results, correlated with some genes
+db <- 'KEGG_2019_Human' # Enrichr database
 
-db <- "KEGG_2019_Human"
-# Enrichr database
-
-p <- enrich_cors(results, group, db) # Run enrichment
+p <- enrich_cors(results$summary, group, db) # Run enrichment
 p
-
 }

@@ -7,33 +7,33 @@
 #' @return Plotly displaying enrichment terms and scores
 #' 
 #' @examples 
-#' results <- corr_func(MAE, asys = c("MicrobeGenetics", "hostExpression")) 
-#' # second assay must contain genes
+#' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+#' toy_data <- readRDS(data_dir)
+#' results <- corr_func(toy_data, 
+#'                      asys = c('MicrobeGenetics', 'HostGenetics'),
+#'                      tax_level="genus")
+#'                      
+#' group <- 'Acinetobacter' # microbe from results
 #' 
-#' group <- "Acidobacter" 
-#' # a microbe from results, correlated with some genes
+#' db <- 'KEGG_2019_Human' # Enrichr database
 #' 
-#' db <- "KEGG_2019_Human"
-#' # Enrichr database
-#' 
-#' p <- enrich_cors(results, group, db) # Run enrichment
+#' p <- enrich_cors(results$summary, group, db) # Run enrichment
 #' p
-#' 
 #' @import hypeR
 #' @import dplyr
 #' 
 #' @export
 
 enrich_cors <- function(corr_results, group_selected, geneset_db) {
-  signature <- corr_results %>% 
-    dplyr::filter(OTU == group_selected) %>% 
+  signature <- corr_results %>%
+    dplyr::filter(OTU == group_selected) %>%
     dplyr::pull(Groups)
-  signature <- strsplit(signature, split=";")[[1]]
-  gs <- hypeR::enrichr_gsets(geneset_db, db="Enrichr")
+  signature <- strsplit(signature, split = ";")[[1]]
+  gs <- hypeR::enrichr_gsets(geneset_db, db = "Enrichr")
   genesets <- gs$genesets
-  hyp <- hypeR::hypeR(signature, genesets, test="hypergeometric")
+  hyp <- hypeR::hypeR(signature, genesets, test = "hypergeometric")
   p <- hypeR::hyp_dots(hyp)
-  p <- p + theme(axis.text=element_text(size=12, face="bold"))
+  p <- p + theme(axis.text = element_text(size = 12, face = "bold"))
   p <- plotly::ggplotly(p)
   return(p)
 }

@@ -9,11 +9,13 @@ calc_sig(cors, ps, adjust, no.sig = 1, alpha = 0.05)
 \arguments{
 \item{cors}{A matrix of correlation coefficients}
 
-\item{no.sig}{Minimum number of significant correlations to be extracted}
+\item{ps}{A matrix of the p-values for each correlation}
 
-\item{ts}{A matrix of t-values, associated with each correlation coefficient in cors}
+\item{adjust}{p-value correction method. Select one from `p.adjust.methods`}
 
-\item{t_crit}{Critical t-value for determining significance}
+\item{no.sig}{Minimum number of significant correlations to be extracted. Default is set to 0.05}
+
+\item{alpha}{Threshold for significance. Default is set to 0.05}
 }
 \value{
 Subset of cors, containing only the correlation coefficients that are significant
@@ -28,14 +30,15 @@ no.samples <- 20
 total_correlations <- calc_cors(x, y, no.samples = 20)
 cors <- total_correlations[[1]]
 ps <- total_correlations[[2]]
-adjust <- "bonferroni"
-no.sig <- 10
+adjust <- 'bonferroni'
+no.sig <- 3
 alpha <- 0.05
 sig_correlations <- calc_sig(cors,
                              ps,
                              adjust,
                              no.sig,
                              alpha
-                             )
+)
+
 
 }

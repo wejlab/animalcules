@@ -18,12 +18,10 @@
 
 calc_cors <- function(df1, df2, no.samples) {
   # Correlation matrix, spearman correlations
-  cors <- stats::cor(t(df1), t(df2), method="spearman")
+  cors <- stats::cor(t(df1), t(df2), method = "spearman")
   # Calculate t-value
-  ps <- abs((cors*sqrt(no.samples-2))/sqrt(1-cors^2))
+  ps <- abs((cors * sqrt(no.samples - 2))/sqrt(1 - cors^2))
   # convert t-value --> p-value, right sided test
-  ps <- stats::pt(ps,
-                  df=no.samples-2,
-                  lower.tail=FALSE) # calculate p-value
+  ps <- stats::pt(ps, df = no.samples - 2, lower.tail = FALSE)  # calculate p-value
   return(list(cors, ps))
 }

@@ -32,6 +32,7 @@ Authors:
 \itemize{
   \item Anthony Federico \email{anfed@bu.edu} (\href{https://orcid.org/0000-0002-9200-1689}{ORCID})
   \item W. Evan Johnson \email{wej@bu.edu} (\href{https://orcid.org/0000-0002-6247-6595}{ORCID})
+  \item Saket A. Pandit \email{sktpndt@bu.edu} (\href{https://orcid.org/0000-0003-2607-5281}{ORCID})
 }
 
 }

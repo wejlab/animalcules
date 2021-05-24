@@ -14,7 +14,7 @@ library(GSVA)
 library(hypeR)
 
 # Getting all the functions
-devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Scripts/correlations_shinyapp/animalcules/R")
+#devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Scripts/correlations_shinyapp/animalcules/R")
 
 # full source using local architecture
 source(file.path("utils", "helpers.R"),  local = TRUE)

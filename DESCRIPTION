@@ -1,15 +1,27 @@
 Package: animalcules
 Title: Interactive microbiome analysis toolkit
 Version: 1.7.0
-Authors@R: c(person(given="Yue", family="Zhao", email="yuezh@bu.edu",
-                    role=c("aut","cre"),
-                    comment = c(ORCID = "0000-0001-5257-5103")),
-             person(given="Anthony", family="Federico", email="anfed@bu.edu",
-             role=c("aut"),
+Authors@R: 
+    c(person(given = "Yue",
+             family = "Zhao",
+             role = c("aut", "cre"),
+             email = "yuezh@bu.edu",
+             comment = c(ORCID = "0000-0001-5257-5103")),
+      person(given = "Anthony",
+             family = "Federico",
+             role = "aut",
+             email = "anfed@bu.edu",
              comment = c(ORCID = "0000-0002-9200-1689")),
-             person(given=c("W.", "Evan"), family="Johnson", email="wej@bu.edu",
-             role=c("aut"),
-             comment = c(ORCID = "0000-0002-6247-6595")))
+      person(given = c("W.", "Evan"),
+             family = "Johnson",
+             role = "aut",
+             email = "wej@bu.edu",
+             comment = c(ORCID = "0000-0002-6247-6595")),
+      person(given = "Saket A.",
+             family = "Pandit",
+             role = "aut",
+             email = "sktpndt@bu.edu",
+             comment = c(ORCID = "0000-0003-2607-5281")))
 Description:
     animalcules is an R package for utilizing up-to-date data analytics,
     visualization methods, and machine learning models to provide users
@@ -62,7 +74,11 @@ Imports:
     biomformat,
     umap,
     Matrix,
-    GUniFrac
+    GUniFrac,
+    GSVA,
+    hypeR,
+    heatmaply,
+    zeallot
 Suggests:
     BiocStyle,
     knitr,
@@ -74,7 +90,7 @@ biocViews:
     Metagenomics,
     Coverage,
     Visualization
-Remotes:  
+Remotes: 
     cran/DMwR
 VignetteBuilder: knitr
 URL: https://github.com/compbiomed/animalcules

@@ -4,17 +4,17 @@
 \alias{path_proj}
 \title{Pathway projection using GSVA}
 \usage{
-path_proj(MAE, collection, sub_collection = NA)
+path_proj(MAE, collection, sub_collection)
 }
 \arguments{
-\item{MAE}{MultiAssayExperiment object, containing at least 1 gene expression assay}
+\item{MAE}{MultiAssayExperiment having at least 1 gene expression assay}
 
 \item{collection}{User-specified MSigDB collection}
 
-\item{sub-collection}{Optional, user-specified MSigDB sub-collection}
+\item{sub_collection}{Optional, user-specified MSigDB sub-collection}
 }
 \value{
-SummarizedExperiment object containing ssGSEA scores of selected gene sets
+SummarizedExperiment containing ssGSEA scores of selected gene sets
 }
 \description{
 Pathway projection using GSVA
