@@ -19,8 +19,10 @@
 #' 
 #' p <- enrich_cors(results$summary, group, db) # Run enrichment
 #' p
+#' 
 #' @import hypeR
 #' @import dplyr
+#' @importFrom ggplot2 theme
 #' 
 #' @export
 
