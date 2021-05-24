@@ -1,0 +1,53 @@
+---
+title: "Correlations"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Correlation Matrix
+
+Users can perform a correlation analyses between any two of the assays found
+in the uploaded MultiAssayExperiment. Users can choose which two assays to
+correlate with each other, including an assay with itself, along with the
+associated significance criteria of interest. This page will then calculate the
+significant correlations between the two assays, and plot them on a heatmap.
+
+Instructions:
+
+* Select assays to correlate
+  * if microbiome assays are selected, make sure to also select a taxonomic
+  level
+  
+* Optional: adjust correlation parameters to include more / less correlations.
+These parameters include:
+  * p-value correction method. Default is set to bonferroni
+  * Significance threshold. Default is set to `0.05`.
+  * `no.sig`: Minimum number of significantly correlated terms. Default is
+  set to `1`.
+
+
+Running time:
+
+* Two small (<300 rows) assays: 0.52s
+  * Heatmap takes ~4s to render
+* One small (<300 rows) assay and one large (>10,000 rows) assay: 4.78s
+  * Heatmap takes ~30s to render
+* Two large (>10,000 rows) assays: 16.8min
+  * Heatmaply may not render
+  * this time can be dramatically reduced by increasing the `no.sig` parameter.
+  By default it is set at 1, but for larger assays this can quickly become
+  redundant.
+*Note:* heatmaply will not be able to display the correlation matrix if
+it is too large. If a user wants to visualize the correlation matrix, we 
+suggest using more conservative thresholds to restrict its size.
+
+### Enrichment
+
+Furthermore, if one of the assays selected contains gene expression values, 
+then the user can also perform an enrichment analysis. The correlation analysis
+will yield groups of genes for which the expression levels are significantly
+correlated with those of another assay. The user can then select one of these gene groups and perform an enrichment analysis on them against their desired MSigDB 
+database. 
