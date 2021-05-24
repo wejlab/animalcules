@@ -13,6 +13,10 @@ author:
   affiliation:
   - *1
   - *2
+- name: Saket Pandit 
+  affiliation:
+  - *1
+  - *2
 date: '`r format(Sys.Date(), "%B %e, %Y")`'
 package: animalcules
 output:
@@ -414,16 +418,16 @@ the (significant) correlation matrix
 
 ```{r}
 result <- corr_func(MAE, 
-                    asys=c("MicrobeGenetics", "hostExpression"), 
-                    tax_level = "genus",
+                    asys=c("MicrobeGenetics"), 
+                    tax_level = c("genus", "genus"),
                     correction = "bonferroni",
-                    no.sig=20,
-                    alpha=0.01)
+                    no.sig=12,
+                    alpha=0.001)
 # summary
 result$summary
 
-# correlation matrix
-result$cormat
+hm <- heatmaply::heatmaply_cor(result$cormat)
+hm
 ```
 
 
