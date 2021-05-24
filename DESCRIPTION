@@ -79,7 +79,8 @@ Imports:
     hypeR,
     heatmaply,
     zeallot,
-    MatrixGenerics
+    MatrixGenerics,
+    devtools
 Suggests:
     BiocStyle,
     knitr,
