@@ -79,10 +79,7 @@ observeEvent(input$do_corr_btn, {
 # Plotting heatmap
 observeEvent(input$do_plot_btn, {
   withBusyIndicatorServer("do_plot_btn", {
-    #h <- heatmap_cors(data$cormat, hide_ax = "bax")
-    h <- heatmaply::heatmaply_cor(data$cormat,
-                                  #showticklabels = c(FALSE, TRUE)
-                                  )
+    h <- heatmap_cors(data$cormat, hide_ax=NA)
     output$corr_plot <- renderPlotly({h})
   })
 })
