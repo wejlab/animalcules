@@ -58,11 +58,6 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
     c(cors, ps) %<-% calc_cors(df1, df2, no.samples)
     # print('performing signifcance tests...')
     sig_cors <- calc_sig(cors, ps, adjust = correction, no.sig, alpha)
-    # c(cors, ts) %<-% calc_cors(df1, df2, no.samples) ts <- abs(ts)
-    # print(correction) if(correction == 'bonferroni') { alpha <-
-    # 0.05/dim(ts)[2] t_crit <- abs(stats::qt(alpha, no.samples-2))
-    # sig_cors <- calc_sig(cors, ts, no.sig, alpha) } else { sig_cors <-
-    # calc_sig(cors, ts, no.sig, alpha) }
   }
   
   # Using multiple assays
@@ -109,17 +104,10 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
     c(cors, ps) %<-% calc_cors(df1, df2, no.samples)
     # print('performing signifcance tests...')
     sig_cors <- calc_sig(cors, ps, adjust = correction, no.sig, alpha)
-    # if (correction == 'bonferroni') { #print('Finding significant cors')
-    # alpha <- 0.05/dim(ts)[2] t_crit <- abs(stats::qt(alpha,
-    # no.samples-2)) sig_cors <- calc_sig(cors, ts, no.sig, t_crit) } else
-    # { sig_cors <- calc_sig(cors, ts, no.sig, t_crit) }
   }
   
-  # Summary Table (lists the top 10% of groups, by size) print('getting
-  # summary table...')
+  # Summary Table (lists the top 10% of groups, by size) 
+  #print('getting summary table...')
   s <- summary_cors(sig_cors)
-  
-  # Plotting Heat map print('Plotting heatmap') p <-
-  # heatmap_cors(sig_cors, hide_ax)
   return(list(summary = s, cormat = sig_cors))
 }
