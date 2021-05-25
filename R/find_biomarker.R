@@ -13,7 +13,6 @@
 #'
 #' @import MultiAssayExperiment
 #' @import glmnet
-#' @import DMwR
 #' @import caret
 #' @import plotROC
 #' @import forcats
@@ -66,7 +65,6 @@ find_biomarker <- function(MAE,
                                     repeats = nrepeats, 
                                     classProbs = TRUE, 
                                     summaryFunction = twoClassSummary, 
-                                    sampling = "smote", 
                                     savePredictions = TRUE)
     # choose different model
     if (model_name == "logistic regression") {

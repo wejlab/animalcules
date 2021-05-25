@@ -50,7 +50,6 @@ Imports:
     lattice,
     glmnet,
     tsne,
-    DMwR,
     plotROC,
     DT,
     reactable,
@@ -74,8 +73,6 @@ biocViews:
     Metagenomics,
     Coverage,
     Visualization
-Remotes:  
-    cran/DMwR
 VignetteBuilder: knitr
 URL: https://github.com/compbiomed/animalcules
 BugReports: https://github.com/compbiomed/animalcules/issues
