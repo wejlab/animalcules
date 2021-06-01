@@ -51,8 +51,8 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
         counts_to_logcpm()
     }
     # print('Getting dfs') Getting rid of rows with 0
-    df1 <- df1[rowMeans(df1) > 0, ]
-    df2 <- df2[rowMeans(df2) > 0, ]
+    df1 <- df1[rowMeans(df1) >= 1, ]
+    df2 <- df2[rowMeans(df2) >= 1, ]
     
     # Calculating correlations + p-values print('Calculating correlations')
     c(cors, ps) %<-% calc_cors(df1, df2, no.samples)
@@ -81,7 +81,7 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
       df1 <- df1 %>%
         counts_to_logcpm()
     }
-    df1 <- df1[rowMeans(df1) > 0, ]
+    df1 <- df1[rowMeans(df1) >= 1, ]
     
     # assay 2
     asy2 <- subMAE[[asys[2]]]
@@ -98,7 +98,7 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
       df2 <- df2 %>%
         counts_to_logcpm()
     }
-    df2 <- df2[rowMeans(df2) > 0, ]  # genes with non-zero expression
+    df2 <- df2[rowMeans(df2) >= 1, ]  # genes with non-zero expression
     
     # Correlations print('Calculating correlations...')
     c(cors, ps) %<-% calc_cors(df1, df2, no.samples)
