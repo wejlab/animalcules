@@ -23,7 +23,7 @@
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
 #' p <- find_biomarker(toy_data,
-#'                     tax_level='genus',
+#'                     tax_level='family',
 #'                     input_select_target_biomarker=c('DISEASE'),
 #'                     nfolds = 3,
 #'                     nrepeats = 3,
