@@ -46,35 +46,35 @@ ui <- navbarPage(
   source(file.path("ui", "ui_01_upload.R"),  local = TRUE)$value,
   tabPanel("Microbial Abundance Workflow",
            tabsetPanel(
-             source(file.path("ui", "ui_02_filter.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_03_relabu.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_04_diversity.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_05_dimred.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_06_differential.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_07_biomarker.R"),  local = TRUE)$value
+             source(file.path("ui", "microbialWorkflow", "ui_02_filter.R"),  local = TRUE)$value,
+             source(file.path("ui", "microbialWorkflow", "ui_03_relabu.R"),  local = TRUE)$value,
+             source(file.path("ui", "microbialWorkflow", "ui_04_diversity.R"),  local = TRUE)$value,
+             source(file.path("ui", "microbialWorkflow", "ui_05_dimred.R"),  local = TRUE)$value,
+             source(file.path("ui", "microbialWorkflow", "ui_06_differential.R"),  local = TRUE)$value,
+             source(file.path("ui", "microbialWorkflow", "ui_07_biomarker.R"),  local = TRUE)$value
              )),
   tabPanel("Host Expression Workflow",
            tabsetPanel(
              #source(file.path("ui", "ui_03_relabu.R"),  local = TRUE)$value,
-             source(file.path("ui", "ui_09_pathproj.R"), local = TRUE)$value
+             source(file.path("ui", "hostExpressionWorkflow", "ui_09_pathproj.R"), local = TRUE)$value
              )),
   tabPanel("Integrative Analysis Workflow",
            tabsetPanel(
-             source(file.path("ui", "ui_08_correlations.R"),  local = TRUE)$value
+             source(file.path("ui", "integrativeWorkflow", "ui_08_correlations.R"),  local = TRUE)$value
              ))
   )
 
 
 server <- function(input, output, session) {
   source(file.path("server", "server_01_upload.R"),  local = TRUE)$value
-  source(file.path("server", "server_02_filter.R"),  local = TRUE)$value
-  source(file.path("server", "server_03_relabu.R"),  local = TRUE)$value
-  source(file.path("server", "server_04_diversity.R"),  local = TRUE)$value
-  source(file.path("server", "server_05_dimred.R"),  local = TRUE)$value
-  source(file.path("server", "server_06_differential.R"),  local = TRUE)$value
-  source(file.path("server", "server_07_biomarker.R"),  local = TRUE)$value
-  source(file.path("server", "server_08_correlations.R"),  local = TRUE)$value
-  source(file.path("server", "server_09_pathproj.R"),  local = TRUE)$value
+  source(file.path("server", "microbialWorkflow", "server_02_filter.R"),  local = TRUE)$value
+  source(file.path("server", "microbialWorkflow", "server_03_relabu.R"),  local = TRUE)$value
+  source(file.path("server", "microbialWorkflow", "server_04_diversity.R"),  local = TRUE)$value
+  source(file.path("server", "microbialWorkflow", "server_05_dimred.R"),  local = TRUE)$value
+  source(file.path("server", "microbialWorkflow", "server_06_differential.R"),  local = TRUE)$value
+  source(file.path("server", "microbialWorkflow", "server_07_biomarker.R"),  local = TRUE)$value
+  source(file.path("server", "integrativeWorkflow", "server_08_correlations.R"),  local = TRUE)$value
+  source(file.path("server", "hostExpressionWorkflow", "server_09_pathproj.R"),  local = TRUE)$value
 }
 
 shinyApp(ui = ui, server = server)
