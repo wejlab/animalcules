@@ -344,15 +344,15 @@ result$plot
 A wrapper for conduction 2D and 3D t-distributed stochastic neighbor embedding.
 
 ```{r}
-result <- dimred_tsne(MAE,
-                      tax_level="phylum",
-                      color="age_s",
-                      shape="Disease",
-                      k="3D",
-                      initial_dims=30,
-                      perplexity=10,
-                      datatype="logcpm")
-result$plot
+# result <- dimred_tsne(MAE,
+#                       tax_level="phylum",
+#                       color="age_s",
+#                       shape="Disease",
+#                       k="3D",
+#                       initial_dims=30,
+#                       perplexity=10,
+#                       datatype="logcpm")
+# result$plot
 ```
 
 # Differential Analysis
