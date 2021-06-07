@@ -116,6 +116,9 @@ updateCovariate <- function(session){
     updateSelectInput(session, "da_condition_covariate_limma", choices = covariates)
     # Biomarker
     updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.two.levels)
+    
+    # Correlations
+    updateSelectInput(session, "select_correlation_condition", choices = covariates.two.levels)
 }
 
 # update taxonomy levels
