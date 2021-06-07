@@ -12,9 +12,11 @@ library(DT)
 library(msigdbr)
 library(GSVA)
 library(hypeR)
+library(zeallot)
 
-# Getting all the functions
-#devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Scripts/correlations_shinyapp/animalcules/R")
+
+# Load all the functions in /R folder
+devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Shiny/animalcules/R")
 
 # full source using local architecture
 source(file.path("utils", "helpers.R"),  local = TRUE)
@@ -61,8 +63,6 @@ ui <- navbarPage(
              source(file.path("ui", "ui_08_correlations.R"),  local = TRUE)$value
              ))
   )
-
-
 
 
 server <- function(input, output, session) {
