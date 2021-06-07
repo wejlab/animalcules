@@ -4,135 +4,146 @@ tabPanel("Correlation Analysis",
                     fluidPage(
                       sidebarLayout(
                         sidebarPanel(
-                          # Selecting which assays to run
                           selectInput("assay1", "Select first assay:",
-                                       choices = mae.assays
-                          ),
+                                      choices = mae.assays),
                           selectInput("assay2", "Select second assay:",
-                                       choices = mae.assays
-                          ),
+                                      choices = mae.assays),
                           conditionalPanel(
                             condition = 'input.assay1 == "MicrobeGenetics"',
                             selectInput("tax.level1", "Select taxonomic level for assay 1:",
-                                         choices = tax.name, selected = tax.default)
-                            ),
+                              choices = tax.name, selected = tax.default)
+                          ),
                           conditionalPanel(
                             condition = 'input.assay2 == "MicrobeGenetics"',
                             selectInput("tax.level2", "Select taxonomic level for assay 2:",
-                                         choices = tax.name, selected = tax.default)
-                            ),
-                          checkboxInput("advOptions", "Show Advanced Options",
-                                        FALSE
+                              choices = tax.name, selected = tax.default)
+                          ),
+                          radioButtons(
+                            "separate", "Separate by condition?",
+                            choices = c("Yes", "No"), selected = "No"
                           ),
                           conditionalPanel(
-                            condition = 'input.advOptions == true',
-                            #conditionalPanel(
-                              #condition = 'input.assay2 == "hostExpression" | input.assay2 == "hervAbundance"',
-                              sliderInput('no.sig', "Select correlation group size \n(min is 1, max is 150):",
-                                          value = 1, min = 1, max = 150, step = 10),
-                            #),
-                            selectInput("correction", "Select p-value correction method",
-                                        choices = stats::p.adjust.methods,
-                                        selected =stats::p.adjust.methods[4]),
-                            numericInput("alpha", "Select significance threshold",
-                                        value = 0.05, min = 0.001, max = 0.1, step=0.001)
-                            ),
-                          checkboxInput("adv_plot_options", "Advanced plot options", value = FALSE),
-                          conditionalPanel(condition = "input.adv_plot_options == true",
-                                           sliderInput("corr_plot_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
-                                           sliderInput("corr_plot_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
+                            condition = 'input.separate == "Yes"',
+                            selectInput("select_correlation_condition", "Select condition:", 
+                                        choices = covariates.two.levels)
                           ),
-                            # radioButtons("axis_lab", "Choose axis labels to hide:",
-                            #              choices = c("None selected" = "na",
-                            #                          "Hide y axis labels" = "yax",
-                            #                          "Hide x axis labels" = "xax",
-                            #                          "Hide both" = "bax"))
-                          # Button to run the correlation
+                          
+                          checkboxInput("advOptions", "Advanced Correlation Parameters",
+                                        FALSE),
+                          
+                          conditionalPanel(
+                            condition = 'input.advOptions == true',
+                            numericInput('no.sig', "Select minimum correlation group size:",
+                              value = 1, min = 1, max = 600, step = 1),
+                            selectInput("correction", "Select p-value correction method",
+                              choices = stats::p.adjust.methods, selected = stats::p.adjust.methods[4]),
+                            numericInput("alpha", "Select significance threshold",
+                              value = 0.05, min = 0.001, max = 0.1, step = 0.001)
+                          ),
+                          
+                          checkboxInput("adv_plot_options", "Plot Display Options", 
+                                        value = FALSE),
+                          
+                          conditionalPanel(condition = "input.adv_plot_options == true",
+                            sliderInput("corr_plot_height", "Plot Height",
+                              400, 1200, value = 600, step = 50, post = "px"),
+                            sliderInput("corr_plot_width", "Plot Width",
+                              400, 1200, value = 800, step = 50, post = "px")
+                          ),
+                          
                           withBusyIndicatorUI(
                             actionButton("do_corr_btn", "Run correlation analysis", class = "btn-primary")
                             ),
                           withBusyIndicatorUI(
                             actionButton("do_plot_btn", "Plot heatmap")
-                          )
-                          ),
-                        
-                    mainPanel(
-                      # Display the results
-                      fluidRow(
-                        column(12,
-                               dataTableOutput("corr_summary"))
+                            )
                         ),
-                      fluidRow(
-                        column(12,
-                               uiOutput("dynamic_corr_plot"))
-                      )
-                          # tabsetPanel(
-                          #   tabPanel("Data Summary", dataTableOutput("corr_summary")),
-                          #   tabPanel("Heat map", plotlyOutput("corr_plot",
-                          #                                     height = "800px"))
-                          # )
+                        mainPanel(
+                          conditionalPanel(condition = "input.separate == 'No'",
+                                           fluidRow(
+                                             column(12, dataTableOutput("corr_summary"))
+                                             ),
+                                           fluidRow(
+                                             column(12, uiOutput("dynamic_corr_plot"))
+                                             )
+                                           ),
+                          conditionalPanel(condition = "input.separate == 'Yes'",
+                                           fluidRow(
+                                             column(5, dataTableOutput("corr_summary1")),
+                                             column(7, uiOutput("dynamic_corr_plot1"))
+                                             ),
+                                           fluidRow(
+                                             column(5, dataTableOutput("corr_summary2")),
+                                             column(7, uiOutput("dynamic_corr_plot2"))
+                                             )
+                                           )
+                          )
                         )
-                    )
-                    )
+                      )
                     ),
-#            tabPanel("Heatmap",
-#              fluidPage(
-#                sidebarLayout(
-#                  sidebarPanel(
-#                    withBusyIndicatorUI(
-#                      actionButton("do_plot_btn", "Plot heatmap")
-#                      ),
-#                    checkboxInput("adv_plot_options", "Advanced plot options", value = FALSE),
-#                    conditionalPanel(condition = "input.adv_plot_options == true",
-#                                     sliderInput("corr_plot_height", "Plot Height", 400, 1200, value=600, step=50, post="px"),
-#                                     sliderInput("corr_plot_width", "Plot Width", 400, 1200, value=800, step=50, post="px")
-#                    )
-#                                     
-#                  ),
-#                  mainPanel(
-# #                   fluidRow(
-# #                     column(12,
-#                             #plotlyOutput("corr_plot")
-#                    uiOutput("dynamic_corr_plot"),
-#                    width=9
-# #                     )
-# #                   )
-#                  )
-#                )
-#              )
-#            ),
-           tabPanel("Enrichment Analysis",
+           tabPanel("Enrichment",
                     fluidPage(
                       sidebarLayout(
                         sidebarPanel(
-                          uiOutput("gList"),
+                          conditionalPanel(condition = 'input.separate == "No"',
+                                           uiOutput("gList_enrich_single")
+                                           ),
+                          conditionalPanel(condition = 'input.separate == "Yes"',
+                                           uiOutput("gList_enrich_split1"),
+                                           uiOutput("gList_enrich_split2")
+                                           ),
                           selectInput("db", "Select database for enrichR:",
-                                      dbList),
+                                      dbList
+                                      ),
                           withBusyIndicatorUI(
                             actionButton("do_enrich_btn", "Calculate Enrichment", class = "btn-primary")
-                            ), 
                           ),
+                        ),
                         mainPanel(
-                          plotlyOutput("enrichmentTable")
+                          conditionalPanel(condition = 'input.separate == "No"',
+                                           fluidRow(
+                                             column(12, plotlyOutput("enrichmentTable_single"))
+                                             )
+                                           ),
+                          conditionalPanel(condition = 'input.separate == "Yes"',
+                                           fluidRow(column(12, plotlyOutput("enrichmentTable_split1"))),
+                                           fluidRow(column(12, plotlyOutput("enrichmentTable_split2")))
+                                           )
+                          )
+                        )
+                      )
+                    ),
+           tabPanel("Co-Occurence Networks",
+                    fluidPage(
+                      sidebarLayout(
+                        sidebarPanel(
+                          conditionalPanel(condition = "input.separate == 'No'",
+                                           uiOutput("gList_network_single")
+                                           ),
+                          conditionalPanel(condition = "input.separate == 'Yes'",
+                                           uiOutput("gList_split1"),
+                                           uiOutput("gList_split2")
+                                           ),
+                          withBusyIndicatorUI(actionButton("do_network_btn", "Plot Network"))
+                        ),
+                        mainPanel(
+                          conditionalPanel(condition = "input.separate == 'No'",
+                                           fluidRow(
+                                             column(12, 
+                                                    plotOutput("corrNetwork_single"))
+                                             )
+                                           ),
+                          conditionalPanel(condition = "input.separate == 'Yes'",
+                                           fluidRow(
+                                             column(6,
+                                                    plotOutput("corrNetwork_split1")),
+                                             column(6,
+                                                    plotOutput("corrNetwork_split2"))
+                                             )
+                                           )
                           )
                         )
                       )
                     )
            )
          )
-                    
-                    # fluidPage(
-                    #   sidebarLayout(
-                    #     sidebarPanel(
-                    #       uiOutput("mList"),
-                    #       selectInput("db", "Select database for enrichR:",
-                    #                   dbList),
-                    #       withBusyIndicatorUI(
-                    #         actionButton("enrich", "Run enrichment analysis")
-                    #         ),
-                    #     ),
-                        # mainPanel(
-                        #   dataTableOutput("enrichmentTable")
-                        # )
-                    #   )
-                    # ))
