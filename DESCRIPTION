@@ -80,7 +80,8 @@ Imports:
     heatmaply,
     zeallot,
     MatrixGenerics,
-    devtools
+    devtools,
+    qgraph
 Suggests:
     BiocStyle,
     knitr,

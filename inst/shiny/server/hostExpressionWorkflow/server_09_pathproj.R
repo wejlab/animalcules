@@ -26,8 +26,8 @@ do_path_proj <- eventReactive(input$path_proj_btn, {
                                               collection = input$collect,
                                               sub_collection = NA))
     } else {
-      type(input$subC)
-      browser()
+      # type(input$subC)
+      # browser()
       gsva_data <- suppressWarnings(path_proj(MAE = vals$MAE,
                                               collection = input$collect,
                                               sub_collection = input$subC)) 

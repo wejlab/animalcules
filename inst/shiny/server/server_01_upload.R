@@ -103,6 +103,16 @@ updateCovariate <- function(session){
     updateSelectInput(session, "dimred_umap_shape", choices = c("None", covariates.colorbar))
     updateSelectInput(session, "dimred_tsne_color", choices = covariates)
     updateSelectInput(session, "dimred_tsne_shape", choices = c("None", covariates.colorbar))
+    
+    # Dimredg
+    updateSelectInput(session, "dimredg_pca_color", choices = covariates)
+    updateSelectInput(session, "dimredg_pca_shape", choices = c("None", covariates.colorbar))
+    # updateSelectInput(session, "dimredg_pcoa_color", choices = covariates)
+    # updateSelectInput(session, "dimredg_pcoa_shape", choices = c("None", covariates.colorbar))
+    updateSelectInput(session, "dimredg_umap_color", choices = covariates)
+    updateSelectInput(session, "dimredg_umap_shape", choices = c("None", covariates.colorbar))
+    updateSelectInput(session, "dimredg_tsne_color", choices = covariates)
+    updateSelectInput(session, "dimredg_tsne_shape", choices = c("None", covariates.colorbar))
 
     # Diversity
     updateSelectInput(session, "select_alpha_div_condition", choices = covariates)

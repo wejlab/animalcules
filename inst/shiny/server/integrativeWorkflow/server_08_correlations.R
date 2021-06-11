@@ -209,7 +209,7 @@ observeEvent(input$do_enrich_btn, {
       p_single <- enrich_cors(corr_results = data$summary_table, 
                               group_selected = input$enrichOTU_single, 
                               geneset_db = input$db)
-      output$enrichmentTable_single <- renderPlotly({p})
+      output$enrichmentTable_single <- renderPlotly({p_single})
     }) 
   } else if (input$separate == "Yes") {
     withBusyIndicatorServer("do_enrich_btn", {
@@ -231,7 +231,8 @@ observeEvent(input$do_network_btn, {
   if (input$separate == "No"){
     withBusyIndicatorServer("do_network_btn", {
       output$corrNetwork_single <- renderPlot({
-        suppressWarnings(corr_network(counts_data = assay(vals$MAE[[input$assay2]]), 
+        suppressWarnings(corr_network(MAE = vals$MAE,
+                                      assay = input$assay2,
                                       cormat = data$cormat, 
                                       group = input$networkOTU_single))
       })
@@ -240,14 +241,16 @@ observeEvent(input$do_network_btn, {
     withBusyIndicatorServer("do_network_btn", {
       # First network
       output$corrNetwork_split1 <- renderPlot({
-        suppressWarnings(corr_network(counts_data = assay(vals$MAE[[input$assay2]]), 
+        suppressWarnings(corr_network(MAE = vals$MAE,
+                                      assay = input$assay2,
                                       cormat = data_split$cormat1, 
                                       group = input$networkOTU_split1))
       })
       
       # Second network
       output$corrNetwork_split2 <- renderPlot({
-        suppressWarnings(corr_network(counts_data = assay(vals$MAE[[input$assay2]]), 
+        suppressWarnings(corr_network(MAE = vals$MAE,
+                                      assay = input$assay2,
                                       cormat = data_split$cormat2, 
                                       group = input$networkOTU_split2))
       })

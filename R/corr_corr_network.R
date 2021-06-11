@@ -10,18 +10,14 @@
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
 #' results <- corr_func(toy_data, 
-#'                      asys = c('MicrobeGenetics', 'HostGenetics'),
+#'                      asys = c('MicrobeGenetics', 'hostExpression'),
 #'                      tax_level="genus")
-#'                      
-#' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
-#' toy_data <- readRDS(data_dir)
-#' results <- corr_func(toy_data,
-#'                      asys = c('MicrobeGenetics', 'HostGenetics'),
-#'                      tax_level="genus")
-#' 
 #' group <- 'Actinomyces' # microbe from results$summary
-#' 
-#' fig <- corr_network(MAE = toy_data, assay = "HostGenetics", cormat = results$cormat, group = group)
+#' fig <- corr_network(MAE = toy_data, 
+#'                     assay = "hostExpression", 
+#'                     cormat = results$cormat, 
+#'                     group = group)
+#' fig
 #' 
 #' @import qgraph
 #' 
@@ -34,12 +30,12 @@ corr_network <- function(MAE, assay, cormat, group) {
   sub_data <- subset(counts_table, (rownames(counts_table) %in% el)) # extracting genes from hostExpression
   sub_data <- counts_to_logcpm(sub_data)
   sub_data <- sub_data[rowMeans(sub_data)>=1,]
-  datacor_s <- cor(t(sub_data), method = "spearman")
-  fig <- qgraph(datacor_s, 
-                graph = "cor", 
-                layout = "spring", 
-                vsize = 5, 
-                theme = "colorblind"
+  datacor_s <- stats::cor(t(sub_data), method = "spearman")
+  fig <- qgraph::qgraph(datacor_s, 
+                        graph = "cor", 
+                        layout = "spring", 
+                        vsize = 3, 
+                        theme = "colorblind"
   )
   return(fig)
 }

@@ -7,7 +7,7 @@
 #' library(SummarizedExperiment)
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
-#' results <- rd_MAE(toy_data, c("MicrobeGenetics", "HostGenetics"))
+#' results <- rd_MAE(toy_data, c("MicrobeGenetics", "hostExpression"))
 #' 
 #' results[[1]] # subsetted MultiAssayExperiment
 #' results[[2]] # total number of samples

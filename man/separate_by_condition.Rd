@@ -18,6 +18,7 @@ Two MultiAssayExperiment objects, split apart from the original
 Splits a MultiAssayExperiment object according to its colData
 }
 \examples{
+library(MultiAssayExperiment)
 data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 toy_data <- readRDS(data_dir)
 colData(toy_data) # "DISEASE" is a condition with 2 levels

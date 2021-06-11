@@ -417,12 +417,12 @@ metabolome, etc. A summary of the correlation analysis is produced, alongside
 the (significant) correlation matrix
 
 ```{r}
-result <- corr_func(MAE, 
+result <- corr_func(MAE,
                     asys=c("MicrobeGenetics"), 
                     tax_level = c("genus", "genus"),
                     correction = "bonferroni",
-                    no.sig=12,
-                    alpha=0.001)
+                    no.sig=1,
+                    alpha=0.01)
 # summary
 result$summary
 

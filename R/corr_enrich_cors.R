@@ -10,7 +10,7 @@
 #' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
 #' toy_data <- readRDS(data_dir)
 #' results <- corr_func(toy_data, 
-#'                      asys = c('MicrobeGenetics', 'HostGenetics'),
+#'                      asys = c('MicrobeGenetics', 'hostExpression'),
 #'                      tax_level="genus")
 #'                      
 #' group <- 'Acinetobacter' # microbe from results
