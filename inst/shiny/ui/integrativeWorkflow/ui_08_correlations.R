@@ -1,5 +1,5 @@
 tabPanel("Correlation Analysis",
-         tabsetPanel(
+         tabsetPanel(id = "corr",
            tabPanel("Correlating Assays",
                     fluidPage(
                       sidebarLayout(
@@ -80,70 +80,70 @@ tabPanel("Correlation Analysis",
                           )
                         )
                       )
-                    ),
-           tabPanel("Enrichment",
-                    fluidPage(
-                      sidebarLayout(
-                        sidebarPanel(
-                          conditionalPanel(condition = 'input.separate == "No"',
-                                           uiOutput("gList_enrich_single")
-                                           ),
-                          conditionalPanel(condition = 'input.separate == "Yes"',
-                                           uiOutput("gList_enrich_split1"),
-                                           uiOutput("gList_enrich_split2")
-                                           ),
-                          selectInput("db", "Select database for enrichR:",
-                                      dbList
-                                      ),
-                          withBusyIndicatorUI(
-                            actionButton("do_enrich_btn", "Calculate Enrichment", class = "btn-primary")
-                          ),
-                        ),
-                        mainPanel(
-                          conditionalPanel(condition = 'input.separate == "No"',
-                                           fluidRow(
-                                             column(12, plotlyOutput("enrichmentTable_single"))
-                                             )
-                                           ),
-                          conditionalPanel(condition = 'input.separate == "Yes"',
-                                           fluidRow(column(12, plotlyOutput("enrichmentTable_split1"))),
-                                           fluidRow(column(12, plotlyOutput("enrichmentTable_split2")))
-                                           )
-                          )
-                        )
-                      )
-                    ),
-           tabPanel("Co-Occurence Networks",
-                    fluidPage(
-                      sidebarLayout(
-                        sidebarPanel(
-                          conditionalPanel(condition = "input.separate == 'No'",
-                                           uiOutput("gList_network_single")
-                                           ),
-                          conditionalPanel(condition = "input.separate == 'Yes'",
-                                           uiOutput("gList_split1"),
-                                           uiOutput("gList_split2")
-                                           ),
-                          withBusyIndicatorUI(actionButton("do_network_btn", "Plot Network"))
-                        ),
-                        mainPanel(
-                          conditionalPanel(condition = "input.separate == 'No'",
-                                           fluidRow(
-                                             column(12, 
-                                                    plotOutput("corrNetwork_single"))
-                                             )
-                                           ),
-                          conditionalPanel(condition = "input.separate == 'Yes'",
-                                           fluidRow(
-                                             column(6,
-                                                    plotOutput("corrNetwork_split1")),
-                                             column(6,
-                                                    plotOutput("corrNetwork_split2"))
-                                             )
-                                           )
-                          )
-                        )
-                      )
-                    )
+                    )#,
+           # tabPanel("Enrichment",
+           #          fluidPage(
+           #            sidebarLayout(
+           #              sidebarPanel(
+           #                conditionalPanel(condition = 'input.separate == "No"',
+           #                                 uiOutput("gList_enrich_single")
+           #                                 ),
+           #                conditionalPanel(condition = 'input.separate == "Yes"',
+           #                                 uiOutput("gList_enrich_split1"),
+           #                                 uiOutput("gList_enrich_split2")
+           #                                 ),
+           #                selectInput("db", "Select database for enrichR:",
+           #                            dbList
+           #                            ),
+           #                withBusyIndicatorUI(
+           #                  actionButton("do_enrich_btn", "Calculate Enrichment", class = "btn-primary")
+           #                ),
+           #              ),
+           #              mainPanel(
+           #                conditionalPanel(condition = 'input.separate == "No"',
+           #                                 fluidRow(
+           #                                   column(12, plotlyOutput("enrichmentTable_single"))
+           #                                   )
+           #                                 ),
+           #                conditionalPanel(condition = 'input.separate == "Yes"',
+           #                                 fluidRow(column(12, plotlyOutput("enrichmentTable_split1"))),
+           #                                 fluidRow(column(12, plotlyOutput("enrichmentTable_split2")))
+           #                                 )
+           #                )
+           #              )
+           #            )
+                    #),
+           # tabPanel("Co-Occurence Networks",
+           #          fluidPage(
+           #            sidebarLayout(
+           #              sidebarPanel(
+           #                conditionalPanel(condition = "input.separate == 'No'",
+           #                                 uiOutput("gList_network_single")
+           #                                 ),
+           #                conditionalPanel(condition = "input.separate == 'Yes'",
+           #                                 uiOutput("gList_split1"),
+           #                                 uiOutput("gList_split2")
+           #                                 ),
+           #                withBusyIndicatorUI(actionButton("do_network_btn", "Plot Network"))
+           #              ),
+           #              mainPanel(
+           #                conditionalPanel(condition = "input.separate == 'No'",
+           #                                 fluidRow(
+           #                                   column(12, 
+           #                                          plotOutput("corrNetwork_single"))
+           #                                   )
+           #                                 ),
+           #                conditionalPanel(condition = "input.separate == 'Yes'",
+           #                                 fluidRow(
+           #                                   column(6,
+           #                                          plotOutput("corrNetwork_split1")),
+           #                                   column(6,
+           #                                          plotOutput("corrNetwork_split2"))
+           #                                   )
+           #                                 )
+           #                )
+           #              )
+           #            )
+           #          )
            )
          )
