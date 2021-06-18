@@ -9,10 +9,13 @@ output$tab <- renderUI({
 # reactive values shared thorough the shiny app
 data_dir = system.file("extdata/MAE.rds", package = "animalcules")
 vals <- reactiveValues(
-    MAE = readRDS(data_dir),
-    MAE_backup = MAE
+    # MAE = readRDS(data_dir),
+    # MAE_backup = MAE
+  MAE = NULL,
+  MAE_backup = NULL
 )
 
+#browser()
 observeEvent(input$upload_example,{
   withBusyIndicatorServer("upload_example", {
     if (input$example_data == "toy"){
@@ -33,11 +36,12 @@ observeEvent(input$upload_example,{
 })
 
 update_inputs <- function(session) {
-    updateCovariate(session)
-    updateSample(session)
-    updateTaxLevel(session)
-    updateOrganisms(session)
-    updateAssays(session)
+  updateCovariate(session)
+  updateSample(session)
+  updateTaxLevel(session)
+  updateOrganisms(session)
+  updateAssays(session)
+  updateTabs(session)
 }
 
 updateCovariate <- function(session){
@@ -191,12 +195,74 @@ updateOrganisms <- function(session){
 
 # update Assays
 updateAssays <- function(session){
-  MAE <- vals$MAE
-  mae.assays <- names(MAE)
-  # Correlations
+  if(exists(mae.assays)==T){
+    removeTab(inputId = "Animalcules",
+              target = "Microbial Abundance Workflow")
+    removeTab(inputId = "Animalcules",
+              target = "Host Expression Workflow")
+    removeTab(inputId = "Animalcules",
+              target = "Integrative Analysis Workflow")
+  }
+  mae.assays <- names(vals$MAE)
+  
+  # Input assays
   updateSelectInput(session, "assay1", choices = mae.assays)
   updateSelectInput(session, "assay2", choices = mae.assays)
 }
+
+updateTabs <- function(session){
+  if(exists("mae.assays")==T){
+    removeTab(inputId = "Animalcules",
+              target = "Microbial Abundance Workflow")
+    removeTab(inputId = "Animalcules",
+              target = "Host Expression Workflow")
+    removeTab(inputId = "Animalcules",
+              target = "Integrative Analysis Workflow")
+  }
+  mae.assays <- names(vals$MAE)
+  # Microbial workflow
+  
+  if("MicrobeGenetics" %in% mae.assays){
+    appendTab(inputId = "Animalcules",
+              tabPanel("Microbial Abundance Workflow",
+                       tabsetPanel(#id = "mab",
+                         source(file.path("ui", "microbialWorkflow", "ui_02_filter.R"),  local = TRUE)$value,
+                         source(file.path("ui", "microbialWorkflow", "ui_03_relabu.R"),  local = TRUE)$value,
+                         source(file.path("ui", "microbialWorkflow", "ui_04_diversity.R"),  local = TRUE)$value,
+                         source(file.path("ui", "microbialWorkflow", "ui_05_dimred.R"),  local = TRUE)$value,
+                         source(file.path("ui", "microbialWorkflow", "ui_06_differential.R"),  local = TRUE)$value,
+                         source(file.path("ui", "microbialWorkflow", "ui_07_biomarker.R"),  local = TRUE)$value
+                       )),
+    )
+  }
+  
+  # Host expression workflow
+  
+  if("hostExpression" %in% mae.assays){
+    appendTab(inputId = "Animalcules",
+              tabPanel("Host Expression Workflow",
+                       tabsetPanel(
+                         source(file.path("ui", "hostExpressionWorkflow", "ui_09_pathproj.R"), local = TRUE)$value,
+                         source(file.path("ui", "hostExpressionWorkflow", "ui_10_dimredg.R"), local = TRUE)$value
+                       )
+              )
+    )
+  }
+  
+  # Integrative workflow
+  
+  if(length(mae.assays)>1){
+    appendTab(inputId = "Animalcules",
+              tabPanel("Integrative Analysis Workflow",
+                       tabsetPanel(
+                         source(file.path("ui", "integrativeWorkflow", "ui_08_correlations.R"),  local = TRUE)$value
+                       )
+              )
+    )
+  }
+  
+}
+
 
 observeEvent(input$upload_animalcules,{
   withBusyIndicatorServer("upload_animalcules", {
