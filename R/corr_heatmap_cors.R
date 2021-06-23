@@ -1,8 +1,8 @@
 #' Plot heatmap given a correlation matrix
 #' 
-#' @param cormat Correlation matrix with significant correlations
-#' @param hide_ax Which axis to hide
-#' 
+#' @param rows_selected Rows to plot as selected by the user 
+#' @param summary Summary table from `corr_func`
+#' @param cormat Correlation matrix from `corr_func`
 #' @return Clustered heatmap, visualizing the correlations
 #' 
 #' @examples 
@@ -16,7 +16,9 @@
 #'                      alpha=0.1,
 #'                      no.sig=1
 #'                      )
-#' p <- heatmap_cors(results$cormat, hide_ax=NA)
+#'                      
+#' rows_selected <- c(1, 2, 3)                      
+#' p <- heatmap_cors(rows_selected, results$summary, results$cormat)
 #' p
 #' 
 #' @import heatmaply
@@ -24,19 +26,13 @@
 #' @export
 
 
-heatmap_cors <- function(cormat, hide_ax){
-  if(is.na(hide_ax)){
-    p <- heatmaply_cor(cormat)
-  }else if(hide_ax == "xax") {
-    p <- heatmaply_cor(cormat,
-                       showticklabels = c(FALSE, TRUE))
-  } else if(hide_ax == "yax"){
-    p <- heatmaply_cor(cormat,
-                       showticklabels = c(TRUE, FALSE))
-  } else if(hide_ax == "bax"){
-    p <- heatmaply_cor(cormat,
-                       plot_method="plotly",
-                       showticklabels = c(FALSE, FALSE))
+heatmap_cors <- function(rows_selected, summary, cormat){
+  sub_cormat <- subset_cormat_by_row(rows_selected, summary, cormat)
+  if(nrow(sub_cormat) == 1){
+    p <- heatmaply::heatmaply_cor(sub_cormat,
+                                  Rowv = FALSE)
+  } else {
+    p <- heatmaply::heatmaply_cor(sub_cormat)
   }
   return(p)
 }

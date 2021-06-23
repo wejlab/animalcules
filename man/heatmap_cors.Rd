@@ -4,12 +4,14 @@
 \alias{heatmap_cors}
 \title{Plot heatmap given a correlation matrix}
 \usage{
-heatmap_cors(cormat, hide_ax)
+heatmap_cors(rows_selected, summary, cormat)
 }
 \arguments{
-\item{cormat}{Correlation matrix with significant correlations}
+\item{rows_selected}{Rows to plot as selected by the user}
 
-\item{hide_ax}{Which axis to hide}
+\item{summary}{Summary table from `corr_func`}
+
+\item{cormat}{Correlation matrix from `corr_func`}
 }
 \value{
 Clustered heatmap, visualizing the correlations
@@ -28,7 +30,9 @@ results <- corr_func(MAE = toy_data,
                      alpha=0.1,
                      no.sig=1
                      )
-p <- heatmap_cors(results$cormat, hide_ax=NA)
+                     
+rows_selected <- c(1, 2, 3)                      
+p <- heatmap_cors(rows_selected, results$summary, results$cormat)
 p
 
 }
