@@ -61,7 +61,10 @@ tabPanel("Correlation Analysis",
                         mainPanel(
                           conditionalPanel(condition = "input.separate == 'No'",
                                            fluidRow(
-                                             column(12, dataTableOutput("corr_summary"))
+                                             column(12, dataTableOutput("corr_summary")),
+                                             checkboxInput("dt_sel", "Select / Deselect all"),
+                                             h4("Selected rows:"),
+                                             verbatimTextOutput("selected_rows", TRUE)
                                              ),
                                            fluidRow(
                                              column(12, uiOutput("dynamic_corr_plot"))
