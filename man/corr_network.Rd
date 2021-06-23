@@ -4,7 +4,15 @@
 \alias{corr_network}
 \title{Create a co-occurence network, given a counts table and correlation matrix}
 \usage{
-corr_network(MAE, assay, cormat, group)
+corr_network(
+  MAE,
+  assay,
+  cormat,
+  group,
+  tax_level = NA,
+  correction = c("sig", stats::p.adjust.methods),
+  alpha = 0.05
+)
 }
 \arguments{
 \item{MAE}{A MultiAssayExperiment object}
@@ -14,6 +22,12 @@ corr_network(MAE, assay, cormat, group)
 \item{cormat}{Correlation matrix produced by corr_func}
 
 \item{group}{Correlation group to produce network for}
+
+\item{tax_level}{Taxonomy level of consideration, if using a microbial abundance assay}
+
+\item{correction}{p-value correction method. If `"sig"` is selected, bonferroni corrections will be applied}
+
+\item{alpha}{Significance level. Default is set to 0.05}
 }
 \value{
 qgraph network of the co-occurences within the group selected

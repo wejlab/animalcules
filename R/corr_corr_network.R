@@ -4,6 +4,9 @@
 #' @param assay SummarizedExperiment of interest, within the MultiAssayExperiment
 #' @param cormat Correlation matrix produced by corr_func
 #' @param group Correlation group to produce network for
+#' @param tax_level Taxonomy level of consideration, if using a microbial abundance assay
+#' @param correction p-value correction method. If `"sig"` is selected, bonferroni corrections will be applied
+#' @param alpha Significance level. Default is set to 0.05
 #' @return qgraph network of the co-occurences within the group selected
 #' 
 #' @examples 
@@ -23,7 +26,9 @@
 #' 
 #' @export
 
-corr_network <- function(MAE, assay, cormat, group, tax_level = NA) {
+corr_network <- function(MAE, assay, cormat, group, tax_level = NA,
+                         correction = c("sig", stats::p.adjust.methods), 
+                         alpha = 0.05) {
   sumE <- MAE[[assay]]
   sam_table <- as.data.frame(colData(sumE)) # sample x condition
   counts_table <- as.data.frame(assays(sumE))[,rownames(sam_table)] # organism x sample
@@ -45,15 +50,26 @@ corr_network <- function(MAE, assay, cormat, group, tax_level = NA) {
   #print("Calculating correlations...")
   datacor_s <- cor(t(counts_table), method = "spearman")
   #print("Plotting network...")
-  fig <- qgraph(datacor_s, 
-                graph = "cor", 
-                layout = "spring", 
-                vsize = 5, 
-                theme = "colorblind"#,
-                #threshold = "sig",
-                #bonf = TRUE,
-                #sampleSize=nrow(sub_data),
-                #alpha=0.01
-  )
+  if(correction == "sig"){
+    fig <- qgraph(datacor_s, 
+                  graph = "cor", 
+                  layout = "spring", 
+                  vsize = 5, 
+                  theme = "colorblind",
+                  threshold = correction,
+                  bonf = TRUE,
+                  sampleSize=nrow(counts_table),
+                  alpha=0.01)
+  } else {
+    fig <- qgraph(datacor_s, 
+                  graph = "cor", 
+                  layout = "spring", 
+                  vsize = 5, 
+                  theme = "colorblind",
+                  threshold = correction,
+                  bonf = FALSE,
+                  sampleSize=nrow(counts_table),
+                  alpha=0.01)
+  }
   return(fig)
 }
