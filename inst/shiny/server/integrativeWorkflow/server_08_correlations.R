@@ -315,13 +315,17 @@ observeEvent(input$do_corr_btn, {
                                                 ),
                                conditionalPanel(condition = 'input.separate == "Yes"',
                                                 fluidRow(
-                                                  column(6, dataTableOutput("corr_summary_enrichment1")),
-                                                  column(6, dataTableOutput("corr_summary_enrichment2"))
-                                                ),
-                                                fluidRow(
-                                                  column(6, plotlyOutput("enrichmentTable_split1")),
-                                                  column(6, plotlyOutput("enrichmentTable_split2"))
+                                                  column(10, dataTableOutput("corr_summary_enrichment1"))
                                                   ),
+                                                fluidRow(
+                                                  column(12, plotlyOutput("enrichmentTable_split1"))
+                                                  ),
+                                                fluidRow(
+                                                  column(10, dataTableOutput("corr_summary_enrichment2"))
+                                                  ),
+                                                fluidRow(
+                                                  column(12, plotlyOutput("enrichmentTable_split2"))
+                                                  )
                                                 )
                                )
                              )
@@ -381,32 +385,11 @@ output$dynamic_corr_plot2 <- renderUI({
   plotlyOutput("corr_plot2", width=width, height=height)
 })
 
-# Enrichment Analysis
-observeEvent(input$do_enrich_btn, {
-  if (input$separate == "No") {
-    withBusyIndicatorServer("do_enrich_btn", {
-      p_single <- enrich_cors(corr_results = data$summary, 
-                              group_selected = data$summary[input$corr_summary_enrichment_rows_selected, 1], 
-                              geneset_db = input$db)
-      output$enrichmentTable_single <- renderPlotly({p_single})
-    }) 
-  } else if (input$separate == "Yes") {
-    withBusyIndicatorServer("do_enrich_btn", {
-      p_split1 <- enrich_cors(corr_results = data_split$summary1, 
-                              group_selected = input$enrichOTU_split1, 
-                              geneset_db = input$db)
-      output$enrichmentTable_split1 <- renderPlotly({p_split1})
-      
-      p_split2 <- enrich_cors(corr_results = data_split$summary2, 
-                              group_selected = input$enrichOTU_split2, 
-                              geneset_db = input$db)
-      output$enrichmentTable_split2 <- renderPlotly({p_split2})
-    })
-  }
-})
-
-# Network 
+## CO-OCCURENCE NETWORK ##
+# do_network_btn
 observeEvent(input$do_network_btn, {
+  
+  # Together
   if (input$separate == "No"){
     grp <- data$summary[input$corr_summary_network_rows_selected, 1]
     if (input$assay2 == "MicrobeGenetics") {
@@ -433,7 +416,8 @@ observeEvent(input$do_network_btn, {
         })
       })
     }
-    
+  
+  # Separated by condition  
   } else {
     withBusyIndicatorServer("do_network_btn", {
       # Condition 1:
@@ -498,6 +482,31 @@ observeEvent(input$do_network_btn, {
     })
   }
 })
+
+# Enrichment Analysis
+observeEvent(input$do_enrich_btn, {
+  if (input$separate == "No") {
+    withBusyIndicatorServer("do_enrich_btn", {
+      p_single <- enrich_cors(corr_results = data$summary, 
+                              group_selected = data$summary[input$corr_summary_enrichment_rows_selected, 1], 
+                              geneset_db = input$db)
+      output$enrichmentTable_single <- renderPlotly({p_single})
+    }) 
+  } else if (input$separate == "Yes") {
+    withBusyIndicatorServer("do_enrich_btn", {
+      p_split1 <- enrich_cors(corr_results = data_split$summary1, 
+                              group_selected = data_split$summary1[input$corr_summary_enrichment1_rows_selected, 1], 
+                              geneset_db = input$db)
+      output$enrichmentTable_split1 <- renderPlotly({p_split1})
+      
+      p_split2 <- enrich_cors(corr_results = data_split$summary2, 
+                              group_selected = data_split$summary2[input$corr_summary_enrichment2_rows_selected, 1], 
+                              geneset_db = input$db)
+      output$enrichmentTable_split2 <- renderPlotly({p_split2})
+    })
+  }
+})
+
 
 
 # do_corr <- eventReactive(input$do_plot_btn, {
