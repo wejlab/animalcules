@@ -19,9 +19,12 @@
 #' rows_selected <- c(1, 2, 3)
 #' 
 #' sub_cormat <- subset_cormat_by_row(rows_selected, results$summary, results$cormat)
+#' 
+#' @export
 
 
 subset_cormat_by_row <- function(rows_selected, summary, cormat){
+  rows_selected <- sort(rows_selected)
   n <- length(rows_selected)
   otu <- summary[rows_selected, 1]
   grp <- summary[rows_selected, 3]
