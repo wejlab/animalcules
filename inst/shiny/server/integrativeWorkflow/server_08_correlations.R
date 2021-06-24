@@ -48,7 +48,7 @@ observeEvent(input$do_corr_btn, {
       al <- input$alpha
     }
     
-    # corr_func: separate
+    # corr_func: single
     if(input$separate == "No"){
       result <- suppressWarnings(corr_func(MAE = vals$MAE,
                                            asys = as,
@@ -56,6 +56,9 @@ observeEvent(input$do_corr_btn, {
                                            no.sig = n,
                                            correction = c,
                                            alpha = al)) 
+      
+      ## RENDERING SUMMARY TABLE(S) ##
+      
       # Summary table --> Correlations tab
       output$corr_summary <- renderDataTable({DT::datatable(result$summary,
                                                             extensions = "Buttons",
@@ -66,18 +69,12 @@ observeEvent(input$do_corr_btn, {
                                                             )}, server = TRUE) # server = TRUE --> makes the table interactive
       # Summary table --> Network tab
       output$corr_summary_network <- renderDataTable({DT::datatable(result$summary,
-                                                                    extensions = "Buttons",
-                                                                    options = list(
-                                                                      scrollX = T, 
-                                                                      buttons = c("copy", "csv"))
+                                                                    options = list(scrollX = T)
                                                                     )}, server = TRUE)
       
       # Summary table --> Enrichment tab
       output$corr_summary_enrichment <- renderDataTable({DT::datatable(result$summary,
-                                                                       extensions = "Buttons",
-                                                                       options = list(
-                                                                         scrollX = T, 
-                                                                         buttons = c("copy", "csv"))
+                                                                       options = list(scrollX = T)
                                                                        )}, server = TRUE)
       
       # "Select all" button for summary table 
@@ -89,8 +86,12 @@ observeEvent(input$do_corr_btn, {
           DT::selectRows(dt_proxy, NULL)
         }
       })
+      # "Selected Rows" text
       output$selected_rows <- renderPrint(print(input$corr_summary_rows_selected))
 
+      # Storing results for later
+      data$summary <- result$summary
+      data$cormat <- result$cormat
       
       # # group list for network analysis
       # output$gList_network_single <- renderUI({
@@ -104,78 +105,132 @@ observeEvent(input$do_corr_btn, {
       #               result$summary$OTU)
       # })
       
-      # Storing results for later
-      data$summary <- result$summary
-      data$cormat <- result$cormat
-      
-      } else if (input$separate == "Yes") { # Split into two conditions
+      # corr_func: separate
+      } else if (input$separate == "Yes") { 
+        
+        # Splitting into two conditions
         # %<-% comes from `zeallot` package
         c(con1, con2) %<-% separate_by_condition(vals$MAE, input$select_correlation_condition)
       
-        # Condition 1: Results + summary table
+        # Condition 1: Results 
         result_con1 <- suppressWarnings(corr_func(MAE = con1,
                                                   asys = as,
                                                   tax_level = t,
                                                   no.sig = n,
                                                   correction = c,
                                                   alpha = al))
-        c1 <- paste0('Summary for condition: "', colData(con1)[input$select_correlation_condition][1,1], '"', 
-                     collapse = "")
-        output$corr_summary1 <- renderDataTable({DT::datatable(result_con1$summary,
-                                                               options = list(
-                                                                 scrollX = T,
-                                                                 buttons = c("copy", "csv")),
-                                                               caption = c1
-                                                               )})
         
-        
-        # Condition 2: Results + summary table
+        # Condition 2: Results
         result_con2 <- suppressWarnings(corr_func(MAE = con2,
                                                   asys = as,
                                                   tax_level = t,
                                                   no.sig = n,
                                                   correction = c,
                                                   alpha = al))
+        
+        
+        ## RENDERING SUMMARY TABLES ##
+        
+        # For correlations tab
+        # Summary table for condition 1
+        c1 <- paste0('Summary for condition: "', colData(con1)[input$select_correlation_condition][1,1], '"', 
+                     collapse = "")
+        output$corr_summary1 <- renderDataTable({DT::datatable(result_con1$summary,
+                                                               caption = c1,
+                                                               options = list(
+                                                                 dom = 'Bfrtip',
+                                                                 buttons = c("copy", "csv"),
+                                                                 scrollX = T))}, server = TRUE)
+        # "Select all" button 
+        dt_proxy1 <- DT::dataTableProxy("corr_summary1")
+        observeEvent(input$dt_sel1, {
+          if (isTRUE(input$dt_sel1)) {
+            DT::selectRows(dt_proxy1, input$corr_summary1_rows_all)
+          } else {
+            DT::selectRows(dt_proxy1, NULL)
+          }
+        })
+        # # "Selected Rows" text
+        # output$selected_rows1 <- renderPrint(print(input$corr_summary1_rows_selected))
+        
+        
+        # Summary table for condition 2
         c2 <- paste0('Summary for condition: "', colData(con2)[input$select_correlation_condition][1,1], '"', 
                      collapse = "")
         output$corr_summary2 <- renderDataTable({DT::datatable(result_con2$summary,
+                                                               caption = c2,
                                                                options = list(
-                                                                 scrollX = T,
-                                                                 buttons = c("copy", "csv")),
-                                                               caption = c2
-                                                               )})
+                                                                 dom = 'Bfrtip',
+                                                                 buttons = c("copy", "csv"),
+                                                                 scrollX = T))}, server = TRUE)
+        # "Select all" button
+        dt_proxy2 <- DT::dataTableProxy("corr_summary2")
+        observeEvent(input$dt_sel2, {
+          if (isTRUE(input$dt_sel2)) {
+            DT::selectRows(dt_proxy2, input$corr_summary2_rows_all)
+          } else {
+            DT::selectRows(dt_proxy2, NULL)
+          }
+        })
+        # # "Selected Rows" text
+        # output$selected_rows2 <- renderPrint(print(input$corr_summary2_rows_selected))
         
-        # Enrichment lists
-        output$gList_enrich_split1 <- renderUI({
-          selectInput("enrichOTU_split1", "Select Group 1 for enrichR analysis:",
-                      result_con1$summary$OTU)
-          })
         
-        output$gList_enrich_split2 <- renderUI({
-          selectInput("enrichOTU_split2", "Select Group 2 for enrichR analysis:",
-                      result_con2$summary$OTU)
-          })
+        # For Co-Occurence Networks
+        # Condition 1:
+        output$corr_summary_network1 <- renderDataTable({DT::datatable(result_con1$summary,
+                                                                       options = list(scrollX = T)
+                                                                       )}, server = TRUE)
+        # Condition 2: 
+        output$corr_summary_network2 <- renderDataTable({DT::datatable(result_con2$summary,
+                                                                       options = list(scrollX = T)
+                                                                       )}, server = TRUE)
         
-        # Network lists
-        output$gList_split1 <- renderUI({
-          selectInput("networkOTU_split1", "Select Group 1 for network analysis:",
-                      result_con1$summary$OTU)
-          })
         
-        output$gList_split2 <- renderUI({
-          selectInput("networkOTU_split2", "Select Group 2 for network analysis:",
-                      result_con2$summary$OTU)
-          })
+        # For Enrichment
+        output$corr_summary_enrichment1 <- renderDataTable({DT::datatable(result_con1$summary,
+                                                                          options = list(scrollX = T)
+                                                                          )}, server = TRUE)
+        
+        output$corr_summary_enrichment2 <- renderDataTable({DT::datatable(result_con2$summary,
+                                                                          options = list(scrollX = T)
+                                                                          )}, server = TRUE)
+        
         
         # Storing results for later
         data_split$summary1 <- result_con1$summary
         data_split$cormat1 <- result_con1$cormat
         data_split$summary2 <- result_con2$summary
         data_split$cormat2 <- result_con2$cormat
+        
+        # # Enrichment lists
+        # output$gList_enrich_split1 <- renderUI({
+        #   selectInput("enrichOTU_split1", "Select Group 1 for enrichR analysis:",
+        #               result_con1$summary$OTU)
+        #   })
+        # 
+        # output$gList_enrich_split2 <- renderUI({
+        #   selectInput("enrichOTU_split2", "Select Group 2 for enrichR analysis:",
+        #               result_con2$summary$OTU)
+        #   })
+        # 
+        # # Network lists
+        # output$gList_split1 <- renderUI({
+        #   selectInput("networkOTU_split1", "Select Group 1 for network analysis:",
+        #               result_con1$summary$OTU)
+        #   })
+        # 
+        # output$gList_split2 <- renderUI({
+        #   selectInput("networkOTU_split2", "Select Group 2 for network analysis:",
+        #               result_con2$summary$OTU)
+        #   })
+        
+        
       }
     
     ## DYANMICALLY DISPLAYING TABS ##
     
+    #browser()
     # Co-occurence network tab
     if(exists("result") | exists("result_con1")) {
       appendTab(inputId = "corr",
@@ -186,9 +241,9 @@ observeEvent(input$do_corr_btn, {
                                conditionalPanel(condition = "input.separate == 'No'",
                                                 #uiOutput("gList_network_single")
                                ),
-                               conditionalPanel(condition = "input.separate == 'Yes'",
-                                                uiOutput("gList_split1"),
-                                                uiOutput("gList_split2")
+                               conditionalPanel(condition = "input.separate == 'Yes'"
+                                                # uiOutput("gList_split1"),
+                                                # uiOutput("gList_split2")
                                ),
                                checkboxInput("advOpt_network", "Advanced Network Options",
                                              value = FALSE),
@@ -211,11 +266,15 @@ observeEvent(input$do_corr_btn, {
                                ),
                                conditionalPanel(condition = "input.separate == 'Yes'",
                                                 fluidRow(
+                                                  column(6, dataTableOutput("corr_summary_network1")),
+                                                  column(6, dataTableOutput("corr_summary_network2"))
+                                                  ),
+                                                fluidRow(
                                                   column(6,
                                                          plotOutput("corrNetwork_split1")),
                                                   column(6,
                                                          plotOutput("corrNetwork_split2"))
-                                                )
+                                                  )
                                )
                              )
                            )
@@ -234,9 +293,9 @@ observeEvent(input$do_corr_btn, {
                                conditionalPanel(condition = 'input.separate == "No"'#,
                                                 #uiOutput("gList_enrich_single")
                                ),
-                               conditionalPanel(condition = 'input.separate == "Yes"',
-                                                uiOutput("gList_enrich_split1"),
-                                                uiOutput("gList_enrich_split2")
+                               conditionalPanel(condition = 'input.separate == "Yes"'#,
+                                                # uiOutput("gList_enrich_split1"),
+                                                # uiOutput("gList_enrich_split2")
                                ),
                                selectInput("db", "Select database for enrichR:",
                                            dbList
@@ -255,8 +314,14 @@ observeEvent(input$do_corr_btn, {
                                                   )
                                                 ),
                                conditionalPanel(condition = 'input.separate == "Yes"',
-                                                fluidRow(column(12, plotlyOutput("enrichmentTable_split1"))),
-                                                fluidRow(column(12, plotlyOutput("enrichmentTable_split2")))
+                                                fluidRow(
+                                                  column(6, dataTableOutput("corr_summary_enrichment1")),
+                                                  column(6, dataTableOutput("corr_summary_enrichment2"))
+                                                ),
+                                                fluidRow(
+                                                  column(6, plotlyOutput("enrichmentTable_split1")),
+                                                  column(6, plotlyOutput("enrichmentTable_split2"))
+                                                  ),
                                                 )
                                )
                              )
@@ -271,20 +336,25 @@ observeEvent(input$do_corr_btn, {
 observeEvent(input$do_plot_btn, {
   if (input$separate == "No"){
     withBusyIndicatorServer("do_plot_btn", {
-      h <- heatmap_cors(rows_selected = input$corr_summary_rows_selected,
-                        summary = data$summary,
-                        cormat = data$cormat)
-        #suppressWarnings(
-        #)
+      #browser()
+      h <- suppressWarnings(heatmap_cors(rows_selected = input$corr_summary_rows_selected,
+                                         summary = data$summary,
+                                         cormat = data$cormat))
       output$corr_plot <- renderPlotly({h})
     })
   } else{
     withBusyIndicatorServer("do_plot_btn", {
       # Condition 1
-      h1 <- heatmap_cors(data_split$cormat1, hide_ax=NA)
+      browser()
+      h1 <- suppressWarnings(heatmap_cors(rows_selected = input$corr_summary1_rows_selected,
+                                         summary = data_split$summary1,
+                                         cormat = data_split$cormat1))
       output$corr_plot1 <- renderPlotly({h1})
+      
       # Condition 2
-      h2 <- heatmap_cors(data_split$cormat2, hide_ax=NA)
+      h2 <- suppressWarnings(heatmap_cors(rows_selected = input$corr_summary2_rows_selected,
+                                          summary = data_split$summary2,
+                                          cormat = data_split$cormat2))
       output$corr_plot2 <- renderPlotly({h2})
     })
   }
@@ -366,21 +436,65 @@ observeEvent(input$do_network_btn, {
     
   } else {
     withBusyIndicatorServer("do_network_btn", {
+      # Condition 1:
+      grp1 <- data_split$summary1[input$corr_summary_network1_rows_selected, 1]
+      grp2 <- data_split$summary2[input$corr_summary_network2_rows_selected, 1]
+      if (input$assay2 == "MicrobeGenetics") {
+        withBusyIndicatorServer("do_network_btn", {
+          output$corrNetwork_split1 <- renderPlot({
+            suppressWarnings(corr_network(MAE = vals$MAE,
+                                          assay = input$assay2,
+                                          cormat = data_split$cormat1, 
+                                          group = grp1,
+                                          tax_level = input$tax.level2,
+                                          correction = input$p.adjust.network,
+                                          alpha = input$alpha_network))
+          })
+          output$corrNetwork_split2 <- renderPlot({
+            suppressWarnings(corr_network(MAE = vals$MAE,
+                                          assay = input$assay2,
+                                          cormat = data_split$cormat2, 
+                                          group = grp2,
+                                          tax_level = input$tax.level2,
+                                          correction = input$p.adjust.network,
+                                          alpha = input$alpha_network))
+          })
+        })
+      } else {
+        withBusyIndicatorServer("do_network_btn", {
+          output$corrNetwork_split1 <- renderPlot({
+            suppressWarnings(corr_network(MAE = vals$MAE,
+                                          assay = input$assay2,
+                                          cormat = data_split$cormat1, 
+                                          group = grp1,
+                                          correction = input$p.adjust.network,
+                                          alpha = input$alpha_network))
+          })
+          output$corrNetwork_split2 <- renderPlot({
+            suppressWarnings(corr_network(MAE = vals$MAE,
+                                          assay = input$assay2,
+                                          cormat = data_split$cormat2, 
+                                          group = grp2,
+                                          correction = input$p.adjust.network,
+                                          alpha = input$alpha_network))
+          })
+        })
+      }
       # First network
-      output$corrNetwork_split1 <- renderPlot({
-        suppressWarnings(corr_network(MAE = vals$MAE,
-                                      assay = input$assay2,
-                                      cormat = data_split$cormat1, 
-                                      group = input$networkOTU_split1))
-      })
+      # output$corrNetwork_split1 <- renderPlot({
+      #   suppressWarnings(corr_network(MAE = vals$MAE,
+      #                                 assay = input$assay2,
+      #                                 cormat = data_split$cormat1, 
+      #                                 group = input$networkOTU_split1))
+      # })
       
       # Second network
-      output$corrNetwork_split2 <- renderPlot({
-        suppressWarnings(corr_network(MAE = vals$MAE,
-                                      assay = input$assay2,
-                                      cormat = data_split$cormat2, 
-                                      group = input$networkOTU_split2))
-      })
+      # output$corrNetwork_split2 <- renderPlot({
+      #   suppressWarnings(corr_network(MAE = vals$MAE,
+      #                                 assay = input$assay2,
+      #                                 cormat = data_split$cormat2, 
+      #                                 group = input$networkOTU_split2))
+      # })
     })
   }
 })
