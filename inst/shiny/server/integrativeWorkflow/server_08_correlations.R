@@ -10,6 +10,9 @@ data_split <- reactiveValues(summary1 = NULL,
                              genes = NULL)
 r_select <- reactiveVal(NULL)
 
+
+# Correlations Action Button --------------------------------------------------------
+
 observeEvent(input$do_corr_btn, {
   withBusyIndicatorServer("do_corr_btn", {
     
@@ -19,7 +22,7 @@ observeEvent(input$do_corr_btn, {
     removeTab(inputId = "corr",
               target = "Enrichment")
     
-    ## PERFORMING CORRELATION CALCULATION ##
+    ## PERFORM CORRELATION ##
     
     # Setting parameters
     # Assays + taxonomy levels
@@ -57,7 +60,7 @@ observeEvent(input$do_corr_btn, {
                                            correction = c,
                                            alpha = al)) 
       
-      ## RENDERING SUMMARY TABLE(S) ##
+      ## RENDER SUMMARY TABLES ##
       
       # Summary table --> Correlations tab
       output$corr_summary <- renderDataTable({DT::datatable(result$summary,
@@ -107,6 +110,8 @@ observeEvent(input$do_corr_btn, {
       
       # corr_func: separate
       } else if (input$separate == "Yes") { 
+        
+        ## PERFORMING CORRELATION CALCULATION ##
         
         # Splitting into two conditions
         # %<-% comes from `zeallot` package
@@ -179,20 +184,24 @@ observeEvent(input$do_corr_btn, {
         # For Co-Occurence Networks
         # Condition 1:
         output$corr_summary_network1 <- renderDataTable({DT::datatable(result_con1$summary,
+                                                                       caption = c1,
                                                                        options = list(scrollX = T)
                                                                        )}, server = TRUE)
         # Condition 2: 
         output$corr_summary_network2 <- renderDataTable({DT::datatable(result_con2$summary,
+                                                                       caption = c2,
                                                                        options = list(scrollX = T)
                                                                        )}, server = TRUE)
         
         
         # For Enrichment
         output$corr_summary_enrichment1 <- renderDataTable({DT::datatable(result_con1$summary,
+                                                                          caption = c1,
                                                                           options = list(scrollX = T)
                                                                           )}, server = TRUE)
         
         output$corr_summary_enrichment2 <- renderDataTable({DT::datatable(result_con2$summary,
+                                                                          caption = c2,
                                                                           options = list(scrollX = T)
                                                                           )}, server = TRUE)
         
@@ -228,9 +237,8 @@ observeEvent(input$do_corr_btn, {
         
       }
     
-    ## DYANMICALLY DISPLAYING TABS ##
+    ## DYANMICALLY DISPLAYING TABS (UI) ##
     
-    #browser()
     # Co-occurence network tab
     if(exists("result") | exists("result_con1")) {
       appendTab(inputId = "corr",
@@ -238,13 +246,6 @@ observeEvent(input$do_corr_btn, {
                          fluidPage(
                            sidebarLayout(
                              sidebarPanel(
-                               conditionalPanel(condition = "input.separate == 'No'",
-                                                #uiOutput("gList_network_single")
-                               ),
-                               conditionalPanel(condition = "input.separate == 'Yes'"
-                                                # uiOutput("gList_split1"),
-                                                # uiOutput("gList_split2")
-                               ),
                                checkboxInput("advOpt_network", "Advanced Network Options",
                                              value = FALSE),
                                conditionalPanel(condition = "input.advOpt_network == true",
@@ -290,13 +291,6 @@ observeEvent(input$do_corr_btn, {
                          fluidPage(
                            sidebarLayout(
                              sidebarPanel(
-                               conditionalPanel(condition = 'input.separate == "No"'#,
-                                                #uiOutput("gList_enrich_single")
-                               ),
-                               conditionalPanel(condition = 'input.separate == "Yes"'#,
-                                                # uiOutput("gList_enrich_split1"),
-                                                # uiOutput("gList_enrich_split2")
-                               ),
                                selectInput("db", "Select database for enrichR:",
                                            dbList
                                ),
@@ -336,7 +330,8 @@ observeEvent(input$do_corr_btn, {
     })
   })
 
-# Plotting heatmap
+
+# Heatmap Action Button (correlations tab) --------------------------------
 observeEvent(input$do_plot_btn, {
   if (input$separate == "No"){
     withBusyIndicatorServer("do_plot_btn", {
@@ -385,10 +380,8 @@ output$dynamic_corr_plot2 <- renderUI({
   plotlyOutput("corr_plot2", width=width, height=height)
 })
 
-## CO-OCCURENCE NETWORK ##
-# do_network_btn
+# Co-Occurence Network Action Button ----------------------------------------------------
 observeEvent(input$do_network_btn, {
-  
   # Together
   if (input$separate == "No"){
     grp <- data$summary[input$corr_summary_network_rows_selected, 1]
@@ -483,7 +476,9 @@ observeEvent(input$do_network_btn, {
   }
 })
 
-# Enrichment Analysis
+
+# Enrichment Action Button  -------------------------------------------------------------
+
 observeEvent(input$do_enrich_btn, {
   if (input$separate == "No") {
     withBusyIndicatorServer("do_enrich_btn", {
