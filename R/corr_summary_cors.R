@@ -6,22 +6,24 @@
 #' 
 #' @export
 
-summary_cors <- function(cormat) {
+summary_cors <- function(cormat){
   ns <- c()
   os <- c()
   gs <- c()
-  # Get the names
-  for (otu in rownames(cormat)) {
-    grp <- names(which(cormat[otu, ] > 0))
+  # Get the names 
+  for(otu in rownames(cormat)){
+    grp <- names(which(cormat[otu,] != 0))
     num <- length(grp)
-    if (num > 0) {
+    if(num > 0){
       ns <- c(ns, num)
       os <- c(os, otu)
       grp <- paste0(grp, sep = ";", collapse = "")
       gs <- c(gs, grp)
     }
   }
-  s <- data.frame(OTU = os, Group_Size = ns, Groups = gs)
-  s <- s[sort(s$Group_Size, decreasing = T, index.return = T)[[2]], ]
+  s <- data.frame(Group = os,
+                  Group_Size = ns,
+                  Correlates = gs)
+  s <- s[sort(s$Group_Size, decreasing=T, index.return=T)[[2]],]
   return(s)
 }
