@@ -28,8 +28,8 @@
 
 enrich_cors <- function(corr_results, group_selected, geneset_db) {
   signature <- corr_results %>%
-    dplyr::filter(OTU == group_selected) %>%
-    dplyr::pull(Groups)
+    dplyr::filter(Group == group_selected) %>%
+    dplyr::pull(Correlates)
   signature <- strsplit(signature, split = ";")[[1]]
   gs <- hypeR::enrichr_gsets(geneset_db, db = "Enrichr")
   genesets <- gs$genesets
