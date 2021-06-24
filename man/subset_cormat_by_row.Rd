@@ -33,4 +33,5 @@ results <- corr_func(MAE = toy_data,
 rows_selected <- c(1, 2, 3)
 
 sub_cormat <- subset_cormat_by_row(rows_selected, results$summary, results$cormat)
+
 }
