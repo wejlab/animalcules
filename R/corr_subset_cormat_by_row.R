@@ -29,8 +29,14 @@ subset_cormat_by_row <- function(rows_selected, summary, cormat){
   for(i in 1:n){
     o <- otu[i]
     g <- strsplit(grp[i], split = ";")[[1]]
-    sc <- cormat[rownames(cormat) %in% o,
-                 colnames(cormat) %in% g]
+    if(length(g)>1){
+      sc <- cormat[rownames(cormat) %in% o,
+                   colnames(cormat) %in% g] 
+    } else {
+      sc <- base::as.vector(cormat[rownames(cormat) %in% o,
+                                   colnames(cormat) %in% g])
+      names(sc) <- g
+    }
     sub_cormat <- dplyr::bind_rows(sub_cormat, sc)
     sub_cormat[is.na(sub_cormat)] <- 0
   }
