@@ -210,7 +210,7 @@ observeEvent(input$do_corr_btn, {
         # })
         # # "Selected Rows" text
         # output$selected_rows2 <- renderPrint(print(input$corr_summary2_rows_selected))
-        output$corr_summary_split_instruct <- renderUI({
+        output$corr_summary_split_instruct1 <- renderUI({
           HTML("
         <h2>Select rows to plot on heat map</h2>
         <p>Shift + Click to select contiguous rows, 
@@ -218,38 +218,63 @@ observeEvent(input$do_corr_btn, {
              ")
         })
         
+        output$corr_summary_split_instruct2 <- renderUI({
+          HTML("
+        <p>Shift + Click to select contiguous rows, 
+        Ctrl/Command + Click to select separate rows</p>
+             ")
+        })
+        
 
         # For Co-Occurence Networks
-        # Condition 1:
+        
+        ## Summary Tables
         output$corr_summary_network1 <- renderDataTable({DT::datatable(result_con1$summary,
                                                                        caption = c1,
                                                                        options = list(scrollX = T)
                                                                        )}, server = TRUE)
-        # Condition 2: 
+      
         output$corr_summary_network2 <- renderDataTable({DT::datatable(result_con2$summary,
                                                                        caption = c2,
                                                                        options = list(scrollX = T)
                                                                        )}, server = TRUE)
-        output$corr_summary_network_split_instruct <- renderUI({
+        
+        ## Instructions
+        output$corr_summary_network_split_instruct_ovr <- renderUI({
           HTML("<h2>Select one row from each table to create network</h2>")
+        })
+
+        output$corr_summary_network_split_instruct1 <- renderUI({
+          HTML("<h3>Select first row: </h3>")
+        })
+        
+        output$corr_summary_network_split_instruct2 <- renderUI({
+          HTML("<h3>Select second row: </h3>")
         })
         
         
         # For Enrichment
+        
+        ## Summary Tables
         output$corr_summary_enrichment1 <- renderDataTable({DT::datatable(result_con1$summary,
                                                                           caption = c1,
                                                                           options = list(scrollX = T)
                                                                           )}, server = TRUE)
-        output$corr_summary_enrichment_instruct1 <- renderUI({
-          HTML("<h2>Select a row to calculate enrichment for</h2>")
-        })
         
         output$corr_summary_enrichment2 <- renderDataTable({DT::datatable(result_con2$summary,
                                                                           caption = c2,
                                                                           options = list(scrollX = T)
                                                                           )}, server = TRUE)
+        ## Instructions
+        output$corr_summary_enrichment_instruct_ovr <- renderUI({
+          HTML("<h2>Select one row from each table to calculate enrichment</h2>")
+        })
+        
+        output$corr_summary_enrichment_instruct1 <- renderUI({
+          HTML("<h3>Select first row:</h3>")
+        })
         output$corr_summary_enrichment_instruct2 <- renderUI({
-          HTML("<h2>Select a row to calculate enrichment for</h2>")
+          HTML("<h3>Select second row:</h3>")
           })
         
         
@@ -315,15 +340,15 @@ observeEvent(input$do_corr_btn, {
                                ),
                                conditionalPanel(condition = "input.separate == 'Yes'",
                                                 fluidRow(
-                                                  uiOutput("corr_summary_network_split_instruct"),
+                                                  uiOutput("corr_summary_network_split_instruct_ovr"),
+                                                  uiOutput("corr_summary_network_split_instruct1"),
                                                   column(6, dataTableOutput("corr_summary_network1")),
-                                                  column(6, dataTableOutput("corr_summary_network2"))
+                                                  column(6,plotOutput("corrNetwork_split1"))
                                                   ),
                                                 fluidRow(
-                                                  column(6,
-                                                         plotOutput("corrNetwork_split1")),
-                                                  column(6,
-                                                         plotOutput("corrNetwork_split2"))
+                                                  uiOutput("corr_summary_network_split_instruct2"),
+                                                  column(6, dataTableOutput("corr_summary_network2")),
+                                                  column(6,plotOutput("corrNetwork_split2"))
                                                   )
                                )
                              )
@@ -360,6 +385,7 @@ observeEvent(input$do_corr_btn, {
                                                 ),
                                conditionalPanel(condition = 'input.separate == "Yes"',
                                                 fluidRow(
+                                                  uiOutput("corr_summary_enrichment_instruct_ovr"),
                                                   uiOutput("corr_summary_enrichment_instruct1"),
                                                   column(10, dataTableOutput("corr_summary_enrichment1"))
                                                   ),
@@ -373,7 +399,17 @@ observeEvent(input$do_corr_btn, {
                                                 fluidRow(
                                                   column(12, plotlyOutput("enrichmentTable_split2"))
                                                   )
-                                                )
+                               #                  fluidRow(
+                               #                    uiOutput("corr_summary_enrichment_instruct1"),
+                               #                    column(4, dataTableOutput("corr_summary_enrichment1")),
+                               #                    column(8, plotlyOutput("enrichmentTable_split1"))
+                               #                    ),
+                               #                  fluidRow(
+                               #                    uiOutput("corr_summary_enrichment_instruct2"),
+                               #                    column(4, dataTableOutput("corr_summary_enrichment2")),
+                               #                    column(8, plotlyOutput("enrichmentTable_split2"))
+                               #                    ),
+                                                 )
                                )
                              )
                            )
@@ -396,7 +432,7 @@ observeEvent(input$do_plot_btn, {
   } else{
     withBusyIndicatorServer("do_plot_btn", {
       # Condition 1
-      browser()
+      #browser()
       h1 <- suppressWarnings(heatmap_cors(rows_selected = input$corr_summary1_rows_selected,
                                           summary = data_split$summary1,
                                           cormat = data_split$cormat1))

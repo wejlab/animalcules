@@ -76,12 +76,12 @@ tabPanel("Correlation Analysis",
                           conditionalPanel(condition = "input.separate == 'Yes'",
                                            # Summary tables
                                            fluidRow(
-                                             uiOutput("corr_summary_split_instruct"),
+                                             uiOutput("corr_summary_split_instruct1"),
                                              column(6, dataTableOutput("corr_summary1")),
                                              # checkboxInput("dt_sel1", "Select / Deselect all"),
                                              # h4("Selected rows:"),
                                              # verbatimTextOutput("selected_rows1", TRUE),
-                                             column(6, dataTableOutput("corr_summary2")),
+                                             column(6, uiOutput("dynamic_corr_plot1")),
                                              # checkboxInput("dt_sel2", "Select / Deselect all"),
                                              # h4("Selected rows:"),
                                              # verbatimTextOutput("selected_rows2", TRUE)
@@ -89,7 +89,8 @@ tabPanel("Correlation Analysis",
                                            
                                            # Heat maps
                                            fluidRow(
-                                             column(6, uiOutput("dynamic_corr_plot1")),
+                                             uiOutput("corr_summary_split_instruct2"),
+                                             column(6, dataTableOutput("corr_summary2")),
                                              column(6, uiOutput("dynamic_corr_plot2"))
                                              )
                                            )
