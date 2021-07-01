@@ -48,7 +48,7 @@ for (i in seq_len(length(covariates))){
 mae.assays <- names(MAE)
 
 # enrichR dbList
-dbList <- c("GO_Biological_Process_2018", 
+dbList <- c(#"GO_Biological_Process_2018", 
             "WikiPathways_2019_Human", 
             "KEGG_2019_Human", 
             "Panther_2016")
