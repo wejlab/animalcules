@@ -4,18 +4,18 @@ tabPanel("Correlation Analysis",
                     fluidPage(
                       sidebarLayout(
                         sidebarPanel(
-                          selectInput("assay1", "Select first assay:",
+                          selectInput("assay1", "Select Assay 1:",
                                       choices = mae.assays),
-                          selectInput("assay2", "Select second assay:",
+                          selectInput("assay2", "Select Assay 2:",
                                       choices = mae.assays),
                           conditionalPanel(
                             condition = 'input.assay1 == "MicrobeGenetics"',
-                            selectInput("tax.level1", "Select taxonomic level for assay 1:",
+                            selectInput("tax.level1", "Select taxonomic level for Assay 1:",
                               choices = tax.name, selected = tax.default)
                           ),
                           conditionalPanel(
                             condition = 'input.assay2 == "MicrobeGenetics"',
-                            selectInput("tax.level2", "Select taxonomic level for assay 2:",
+                            selectInput("tax.level2", "Select taxonomic level for Assay 2:",
                               choices = tax.name, selected = tax.default)
                           ),
                           radioButtons(
@@ -61,10 +61,13 @@ tabPanel("Correlation Analysis",
                         mainPanel(
                           conditionalPanel(condition = "input.separate == 'No'",
                                            fluidRow(
-                                             column(12, dataTableOutput("corr_summary")),
-                                             checkboxInput("dt_sel", "Select / Deselect all"),
-                                             h4("Selected rows:"),
-                                             verbatimTextOutput("selected_rows", TRUE)
+                                             # h2(textOutput("row_select_heatmap")),
+                                             # h3(textOutput("row_select_instruct")),
+                                             uiOutput("corr_summary_instruct"),
+                                             column(12, dataTableOutput("corr_summary"))
+                                             #,
+                                             # checkboxInput("dt_sel", "Select / Deselect all rows"),
+                                             # verbatimTextOutput("selected_rows", TRUE)
                                              ),
                                            fluidRow(
                                              column(12, uiOutput("dynamic_corr_plot"))
@@ -73,20 +76,21 @@ tabPanel("Correlation Analysis",
                           conditionalPanel(condition = "input.separate == 'Yes'",
                                            # Summary tables
                                            fluidRow(
-                                             column(4, dataTableOutput("corr_summary1")),
-                                             checkboxInput("dt_sel1", "Select / Deselect all"),
+                                             uiOutput("corr_summary_split_instruct"),
+                                             column(6, dataTableOutput("corr_summary1")),
+                                             # checkboxInput("dt_sel1", "Select / Deselect all"),
                                              # h4("Selected rows:"),
                                              # verbatimTextOutput("selected_rows1", TRUE),
-                                             column(4, dataTableOutput("corr_summary2")),
-                                             checkboxInput("dt_sel2", "Select / Deselect all"),
+                                             column(6, dataTableOutput("corr_summary2")),
+                                             # checkboxInput("dt_sel2", "Select / Deselect all"),
                                              # h4("Selected rows:"),
                                              # verbatimTextOutput("selected_rows2", TRUE)
                                              ),
                                            
                                            # Heat maps
                                            fluidRow(
-                                             column(7, uiOutput("dynamic_corr_plot1")),
-                                             column(7, uiOutput("dynamic_corr_plot2"))
+                                             column(6, uiOutput("dynamic_corr_plot1")),
+                                             column(6, uiOutput("dynamic_corr_plot2"))
                                              )
                                            )
                           )
