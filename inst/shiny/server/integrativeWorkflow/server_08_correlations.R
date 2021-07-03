@@ -88,8 +88,9 @@ observeEvent(input$do_corr_btn, {
       
       # Summary table --> Network tab
       output$corr_summary_network <- renderDataTable({DT::datatable(result$summary,
-                                                                    options = list(scrollX = T)
-                                                                    )}, server = TRUE)
+                                                                    options = list(scrollX = T),
+                                                                    selection = "single"
+                                                                    )}, server = FALSE)
       output$corr_summary_network_instruct <- renderUI({
         HTML("<h2>Select row to create network</h2>")
       })
@@ -97,8 +98,9 @@ observeEvent(input$do_corr_btn, {
       
       # Summary table --> Enrichment tab
       output$corr_summary_enrichment <- renderDataTable({DT::datatable(result$summary,
-                                                                       options = list(scrollX = T)
-                                                                       )}, server = TRUE)
+                                                                       options = list(scrollX = T),
+                                                                       selection = "single"
+                                                                       )}, server = FALSE)
       output$corr_summary_enrichment_instruct <- renderUI({
         HTML("<h2>Select a row to calculate enrichment for:</h2>")
       })
@@ -231,13 +233,15 @@ observeEvent(input$do_corr_btn, {
         ## Summary Tables
         output$corr_summary_network1 <- renderDataTable({DT::datatable(result_con1$summary,
                                                                        caption = c1,
-                                                                       options = list(scrollX = T)
-                                                                       )}, server = TRUE)
+                                                                       options = list(scrollX = T),
+                                                                       selection = "single"
+                                                                       )}, server = FALSE)
       
         output$corr_summary_network2 <- renderDataTable({DT::datatable(result_con2$summary,
                                                                        caption = c2,
-                                                                       options = list(scrollX = T)
-                                                                       )}, server = TRUE)
+                                                                       options = list(scrollX = T),
+                                                                       selection = "single"
+                                                                       )}, server = FALSE)
         
         ## Instructions
         output$corr_summary_network_split_instruct_ovr <- renderUI({
@@ -258,13 +262,15 @@ observeEvent(input$do_corr_btn, {
         ## Summary Tables
         output$corr_summary_enrichment1 <- renderDataTable({DT::datatable(result_con1$summary,
                                                                           caption = c1,
-                                                                          options = list(scrollX = T)
-                                                                          )}, server = TRUE)
+                                                                          options = list(scrollX = T),
+                                                                          selection = "single"
+                                                                          )}, server = FALSE)
         
         output$corr_summary_enrichment2 <- renderDataTable({DT::datatable(result_con2$summary,
                                                                           caption = c2,
-                                                                          options = list(scrollX = T)
-                                                                          )}, server = TRUE)
+                                                                          options = list(scrollX = T),
+                                                                          selection = "single"
+                                                                          )}, server = FALSE)
         ## Instructions
         output$corr_summary_enrichment_instruct_ovr <- renderUI({
           HTML("<h2>Select one row from each table to calculate enrichment</h2>")
