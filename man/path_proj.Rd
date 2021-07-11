@@ -7,7 +7,7 @@
 path_proj(MAE, collection, sub_collection)
 }
 \arguments{
-\item{MAE}{MultiAssayExperiment having at least 1 gene expression assay}
+\item{MAE}{MultiAssayExperiment having at least 1 gene expression assay (containing gene symbols)}
 
 \item{collection}{User-specified MSigDB collection}
 
@@ -18,4 +18,12 @@ SummarizedExperiment containing ssGSEA scores of selected gene sets
 }
 \description{
 Pathway projection using GSVA
+}
+\examples{
+library(SummarizedExperiment)
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+toy_data <- readRDS("MAE.rds")
+
+gsva_results <- path_proj(toy_data, "H", NA) # H = Hallmark gene sets
+
 }

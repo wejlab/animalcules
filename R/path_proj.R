@@ -1,12 +1,19 @@
 #' Pathway projection using GSVA
 #' 
-#' @param MAE MultiAssayExperiment having at least 1 gene expression assay
+#' @param MAE MultiAssayExperiment having at least 1 gene expression assay (containing gene symbols)
 #' @param collection User-specified MSigDB collection
 #' @param sub_collection Optional, user-specified MSigDB sub-collection
 #' @return SummarizedExperiment containing ssGSEA scores of selected gene sets
 #' 
 #' @import hypeR
 #' @import GSVA
+#' 
+#' @examples
+#' library(SummarizedExperiment)
+#' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+#' toy_data <- readRDS("MAE.rds")
+#' 
+#' gsva_results <- path_proj(toy_data, "H", NA) # H = Hallmark gene sets
 #' 
 #' @export
 
