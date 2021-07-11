@@ -12,7 +12,8 @@ vals <- reactiveValues(
     # MAE = readRDS(data_dir),
     # MAE_backup = MAE
   MAE = NULL,
-  MAE_backup = NULL
+  MAE_backup = NULL,
+  assays = NULL
 )
 
 #browser()
@@ -31,17 +32,19 @@ observeEvent(input$upload_example,{
     vals$MAE <- MAE_tmp
     vals$MAE_backup <- MAE_tmp
     # Update ui
+    updateTabs(session)
     update_inputs(session)
   })
 })
 
 update_inputs <- function(session) {
   updateCovariate(session)
-  updateSample(session)
-  updateTaxLevel(session)
-  updateOrganisms(session)
   updateAssays(session)
-  updateTabs(session)
+  if ("MicrobeGenetics" %in% vals$assays){
+    updateSample(session)
+    updateTaxLevel(session)
+    updateOrganisms(session)
+  }
 }
 
 updateCovariate <- function(session){
@@ -195,23 +198,17 @@ updateOrganisms <- function(session){
 
 # update Assays
 updateAssays <- function(session){
-  if(exists(mae.assays)==T){
-    removeTab(inputId = "Animalcules",
-              target = "Microbial Abundance Workflow")
-    removeTab(inputId = "Animalcules",
-              target = "Host Expression Workflow")
-    removeTab(inputId = "Animalcules",
-              target = "Integrative Analysis Workflow")
-  }
   mae.assays <- names(vals$MAE)
+  vals$assays <- names(vals$MAE)
   
-  # Input assays
+  # Input assays (for correlation tab)
   updateSelectInput(session, "assay1", choices = mae.assays)
   updateSelectInput(session, "assay2", choices = mae.assays)
 }
 
 updateTabs <- function(session){
-  if(exists("mae.assays")==T){
+  # Removing tabs if they exist
+  if(is.null(vals$assay)==F){
     removeTab(inputId = "Animalcules",
               target = "Microbial Abundance Workflow")
     removeTab(inputId = "Animalcules",
@@ -219,10 +216,11 @@ updateTabs <- function(session){
     removeTab(inputId = "Animalcules",
               target = "Integrative Analysis Workflow")
   }
-  mae.assays <- names(vals$MAE)
-  # Microbial workflow
   
-  if("MicrobeGenetics" %in% mae.assays){
+  ## APPENDING TABS ##
+  
+  # Microbial workflow
+  if("MicrobeGenetics" %in% vals$assays){
     appendTab(inputId = "Animalcules",
               tabPanel("Microbial Abundance Workflow",
                        tabsetPanel(#id = "mab",
@@ -237,8 +235,7 @@ updateTabs <- function(session){
   }
   
   # Host expression workflow
-  
-  if("hostExpression" %in% mae.assays){
+  if("hostExpression" %in% vals$assays){
     appendTab(inputId = "Animalcules",
               tabPanel("Host Expression Workflow",
                        tabsetPanel(
@@ -250,8 +247,7 @@ updateTabs <- function(session){
   }
   
   # Integrative workflow
-  
-  if(length(mae.assays)>1){
+  if(length(vals$assays)>1){
     appendTab(inputId = "Animalcules",
               tabPanel("Integrative Analysis Workflow",
                        tabsetPanel(
@@ -260,7 +256,6 @@ updateTabs <- function(session){
               )
     )
   }
-  
 }
 
 
@@ -271,7 +266,10 @@ observeEvent(input$upload_animalcules,{
     vals$MAE <- MAE_tmp
     vals$MAE_backup <- MAE_tmp
     # Update ui
+    updateAssays(session)
+    browser()
     update_inputs(session)
+    updateTabs(session)
   })
 })
 
@@ -294,6 +292,7 @@ observeEvent(input$upload_mae,{
     vals$MAE <- MAE_tmp
     vals$MAE_backup <- MAE_tmp
     # Update ui
+    updateTabs(session)
     update_inputs(session)
   })
 })
@@ -337,6 +336,7 @@ observeEvent(input$upload_biom,{
     vals$MAE <- MAE
     vals$MAE_backup <- MAE
     # Update ui
+    updateTabs(session)
     update_inputs(session)
   })
 })
@@ -441,6 +441,7 @@ observeEvent(input$uploadDataCount,{
 
 
   # Update ui
+  updateTabs(session)
   update_inputs(session)
   })
 })
@@ -548,6 +549,7 @@ observeEvent(input$uploadDataCountTi,{
   vals$MAE_backup <- MAE
 
   # Update ui
+  updateTabs(session)
   update_inputs(session)
   })
 })
@@ -651,8 +653,8 @@ observeEvent(input$uploadDataPs, {
   vals$MAE_backup <- MAE
 
   # Update ui
+  updateTabs(session)
   update_inputs(session)
-
 
   })
 })
