@@ -60,13 +60,7 @@ observeEvent(input$do_corr_btn, {
       ## RENDER SUMMARY TABLES ##
       
       # Summary table --> Correlations tab
-      # output$corr_summary <- renderDataTable({DT::datatable(result$summary,
-      #                                                       extensions = "Buttons",
-      #                                                       options = list(
-      #                                                         dom = 'Bfrtip',
-      #                                                         buttons = c("copy", "csv"),
-      #                                                         scrollX = T)
-      #                                                       )}, server = TRUE) # server = TRUE --> makes the table interactive
+      
       output$corr_summary <- renderDataTable({DT::datatable(result$summary,
                                                             extensions = c("Select", "Buttons"),
                                                             options = list(
@@ -104,34 +98,10 @@ observeEvent(input$do_corr_btn, {
       output$corr_summary_enrichment_instruct <- renderUI({
         HTML("<h2>Select a row to calculate enrichment for:</h2>")
       })
-      
-      # "Select all" button for summary table 
-      # dt_proxy <- DT::dataTableProxy("corr_summary")
-      # observeEvent(input$dt_sel, {
-      #   if (isTRUE(input$dt_sel)) {
-      #     DT::selectRows(dt_proxy, input$corr_summary_rows_all)
-      #   } else {
-      #     DT::selectRows(dt_proxy, NULL)
-      #   }
-      # })
-      # "Selected Rows" text
-      # output$selected_rows <- renderPrint(print(input$corr_summary_rows_selected))
 
       # Storing results for later
       data$summary <- result$summary
       data$cormat <- result$cormat
-      
-      # # group list for network analysis
-      # output$gList_network_single <- renderUI({
-      #   selectInput("networkOTU_single", "Create co-occurence network for which Group?",
-      #               result$summary$OTU)
-      #   })
-      
-      # group list for enrichment analysis
-      # output$gList_enrich_single <- renderUI({ 
-      #   selectInput("enrichOTU_single", "Select Group for enrichR analysis:",
-      #               result$summary$OTU)
-      # })
       
       # corr_func: separate
       } else if (input$separate == "Yes") { 
@@ -175,17 +145,6 @@ observeEvent(input$do_corr_btn, {
                                                                  buttons = c('selectAll', 'selectNone', 'selectRows'),
                                                                  scrollX = T),
                                                                selection = "none")}, server = F)
-        # "Select all" button 
-        # dt_proxy1 <- DT::dataTableProxy("corr_summary1")
-        # observeEvent(input$dt_sel1, {
-        #   if (isTRUE(input$dt_sel1)) {
-        #     DT::selectRows(dt_proxy1, input$corr_summary1_rows_all)
-        #   } else {
-        #     DT::selectRows(dt_proxy1, NULL)
-        #   }
-        # })
-        # # "Selected Rows" text
-        # output$selected_rows1 <- renderPrint(print(input$corr_summary1_rows_selected))
         
         
         # Summary table for condition 2
@@ -289,29 +248,6 @@ observeEvent(input$do_corr_btn, {
         data_split$cormat1 <- result_con1$cormat
         data_split$summary2 <- result_con2$summary
         data_split$cormat2 <- result_con2$cormat
-        
-        # # Enrichment lists
-        # output$gList_enrich_split1 <- renderUI({
-        #   selectInput("enrichOTU_split1", "Select Group 1 for enrichR analysis:",
-        #               result_con1$summary$OTU)
-        #   })
-        # 
-        # output$gList_enrich_split2 <- renderUI({
-        #   selectInput("enrichOTU_split2", "Select Group 2 for enrichR analysis:",
-        #               result_con2$summary$OTU)
-        #   })
-        # 
-        # # Network lists
-        # output$gList_split1 <- renderUI({
-        #   selectInput("networkOTU_split1", "Select Group 1 for network analysis:",
-        #               result_con1$summary$OTU)
-        #   })
-        # 
-        # output$gList_split2 <- renderUI({
-        #   selectInput("networkOTU_split2", "Select Group 2 for network analysis:",
-        #               result_con2$summary$OTU)
-        #   })
-        
         
       }
     
@@ -595,112 +531,3 @@ observeEvent(input$do_enrich_btn, {
     })
   }
 })
-
-
-
-# do_corr <- eventReactive(input$do_plot_btn, {
-#   withBusyIndicatorServer("do_plot_btn", {
-#     if(input$assay1 == input$assay2){
-#       asy=c(input$assay1)
-#       tx.lvls <- c(input$tax.level1, input$tax.level2)
-#       }else{
-#         asy=c(input$assay1, input$assay2)
-#         tx.lvls <- input$tax.level1
-#       }
-#     if(input$dispOpt==FALSE){
-#       result <- suppressWarnings(corr_func(MAE = vals$MAE,
-#                                            asys = asy,
-#                                            no.sig = input$no.sig,
-#                                            tax_level = tx.lvls))
-#     } else{
-#       result <- suppressWarnings(corr_func(MAE = vals$MAE,
-#                                            asys = asy,
-#                                            no.sig = input$no.sig,
-#                                            tax_level = tx.lvls,
-#                                            hide_ax = input$axis_lab))
-#     }
-#     return(result)
-#   })
-# })
-# 
-# # Plotting heatmap
-# output$corr_plot <- renderPlotly({
-#   p <- do_corr()
-#   p$plot
-# })
-
-
-# observeEvent(input$runCorr, {
-#   withBusyIndicatorServer("runCorr", {
-#     if(input$assay1 == input$assay2){
-#       results <- corr_func(MAE = vals$MAE,
-#                            asys = c(input$assay1),
-#                            tax_level = c(input$tax.level1, input$tax.level2),
-#                            no.sig = input$no.sig,
-#                            hide_ax = input$axis_lab)
-#     } else{
-#       results <- corr_func(MAE = vals$MAE,
-#                            asys = c(input$assay1, input$assay2),
-#                            no.sig = input$no.sig,
-#                            hide_ax = input$axis_lab)
-#     }
-#     res$plot <- results$plot
-#     res$summary <- results$summary
-#     res$cormat <- results$cormat
-#   })
-# })
-
-# do_corr_summary <- eventReactive(input$do_summary_btn, {
-#   withBusyIndicatorServer("do_summary_btn", {
-#     if(input$assay1 == input$assay2){
-#       as=c(input$assay1)
-#       tx.lvls <- c(input$tax.level1, input$tax.level2)
-#     }else{
-#       as=c(input$assay1, input$assay2)
-#       tx.lvls <- input$tax.level1
-#     }
-#     result <- suppressWarnings(corr_func(MAE = vals$MAE,
-#                                          asys = as,
-#                                          no.sig = input$no.sig,
-#                                          tax_level = tx.lvls,
-#                                          hide_ax = input$axis_lab))
-#     
-#     return(result$summary)
-#   })
-# })
-
-
-# Display correlation matrix
-#output$corr_summary <- renderDataTable({DT::datatable(tbl)})
-
-# output$corr_summary <- renderDataTable({datatable(
-#   res$summary#[order(results$summary$Group_Size, decreasing = TRUE),]
-#   #cormat$summary[order(cormat$summary$Group_Size, decreasing = TRUE),]
-# )})
-
-
-
-# output$mList <- renderUI({
-#   if(input$assay2 == 'hostExpression'){
-#     if(input$assay1 == "MicrobeGenetics"){
-#       selectInput("OTU", "Select OTU for enrichR analysis:",
-#                   result$summary$OTU)
-#   } else if(input$assay1 == "hervAbundance"){
-#     selectInput("HERV", "Select HERV for enrichR analysis:",
-#                 result$summary$OTU)
-#   }
-#   } else {
-#     "Gene Expression data not selected"
-#   }
-# })
-# 
-# # Setting placeholders
-# glst <- reactiveValues(genes = NULL)
-# enr <- reactiveValues(table = NULL)
-# 
-# observeEvent(input$enrich, {
-#   glst$genes <- names(res$summary[input$OTU,])
-#   enr$table <- enrichr(glst$genes, database = input$db)[[1]]
-#   })
-# 
-# output$enrichmentTable <- renderDataTable({enr$table})
