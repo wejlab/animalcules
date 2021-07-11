@@ -16,27 +16,12 @@ library(zeallot)
 
 
 # Load all the functions in /R folder
-# devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Shiny/animalcules/R")
+#devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Shiny/animalcules/R")
 
 # full source using local architecture
 source(file.path("utils", "helpers.R"),  local = TRUE)
 # source(file.path("utils", "server_util.R"),  local = TRUE)
 source(file.path("utils", "ui_util.R"),  local = TRUE)
-
-# ui <- navbarPage(
-#   title = paste("animalcules v", packageVersion("animalcules"), sep = ""),
-#   id="Animalcules",
-#   fluid=TRUE,
-#   theme = "bootstrap.min.css",
-#   source(file.path("ui", "ui_01_upload.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_02_filter.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_03_relabu.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_04_diversity.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_05_dimred.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_06_differential.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_07_biomarker.R"),  local = TRUE)$value,
-#   source(file.path("ui", "ui_08_correlations.R"),  local = TRUE)$value
-# )
 
 ui <- navbarPage(
   title = paste("animalcules v", packageVersion("animalcules"), sep = ""),
@@ -44,6 +29,7 @@ ui <- navbarPage(
   fluid=TRUE,
   theme = "bootstrap.min.css",
   source(file.path("ui", "ui_01_upload.R"),  local = TRUE)$value#,
+  # This is in server_01_upload.R
   # tabPanel("Microbial Abundance Workflow",
   #          tabsetPanel(id = "mab",
   #            source(file.path("ui", "microbialWorkflow", "ui_02_filter.R"),  local = TRUE)$value,
