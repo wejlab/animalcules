@@ -11,7 +11,6 @@ tabPanel("Pathway Projection",
            ),
            mainPanel(
              fluidRow(
-               #dataTableOutput("ssgsea_scores") # Showing the data
                column(12,
                       plotlyOutput("score_heatmap")
                       )
