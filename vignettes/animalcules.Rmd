@@ -414,20 +414,71 @@ animalcules also allows users to investigate the correlations between different
 assays. This makes animalcules a true meta-omics analysis tool, giving users
 insight into the complex relationships between the microbiome, host genome, 
 metabolome, etc. A summary of the correlation analysis is produced, alongside 
-the (significant) correlation matrix
+the (significant) correlation matrix. 
+
+A user can further select which of the correlated groups they would like to
+plot on a heat map. This is done by simply clicking on one of the rows of the 
+summary table.
 
 ```{r}
+# Correlation
 result <- corr_func(MAE,
                     asys=c("MicrobeGenetics"), 
                     tax_level = c("genus", "genus"),
                     correction = "bonferroni",
                     no.sig=1,
                     alpha=0.01)
-# summary
-result$summary
+# Summary table
+head(result$summary)
 
-hm <- heatmaply::heatmaply_cor(result$cormat)
+# Plotting heatmap
+hm <- heatmap_cors(rows_selected = c(1,2),
+                   summary = result$summary,
+                   cormat = result$cormat)
 hm
+```
+
+
+## Co-Occurence Network
+
+Once the correlation analysis has been run, a user can also calculate the
+co-occurence network for one of the correlated groups. Co-occurence networks are 
+created using the `qgraph` library, and can be further narrowed down through
+specification of a p-value threshold and correction method. 
+
+```{r}
+# Network
+net <- corr_network(MAE = MAE,
+                    assay = "MicrobeGenetics",
+                    cormat = result$cormat,
+                    group = result$summary[1, 1],
+                    tax_level = "genus")
+net
+```
+
+
+## Enrichment
+
+If a user has selected gene expression data as one of the assays for the
+correlation, then they will also be able to perform an enrichment analysis on
+that data. Enrichment analyses are performed using the `hypeR` library, which
+uses EnrichR for its databases and calculations.
+
+
+```{r}
+# Using toy data that has arbritrary gene expression values
+data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+toy_data <- readRDS(data_dir)
+results <- corr_func(toy_data,
+                      asys = c('MicrobeGenetics', 'hostExpression'),
+                      tax_level="genus")
+
+group <- 'Acinetobacter' # microbe from results
+
+db <- 'KEGG_2019_Human' # Enrichr database
+
+p <- enrich_cors(results$summary, group, db) # Run enrichment
+p
 ```
 
 

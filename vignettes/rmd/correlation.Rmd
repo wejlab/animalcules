@@ -13,41 +13,60 @@ Users can perform a correlation analyses between any two of the assays found
 in the uploaded MultiAssayExperiment. Users can choose which two assays to
 correlate with each other, including an assay with itself, along with the
 associated significance criteria of interest. This page will then calculate the
-significant correlations between the two assays, and plot them on a heatmap.
+significant correlations between the two assays, and then the user can choose
+how many of the correlations to display on a heat map
 
 Instructions:
 
 * Select assays to correlate
   * if microbiome assays are selected, make sure to also select a taxonomic
   level
+* Select rows from Summary Table to plot
+  * Can select multiple rows to view correlation coefficients, or can choose
+  just one row
   
-* Optional: adjust correlation parameters to include more / less correlations.
+* *Optional*: adjust correlation parameters to include more / less correlations.
 These parameters include:
   * p-value correction method. Default is set to bonferroni
   * Significance threshold. Default is set to `0.05`.
   * `no.sig`: Minimum number of significantly correlated terms. Default is
   set to `1`.
 
+* *Optional*: separate data into two, by one of the conditions specified by the 
+colData of the MultiAssayExperiment
 
 Running time:
 
-* Two small (<300 rows) assays: 0.52s
+* Two small (<300 rows) assays: <1s
   * Heatmap takes ~4s to render
-* One small (<300 rows) assay and one large (>10,000 rows) assay: 4.78s
+* One small (<300 rows) assay and one large (>10,000 rows) assay: ~5s
   * Heatmap takes ~30s to render
-* Two large (>10,000 rows) assays: 16.8min
-  * Heatmaply may not render
-  * this time can be dramatically reduced by increasing the `no.sig` parameter.
-  By default it is set at 1, but for larger assays this can quickly become
-  redundant.
-*Note:* heatmaply will not be able to display the correlation matrix if
-it is too large. If a user wants to visualize the correlation matrix, we 
-suggest using more conservative thresholds to restrict its size.
+* Two large (>10,000 rows) assays: ~2min
+  
+  
+### Co-Occurence Network
+
+Once a user has performed the correlation calculation, the Co-Occurence Network 
+tab will pop up. In this tab, a user can select a row (or rows, if the data
+was split in the Correlations tab) and display a co-occurence network of
+the group. Co-occurence networks display the Spearman's correlation of the correlates
+within a group. 
+
+* *Optional*: Adjust significance thresholds and p-value correction methods.
+Default threshold is 0.05, and default correction method is the False
+Discovery Rate (FDR). 
+
+Running time:
+
+* Large groups (>200 elements): ~7s
+* Small - Medium groups (10 - 100): <3s
 
 ### Enrichment
 
-Furthermore, if one of the assays selected contains gene expression values, 
-then the user can also perform an enrichment analysis. The correlation analysis
-will yield groups of genes for which the expression levels are significantly
-correlated with those of another assay. The user can then select one of these gene groups and perform an enrichment analysis on them against their desired MSigDB 
-database. 
+If one of the assays selected in the correlations tab contains a gene expression
+assay, then a user will also be able to calculate enrichment for the correlates
+against their desired EnrichR database. Users can simply click on one of the
+rows of the summary table (or two rows, if the correlations have been split
+into two conditions) to calculate the enrichment scores for that group.
+
+Running time: ~10s
