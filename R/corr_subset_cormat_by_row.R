@@ -43,6 +43,7 @@ subset_cormat_by_row <- function(rows_selected, summary, cormat){
     sub_cormat <- dplyr::bind_rows(sub_cormat, sc)
     sub_cormat[is.na(sub_cormat)] <- 0
   }
+  sub_cormat <- as.data.frame(sub_cormat)
   rownames(sub_cormat) <- otu
   return(sub_cormat)
 }
