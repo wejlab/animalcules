@@ -15,9 +15,6 @@ library(hypeR)
 library(zeallot)
 
 
-# Load all the functions in /R folder
-#devtools::load_all("/Users/saketpandit/Documents/BU/Johnson_lab/Asthma/Shiny/animalcules/R")
-
 # full source using local architecture
 source(file.path("utils", "helpers.R"),  local = TRUE)
 # source(file.path("utils", "server_util.R"),  local = TRUE)
