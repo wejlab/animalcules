@@ -17,7 +17,7 @@
 #'                      tax_level="genus")
 #' group <- 'Actinomyces' # microbe from results$summary
 #' fig <- corr_network(MAE = toy_data, 
-#'                     assay = "hostExpression", 
+#'                     assay = "hostExpression",
 #'                     cormat = results$cormat, 
 #'                     group = group)
 #' fig
