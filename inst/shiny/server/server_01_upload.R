@@ -267,7 +267,7 @@ observeEvent(input$upload_animalcules,{
     vals$MAE_backup <- MAE_tmp
     # Update ui
     updateAssays(session)
-    browser()
+    #browser()
     update_inputs(session)
     updateTabs(session)
   })
