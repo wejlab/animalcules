@@ -42,6 +42,7 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
       tax_table <- as.data.frame(rowData(asy1))  # organism x taxlev
       sam_table <- as.data.frame(colData(asy1))  # sample x condition
       df <- as.data.frame(assays(asy1))[, rownames(sam_table)]  # organism x sample
+      df <- df[!is.na(rowSums(df)), ]
       # Aggregate according to tax_level + normalize
       df1 <- df %>%
         upsample_counts(tax_table, tax_level[1]) %>%
@@ -72,12 +73,14 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
       tax_table <- as.data.frame(rowData(asy1))  # organism x taxlev
       sam_table1 <- as.data.frame(colData(asy1))  # sample x condition
       df1 <- as.data.frame(assays(asy1))[, rownames(sam_table1)]  # organism x sample
+      df1 <- df1[!is.na(rowSums(df1)), ]
       df1 <- df1 %>%
         upsample_counts(tax_table, tax_level) %>%
         counts_to_logcpm()
     } else {
       sam_table1 <- as.data.frame(colData(asy1))  # sample x condition
       df1 <- as.data.frame(assays(asy1))[, rownames(sam_table1)]  # organism x sample
+      df1 <- df1[!is.na(rowSums(df1)), ]
       df1 <- df1 %>%
         counts_to_logcpm()
     }
@@ -89,12 +92,14 @@ corr_func <- function(MAE, asys, tax_level = NA, no.sig = 1, correction = "bonfe
       tax_table <- as.data.frame(rowData(asy2))  # organism x taxlev
       sam_table2 <- as.data.frame(colData(asy2))  # sample x condition
       df2 <- as.data.frame(assays(asy2))[, rownames(sam_table2)]  # organism x sample
+      df2 <- df2[!is.na(rowSums(df2)), ]
       df2 <- df2 %>%
         upsample_counts(tax_table, tax_level) %>%
         counts_to_logcpm()
     } else {
       sam_table2 <- as.data.frame(colData(asy2))  # sample x condition
       df2 <- as.data.frame(assays(asy2))[, rownames(sam_table2)]  # organism x sample
+      df2 <- df2[!is.na(rowSums(df2)), ]
       df2 <- df2 %>%
         counts_to_logcpm()
     }
