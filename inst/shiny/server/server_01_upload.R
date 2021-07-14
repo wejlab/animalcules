@@ -208,7 +208,7 @@ updateAssays <- function(session){
 
 updateTabs <- function(session){
   # Removing tabs if they exist
-  if(is.null(vals$assay)==F){
+  if(is.null(vals$assays)==F){
     removeTab(inputId = "Animalcules",
               target = "Microbial Abundance Workflow")
     removeTab(inputId = "Animalcules",
