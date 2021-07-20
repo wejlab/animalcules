@@ -19,9 +19,9 @@ output$subCollect <- renderUI({
 })
 
 # Pathway projection
-do_path_proj <- eventReactive(input$path_proj_btn, {
+observeEvent(input$path_proj_btn, {
   withBusyIndicatorServer("path_proj_btn", {
-    
+    # Doing pathway projection
     if(input$subC == "No sub-collections available"){
       gsva_data <- suppressWarnings(path_proj(MAE = vals$MAE,
                                               collection = input$collect,
@@ -37,14 +37,12 @@ do_path_proj <- eventReactive(input$path_proj_btn, {
                          z=assays(gsva_data)[[1]], 
                          type = "heatmap",
                          colors = "Blues")
+    output$score_heatmap <- renderPlotly({p})
     
+    # Storing gsva scores in MAE
+    vals$MAE <- suppressWarnings(insert_into_MAE(vals$MAE, gsva_data))
+    
+    # Updating inputs
+    update_inputs(session)
   })
-  vals$MAE <- suppressWarnings(insert_into_MAE(vals$MAE, gsva_data))
-  update_inputs(session)
-  return(p)
-})
-
-output$score_heatmap <- renderPlotly({
-  p <- do_path_proj()
-  return(p)
 })
