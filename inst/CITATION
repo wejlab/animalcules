@@ -1,0 +1,18 @@
+citEntry(entry="article",
+         title = "animalcules: interactive microbiome analytics and visualization in R",
+         author = personList( as.person("Yue Zhao"),
+                              as.person("Anthony Federico"),
+                              as.person("Tyler Faits"),
+                              as.person("Solaiappan Manimaran"),
+                              as.person("Daniel Segrè"),
+                              as.person("Stefano Monti"),
+                              as.person("W. Evan Johnson ")),
+         year = 2021,
+         journal = "Microbiome",
+         doi = "10.1186/s40168-021-01013-0",
+         volume = 9,
+         issue = 1,
+         pages = 76,
+         textVersion = 
+         paste("Zhao, Y., Federico, A., Faits, T. et al. animalcules: interactive microbiome analytics and visualization in R. Microbiome 9, 76 (2021)"))
+

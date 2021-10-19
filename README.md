@@ -1,10 +1,10 @@
 ## animalcules <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_logo.png?raw=true" align="right" width="170" />
 
 
-[![](https://img.shields.io/badge/Bioconductor-3.12-blue)](https://doi.org/doi:10.18129/B9.bioc.animalcules)
-[![](https://img.shields.io/badge/platforms-linux%20%7C%20osx%20%7C%20win-2a89a1.svg)](https://bioconductor.org/checkResults/3.9/bioc-LATEST/animalcules/)
+[![](https://img.shields.io/badge/Bioconductor-3.14-blue)](https://doi.org/doi:10.18129/B9.bioc.animalcules)
+[![](https://img.shields.io/badge/platforms-linux%20%7C%20osx%20%7C%20win-2a89a1.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/animalcules/)
 [![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
-[![](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![](https://img.shields.io/badge/lifecycle-steady-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![](https://bioconductor.org/shields/build/release/bioc/animalcules.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/animalcules/)
 
 ## What does animalcules do?
@@ -20,14 +20,26 @@ Traditional microbiome analysis such as alpha/beta diversity and differential ab
 Please check our website at https://compbiomed.github.io/animalcules-docs/
 
 
+## Citation
+
+Our paper on animalcules was published on the journal <strong>Microbiome</strong> in 2021!
+
+You can find our paper here: 
+https://microbiomejournal.biomedcentral.com/articles/10.1186/s40168-021-01013-0
+
+Please cite:
+
+<strong>Zhao, Y., Federico, A., Faits, T., Manimaran, S., Segrè, D., Monti, S. and Johnson, W.E., 2021. animalcules: interactive microbiome analytics and visualization in R. Microbiome, 9(1), pp.1-16.</strong>
+
+
 ## Before Installation
 
-* Make sure R version is >= 4.0.0 and Bioconductor version is 3.12. Bioconductor could be updated by :
+* Make sure R version is >= 4.0.0 and Bioconductor version is 3.14. Bioconductor could be updated by :
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(version = "3.12")
+BiocManager::install(version = "3.14")
 ```
 
 ## Installation

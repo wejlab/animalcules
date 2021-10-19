@@ -31,6 +31,16 @@ devtools::load_all(".")
 library(SummarizedExperiment)
 ```
 
+# Citation
+
+**Note:** if you use animalcules in published research, please cite:
+
+> Zhao, Y., Federico, A., Faits, T. et al. (2021)
+> animalcules: interactive microbiome analytics and visualization in R
+> *Microbiome*, 9(1), 1-16.
+> [10.1186/s40168-021-01013-0](https://doi.org/10.1186/s40168-021-01013-0)
+
+
 # Introduction
 
 animalcules is an R package for utilizing up-to-date data analytics, 

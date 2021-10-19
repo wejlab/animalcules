@@ -11,3 +11,4 @@ vignettes/rmd
 ^codecov\.yml$
 ^data-raw$
 ^LICENSE$
+^_pkgdown\.yml$
