@@ -29,8 +29,9 @@ read_pathoscope_data <- function(input_dir = ".",
         filenames <- input.files.path.vec
     }
     ltbl <- lapply(filenames, read.table, skip = 1,
-            header = TRUE, sep = "\t", nrow = 100,
-            comment.char = "", check.names = FALSE)
+                   header = TRUE, sep = "\t", nrow = 100,
+                   comment.char = "", check.names = FALSE,
+                   quote = "")
     lgenomes <- lapply(ltbl, function(tbl) {
         return((tbl[, 1]))
         #return(levels(tbl[, 1]))
