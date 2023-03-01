@@ -2,7 +2,7 @@
 % Please edit documentation in R/diversity_beta_test.R
 \name{diversity_beta_test}
 \alias{diversity_beta_test}
-\title{Beta diversity test (by default we use bray-curtis distance)}
+\title{Perform a beta diversity test}
 \usage{
 diversity_beta_test(
   MAE,
@@ -14,23 +14,25 @@ diversity_beta_test(
 )
 }
 \arguments{
-\item{MAE}{A multi-assay experiment object}
+\item{MAE}{A Multi-Assay Experiment object. Required.}
 
-\item{tax_level}{The taxon level used for organisms}
+\item{tax_level}{The taxon level at which organisms should be grouped. Required.}
 
-\item{input_beta_method}{bray, jaccard}
+\item{input_beta_method}{Can be either "bray" or "jaccard". Required.}
 
-\item{input_select_beta_condition}{Which condition to group samples}
+\item{input_select_beta_condition}{Which condition should be used to group samples?
+Should be a character string of a colData column name. Required.}
 
-\item{input_select_beta_stat_method}{PERMANOVA,Kruskal-Wallis,Wilcoxon test}
+\item{input_select_beta_stat_method}{The test to be used. Can be one of either
+"PERMANOVA", "Wilcoxon rank sum test", or "Kruskal-Wallis". Required.}
 
-\item{input_num_permutation_permanova}{number of permutations}
+\item{input_num_permutation_permanova}{The number of permutations to be used.}
 }
 \value{
-A plotly object
+A plotly object.
 }
 \description{
-Beta diversity test (by default we use bray-curtis distance)
+Perform a beta diversity test
 }
 \examples{
 data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
@@ -39,7 +41,7 @@ p <- diversity_beta_test(toy_data,
                          tax_level = 'genus',
                          input_beta_method = 'bray',
                          input_select_beta_condition = 'DISEASE',
-                         input_select_beta_stat_method = 'PERMANOVA',
+                         input_select_beta_stat_method = "Wilcoxon rank sum test",
                          input_num_permutation_permanova = 999)
 p
 
