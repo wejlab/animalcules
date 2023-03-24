@@ -12,3 +12,4 @@ vignettes/rmd
 ^data-raw$
 ^LICENSE$
 ^_pkgdown\.yml$
+^Dockerfile$
