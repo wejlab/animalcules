@@ -43,6 +43,7 @@ find_biomarker <- function(MAE,
                             percent_top_biomarker = 0.2, 
                             model_name = c("logistic regression", 
                                             "random forest")) {
+    . <- NULL
     ## SEED bioC not suggesst add set seed function in R code set.seed(seed)
     ## tables from MAE
     microbe <- MAE[["MicrobeGenetics"]]  #double bracket subsetting is easier
@@ -90,47 +91,47 @@ find_biomarker <- function(MAE,
     if (model_name == "svm") {
         svm_importance <- caret::varImp(model_fit)$importance
         svm_importance[, 2] <- NULL
-        colnames(svm_importance) <- "importance"
+        base::colnames(svm_importance) <- "importance"
         biomarker <- svm_importance %>% rownames_to_column() %>% 
-            dplyr::rename(biomarker = rowname) %>% 
-            dplyr::arrange(importance) %>% 
-            dplyr::filter(importance > quantile(importance, 
+            dplyr::rename(biomarker = .data$rowname) %>% 
+            dplyr::arrange(.data$importance) %>% 
+            dplyr::filter(.data$importance > quantile(.data$importance, 
             1 - percent_top_biomarker)) %>% 
             dplyr::select(biomarker) %>% .$biomarker
         importance_plot <- svm_importance %>% 
             rownames_to_column() %>% 
-            dplyr::rename(biomarker = rowname) %>% 
-            dplyr::arrange(importance) %>% 
-            dplyr::filter(importance > quantile(importance, 
+            dplyr::rename(biomarker = .data$rowname) %>% 
+            dplyr::arrange(.data$importance) %>% 
+            dplyr::filter(.data$importance > quantile(.data$importance, 
             1 - percent_top_biomarker)) %>% 
             dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) %>% 
-            ggplot2::ggplot() + geom_col(aes(x = biomarker, y = importance)) +
+            ggplot2::ggplot() + geom_col(aes(x = biomarker, y = .data$importance)) +
             coord_flip() + theme_bw()
     } else {
         biomarker <- caret::varImp(model_fit)$importance %>% 
         base::as.data.frame() %>% 
             rownames_to_column() %>% 
-            dplyr::rename(importance = Overall) %>% 
-            dplyr::rename(biomarker = rowname) %>% 
-            dplyr::arrange(importance) %>% 
-            dplyr::filter(importance > 
-                quantile(importance, 1 - percent_top_biomarker)) %>% 
+            dplyr::rename(importance = .data$Overall) %>% 
+            dplyr::rename(biomarker = .data$rowname) %>% 
+            dplyr::arrange(.data$importance) %>% 
+            dplyr::filter(.data$importance > 
+                quantile(.data$importance, 1 - percent_top_biomarker)) %>% 
             dplyr::select(biomarker) %>% .$biomarker
         importance_plot <- caret::varImp(model_fit)$importance %>% 
             base::as.data.frame() %>% 
             rownames_to_column() %>% 
-            dplyr::rename(importance = Overall) %>% 
-            dplyr::rename(biomarker = rowname) %>% 
-            dplyr::arrange(importance) %>% 
-            dplyr::filter(importance > 
-                    quantile(importance, 1 - percent_top_biomarker)) %>% 
+            dplyr::rename(importance = .data$Overall) %>% 
+            dplyr::rename(biomarker = .data$rowname) %>% 
+            dplyr::arrange(.data$importance) %>% 
+            dplyr::filter(.data$importance > 
+                    quantile(.data$importance, 1 - percent_top_biomarker)) %>% 
             dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) %>% 
             ggplot2::ggplot() + 
-            geom_col(aes(x = biomarker, y = importance)) + 
+            geom_col(aes(x = biomarker, y = .data$importance)) + 
             coord_flip() + theme_bw()
     }
     # retrain the model using the biomarker
-    logcpm_table <- logcpm_table %>% dplyr::select(biomarker, y)
+    logcpm_table <- logcpm_table %>% dplyr::select(biomarker, .data$y)
     # choose different model
     if (model_name == "logistic regression") {
         model_fit <- caret::train(y ~ ., 
@@ -156,7 +157,7 @@ find_biomarker <- function(MAE,
     df_roc <- data.frame(m = model_fit$pred[, 
         which(colnames(model_fit$pred) == levels(model_fit$pred$obs)[2])], 
         d = prob_pred, stringsAsFactors = FALSE)
-    g <- ggplot(df_roc, aes(m = m, d = d)) + 
+    g <- ggplot(df_roc, aes(m = .data$m, d = .data$d)) + 
         geom_roc(n.cuts = 0) + coord_equal() + 
         style_roc()
     roc_plot <- g + annotate("text", x = 0.75, y = 0.25, 

@@ -34,6 +34,8 @@ relabu_heatmap <- function(MAE,
                            discard_samples = c(), 
                            log_cpm = TRUE) {
     
+    . <- NULL
+    
     # Default variables
     sort_by <- match.arg(sort_by)
     

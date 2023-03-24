@@ -40,6 +40,8 @@ relabu_barplot <- function(MAE,
                             discard_samples=c(),
                             show_legend=TRUE) {
 
+    . <- NULL
+    
     # Default variables
     sort_by <- match.arg(sort_by)
 

@@ -18,6 +18,7 @@
 #'
 #' @export
 upsample_counts <- function(counts_table, tax_table, higher_level) {
+    . <- NULL
     counts_table$higher_level = tax_table[[higher_level]]
     counts_table <- reshape2::melt(counts_table, id.vars = "higher_level") %>%
     S4Vectors::aggregate(. ~ 

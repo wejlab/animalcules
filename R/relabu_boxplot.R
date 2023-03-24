@@ -31,6 +31,8 @@ relabu_boxplot <- function(MAE,
                                         "relative abundance", 
                                         "logcpm")) {
     
+    . <- NULL
+    
     # Default variables
     datatype <- match.arg(datatype)
     
