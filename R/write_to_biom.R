@@ -4,7 +4,7 @@
 #' @param path_to_output The folder to output biom file
 #' @return A message
 #'
-#' @import biomformat
+#' @rawNamespace import(biomformat, except = c(colnames, rownames))
 #' @import MultiAssayExperiment
 #' @importFrom Matrix Matrix
 #' 

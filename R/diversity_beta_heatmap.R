@@ -17,12 +17,13 @@
 #'                             input_bdhm_sort_by = "conditions")
 #' p
 #'
+#' @rawNamespace import(ape, except = where)
+#'
 #' @import dplyr
 #' @import plotly
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment
-#' @import ape
 #' @import GUniFrac
 #' @export
 

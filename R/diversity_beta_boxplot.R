@@ -15,12 +15,12 @@
 #'                             input_select_beta_condition = 'DISEASE')
 #' p
 #'
+#' @rawNamespace import(ape, except = where)
 #' @import dplyr
 #' @import plotly
 #' @import magrittr
 #' @import reshape2
 #' @import MultiAssayExperiment
-#' @import ape
 #' @import GUniFrac
 #' @export
 

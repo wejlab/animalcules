@@ -23,8 +23,8 @@
 #' result$plot
 #' result$table
 #'
+#' @rawNamespace import(ape, except = where)
 #' @import dplyr
-#' @import ape
 #' @import scales
 #' @import plotly
 #' @import magrittr
