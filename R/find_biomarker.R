@@ -91,7 +91,7 @@ find_biomarker <- function(MAE,
     if (model_name == "svm") {
         svm_importance <- caret::varImp(model_fit)$importance
         svm_importance[, 2] <- NULL
-        base::colnames(svm_importance) <- "importance"
+        colnames(svm_importance) <- "importance"
         biomarker <- svm_importance %>% rownames_to_column() %>% 
             dplyr::rename(biomarker = .data$rowname) %>% 
             dplyr::arrange(.data$importance) %>% 
