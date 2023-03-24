@@ -107,7 +107,7 @@ differential_abundance <- function(MAE,
                         format = "e", digits = 2))
                 sigtab$microbe <- rownames(sigtab)
                 rownames(sigtab) <- seq_len(nrow(sigtab))
-                sigtab %<>% select(microbe, padj, pValue, log2FoldChange)
+                sigtab %<>% select(microbe, .data$padj, .data$pValue, .data$log2FoldChange)
         
         
                 num.1 <- c()
@@ -204,9 +204,9 @@ differential_abundance <- function(MAE,
                         sigtab_tmp$microbe <- rownames(sigtab_tmp)
                         rownames(sigtab_tmp) <- seq_len(nrow(sigtab_tmp))
                         sigtab_tmp %<>% select(microbe, 
-                                                padj, 
-                                                pValue, 
-                                                log2FoldChange)
+                                                .data$padj, 
+                                                .data$pValue, 
+                                                .data$log2FoldChange)
                         num.1 <- c()
                         num.2 <- c()
                         # transform label into 1 and 0
@@ -327,7 +327,7 @@ differential_abundance <- function(MAE,
         sigtab <- sigtab[,which(colnames(sigtab) %in% c("padj", "pValue"))]
         sigtab$microbe <- rownames(sigtab)
         rownames(sigtab) <- seq_len(nrow(sigtab))
-        sigtab %<>% select(microbe, padj, pValue)
+        sigtab %<>% select(microbe, .data$padj, .data$pValue)
         return(sigtab) 
     }
 }
