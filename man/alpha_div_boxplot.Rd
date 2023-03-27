@@ -28,12 +28,13 @@ A plotly object
 Alpha diversity boxplot
 }
 \examples{
-data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- alpha_div_boxplot(toy_data,
-                       tax_level = 'genus',
-                       condition = 'DISEASE',
-                       alpha_metric = 'shannon')
+  tax_level = "genus",
+  condition = "DISEASE",
+  alpha_metric = "shannon"
+)
 p
 
 }

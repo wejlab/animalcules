@@ -10,24 +10,24 @@
 #'
 #' @export
 find_taxonomy_300 <- function(tids) {
-  # @importFrom httr set_config
-  # set_config(httr::config(http_version = 0))
-  if (is.null(tids)) {
-    return(NULL)
-  }
-  na.vec <- c()
-  for (i in seq_len(length(tids))) {
-    if (is.na(tids[i])) {
-      na.vec <- c(na.vec, i)
+    # @importFrom httr set_config
+    # set_config(httr::config(http_version = 0))
+    if (is.null(tids)) {
+        return(NULL)
     }
-  }
-  r_fetch <- entrez_fetch(db = "taxonomy", id = tids, rettype = "xml")
-  dat <- xmlToList(r_fetch)
-  taxonLevels <- lapply(dat, function(x) x$LineageEx)
-  if (!is.null(na.vec)) {
-    for (i in seq_len(length(na.vec))) {
-      taxonLevels <- append(taxonLevels, list(NA), na.vec[i] - 1)
+    na.vec <- c()
+    for (i in seq_len(length(tids))) {
+        if (is.na(tids[i])) {
+            na.vec <- c(na.vec, i)
+        }
     }
-  }
-  return(taxonLevels)
+    r_fetch <- entrez_fetch(db = "taxonomy", id = tids, rettype = "xml")
+    dat <- xmlToList(r_fetch)
+    taxonLevels <- lapply(dat, function(x) x$LineageEx)
+    if (!is.null(na.vec)) {
+        for (i in seq_len(length(na.vec))) {
+            taxonLevels <- append(taxonLevels, list(NA), na.vec[i] - 1)
+        }
+    }
+    return(taxonLevels)
 }

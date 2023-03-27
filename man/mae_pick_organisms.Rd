@@ -20,9 +20,10 @@ A multi-assay experiment object
 Modify organisms of multi-assay experiment object
 }
 \examples{
-data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
-subset <- mae_pick_organisms(toy_data, 
-isolate_organisms=c('ti|001', 'ti|002'))
+subset <- mae_pick_organisms(toy_data,
+  isolate_organisms = c("ti|001", "ti|002")
+)
 
 }

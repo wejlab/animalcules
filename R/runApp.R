@@ -15,14 +15,14 @@
 #' }
 #' @export
 run_animalcules <- function(dev = FALSE) {
-  appDir <- system.file("shiny", package = "animalcules")
-  if (appDir == "") {
-    stop("Could not find myapp. Try re-installing `mypackage`.",
-      call. = FALSE
-    )
-  }
-  if (dev) {
-    options(shiny.autoreload = TRUE)
-  }
-  shiny::runApp(appDir, display.mode = "normal")
+    appDir <- system.file("shiny", package = "animalcules")
+    if (appDir == "") {
+        stop("Could not find myapp. Try re-installing `mypackage`.",
+            call. = FALSE
+        )
+    }
+    if (dev) {
+        options(shiny.autoreload = TRUE)
+    }
+    shiny::runApp(appDir, display.mode = "normal")
 }

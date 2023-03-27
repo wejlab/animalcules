@@ -18,18 +18,18 @@
 #'
 #' @export
 upsample_counts <- function(counts_table, tax_table, higher_level) {
-  . <- NULL
-  counts_table$higher_level <- tax_table[[higher_level]]
-  counts_table <- reshape2::melt(counts_table, id.vars = "higher_level") %>%
-    S4Vectors::aggregate(. ~
-      variable + higher_level, ., sum) %>%
-    reshape2::dcast(higher_level ~ variable) %>%
-    as.data.frame()
-  rownames(counts_table) <- counts_table$higher_level
-  counts_table$higher_level <- NULL
-  # remove others
-  counts_table <- counts_table[which(rownames(counts_table) != "others"), ]
-  return(counts_table)
+    . <- NULL
+    counts_table$higher_level <- tax_table[[higher_level]]
+    counts_table <- reshape2::melt(counts_table, id.vars = "higher_level") %>%
+        S4Vectors::aggregate(. ~
+                variable + higher_level, ., sum) %>%
+        reshape2::dcast(higher_level ~ variable) %>%
+        as.data.frame()
+    rownames(counts_table) <- counts_table$higher_level
+    counts_table$higher_level <- NULL
+    # remove others
+    counts_table <- counts_table[which(rownames(counts_table) != "others"), ]
+    return(counts_table)
 }
 
 #' Covert a counts table to a relative abundances table
@@ -45,10 +45,10 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
 #'
 #' @export
 counts_to_relabu <- function(counts_table) {
-  prop.table(as.matrix(counts_table), 2) %>%
-    as.data.frame() %>%
-    magrittr::set_colnames(colnames(counts_table)) %>%
-    magrittr::set_rownames(rownames(counts_table))
+    prop.table(as.matrix(counts_table), 2) %>%
+        as.data.frame() %>%
+        magrittr::set_colnames(colnames(counts_table)) %>%
+        magrittr::set_rownames(rownames(counts_table))
 }
 
 #' Covert a counts table to a relative abundances table
@@ -64,14 +64,14 @@ counts_to_relabu <- function(counts_table) {
 #'
 #' @export
 counts_to_logcpm <- function(counts_table) {
-  vapply(
-    as.data.frame(counts_table),
-    function(x) log10(x * 1e+06 / sum(x) + 1),
-    c(rep(1.0, nrow(counts_table)))
-  ) %>%
-    as.data.frame() %>%
-    magrittr::set_colnames(colnames(counts_table)) %>%
-    magrittr::set_rownames(rownames(counts_table))
+    vapply(
+        as.data.frame(counts_table),
+        function(x) log10(x * 1e+06 / sum(x) + 1),
+        c(rep(1.0, nrow(counts_table)))
+    ) %>%
+        as.data.frame() %>%
+        magrittr::set_colnames(colnames(counts_table)) %>%
+        magrittr::set_rownames(rownames(counts_table))
 }
 
 #' Modify samples of multi-assay experiment object
@@ -95,19 +95,19 @@ counts_to_logcpm <- function(counts_table) {
 #'
 #' @export
 mae_pick_samples <- function(MAE,
-                             isolate_samples = NULL,
-                             discard_samples = NULL) {
-  # Isolate all of these samples
-  if (!is.null(isolate_samples)) {
-    MAE <- MAE[, isolate_samples, ]
-  }
-  # Discard all of these samples
-  if (!is.null(discard_samples)) {
-    id <- rownames(colData(MAE))
-    id_isolate <- id[!id %in% discard_samples]
-    MAE <- MAE[, id_isolate, ]
-  }
-  return(MAE)
+    isolate_samples = NULL,
+    discard_samples = NULL) {
+    # Isolate all of these samples
+    if (!is.null(isolate_samples)) {
+        MAE <- MAE[, isolate_samples, ]
+    }
+    # Discard all of these samples
+    if (!is.null(discard_samples)) {
+        id <- rownames(colData(MAE))
+        id_isolate <- id[!id %in% discard_samples]
+        MAE <- MAE[, id_isolate, ]
+    }
+    return(MAE)
 }
 
 #' Modify organisms of multi-assay experiment object
@@ -128,20 +128,20 @@ mae_pick_samples <- function(MAE,
 #'
 #' @export
 mae_pick_organisms <- function(MAE,
-                               isolate_organisms = NULL,
-                               discard_organisms = NULL) {
-  # Isolate all of these organisms
-  if (!is.null(isolate_organisms)) {
-    MAE <- MAE[isolate_organisms, , ]
-  }
-  # Discard all of these organisms
-  if (!is.null(discard_organisms)) {
-    microbe <- MAE[["MicrobeGenetics"]]
-    id <- rownames(as.data.frame(assays(microbe)))
-    id_isolate <- id[!id %in% discard_organisms]
-    MAE <- MAE[id_isolate, , ]
-  }
-  return(MAE)
+    isolate_organisms = NULL,
+    discard_organisms = NULL) {
+    # Isolate all of these organisms
+    if (!is.null(isolate_organisms)) {
+        MAE <- MAE[isolate_organisms, , ]
+    }
+    # Discard all of these organisms
+    if (!is.null(discard_organisms)) {
+        microbe <- MAE[["MicrobeGenetics"]]
+        id <- rownames(as.data.frame(assays(microbe)))
+        id_isolate <- id[!id %in% discard_organisms]
+        MAE <- MAE[id_isolate, , ]
+    }
+    return(MAE)
 }
 
 #' Factorize all categorical columns
@@ -154,12 +154,12 @@ mae_pick_organisms <- function(MAE,
 #'
 #' @export
 df_char_to_factor <- function(df) {
-  for (i in seq_len(ncol(df))) {
-    if (typeof(df[, i]) == "character" | length(unique(df[, i])) < 4) {
-      df[, i] <- as.factor(df[, i])
+    for (i in seq_len(ncol(df))) {
+        if (typeof(df[, i]) == "character" | length(unique(df[, i])) < 4) {
+            df[, i] <- as.factor(df[, i])
+        }
     }
-  }
-  return(df)
+    return(df)
 }
 
 #' Format decimals to percentages
@@ -175,7 +175,7 @@ df_char_to_factor <- function(df) {
 #'
 #' @export
 percent <- function(x, digits = 2, format = "f") {
-  paste0(formatC(100 * x, format = format, digits = digits), "%")
+    paste0(formatC(100 * x, format = format, digits = digits), "%")
 }
 
 #' Check if object is categorical
@@ -189,15 +189,15 @@ percent <- function(x, digits = 2, format = "f") {
 #'
 #' @export
 is_categorical <- function(v) {
-  if (is.integer(v) || is.numeric(v)) {
-    if (length(unique(v)) > 3) {
-      return(FALSE)
+    if (is.integer(v) || is.numeric(v)) {
+        if (length(unique(v)) > 3) {
+            return(FALSE)
+        } else {
+            return(TRUE)
+        }
     } else {
-      return(TRUE)
+        return(TRUE)
     }
-  } else {
-    return(TRUE)
-  }
 }
 
 #' check if integer(0)
@@ -211,7 +211,7 @@ is_categorical <- function(v) {
 #'
 #' @export
 is_integer0 <- function(x) {
-  is.integer(x) && length(x) == 0L
+    is.integer(x) && length(x) == 0L
 }
 
 #' check if integer(1)
@@ -225,7 +225,7 @@ is_integer0 <- function(x) {
 #'
 #' @export
 is_integer1 <- function(x) {
-  is.integer(x) && length(x) == 1L
+    is.integer(x) && length(x) == 1L
 }
 
 #' Converts decimal percentage to string with specified digits
@@ -240,5 +240,5 @@ is_integer1 <- function(x) {
 #'
 #' @export
 pct2str <- function(v, digits = 2) {
-  sprintf(paste0("%.", digits, "f"), v * 100)
+    sprintf(paste0("%.", digits, "f"), v * 100)
 }

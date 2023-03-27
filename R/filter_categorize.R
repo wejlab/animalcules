@@ -29,57 +29,57 @@
 #'
 #' @export
 filter_categorize <- function(sam_table,
-                              sample_condition,
-                              new_label,
-                              nbins = NULL,
-                              bin_breaks = c(), bin_labels = c()) {
-  # Numeric vector according to covariate of interest
-  unbinned <- as.numeric(unlist(sam_table[, sample_condition]))
-
-  # Plot unbinned condition
-  fit <- density(unbinned)
-  p.unbinned <- plot_ly(
-    x = fit$x, y = fit$y,
-    type = "scatter", mode = "lines",
-    fill = "tozeroy"
-  ) %>%
-    layout(title = sample_condition, margin = list(
-      l = 0,
-      r = 0, t = 30, b = 30
+    sample_condition,
+    new_label,
+    nbins = NULL,
+    bin_breaks = c(), bin_labels = c()) {
+    # Numeric vector according to covariate of interest
+    unbinned <- as.numeric(unlist(sam_table[, sample_condition]))
+    
+    # Plot unbinned condition
+    fit <- density(unbinned)
+    p.unbinned <- plot_ly(
+        x = fit$x, y = fit$y,
+        type = "scatter", mode = "lines",
+        fill = "tozeroy"
+    ) %>%
+        layout(title = sample_condition, margin = list(
+            l = 0,
+            r = 0, t = 30, b = 30
+        ))
+    p.unbinned$elementId <- NULL
+    
+    # If bins are provided use those
+    if (length(bin_breaks) >= 2) {
+        nlabs <- length(bin_breaks) - 1
+    } else {
+        bin_breaks <- nbins
+        nlabs <- nbins
+    }
+    # Ensure provided labels are the correct length
+    if (length(bin_labels) >= 1) {
+        stopifnot(length(bin_labels) == nlabs)
+    }
+    
+    # Categorized condition
+    binned <- cut.default(unbinned, bin_breaks, bin_labels)
+    
+    # Add into sam table
+    sam_table[, new_label] <- binned
+    
+    # Plot Binned Condition
+    p.binned <-
+        plot_ly(y = binned, type = "histogram") %>%
+        layout(
+            title = new_label,
+            xaxis = list(title = "Frequency"), yaxis = list(title = "Bins"),
+            margin = list(l = 80)
+        )
+    p.binned$elementId <- NULL
+    
+    return(list(
+        sam_table = sam_table,
+        plot.unbinned = p.unbinned,
+        plot.binned = p.binned
     ))
-  p.unbinned$elementId <- NULL
-
-  # If bins are provided use those
-  if (length(bin_breaks) >= 2) {
-    nlabs <- length(bin_breaks) - 1
-  } else {
-    bin_breaks <- nbins
-    nlabs <- nbins
-  }
-  # Ensure provided labels are the correct length
-  if (length(bin_labels) >= 1) {
-    stopifnot(length(bin_labels) == nlabs)
-  }
-
-  # Categorized condition
-  binned <- cut.default(unbinned, bin_breaks, bin_labels)
-
-  # Add into sam table
-  sam_table[, new_label] <- binned
-
-  # Plot Binned Condition
-  p.binned <-
-    plot_ly(y = binned, type = "histogram") %>%
-    layout(
-      title = new_label,
-      xaxis = list(title = "Frequency"), yaxis = list(title = "Bins"),
-      margin = list(l = 80)
-    )
-  p.binned$elementId <- NULL
-
-  return(list(
-    sam_table = sam_table,
-    plot.unbinned = p.unbinned,
-    plot.binned = p.binned
-  ))
 }

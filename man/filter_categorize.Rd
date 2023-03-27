@@ -34,15 +34,16 @@ Categorize continuous variables
 }
 \examples{
 library(SummarizedExperiment)
-data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 microbe <- MultiAssayExperiment::experiments(toy_data)[[1]]
 samples <- as.data.frame(colData(microbe))
 result <- filter_categorize(samples,
-                            sample_condition = 'AGE',
-                            new_label='AGE_GROUP',
-                            bin_breaks=c(0,55,75,100),
-                            bin_labels=c('Young','Adult','Elderly'))
+  sample_condition = "AGE",
+  new_label = "AGE_GROUP",
+  bin_breaks = c(0, 55, 75, 100),
+  bin_labels = c("Young", "Adult", "Elderly")
+)
 result$sam_table
 result$plot.unbinned
 result$plot.binned

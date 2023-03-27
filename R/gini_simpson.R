@@ -11,9 +11,9 @@
 
 # x: Species count vector
 gini_simpson <- function(x) {
-  # Simpson index
-  lambda <- simpson_index(x)
-
-  # Gini-Simpson diversity
-  1 - lambda
+    # Simpson index
+    lambda <- simpson_index(x)
+    
+    # Gini-Simpson diversity
+    1 - lambda
 }
