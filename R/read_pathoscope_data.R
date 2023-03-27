@@ -11,51 +11,55 @@
 #' @importFrom utils read.table
 #' @export
 
-read_pathoscope_data <- function(input_dir = ".", 
-                                 pathoreport_file_suffix = "-sam-report.tsv", 
-                                 use.input.files = FALSE, 
-                                 input.files.path.vec = NULL, 
+read_pathoscope_data <- function(input_dir = ".",
+                                 pathoreport_file_suffix = "-sam-report.tsv",
+                                 use.input.files = FALSE,
+                                 input.files.path.vec = NULL,
                                  input.files.name.vec = NULL) {
-    if (use.input.files == FALSE) {
-        if (input_dir == ".") {
-            input_dir <- getwd()
-        }
-        pattern <- paste("*", pathoreport_file_suffix, sep = "")
-        filenames <- list.files(input_dir, 
-                                pattern = pattern, 
-                                full.names = TRUE)
-        input.files.name.vec <- list.files(input_dir)
-    } else {
-        filenames <- input.files.path.vec
+  if (use.input.files == FALSE) {
+    if (input_dir == ".") {
+      input_dir <- getwd()
     }
-    ltbl <- lapply(filenames, read.table, skip = 1,
-                   header = TRUE, sep = "\t", nrow = 100,
-                   comment.char = "", check.names = FALSE,
-                   quote = "")
-    lgenomes <- lapply(ltbl, function(tbl) {
-        return((tbl[, 1]))
-        #return(levels(tbl[, 1]))
-    })
-    genomes <- unique(unlist(lgenomes))
-    # genomes <- c(genomes, 'others')
-    lfl <- lapply(filenames, readLines, n = 1)
-    lnumReads <- unlist(lapply(lfl, function(fl) {
-        return(as.numeric(strsplit(fl, "\t")[[1]][2]))
-    }))
-    samplenames <- unlist(lapply(input.files.name.vec, function(x) {
-        return(strsplit(x, "-sam-report.tsv")[[1]])
-    }))
-    # print(samplenames)
-    countdat <- matrix(0L, 
-    nrow = length(genomes), ncol = length(samplenames))
-    for (i in seq(length(samplenames))) {
-        index.tmp <- match(ltbl[[i]][, 1], genomes)
-        countdat[index.tmp, i] <- floor(ltbl[[i]][, 4])
-    }
-    # integer
-    countdat <- data.frame(countdat)
-    rownames(countdat) <- genomes
-    colnames(countdat) <- samplenames
-    # saveRDS(countdat, '~/Desktop/test.rds')
-    return(list(countdat = countdat))
+    pattern <- paste("*", pathoreport_file_suffix, sep = "")
+    filenames <- list.files(input_dir,
+      pattern = pattern,
+      full.names = TRUE
+    )
+    input.files.name.vec <- list.files(input_dir)
+  } else {
+    filenames <- input.files.path.vec
+  }
+  ltbl <- lapply(filenames, read.table,
+    skip = 1,
+    header = TRUE, sep = "\t", nrow = 100,
+    comment.char = "", check.names = FALSE,
+    quote = ""
+  )
+  lgenomes <- lapply(ltbl, function(tbl) {
+    return((tbl[, 1]))
+    # return(levels(tbl[, 1]))
+  })
+  genomes <- unique(unlist(lgenomes))
+  # genomes <- c(genomes, 'others')
+  lfl <- lapply(filenames, readLines, n = 1)
+  lnumReads <- unlist(lapply(lfl, function(fl) {
+    return(as.numeric(strsplit(fl, "\t")[[1]][2]))
+  }))
+  samplenames <- unlist(lapply(input.files.name.vec, function(x) {
+    return(strsplit(x, "-sam-report.tsv")[[1]])
+  }))
+  # print(samplenames)
+  countdat <- matrix(0L,
+    nrow = length(genomes), ncol = length(samplenames)
+  )
+  for (i in seq(length(samplenames))) {
+    index.tmp <- match(ltbl[[i]][, 1], genomes)
+    countdat[index.tmp, i] <- floor(ltbl[[i]][, 4])
+  }
+  # integer
+  countdat <- data.frame(countdat)
+  rownames(countdat) <- genomes
+  colnames(countdat) <- samplenames
+  # saveRDS(countdat, '~/Desktop/test.rds')
+  return(list(countdat = countdat))
 }
