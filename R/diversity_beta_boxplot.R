@@ -35,7 +35,7 @@ diversity_beta_boxplot <- function(MAE,
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     
     # Sum counts by taxon level and return counts
     counts_table %<>% # Sum counts by taxon level
@@ -57,7 +57,8 @@ diversity_beta_boxplot <- function(MAE,
             as.factor
         )
         # create formula
-        frm <- as.formula(paste0("~", paste(colnames(tax_table), collapse = "/")))
+        frm <- as.formula(paste0("~", paste(colnames(tax_table), 
+            collapse = "/")))
         
         # create phylo object
         tr <- as.phylo(frm, data = tax_table)

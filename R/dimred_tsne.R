@@ -48,7 +48,7 @@ dimred_tsne <- function(MAE,
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     if (is.null(tsne_cache)) {
         # Default variables
         k <- ifelse(match.arg(k) == "2D", 2, 3)
@@ -79,7 +79,10 @@ dimred_tsne <- function(MAE,
         
         # t-SNE
         df.tsne <-
-            tsne(scale(df), k = k, initial_dims = initial_dims, perplexity = perplexity)
+            tsne(scale(df), 
+                k = k, 
+                initial_dims = initial_dims, 
+                perplexity = perplexity)
         rownames(df.tsne) <- rownames(df)
         if (k == 2) {
             colnames(df.tsne) <-

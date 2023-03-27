@@ -35,7 +35,7 @@ filter_summary_pie_box <- function(MAE,
     # host <- MAE_subset[['HostGenetics']]
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     # Add count summary data to sample table
     sam_table[, "Reads"] <- colSums(counts_table[, rownames(sam_table)])
     sam_table[, "Taxnum"] <- apply(counts_table, 2, function(x) sum(x >= 1))

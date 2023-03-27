@@ -104,16 +104,19 @@ we will use the data structure MultiAssayExperiment (MAE) as the input
 to all functions.
 
 ```{r}
-data_dir <- system.file("extdata/TB_example_dataset.rds", package = "animalcules")
+data_dir <- system.file("extdata/TB_example_dataset.rds", 
+    package = "animalcules")
 MAE <- readRDS(data_dir)
 ```
 
 For users who would like to use their own dataset, please follow the
 following steps:
 
-* Use the shiny app to upload your dataset. [check shiny tutorial](https://compbiomed.github.io/animalcules-docs/articles/rmd/upload.html)
+* Use the shiny app to upload your dataset. [check shiny tutorial]
+(https://compbiomed.github.io/animalcules-docs/articles/rmd/upload.html)
 * Go to tab 2 "Data Summary and Filtering", and click the button 
-"Download Animalcules File". [check shiny tutorial](https://compbiomed.github.io/animalcules-docs/articles/rmd/summary.html)
+"Download Animalcules File". [check shiny tutorial]
+(https://compbiomed.github.io/animalcules-docs/articles/rmd/summary.html)
 * Load the downloaded .rds animalcules file and rename it as MAE in R.
 
 ```{r, eval=FALSE}
@@ -354,7 +357,7 @@ head(result$table)
 
 ## UMAP
 
-A wrapper for conduction 2D and 3D Uniform Manifold Approximation and Projection.
+A wrapper for conduction 2D and 3D Uniform Manifold Approximation & Projection.
 
 ```{r}
 result <- dimred_umap(MAE,

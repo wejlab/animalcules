@@ -2,7 +2,8 @@
 #'
 #' @param MAE A multi-assay experiment object
 #' @param tax_level The taxon level used for organisms
-#' @param sort_by Sort bars by one of c('nosort', 'conditions', 'organisms', 'alphabetically')
+#' @param sort_by Sort bars by one of 
+#' c('nosort', 'conditions', 'organisms', 'alphabetically')
 #' @param sample_conditions Plot conditions e.g. c('SEX', 'AGE')
 #' @param isolate_organisms Isolate specific organisms e.g. c('Hepacivirus')
 #' @param isolate_samples Isolate specific samples e.g. c('SAM_01', 'SAM_02')
@@ -48,7 +49,7 @@ relabu_heatmap <- function(MAE,
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     
     # Ensure conditions are all factored
     sam_table %<>% df_char_to_factor()

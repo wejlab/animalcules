@@ -52,7 +52,7 @@ find_biomarker <- function(MAE,
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     ## shiny UI input object
     # Sum counts by taxon level and return log10 cpm
     logcpm_table <- counts_table %>%

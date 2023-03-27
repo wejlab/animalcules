@@ -20,7 +20,8 @@ relabu_heatmap(
 
 \item{tax_level}{The taxon level used for organisms}
 
-\item{sort_by}{Sort bars by one of c('nosort', 'conditions', 'organisms', 'alphabetically')}
+\item{sort_by}{Sort bars by one of 
+c('nosort', 'conditions', 'organisms', 'alphabetically')}
 
 \item{sample_conditions}{Plot conditions e.g. c('SEX', 'AGE')}
 

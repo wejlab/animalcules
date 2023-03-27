@@ -104,25 +104,34 @@ differential_abundance <- function(MAE,
                 } else {
                     sigtab <- as(sigtab, "data.frame")
                     sigtab$padj <-
-                        as.numeric(formatC(sigtab$padj, format = "e", digits = 2))
+                        as.numeric(formatC(sigtab$padj, 
+                            format = "e", 
+                            digits = 2))
                     sigtab$pValue <-
-                        as.numeric(formatC(sigtab$pvalue, format = "e", digits = 2))
+                        as.numeric(formatC(sigtab$pvalue, 
+                            format = "e", 
+                            digits = 2))
                     sigtab$log2FoldChange <-
                         as.numeric(formatC(sigtab$log2FoldChange,
                             format = "e", digits = 2
                         ))
                     sigtab$microbe <- rownames(sigtab)
                     rownames(sigtab) <- seq_len(nrow(sigtab))
-                    sigtab %<>% select(microbe, .data$padj, .data$pValue, .data$log2FoldChange)
+                    sigtab %<>% select(microbe, 
+                        .data$padj, 
+                        .data$pValue, 
+                        .data$log2FoldChange)
                     
                     
                     num.1 <- c()
                     num.2 <- c()
                     # transform label into 1 and 0
                     label.vec.num <-
-                        as.character((sam_table %>% select(input_da_condition))[, 1])
+                        as.character((sam_table %>% 
+                                select(input_da_condition))[, 1])
                     label.vec.save <- unique(label.vec.num)
-                    label.vec.num[label.vec.num == unique(label.vec.num)[1]] <- 1
+                    label.vec.num[label.vec.num == 
+                            unique(label.vec.num)[1]] <- 1
                     label.vec.num[label.vec.num != 1] <- 0
                     label.vec.num <- as.numeric(label.vec.num)
                     for (i in seq_len(nrow(sigtab))) {
@@ -147,7 +156,8 @@ differential_abundance <- function(MAE,
                     
                     
                     df.output.prevalence <-
-                        percent(round((num.1 + num.2) / ncol(count_table_tax), 4))
+                        percent(round((num.1 + num.2) / 
+                                ncol(count_table_tax), 4))
                     sigtab <- cbind(sigtab, df.output.prevalence)
                     
                     
@@ -164,7 +174,8 @@ differential_abundance <- function(MAE,
                                 (sigtab[i, 5] / sum(label.vec.num == 1))
                             ))) /
                                     min(as.numeric(c(
-                                        (sigtab[i, 6] / sum(label.vec.num == 0)),
+                                        (sigtab[i, 6] / 
+                                                sum(label.vec.num == 0)),
                                         (sigtab[i, 5] / sum(label.vec.num == 1))
                                     )))), digits = 2)
                     }
@@ -175,8 +186,10 @@ differential_abundance <- function(MAE,
                     
                     # total num
                     num_total <- length(label.vec.num)
-                    sigtab[, 5] <- paste0(sigtab[, 5], "/", sum(label.vec.num == 1))
-                    sigtab[, 6] <- paste0(sigtab[, 6], "/", sum(label.vec.num == 0))
+                    sigtab[, 5] <- paste0(sigtab[, 5], "/", 
+                        sum(label.vec.num == 1))
+                    sigtab[, 6] <- paste0(sigtab[, 6], "/", 
+                        sum(label.vec.num == 0))
                     
                     # if y is numeric, make the output table easier
                     if (is.numeric((sam_table %>%
@@ -233,12 +246,15 @@ differential_abundance <- function(MAE,
                         # transform label into 1 and 0
                         label.vec.num <- as.character((sam_table %>%
                                 select(input_da_condition))[, 1])
-                        label.vec.num[label.vec.num == combination_mat[1, j]] <- 1
-                        label.vec.num[label.vec.num == combination_mat[2, j]] <- 0
+                        label.vec.num[label.vec.num == 
+                                combination_mat[1, j]] <- 1
+                        label.vec.num[label.vec.num == 
+                                combination_mat[2, j]] <- 0
                         label.vec.num <- as.numeric(label.vec.num)
                         for (i in seq_len(nrow(sigtab_tmp))) {
                             species.index <-
-                                which(rownames(count_table_tax) == sigtab_tmp[i, 1])
+                                which(rownames(count_table_tax) == 
+                                        sigtab_tmp[i, 1])
                             num.1 <- c(
                                 num.1,
                                 sum((count_table_tax[
@@ -271,15 +287,19 @@ differential_abundance <- function(MAE,
                                 round(
                                     (max(as.numeric(c(
                                         (sigtab_tmp[i, 6] /
-                                                sum(label.vec == combination_mat[2, j])),
+                                            sum(label.vec == 
+                                                    combination_mat[2, j])),
                                         (sigtab_tmp[i, 5] /
-                                                sum(label.vec == combination_mat[1, j]))
+                                            sum(label.vec == 
+                                                    combination_mat[1, j]))
                                     ))) /
                                             min(as.numeric(c(
                                                 (sigtab_tmp[i, 6] /
-                                                        sum(label.vec == combination_mat[2, j])),
+                                                    sum(label.vec == 
+                                                        combination_mat[2, j])),
                                                 (sigtab_tmp[i, 5] /
-                                                        sum(label.vec == combination_mat[1, j]))
+                                                    sum(label.vec == 
+                                                        combination_mat[1, j]))
                                             )))),
                                     digits = 2
                                 )
@@ -331,7 +351,8 @@ differential_abundance <- function(MAE,
         sam_table %<>% df_char_to_factor()
         # filter low count microbes
         count_table_tax <-
-            count_table_tax[base::rowSums(count_table_tax) >= log10(min_num_filter), ]
+            count_table_tax[base::rowSums(count_table_tax) >= 
+                    log10(min_num_filter), ]
         # print(rowSums(count_table_tax))
         # print(min_num_filter)
         # print(rowSums(count_table_tax) >= min_num_filter)

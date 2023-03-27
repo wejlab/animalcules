@@ -24,7 +24,8 @@ relabu_barplot(
 
 \item{order_organisms}{A character list of organisms to send to top}
 
-\item{sort_by}{Sort bars by one of c("nosort", "conditions", "organisms", "alphabetically")}
+\item{sort_by}{Sort bars by one of 
+c("nosort", "conditions", "organisms", "alphabetically")}
 
 \item{group_samples}{A bool specifying whether to group samples}
 

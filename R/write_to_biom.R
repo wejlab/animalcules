@@ -44,7 +44,9 @@ write_to_biom <- function(MAE, path_to_output) {
                 }
             }
         } else {
-            warning("Please check why the number of taxonomy levels is less than 6.")
+            warning(
+                "Please check why the number of taxonomy levels is less than 6."
+                )
         }
     }
     

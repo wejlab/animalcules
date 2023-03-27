@@ -40,7 +40,7 @@ diversity_beta_heatmap <- function(MAE,
     tax_table <- as.data.frame(rowData(microbe)) # organism x taxlev
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     
     # Sum counts by taxon level and return counts
     counts_table %<>%
@@ -63,7 +63,8 @@ diversity_beta_heatmap <- function(MAE,
             as.factor
         )
         # create formula
-        frm <- as.formula(paste0("~", paste(colnames(tax_table), collapse = "/")))
+        frm <- as.formula(paste0("~", paste(colnames(tax_table), 
+            collapse = "/")))
         
         # create phylo object
         tr <- suppressWarnings(as.phylo(frm, data = tax_table))
@@ -152,7 +153,8 @@ diversity_beta_heatmap <- function(MAE,
         
         # Y-axis of subplot
         m <- data.matrix(df.sam)
-        m.row.normalized <- apply(m, 2, function(x) (x - min(x)) / (max(x) - min(x)))
+        m.row.normalized <- apply(m, 2, function(x) (x - min(x)) / 
+                (max(x) - min(x)))
         hm.sam.y <- plot_ly(
             x = colnames(m.row.normalized),
             y = rownames(m.row.normalized),
@@ -174,7 +176,8 @@ diversity_beta_heatmap <- function(MAE,
         
         # X-axis of subplot
         m <- data.matrix(df.sam)
-        m.row.normalized <- apply(m, 2, function(x) (x - min(x)) / (max(x) - min(x)))
+        m.row.normalized <- apply(m, 2, function(x) (x - min(x)) / 
+                (max(x) - min(x)))
         m.row.normalized <- t(m.row.normalized)
         m.row.normalized <-
             m.row.normalized[order(match(

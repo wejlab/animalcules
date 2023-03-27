@@ -1,12 +1,12 @@
 #' Perform a beta diversity test
 #'
 #' @param MAE A Multi-Assay Experiment object. Required.
-#' @param tax_level The taxon level at which organisms should be grouped. Required.
+#' @param tax_level The taxon level at which organisms should be grouped. Req'd.
 #' @param input_beta_method Can be either "bray" or "jaccard". Required.
-#' @param input_select_beta_condition Which condition should be used to group samples?
+#' @param input_select_beta_condition Condition to group samples
 #' Should be a character string of a colData column name. Required.
-#' @param input_select_beta_stat_method The test to be used. Can be one of either
-#' "PERMANOVA", "Wilcoxon rank sum test", or "Kruskal-Wallis". Required.
+#' @param input_select_beta_stat_method The test to be used. Can be one of
+#' either "PERMANOVA", "Wilcoxon rank sum test", or "Kruskal-Wallis". Required.
 #' @param input_num_permutation_permanova The number of permutations to be used.
 #' @return A plotly object.
 #'
@@ -91,7 +91,8 @@ diversity_beta_test <- function(MAE,
         for (i in seq_len(nrow(dist.mat))) {
             for (j in seq_len(nrow(dist.mat))) {
                 if (sam_table$condition[i] ==
-                        unique(sam_table$condition)[1] & sam_table$condition[j] ==
+                        unique(sam_table$condition)[1] & 
+                        sam_table$condition[j] ==
                         unique(sam_table$condition)[1]) {
                     dist.within.a <- c(dist.within.a, dist.mat[i, j])
                 } else if (sam_table$condition[i] ==

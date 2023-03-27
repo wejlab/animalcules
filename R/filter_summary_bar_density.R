@@ -36,7 +36,7 @@ filter_summary_bar_density <- function(MAE,
     # host <- MAE_subset[['HostGenetics']]
     sam_table <- as.data.frame(colData(microbe)) # sample x condition
     counts_table <-
-        as.data.frame(assays(microbe))[, rownames(sam_table)] # organism x sample
+        as.data.frame(assays(microbe))[, rownames(sam_table)] #organism x sample
     
     # Add count summary data to sample table
     sam_table[, "Reads"] <- colSums(counts_table[, rownames(sam_table)])
@@ -65,7 +65,9 @@ filter_summary_bar_density <- function(MAE,
             type = "scatter", mode = "lines",
             fill = "tozeroy"
         ) %>%
-            layout(title = cov, xaxis = list(title = cov), yaxis = list(title = "Density"))
+            layout(title = cov, 
+                xaxis = list(title = cov), 
+                yaxis = list(title = "Density"))
         num.density$elementId <- NULL
         return(num.density)
     } else {
