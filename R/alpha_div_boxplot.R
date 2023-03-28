@@ -57,7 +57,7 @@ alpha_div_boxplot <- function(MAE,
     if (!is.character(sam_table$condition)) {
         # plot alpha diversity boxplot
         g <- ggplot2::ggplot(sam_table, ggplot2::aes(condition,
-            .data$richness,
+            "richness",
             text = rownames(sam_table),
             color = condition
         )) +
@@ -69,7 +69,7 @@ alpha_div_boxplot <- function(MAE,
     } else {
         # plot alpha diversity boxplot
         g <- ggplot2::ggplot(sam_table, ggplot2::aes(condition,
-            .data$richness,
+            "richness",
             text = rownames(sam_table),
             color = condition
         )) +

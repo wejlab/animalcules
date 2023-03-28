@@ -14,7 +14,7 @@ diversities_help <- function(counts_table, index = "all", zeroes = TRUE) {
     if (length(index) > 1) {
         tab <- NULL
         for (idx in index) {
-            tab <- cbind(tab, diversities_help(.data$x, 
+            tab <- cbind(tab, diversities_help("x", 
                 index = idx, 
                 zeroes = TRUE))
         }
