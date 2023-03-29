@@ -28,7 +28,6 @@ Depends:
 Imports:
     ape,
     assertthat,
-    biomformat,
     caret,
     covr,
     DESeq2,
@@ -62,6 +61,7 @@ Imports:
     XML
 Suggests:
     BiocStyle,
+    biomformat,
     devtools,
     knitr,
     rmarkdown,

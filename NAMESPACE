@@ -52,7 +52,6 @@ import(ape, except = where)
 import(ape, except = where)
 
 import(assertthat)
-import(biomformat, except = c(colnames, rownames))
 import(caret)
 import(covr)
 import(dplyr)

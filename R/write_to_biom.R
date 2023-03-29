@@ -4,7 +4,6 @@
 #' @param path_to_output The folder to output biom file
 #' @return A message
 #'
-#' @rawNamespace import(biomformat, except = c(colnames, rownames))
 #' @import MultiAssayExperiment
 #' @importFrom Matrix Matrix
 #'
@@ -23,7 +22,7 @@ write_to_biom <- function(MAE, path_to_output) {
     
     counts_table_dge <- as(Matrix::Matrix(as.matrix(counts_table)), "dgeMatrix")
     
-    y <- make_biom(counts_table, sam_table, tax_table)
+    y <- biomformat::make_biom(counts_table, sam_table, tax_table)
     
     
     metadata <- list()
@@ -78,6 +77,6 @@ write_to_biom <- function(MAE, path_to_output) {
     
     y$columns <- y_cols_new
     
-    write_biom(y, path_to_output)
+    biomformat::write_biom(y, path_to_output)
     return("Successfully output the biom file!")
 }
