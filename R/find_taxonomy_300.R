@@ -10,8 +10,6 @@
 #'
 #' @export
 find_taxonomy_300 <- function(tids) {
-    # @importFrom httr set_config
-    # set_config(httr::config(http_version = 0))
     if (is.null(tids)) {
         return(NULL)
     }
