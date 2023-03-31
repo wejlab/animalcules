@@ -54,15 +54,16 @@ A list with a plotly object and summary table
 Dimensionality reduction through PCA
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 result <- dimred_umap(toy_data,
-                      tax_level="genus",
-                      color="AGE",
-                      shape="DISEASE",
-                      cx=1,
-                      cy=2,
-                      datatype="logcpm")
+  tax_level = "genus",
+  color = "AGE",
+  shape = "DISEASE",
+  cx = 1,
+  cy = 2,
+  datatype = "logcpm"
+)
 result$plot
 
 }

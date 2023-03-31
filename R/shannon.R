@@ -10,16 +10,15 @@
 
 # x: Species count vector
 shannon <- function(x) {
-
     # Ignore zeroes
     x <- x[x > 0]
-
+    
     # Species richness (number of species)
     S <- length(x)
-
+    
     # Relative abundances
-    p <- x/sum(x)
-
+    p <- x / sum(x)
+    
     # Shannon index
     (-sum(p * log(p)))
 }

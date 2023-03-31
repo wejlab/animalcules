@@ -16,15 +16,15 @@ diversity_beta_test(
 \arguments{
 \item{MAE}{A Multi-Assay Experiment object. Required.}
 
-\item{tax_level}{The taxon level at which organisms should be grouped. Required.}
+\item{tax_level}{The taxon level at which organisms should be grouped. Req'd.}
 
 \item{input_beta_method}{Can be either "bray" or "jaccard". Required.}
 
-\item{input_select_beta_condition}{Which condition should be used to group samples?
+\item{input_select_beta_condition}{Condition to group samples
 Should be a character string of a colData column name. Required.}
 
-\item{input_select_beta_stat_method}{The test to be used. Can be one of either
-"PERMANOVA", "Wilcoxon rank sum test", or "Kruskal-Wallis". Required.}
+\item{input_select_beta_stat_method}{The test to be used. Can be one of
+either "PERMANOVA", "Wilcoxon rank sum test", or "Kruskal-Wallis". Required.}
 
 \item{input_num_permutation_permanova}{The number of permutations to be used.}
 }
@@ -35,14 +35,15 @@ A plotly object.
 Perform a beta diversity test
 }
 \examples{
-data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- diversity_beta_test(toy_data,
-                         tax_level = 'genus',
-                         input_beta_method = 'bray',
-                         input_select_beta_condition = 'DISEASE',
-                         input_select_beta_stat_method = "Wilcoxon rank sum test",
-                         input_num_permutation_permanova = 999)
+  tax_level = "genus",
+  input_beta_method = "bray",
+  input_select_beta_condition = "DISEASE",
+  input_select_beta_stat_method = "Wilcoxon rank sum test",
+  input_num_permutation_permanova = 999
+)
 p
 
 }

@@ -24,11 +24,10 @@ License: Artistic-2.0
 URL: https://github.com/compbiomed/animalcules
 BugReports: https://github.com/compbiomed/animalcules/issues
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.2.0)
 Imports:
     ape,
     assertthat,
-    biomformat,
     caret,
     covr,
     DESeq2,
@@ -36,7 +35,6 @@ Imports:
     DT,
     forcats,
     ggplot2,
-    glmnet,
     GUniFrac,
     lattice,
     limma,
@@ -45,9 +43,9 @@ Imports:
     methods,
     MultiAssayExperiment,
     plotly,
-    plotROC,
     rentrez,
     reshape2,
+    ROCit,
     S4Vectors (>= 0.23.19),
     scales,
     shiny,
@@ -62,6 +60,8 @@ Imports:
     XML
 Suggests:
     BiocStyle,
+    biomformat,
+    devtools,
     knitr,
     rmarkdown,
     testthat,
@@ -71,4 +71,4 @@ VignetteBuilder:
 biocViews: Microbiome, Metagenomics, Coverage, Visualization
 Encoding: UTF-8
 LazyData: false
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3

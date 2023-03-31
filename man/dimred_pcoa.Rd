@@ -39,15 +39,16 @@ A list with a plotly object and summary table
 Dimensionality reduction through PCoA
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 result <- dimred_pcoa(toy_data,
-                      tax_level="genus",
-                      color="AGE",
-                      shape="DISEASE",
-                      axx=1,
-                      axy=2,
-                      method="bray")
+  tax_level = "genus",
+  color = "AGE",
+  shape = "DISEASE",
+  axx = 1,
+  axy = 2,
+  method = "bray"
+)
 result$plot
 result$table
 

@@ -5,29 +5,31 @@
 #' @param higher_level Higher taxon level to upsample to
 #' @return A organism x sample data frame of counts
 #'
-#' @examples	
-#' toy_data <- readRDS(system.file("extdata/toy_data.rds", package = "animalcules"))
+#' @examples
+#' toy_data <- readRDS(system.file("extdata/toy_data.rds", 
+#' package = "animalcules"))
 #' tax_table <- toy_data$tax_table
 #' sam_table <- toy_data$sam_table
-#' counts_table <- toy_data$counts_table 
+#' counts_table <- toy_data$counts_table
 #' counts_table <- upsample_counts(counts_table, tax_table, "phylum")
-#' 
+#'
 #' @import magrittr
 #' @import reshape2
 #' @import SummarizedExperiment
 #'
 #' @export
 upsample_counts <- function(counts_table, tax_table, higher_level) {
-    counts_table$higher_level = tax_table[[higher_level]]
+    . <- NULL
+    counts_table$higher_level <- tax_table[[higher_level]]
     counts_table <- reshape2::melt(counts_table, id.vars = "higher_level") %>%
-    S4Vectors::aggregate(. ~ 
-        variable + higher_level, ., sum) %>% 
-        reshape2::dcast(higher_level ~ variable) %>% 
+        S4Vectors::aggregate(. ~
+                variable + higher_level, ., sum) %>%
+        reshape2::dcast(higher_level ~ variable) %>%
         as.data.frame()
     rownames(counts_table) <- counts_table$higher_level
     counts_table$higher_level <- NULL
     # remove others
-    counts_table <- counts_table[which(rownames(counts_table) != "others"),]
+    counts_table <- counts_table[which(rownames(counts_table) != "others"), ]
     return(counts_table)
 }
 
@@ -37,17 +39,17 @@ upsample_counts <- function(counts_table, tax_table, higher_level) {
 #' @return A organism x sample data frame of relative abundances
 #'
 #' @examples
-#' counts_to_relabu(matrix(seq_len(12),4))
+#' counts_to_relabu(matrix(seq_len(12), 4))
 #'
 #' @import magrittr
 #' @import SummarizedExperiment
 #'
 #' @export
 counts_to_relabu <- function(counts_table) {
-    prop.table(as.matrix(counts_table), 2) %>% 
-    as.data.frame() %>% 
-    magrittr::set_colnames(colnames(counts_table)) %>% 
-    magrittr::set_rownames(rownames(counts_table))
+    prop.table(as.matrix(counts_table), 2) %>%
+        as.data.frame() %>%
+        magrittr::set_colnames(colnames(counts_table)) %>%
+        magrittr::set_rownames(rownames(counts_table))
 }
 
 #' Covert a counts table to a relative abundances table
@@ -56,19 +58,21 @@ counts_to_relabu <- function(counts_table) {
 #' @return A organism x sample data frame of logcpm counts
 #'
 #' @examples
-#' logcpm <- counts_to_logcpm(as.data.frame(matrix(seq_len(12),4)))
+#' logcpm <- counts_to_logcpm(as.data.frame(matrix(seq_len(12), 4)))
 #'
 #' @import magrittr
 #' @import SummarizedExperiment
 #'
 #' @export
 counts_to_logcpm <- function(counts_table) {
-    vapply(as.data.frame(counts_table), 
-           function(x) log10(x * 1e+06/sum(x) + 1),
-           c(rep(1.0,nrow(counts_table)))) %>%
-    as.data.frame() %>% 
-    magrittr::set_colnames(colnames(counts_table)) %>% 
-    magrittr::set_rownames(rownames(counts_table))
+    vapply(
+        as.data.frame(counts_table),
+        function(x) log10(x * 1e+06 / sum(x) + 1),
+        c(rep(1.0, nrow(counts_table)))
+    ) %>%
+        as.data.frame() %>%
+        magrittr::set_colnames(colnames(counts_table)) %>%
+        magrittr::set_rownames(rownames(counts_table))
 }
 
 #' Modify samples of multi-assay experiment object
@@ -79,26 +83,29 @@ counts_to_logcpm <- function(counts_table) {
 #' @return A multi-assay experiment object
 #'
 #' @examples
-#' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+#' data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 #' toy_data <- readRDS(data_dir)
-#' subset <- mae_pick_samples(toy_data, 
-#' isolate_samples=c('subject_9', 
-#' 'subject_14'))
+#' subset <- mae_pick_samples(toy_data,
+#'   isolate_samples = c(
+#'     "subject_9",
+#'     "subject_14"
+#'   )
+#' )
 #'
 #' @import MultiAssayExperiment
 #'
 #' @export
-mae_pick_samples <- function(MAE, 
-                             isolate_samples = NULL, 
-                             discard_samples = NULL) {
+mae_pick_samples <- function(MAE,
+    isolate_samples = NULL,
+    discard_samples = NULL) {
     # Isolate all of these samples
     if (!is.null(isolate_samples)) {
         MAE <- MAE[, isolate_samples, ]
     }
     # Discard all of these samples
     if (!is.null(discard_samples)) {
-        id = rownames(colData(MAE))
-        id_isolate = id[!id %in% discard_samples]
+        id <- rownames(colData(MAE))
+        id_isolate <- id[!id %in% discard_samples]
         MAE <- MAE[, id_isolate, ]
     }
     return(MAE)
@@ -112,17 +119,18 @@ mae_pick_samples <- function(MAE,
 #' @return A multi-assay experiment object
 #'
 #' @examples
-#' data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+#' data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 #' toy_data <- readRDS(data_dir)
-#' subset <- mae_pick_organisms(toy_data, 
-#' isolate_organisms=c('ti|001', 'ti|002'))
+#' subset <- mae_pick_organisms(toy_data,
+#'   isolate_organisms = c("ti|001", "ti|002")
+#' )
 #'
 #' @import MultiAssayExperiment
 #'
 #' @export
-mae_pick_organisms <- function(MAE, 
-                            isolate_organisms = NULL, 
-                            discard_organisms = NULL) {
+mae_pick_organisms <- function(MAE,
+    isolate_organisms = NULL,
+    discard_organisms = NULL) {
     # Isolate all of these organisms
     if (!is.null(isolate_organisms)) {
         MAE <- MAE[isolate_organisms, , ]
@@ -130,8 +138,8 @@ mae_pick_organisms <- function(MAE,
     # Discard all of these organisms
     if (!is.null(discard_organisms)) {
         microbe <- MAE[["MicrobeGenetics"]]
-        id = rownames(as.data.frame(assays(microbe)))
-        id_isolate = id[!id %in% discard_organisms]
+        id <- rownames(as.data.frame(assays(microbe)))
+        id_isolate <- id[!id %in% discard_organisms]
         MAE <- MAE[id_isolate, , ]
     }
     return(MAE)
@@ -144,7 +152,6 @@ mae_pick_organisms <- function(MAE,
 #'
 #' @examples
 #' df_char_to_factor(matrix(seq_len(12)))
-#'
 #'
 #' @export
 df_char_to_factor <- function(df) {
@@ -189,7 +196,6 @@ is_categorical <- function(v) {
         } else {
             return(TRUE)
         }
-        
     } else {
         return(TRUE)
     }

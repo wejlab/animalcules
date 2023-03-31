@@ -20,7 +20,8 @@ relabu_heatmap(
 
 \item{tax_level}{The taxon level used for organisms}
 
-\item{sort_by}{Sort bars by one of c('nosort', 'conditions', 'organisms', 'alphabetically')}
+\item{sort_by}{Sort bars by one of 
+c('nosort', 'conditions', 'organisms', 'alphabetically')}
 
 \item{sample_conditions}{Plot conditions e.g. c('SEX', 'AGE')}
 
@@ -39,12 +40,13 @@ A plotly object
 Plot heatmap of sample level counts in logcpm
 }
 \examples{
-data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- relabu_heatmap(toy_data,
-                   tax_level='genus',
-                   sort_by='conditions',
-                   sample_conditions=c('SEX', 'AGE'))
+  tax_level = "genus",
+  sort_by = "conditions",
+  sample_conditions = c("SEX", "AGE")
+)
 p
 
 }

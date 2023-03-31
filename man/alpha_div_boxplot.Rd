@@ -13,13 +13,14 @@ alpha_div_boxplot(
 )
 }
 \arguments{
-\item{MAE}{A multi-assay experiment object}
+\item{MAE}{A multi-assay experiment object. Required.}
 
-\item{tax_level}{The taxon level used for organisms}
+\item{tax_level}{The taxon level used for organisms. Required.}
 
-\item{condition}{Which condition to group samples}
+\item{condition}{Which condition to group samples. Required.}
 
-\item{alpha_metric}{Which alpha diversity metric to use}
+\item{alpha_metric}{Which alpha diversity metric to use. Required. Can be one
+of:"inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage", "unit"}
 }
 \value{
 A plotly object
@@ -28,12 +29,13 @@ A plotly object
 Alpha diversity boxplot
 }
 \examples{
-data_dir = system.file('extdata/MAE.rds', package = 'animalcules')
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- alpha_div_boxplot(toy_data,
-                       tax_level = 'genus',
-                       condition = 'DISEASE',
-                       alpha_metric = 'shannon')
+  tax_level = "genus",
+  condition = "DISEASE",
+  alpha_metric = "shannon"
+)
 p
 
 }

@@ -24,7 +24,8 @@ relabu_barplot(
 
 \item{order_organisms}{A character list of organisms to send to top}
 
-\item{sort_by}{Sort bars by one of c("nosort", "conditions", "organisms", "alphabetically")}
+\item{sort_by}{Sort bars by one of 
+c("nosort", "conditions", "organisms", "alphabetically")}
 
 \item{group_samples}{A bool specifying whether to group samples}
 
@@ -45,14 +46,15 @@ A plotly object
 Plot bar plots of sample and group level relative abundance
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 p <- relabu_barplot(toy_data,
-                    tax_level="family",
-                    order_organisms=c('Retroviridae'),
-                    sort_by="organisms",
-                    sample_conditions=c('SEX', 'AGE'),
-                    show_legend=TRUE)
+  tax_level = "family",
+  order_organisms = c("Retroviridae"),
+  sort_by = "organisms",
+  sample_conditions = c("SEX", "AGE"),
+  show_legend = TRUE
+)
 p
 
 }

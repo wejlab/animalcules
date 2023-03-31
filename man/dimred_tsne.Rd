@@ -42,16 +42,17 @@ A list with a plotly object and cached data
 Dimensionality reduction through t-SNE
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 results <- dimred_tsne(toy_data,
-                       tax_level="phylum",
-                       color="AGE",
-                       shape="GROUP",
-                       k="3D",
-                       initial_dims=30,
-                       perplexity=10,
-                       datatype="logcpm")
+  tax_level = "phylum",
+  color = "AGE",
+  shape = "GROUP",
+  k = "3D",
+  initial_dims = 30,
+  perplexity = 10,
+  datatype = "logcpm"
+)
 results$plot
 
 }

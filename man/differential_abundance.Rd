@@ -36,14 +36,14 @@ A output dataframe
 Differential abundance analysis
 }
 \examples{
-data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
 toy_data <- readRDS(data_dir)
 differential_abundance(toy_data,
-tax_level="phylum",
-input_da_condition=c("DISEASE"),
-min_num_filter = 2,
-input_da_padj_cutoff = 0.5,
-method = "DESeq2")
-
+  tax_level = "phylum",
+  input_da_condition = c("DISEASE"),
+  min_num_filter = 2,
+  input_da_padj_cutoff = 0.5,
+  method = "DESeq2"
+)
 
 }

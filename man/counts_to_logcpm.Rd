@@ -16,6 +16,6 @@ A organism x sample data frame of logcpm counts
 Covert a counts table to a relative abundances table
 }
 \examples{
-logcpm <- counts_to_logcpm(as.data.frame(matrix(seq_len(12),4)))
+logcpm <- counts_to_logcpm(as.data.frame(matrix(seq_len(12), 4)))
 
 }

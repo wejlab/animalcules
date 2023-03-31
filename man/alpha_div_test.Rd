@@ -7,7 +7,7 @@
 alpha_div_test(sam_table, alpha_stat)
 }
 \arguments{
-\item{sam_table}{A dataframe with 2 cols, richness and condition}
+\item{sam_table}{A dataframe with 2 cols, richness and condition. Required.}
 
 \item{alpha_stat}{Wilcoxon rank sum test or T-test for the test}
 }
@@ -18,8 +18,10 @@ A dataframe
 Get alpha diversity
 }
 \examples{
-df_test <- data.frame(richness = seq_len(10),
-condition = c(rep(1,5), rep(0,5)))
-alpha_div_test(df_test,alpha_stat='Wilcoxon rank sum test')
+df_test <- data.frame(
+  richness = seq_len(10),
+  condition = c(rep(1, 5), rep(0, 5))
+)
+alpha_div_test(df_test, alpha_stat = "Wilcoxon rank sum test")
 
 }

@@ -10,10 +10,10 @@
 
 simpson_index <- function(x) {
     # Relative abundances
-    p <- x/sum(x)
-
+    p <- x / sum(x)
+    
     # Simpson index
     lambda <- sum(p^2)
-
+    
     lambda
 }
