@@ -51,14 +51,15 @@ diversity_beta_test <- function(MAE,
         upsample_counts(tax_table_init, tax_level)
     
     # change tax table size
-    tax_table <- tax_table_init %>%
+    tax_table_int <- tax_table_init %>%
         dplyr::select(seq_len(dplyr::all_of(tax_level))) %>%
         dplyr::arrange(dplyr::across(dplyr::starts_with(tax_level))) %>%
         dplyr::distinct(.keep_all = TRUE) %>%
         # Remove columns consisting of only NA's
-        dplyr::select_if(~ sum(!is.na(.)) > 0) %>%
+        dplyr::select_if(~ sum(!is.na(.)) > 0)
         # factorize each column
-        dplyr::mutate(dplyr::across(.fns = factor))
+    cols <- colnames(tax_table_int)
+    tax_table <- dplyr::mutate(tax_table_int, dplyr::across(.cols = all_of(cols), .fns = factor))
     # Genera must also be in the counts_table rownames
     ind <- tax_table[, tax_level] %in% rownames(counts_table)
     tax_table <- tax_table[ind, ]

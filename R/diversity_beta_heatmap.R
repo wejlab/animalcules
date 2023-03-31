@@ -170,8 +170,8 @@ diversity_beta_heatmap <- function(MAE,
                 yaxis = list(
                     showticklabels = FALSE,
                     type = "category", ticks = ""
-                ),
-                orientation = TRUE
+                )#,
+                #orientation = TRUE
             )
         
         # X-axis of subplot
@@ -204,8 +204,8 @@ diversity_beta_heatmap <- function(MAE,
                 yaxis = list(
                     title = "",
                     tickangle = -45
-                ),
-                orientation = TRUE
+                )#,
+                #orientation = TRUE
             )
     }
     

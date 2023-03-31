@@ -128,7 +128,7 @@ differential_abundance <- function(MAE,
                     # transform label into 1 and 0
                     label.vec.num <-
                         as.character((sam_table %>% 
-                                select(input_da_condition))[, 1])
+                                select(all_of(input_da_condition)))[, 1])
                     label.vec.save <- unique(label.vec.num)
                     label.vec.num[label.vec.num == 
                             unique(label.vec.num)[1]] <- 1
@@ -193,7 +193,7 @@ differential_abundance <- function(MAE,
                     
                     # if y is numeric, make the output table easier
                     if (is.numeric((sam_table %>%
-                            select(input_da_condition))[, 1])) {
+                            select(all_of(input_da_condition)))[, 1])) {
                         sigtab <- sigtab[, c(1, 2, 3, 4, 7)]
                     }
                     
@@ -207,7 +207,7 @@ differential_abundance <- function(MAE,
             # we need to combine results for each comparison
             sigtab <- NULL
             label.vec <- as.character((sam_table %>%
-                    select(input_da_condition))[, 1])
+                    select(all_of(input_da_condition)))[, 1])
             combination_mat <- utils::combn(sort(unique(label.vec)), 2)
             # print(combination_mat)
             for (j in seq(ncol(combination_mat))) {
@@ -245,7 +245,7 @@ differential_abundance <- function(MAE,
                         num.2 <- c()
                         # transform label into 1 and 0
                         label.vec.num <- as.character((sam_table %>%
-                                select(input_da_condition))[, 1])
+                                select(all_of(input_da_condition)))[, 1])
                         label.vec.num[label.vec.num == 
                                 combination_mat[1, j]] <- 1
                         label.vec.num[label.vec.num == 

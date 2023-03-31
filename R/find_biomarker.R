@@ -156,7 +156,7 @@ find_biomarker <- function(MAE,
     
     roc_plot <- ggplot2::ggplot(data = plot_dat, ggplot2::aes(x = 'FPR', y = 'TPR')) +
         ggplot2::geom_line(ggplot2::aes_string(x = 'FPR', y = 'TPR', col = base::shQuote("Empirical ROC curve"))) +
-        ggplot2::geom_abline(ggplot2::aes(intercept = 0, slope = 1, col = "Chance line"), size = 1,
+        ggplot2::geom_abline(ggplot2::aes(intercept = 0, slope = 1, col = "Chance line"), linewidth = 1,
             linetype = "dashed", show.legend = FALSE, alpha = 0.5) +
         ggplot2::labs(x = "1-Specificity (FPR)", y = "Sensitivity (TPR)",
             title = "Emperical ROC Curve", subtitle = this_label) +
