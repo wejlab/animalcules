@@ -11,6 +11,10 @@
 
 write_to_biom <- function(MAE, path_to_output) {
     # Extract data
+    if (!requireNamespace("biomformat", quietly = TRUE)) {
+        stop("Package 'biomformat' required to continue.",
+            "Please install before proceeding.")
+    }
     microbe <- MAE[["MicrobeGenetics"]] # double bracket subsetting is easier
     
     tax_table <- as.data.frame(SummarizedExperiment::rowData(microbe))
@@ -20,7 +24,7 @@ write_to_biom <- function(MAE, path_to_output) {
         rownames(sam_table)
     ] # organism x sample
     
-    counts_table_dge <- as(Matrix::Matrix(as.matrix(counts_table)), "dgeMatrix")
+    counts_table_dge <- as(Matrix::Matrix(as.matrix(counts_table)), "unpackedMatrix")
     
     y <- biomformat::make_biom(counts_table, sam_table, tax_table)
     
