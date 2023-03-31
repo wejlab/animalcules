@@ -7,7 +7,7 @@
 alpha_div_test(sam_table, alpha_stat)
 }
 \arguments{
-\item{sam_table}{A dataframe with 2 cols, richness and condition}
+\item{sam_table}{A dataframe with 2 cols, richness and condition. Required.}
 
 \item{alpha_stat}{Wilcoxon rank sum test or T-test for the test}
 }

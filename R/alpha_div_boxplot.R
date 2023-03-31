@@ -1,9 +1,10 @@
 #' Alpha diversity boxplot
 #'
-#' @param MAE A multi-assay experiment object
-#' @param tax_level The taxon level used for organisms
-#' @param condition Which condition to group samples
-#' @param alpha_metric Which alpha diversity metric to use
+#' @param MAE A multi-assay experiment object. Required.
+#' @param tax_level The taxon level used for organisms. Required.
+#' @param condition Which condition to group samples. Required.
+#' @param alpha_metric Which alpha diversity metric to use. Required. Can be one
+#' of:"inverse_simpson", "gini_simpson", "shannon", "fisher", "coverage", "unit"
 #' @return A plotly object
 #'
 #' @examples

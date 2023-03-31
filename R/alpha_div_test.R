@@ -1,6 +1,6 @@
 #' Get alpha diversity
 #'
-#' @param sam_table A dataframe with 2 cols, richness and condition
+#' @param sam_table A dataframe with 2 cols, richness and condition. Required.
 #' @param alpha_stat Wilcoxon rank sum test or T-test for the test
 #' @return A dataframe
 #' @importFrom methods as
