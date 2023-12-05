@@ -27,6 +27,13 @@ editor_options:
 
 ```{r, include=FALSE}
 knitr::opts_chunk$set(comment = "#", message = FALSE)
+
+if (!requireNamespace("devtools", quietly = TRUE)) {
+    install.packages("devtools")
+}
+
+library(devtools)
+
 devtools::load_all(".")
 library(SummarizedExperiment)
 ```
