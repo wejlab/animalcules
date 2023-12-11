@@ -1,6 +1,6 @@
 Package: animalcules
 Title: Interactive microbiome analysis toolkit
-Version: 1.9.3
+Version: 1.9.4
 Authors@R: c(
     person("Yue", "Zhao", , "yuezh@bu.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0001-5257-5103")),
