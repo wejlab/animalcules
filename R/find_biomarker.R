@@ -98,7 +98,7 @@ find_biomarker <- function(MAE,
         imp_plot_pre <- biom_pre |> dplyr::filter(ind) |>
             dplyr::mutate(biomarker = forcats::fct_inorder(biomarker))
         importance_plot <- ggplot2::ggplot(imp_plot_pre) +
-            ggplot2::geom_col(ggplot2::aes_string(x = 'biomarker', y = 'importance')) +
+            ggplot2::geom_col(ggplot2::aes(x = biomarker, y = .data$importance)) +
             ggplot2::coord_flip() +
             ggplot2::theme_bw()
     } else {
@@ -116,7 +116,7 @@ find_biomarker <- function(MAE,
         importance_plot <-  biom_pre |> dplyr::filter(ind) |>
             dplyr::mutate(biomarker = forcats::fct_inorder(biomarker)) |>
             ggplot2::ggplot() +
-            ggplot2::geom_col(ggplot2::aes_string(x = 'biomarker', y = 'importance')) +
+            ggplot2::geom_col(ggplot2::aes(x = biomarker, y = .data$importance)) +
             ggplot2::coord_flip() +
             ggplot2::theme_bw()
     }
@@ -155,7 +155,7 @@ find_biomarker <- function(MAE,
     plot_dat <- tibble::tibble(FPR = this_rocit$FPR, TPR = this_rocit$TPR)
     
     roc_plot <- ggplot2::ggplot(data = plot_dat, ggplot2::aes(x = 'FPR', y = 'TPR')) +
-        ggplot2::geom_line(ggplot2::aes_string(x = 'FPR', y = 'TPR', col = base::shQuote("Empirical ROC curve"))) +
+        ggplot2::geom_line(ggplot2::aes(x = .data$FPR, y = .data$TPR, col = base::shQuote("Empirical ROC curve"))) +
         ggplot2::geom_abline(ggplot2::aes(intercept = 0, slope = 1, col = "Chance line"), linewidth = 1,
             linetype = "dashed", show.legend = FALSE, alpha = 0.5) +
         ggplot2::labs(x = "1-Specificity (FPR)", y = "Sensitivity (TPR)",

@@ -1,7 +1,14 @@
-## ---- include=FALSE-----------------------------------------------------------
-knitr::opts_chunk$set(comment = "#", message = FALSE)
-devtools::load_all(".")
-library(SummarizedExperiment)
+## ----include=FALSE, eval=FALSE------------------------------------------------
+#  knitr::opts_chunk$set(comment = "#", message = FALSE)
+#  
+#  if (!requireNamespace("devtools", quietly = TRUE)) {
+#      install.packages("devtools")
+#  }
+#  
+#  library(devtools)
+#  
+#  devtools::load_all(".")
+#  library(SummarizedExperiment)
 
 ## ----get_package, eval=FALSE--------------------------------------------------
 #  if (!requireNamespace("BiocManager", quietly = TRUE)) {
@@ -9,17 +16,17 @@ library(SummarizedExperiment)
 #  }
 #  BiocManager::install("compbiomed/animalcules")
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  if (!requireNamespace("devtools", quietly = TRUE)) {
 #      install.packages("devtools")
 #  }
 #  devtools::install_github("compbiomed/animalcules")
 
-## ----load, eval=FALSE---------------------------------------------------------
-#  library(animalcules)
-#  library(SummarizedExperiment)
+## ----load---------------------------------------------------------------------
+library(animalcules)
+library(SummarizedExperiment)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  run_animalcules()
 
 ## -----------------------------------------------------------------------------
@@ -27,12 +34,12 @@ data_dir <- system.file("extdata/TB_example_dataset.rds",
     package = "animalcules")
 MAE <- readRDS(data_dir)
 
-## ---- eval=FALSE--------------------------------------------------------------
+## ----eval=FALSE---------------------------------------------------------------
 #  data_dir <- "PATH_TO_THE_ANIMALCULES_FILE"
 #  MAE <- readRDS(data_dir)
 
 ## -----------------------------------------------------------------------------
-p <- filter_summary_pie_box(MAE,
+p <- animalcules::filter_summary_pie_box(MAE,
     samples_discard = c("SRR1204622"),
     filter_type = "By Metadata",
     sample_condition = "age_s"
