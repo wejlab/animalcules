@@ -1,15 +1,15 @@
 Package: animalcules
 Title: Interactive microbiome analysis toolkit
 Version: 1.19.1
-Authors@R: c(person(given="Yue", family="Zhao", email="yuezh@bu.edu",
-                    role=c("aut","cre"),
-                    comment = c(ORCID = "0000-0001-5257-5103")),
-             person(given="Anthony", family="Federico", email="anfed@bu.edu",
-             role=c("aut"),
-             comment = c(ORCID = "0000-0002-9200-1689")),
-             person(given=c("W.", "Evan"), family="Johnson", email="wej@bu.edu",
-             role=c("aut"),
-             comment = c(ORCID = "0000-0002-6247-6595")))
+Authors@R: c(person(given="Jessica", family="McClintock",
+                email="jessica.mcclintock@rutgers.edu", role=c("cre")),
+            person(given="Yue", family="Zhao", email="yuezh@bu.edu",
+                role=c("aut"), comment = c(ORCID = "0000-0001-5257-5103")),
+            person(given="Anthony", family="Federico", email="anfed@bu.edu",
+                role=c("aut"), comment = c(ORCID = "0000-0002-9200-1689")),
+            person(given=c("W.", "Evan"), family="Johnson", email="wej@bu.edu",
+                role=c("aut"),
+                comment = c(ORCID = "0000-0002-6247-6595")))
 Description:
     animalcules is an R package for utilizing up-to-date data analytics,
     visualization methods, and machine learning models to provide users
