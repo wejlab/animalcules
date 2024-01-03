@@ -1,6 +1,6 @@
 Package: animalcules
 Title: Interactive microbiome analysis toolkit
-Version: 1.19.1
+Version: 1.18.1
 Authors@R: c(person(given="Jessica", family="McClintock",
                 email="jessica.mcclintock@rutgers.edu", role=c("cre")),
             person(given="Yue", family="Zhao", email="yuezh@bu.edu",
