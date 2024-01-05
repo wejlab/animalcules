@@ -57,7 +57,12 @@ tabPanel("Diversity",
                 )
               ),
               plotlyOutput("BetaDiversityBoxplot")
-            )
+            ),
+            tabPanel("NMDS",
+                br(),
+                actionButton("beta_NMDS", "Plot NMDS", class = "btn-primary"),
+                plotlyOutput("betaDiversityNMDSPlot")
+            ),
             # ,tabPanel("Beta Diversity Table",
             #   br(),
             #   DT::dataTableOutput("table.beta"),
