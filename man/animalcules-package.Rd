@@ -17,10 +17,11 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Yue Zhao \email{yuezh@bu.edu} (\href{https://orcid.org/0000-0001-5257-5103}{ORCID})
+\strong{Maintainer}: Jessica McClintock \email{jessica.mcclintock@rutgers.edu}
 
 Authors:
 \itemize{
+  \item Yue Zhao \email{yuezh@bu.edu} (\href{https://orcid.org/0000-0001-5257-5103}{ORCID})
   \item Anthony Federico \email{anfed@bu.edu} (\href{https://orcid.org/0000-0002-9200-1689}{ORCID})
   \item W. Evan Johnson \email{wej@bu.edu} (\href{https://orcid.org/0000-0002-6247-6595}{ORCID})
 }

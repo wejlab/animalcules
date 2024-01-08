@@ -17,7 +17,7 @@ Traditional microbiome analysis such as alpha/beta diversity and differential ab
 
 ## Documentation
 
-Please check our website at https://compbiomed.github.io/animalcules-docs/
+Please check our website at https://wejlab.github.io/animalcules-docs/
 
 
 ## Citation
@@ -34,12 +34,12 @@ Please cite:
 
 ## Before Installation
 
-* Make sure R version is >= 4.0.0 and Bioconductor version is 3.14. Bioconductor could be updated by :
+* Make sure R version is >= 4.3.0 and Bioconductor version is 3.18. Bioconductor could be updated by :
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-BiocManager::install(version = "3.14")
+BiocManager::install(version = "3.18")
 ```
 
 ## Installation
@@ -50,7 +50,7 @@ BiocManager::install(version = "3.14")
 ``` r
 if (!requireNamespace("BiocManager", quietly=TRUE))
   install.packages("BiocManager")
-BiocManager::install("compbiomed/animalcules")
+BiocManager::install("wejlab/animalcules")
 
 ```
 
@@ -59,7 +59,7 @@ BiocManager::install("compbiomed/animalcules")
 ``` r
 if (!requireNamespace("devtools", quietly=TRUE))
   install.packages("devtools")
-devtools::install_github("compbiomed/animalcules")
+devtools::install_github("wejlab/animalcules")
 ```
 
 Run the animalcules shiny app!
