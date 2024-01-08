@@ -25,7 +25,7 @@ License: Artistic-2.0
 URL: https://github.com/compbiomed/animalcules
 BugReports: https://github.com/compbiomed/animalcules/issues
 Depends:
-    R (>= 4.2.0)
+    R (>= 4.3.0)
 Imports:
     ape,
     assertthat,
@@ -63,6 +63,7 @@ Suggests:
     BiocStyle,
     biomformat,
     devtools,
+    glmnet,
     knitr,
     rmarkdown,
     testthat,
