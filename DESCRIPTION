@@ -54,6 +54,7 @@ Imports:
     stats,
     SummarizedExperiment,
     tibble,
+    tidyr,
     tsne,
     umap,
     utils,

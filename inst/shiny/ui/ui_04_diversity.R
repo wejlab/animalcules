@@ -61,7 +61,7 @@ tabPanel("Diversity",
             tabPanel("NMDS",
                 br(),
                 actionButton("beta_NMDS", "Plot NMDS", class = "btn-primary"),
-                plotlyOutput("betaDiversityNMDSPlot")
+                plotOutput("betaDiversityNMDSPlot")
             ),
             # ,tabPanel("Beta Diversity Table",
             #   br(),

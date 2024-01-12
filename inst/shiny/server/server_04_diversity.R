@@ -107,10 +107,15 @@ output$beta.stat.test <- DT::renderDataTable({
   plotBetaBoxplotServerButton3()
 }, options = list(sDom  = '<"top">t<"bottom">ip'))
 
-plotBetaNMDSServerButton <- eventReactice(input$beta_NMDS, {
-    #run R code for NMDS
+plotBetaNMDSServerButton <- eventReactive(input$beta_NMDS, {
+    diversity_beta_NMDS(MAE = vals$MAE,
+        tax_level = input$taxl.beta,
+        input_beta_method = input$beta_method,
+        input_select_beta_condition = input$select_beta_condition) #,
+        #input_select_beta_stat_method = input$select_beta_stat_m ethod,
+        #input_num_permutation_permanova = input$num_permutation_permanova)
 })
 
-output$betaDiveristyNMDSPlot <- renderPlotly({
-    plotBetaNMDSServerButton()
-})
+output$betaDiversityNMDSPlot <- renderPlot({
+    plotBetaNMDSServerButton()}
+)
