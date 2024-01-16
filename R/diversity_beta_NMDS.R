@@ -8,10 +8,11 @@
 #' @return A plotly object/NMDS plot
 #'
 #' @import vegan
-#' @import tibble
-#' @import tidyr
 #' @import dplyr
-#' @import ggplot2
+#' @import ggforce
+#' @rawNamespace import(tibble, except = has_name)
+#' @rawNamespace import(tidyr, except = extract)
+#' @rawNamespace import(ggplot2, except = last_plot)
 #' @import SummarizedExperiment
 #'
 #' @export
@@ -20,6 +21,9 @@ diversity_beta_NMDS <- function(MAE,
     tax_level,
     input_beta_method,
     input_select_beta_condition) {
+    
+    # All variables used in ggplot to prevent no visible binding warning
+    condition <- NMDS1 <- NMDS2 <- MDS1 <- MDS2 <- c1 <- c2 <- NULL
     # Extract data
     microbe <- MAE[["MicrobeGenetics"]]
     # organism x taxlev
@@ -94,8 +98,8 @@ diversity_beta_NMDS <- function(MAE,
         dplyr::rename(c1 = NMDS1, c2 = NMDS2)
     
     NMDSplot <- cond_nmds %>%
-        left_join(centroids, by = "condition") %>%
-        ggplot(aes(x = MDS1, y = MDS2, col = `condition`)) +
+        dplyr::left_join(centroids, by = "condition") %>%
+        ggplot2::ggplot(aes(x = MDS1, y = MDS2, col = `condition`)) +
         ggplot2::geom_point() +
         ggplot2::labs(x = "Axis 1", y = "Axis 2",
             subtitle = "Bray-Curtis Dissimilarity") +

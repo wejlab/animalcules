@@ -35,6 +35,7 @@ Imports:
     dplyr,
     DT,
     forcats,
+    ggforce,
     ggplot2,
     GUniFrac,
     lattice,

@@ -30,6 +30,8 @@ diversity_beta_test <- function(MAE,
     input_select_beta_condition,
     input_select_beta_stat_method,
     input_num_permutation_permanova = 999) {
+    # prevent no visible binding for global variable warning
+    sam_table <- 
     # Extract data
     microbe <- MAE[["MicrobeGenetics"]]
     # organism x taxlev
@@ -85,52 +87,7 @@ diversity_beta_test <- function(MAE,
             permutations = input_num_permutation_permanova
         )
         return(beta.div)
-    } else if(input_select_beta_stat_method == "NMDS"){
-        NMDS_res <- vegan::metaMDS(dist.mat, # Our community-by-species matrix
-            k=2, try = 20, trymax = 500) # The number of reduced dimensions
-        
-        # Large scatter around lines would indicate failure to preserve fit
-        #vegan::stressplot(NMDS_res)
-        
-        NMDS_res_2 <- NMDS_res %>%
-            magrittr::extract2("points") %>%
-            as.data.frame() %>%
-            tibble::rownames_to_column("Sample.ID")
-        
-        cond_nmds <- sam_table_new %>%
-            left_join(NMDS_res_2, "Sample.ID")
-        
-        tmp <- sam_table_new %>%
-            select(Group, timepoint)
-        
-        fit_grp <- vegan::envfit(NMDS_res, as.data.frame(sam_table_new$Group), perm = 999)
-        fit_timepoint <- vegan::envfit(NMDS_res, as.data.frame(sam_table_new$timepoint), perm = 999)
-        fit_FAFI <- vegan::envfit(NMDS_res, as.data.frame(sam_table_new$FAFI), perm = 999)
-        
-        fit_all <- vegan::envfit(NMDS_res, as.data.frame(tmp), perm = 999)
-        centroids <- fit_grp$factors$centroids %>%
-            as.data.frame() %>%
-            tibble::rownames_to_column("Group") %>%
-            tidyr::separate(Group, c(NA, "Group"), sep = ".Group") %>%
-            dplyr::rename(c1 = NMDS1, c2 = NMDS2)
-        
-        NMDS_plot <- cond_nmds %>%
-            left_join(centroids, by = "Group") %>%
-            ggplot(aes(x = MDS1, y = MDS2, col = `Group`)) +
-            ggplot2::geom_point() +
-            ggplot2::labs(x = "Axis 1", y = "Axis 2",
-                subtitle = "Bray-Curtis Dissimilarity") +
-            ggplot2::ggtitle("NMDS of Beta Diversity") +
-            ggforce::geom_mark_ellipse(aes(fill = Group), 
-                alpha = 0.1, expand = unit(0.2, "mm")) +
-            ggplot2::geom_point(aes(x = c1, y = c2),
-                shape = 8, size = 3) +
-            ggplot2::xlim(-0.5, 0.6) +
-            ggplot2::ylim(-0.6, 0.6) +
-            ggplot2::theme_classic()
-        return(NMDS_plot)
-    }
-    else {
+    }else {
         dist.within.a <- c()
         dist.within.b <- c()
         dist.between <- c()
