@@ -31,14 +31,14 @@ tabPanel("Diversity",
       sidebarLayout(
         sidebarPanel(
           selectizeInput('taxl.beta', 'Taxonomy Level', choices = tax.name, selected=tax.default),
-          selectizeInput('bdhm_select_conditions', 'Color Samples by Condition', choices=covariates.colorbar, multiple=TRUE),
-          radioButtons("bdhm_sort_by", "Sort By", c("No Sorting" = "nosort", "Conditions" = "conditions"), selected="nosort"),
-          selectInput("beta_method", "Choose distance metric:", choices = c("bray", "jaccard", 'unweighted unifrac', 'weighted unifrac'), selected="bray"),
-          actionButton("beta_heatmap", "Plot Heatmap", class = "btn-primary")
+          selectInput("beta_method", "Choose distance metric:", choices = c("bray", "jaccard", 'unweighted unifrac', 'weighted unifrac'), selected="bray")
         ),
         mainPanel(
           tabsetPanel(
             tabPanel("Heatmap",
+                selectizeInput('bdhm_select_conditions', 'Color Samples by Condition', choices=covariates.colorbar, multiple=TRUE),
+                radioButtons("bdhm_sort_by", "Sort By", c("No Sorting" = "nosort", "Conditions" = "conditions"), selected="nosort"),
+                actionButton("beta_heatmap", "Plot Heatmap", class = "btn-primary"),
               br(),
               plotlyOutput("BetaDiversityHeatmap", width="800px", height="600px")
             ),
@@ -57,7 +57,13 @@ tabPanel("Diversity",
                 )
               ),
               plotlyOutput("BetaDiversityBoxplot")
-            )
+            ),
+            tabPanel("NMDS",
+                br(),
+                selectInput("select_beta_condition_NMDS", "Select condition", covariates.colorbar),
+                actionButton("beta_NMDS", "Plot NMDS", class = "btn-primary"),
+                plotOutput("betaDiversityNMDSPlot")
+            ),
             # ,tabPanel("Beta Diversity Table",
             #   br(),
             #   DT::dataTableOutput("table.beta"),

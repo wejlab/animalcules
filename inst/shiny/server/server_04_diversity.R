@@ -95,62 +95,6 @@ output$BetaDiversityBoxplot <- renderPlotly({
   plotBetaBoxplotServerButton()
 })
 
-
-#
-# # Beta diversity table
-# do_beta_table <- function() {
-#   shinyInput <- vals$shiny.input
-#   physeq1 <- shinyInput$pstat
-#
-#   if (input$taxl.beta=="no rank")  {
-#       if (input$select_beta_div_method == "bray"){
-#       #First get otu_table and transpose it:
-#       dist.matrix <- t(data.frame(otu_table(physeq1)))
-#       #Then use vegdist from vegan to generate a bray distance object:
-#       dist.mat <- vegdist(dist.matrix, method = "bray")
-#   }else{
-#       dist.mat = phyloseq::distance(physeq1, method = input$select_beta_div_method)
-#   }
-#
-#   } else{
-#     physeq2 <- tax_glom(physeq1, input$taxl.beta)
-#       if (input$select_beta_div_method == "bray"){
-#       #First get otu_table and transpose it:
-#       dist.matrix <- t(data.frame(otu_table(physeq2)))
-#       #Then use vegdist from vegan to generate a bray distance object:
-#       dist.mat <- vegdist(dist.matrix, method = "bray")
-#       }else{
-#       dist.mat = phyloseq::distance(physeq2, method = input$select_beta_div_method)
-#       }
-#   }
-#   dist.mat <- as.matrix(dist.mat)
-#   return(dist.mat)
-# }
-# plotBetaBoxplotServerButton2 <- eventReactive(input$beta_heatmap,{
-#   do_beta_table()
-# })
-# output$table.beta <- DT::renderDataTable({
-#   plotBetaBoxplotServerButton2()
-# }, options=list(paging = TRUE, scrollX = TRUE))
-#
-# # Download beta diversity table
-# output$download_table_beta <- downloadHandler(
-#   filename = function() { paste('Beta_diversity_table', '.csv', sep='') },
-#   content = function(file) {
-#       shinyInput <- vals$shiny.input
-#     physeq1 <- shinyInput$pstat
-#
-#     if (input$taxl.beta=="no rank")  {
-#       dist.mat = phyloseq::distance(physeq1, method = input$select_beta_div_method)
-#     } else{
-#       physeq2 <- tax_glom(physeq1, input$taxl.beta)
-#       dist.mat = phyloseq::distance(physeq2, method = input$select_beta_div_method)
-#     }
-#     dist.mat <- as.matrix(dist.mat)
-#     write.csv(data.frame(dist.mat), file)
-#   }
-# )
-
 plotBetaBoxplotServerButton3 <- eventReactive(input$beta_boxplot, {
   diversity_beta_test(MAE = vals$MAE,
                     tax_level = input$taxl.beta,
@@ -162,3 +106,16 @@ plotBetaBoxplotServerButton3 <- eventReactive(input$beta_boxplot, {
 output$beta.stat.test <- DT::renderDataTable({
   plotBetaBoxplotServerButton3()
 }, options = list(sDom  = '<"top">t<"bottom">ip'))
+
+plotBetaNMDSServerButton <- eventReactive(input$beta_NMDS, {
+    diversity_beta_NMDS(MAE = vals$MAE,
+        tax_level = input$taxl.beta,
+        input_beta_method = input$beta_method,
+        input_select_beta_condition = input$select_beta_condition_NMDS) #,
+        #input_select_beta_stat_method = input$select_beta_stat_m ethod,
+        #input_num_permutation_permanova = input$num_permutation_permanova)
+})
+
+output$betaDiversityNMDSPlot <- renderPlot({
+    plotBetaNMDSServerButton()}
+)

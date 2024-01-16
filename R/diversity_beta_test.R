@@ -30,6 +30,8 @@ diversity_beta_test <- function(MAE,
     input_select_beta_condition,
     input_select_beta_stat_method,
     input_num_permutation_permanova = 999) {
+    # prevent no visible binding for global variable warning
+    sam_table <- 
     # Extract data
     microbe <- MAE[["MicrobeGenetics"]]
     # organism x taxlev
@@ -57,7 +59,7 @@ diversity_beta_test <- function(MAE,
         dplyr::distinct(.keep_all = TRUE) %>%
         # Remove columns consisting of only NA's
         dplyr::select_if(~ sum(!is.na(.)) > 0)
-        # factorize each column
+    # factorize each column
     cols <- colnames(tax_table_int)
     tax_table <- dplyr::mutate(tax_table_int, dplyr::across(.cols = all_of(cols), .fns = factor))
     # Genera must also be in the counts_table rownames
@@ -85,7 +87,7 @@ diversity_beta_test <- function(MAE,
             permutations = input_num_permutation_permanova
         )
         return(beta.div)
-    } else {
+    }else {
         dist.within.a <- c()
         dist.within.b <- c()
         dist.between <- c()
