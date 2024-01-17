@@ -23,7 +23,7 @@ Instructions:
 
 Running time: < 1s
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_042.png?raw=true)
+![](https://github.com/wejlab/materials/blob/master/animalcules/fig_042.png?raw=true)
 
 ### Categorize
 
@@ -40,4 +40,4 @@ Instructions:
 
 Running time: < 1s
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_043.png?raw=true)
+![](https://github.com/wejlab/materials/blob/master/animalcules/fig_043.png?raw=true)

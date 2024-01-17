@@ -68,7 +68,7 @@ Install the development version of the package from Bioconductor.
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
-BiocManager::install("compbiomed/animalcules")
+BiocManager::install("wejlab/animalcules")
 ```
 
 Or install the development version of the package from Github.
@@ -76,7 +76,7 @@ Or install the development version of the package from Github.
 if (!requireNamespace("devtools", quietly = TRUE)) {
     install.packages("devtools")
 }
-devtools::install_github("compbiomed/animalcules")
+devtools::install_github("wejlab/animalcules")
 ```
 
 # Load Packages
@@ -91,12 +91,12 @@ library(SummarizedExperiment)
 
 This command is to start the animalcules shiny app. 
 For shiny app tutorials, please go to 
-[our website](https://compbiomed.github.io/animalcules-docs/index.html),
+[our website](https://wejlab.github.io/animalcules-docs/index.html),
 and click the tab "Interactive Shiny Analysis".
 
 The rest of the vignette is for the command line version of animalcules,
 which could also be found in
-[our website](https://compbiomed.github.io/animalcules-docs/index.html),
+[our website](https://wejlab.github.io/animalcules-docs/index.html),
 and click the tab "Command Line Analysis".
 
 ```{r, eval=FALSE}
@@ -120,10 +120,10 @@ For users who would like to use their own dataset, please follow the
 following steps:
 
 * Use the shiny app to upload your dataset. [check shiny tutorial]
-(https://compbiomed.github.io/animalcules-docs/articles/rmd/upload.html)
+(https://wejlab.github.io/animalcules-docs/articles/rmd/upload.html)
 * Go to tab 2 "Data Summary and Filtering", and click the button 
 "Download Animalcules File". [check shiny tutorial]
-(https://compbiomed.github.io/animalcules-docs/articles/rmd/summary.html)
+(https://wejlab.github.io/animalcules-docs/articles/rmd/summary.html)
 * Load the downloaded .rds animalcules file and rename it as MAE in R.
 
 ```{r, eval=FALSE}

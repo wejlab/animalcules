@@ -75,5 +75,5 @@ navbar:
       href: reference/index.html
   right:
     - icon: fa-github
-      href: https://github.com/compbiomed/animalcules
+      href: https://github.com/wejlab/animalcules
 

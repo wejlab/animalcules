@@ -14,13 +14,13 @@
 #  if (!requireNamespace("BiocManager", quietly = TRUE)) {
 #      install.packages("BiocManager")
 #  }
-#  BiocManager::install("compbiomed/animalcules")
+#  BiocManager::install("wejlab/animalcules")
 
 ## ----eval=FALSE---------------------------------------------------------------
 #  if (!requireNamespace("devtools", quietly = TRUE)) {
 #      install.packages("devtools")
 #  }
-#  devtools::install_github("compbiomed/animalcules")
+#  devtools::install_github("wejlab/animalcules")
 
 ## ----load---------------------------------------------------------------------
 library(animalcules)
