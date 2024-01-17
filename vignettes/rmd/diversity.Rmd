@@ -18,7 +18,7 @@ Instructions:
 
 Running time: < 1s
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_035.png?raw=true)
+![](https://github.com/wejlab/materials/blob/master/animalcules/fig_035.png?raw=true)
 
 ### Beta Diversity Heatmap
 
@@ -34,7 +34,7 @@ Instructions:
 
 Running time: < 1s
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_036.png?raw=true)
+![](https://github.com/wejlab/materials/blob/master/animalcules/fig_036.png?raw=true)
 
 ### Beta Diversity Statistical Test
 
@@ -48,4 +48,4 @@ Instructions:
 * (Optional) Select the number of permutations if doing PERMANOVA. 
 * Click the button "Run"
 
-![](https://github.com/compbiomed/materials/blob/master/animalcules/fig_037.png?raw=true)
+![](https://github.com/wejlab/materials/blob/master/animalcules/fig_037.png?raw=true)

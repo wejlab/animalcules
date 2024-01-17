@@ -1,7 +1,7 @@
 # A notification ID
 # id <- NULL
 
-url <- a("website!", href="https://compbiomed.github.io/animalcules-docs/")
+url <- a("website!", href="https://wejlab.github.io/animalcules-docs/")
 output$tab <- renderUI({
   tagList("Need help? Check the docs on our", url)
 })

@@ -11,8 +11,8 @@ animalcules is an R package for utilizing up-to-date data analytics, visualizati
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/compbiomed/animalcules}
-  \item Report bugs at \url{https://github.com/compbiomed/animalcules/issues}
+  \item \url{https://github.com/wejlab/animalcules}
+  \item Report bugs at \url{https://github.com/wejlab/animalcules/issues}
 }
 
 }

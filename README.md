@@ -1,9 +1,9 @@
-## animalcules <img src="https://github.com/compbiomed/materials/blob/master/animalcules/animalcules_logo.png?raw=true" align="right" width="170" />
+## animalcules <img src="https://github.com/wejlab/materials/blob/master/animalcules/animalcules_logo.png?raw=true" align="right" width="170" />
 
 
 [![](https://img.shields.io/badge/Bioconductor-3.14-blue)](https://doi.org/doi:10.18129/B9.bioc.animalcules)
 [![](https://img.shields.io/badge/platforms-linux%20%7C%20osx%20%7C%20win-2a89a1.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/animalcules/)
-[![](https://img.shields.io/github/last-commit/compbiomed/animalcules.svg)](https://github.com/compbiomed/animalcules/commits/master)
+[![](https://img.shields.io/github/last-commit/wejlab/animalcules.svg)](https://github.com/wejlab/animalcules/commits/master)
 [![](https://img.shields.io/badge/lifecycle-steady-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![](https://bioconductor.org/shields/build/release/bioc/animalcules.svg)](http://bioconductor.org/checkResults/release/bioc-LATEST/animalcules/)
 
@@ -82,7 +82,7 @@ docker pull bucbm/animalcules:latest
 * Or if you'd like to build the Docker image from scratch
 
 ``` bash
-git clone https://github.com/compbiomed/animalcules
+git clone https://github.com/wejlab/animalcules
 cd animalcules
 docker build --tag bucbm/animalcules:latest .
 ```
