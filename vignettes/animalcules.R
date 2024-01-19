@@ -138,6 +138,14 @@ diversity_beta_test(
 )
 
 ## -----------------------------------------------------------------------------
+diversity_beta_NMDS(
+    MAE = MAE,
+    tax_level = "genus",
+    input_beta_method = "bray",
+    input_select_beta_condition = "Disease"
+)
+
+## -----------------------------------------------------------------------------
 result <- dimred_pca(MAE,
     tax_level = "genus",
     color = "age_s",
