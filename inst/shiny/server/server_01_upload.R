@@ -16,15 +16,15 @@ vals <- reactiveValues(
 observeEvent(input$upload_example,{
   withBusyIndicatorServer("upload_example", {
     if (input$example_data == "toy"){
-      data_dir = system.file("extdata/MAE.rds", package = "animalcules")
+      data_dir <- system.file("extdata/MAE.rds", package = "animalcules")
     } else if (input$example_data == "tb"){
-      data_dir = system.file("extdata/TB_example_dataset.rds", 
+      data_dir <- system.file("extdata/TB_example_dataset.rds", 
                              package = "animalcules")
     } else if (input$example_data == "asthma"){
-      data_dir = system.file("extdata/asthma_example_dataset.rds", 
+      data_dir <- system.file("extdata/asthma_example_dataset.rds", 
                              package = "animalcules")
     }
-    MAE_tmp = readRDS(data_dir)
+    MAE_tmp <- readRDS(data_dir)
     vals$MAE <- MAE_tmp
     vals$MAE_backup <- MAE_tmp
     # Update ui
@@ -107,12 +107,14 @@ updateCovariate <- function(session){
     updateSelectInput(session, "select_alpha_div_condition", choices = covariates)
     updateSelectInput(session, "select_beta_condition", choices = covariates.two.levels)
     updateSelectInput(session, "bdhm_select_conditions", choices = covariates.colorbar)
-
+    updateSelectInput(session, "select_beta_condition_NMDS", choices = covariates)
+    
     # Differential
     updateSelectInput(session, "da_condition", choices = covariates)
     updateSelectInput(session, "da_condition_covariate", choices = covariates)
     updateSelectInput(session, "da_condition_limma", choices = covariates)
     updateSelectInput(session, "da_condition_covariate_limma", choices = covariates)
+    
     # Biomarker
     updateSelectInput(session, "select_target_condition_biomarker", choices = covariates.two.levels)
 

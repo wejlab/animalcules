@@ -60,7 +60,7 @@ tabPanel("Diversity",
             ),
             tabPanel("NMDS",
                 br(),
-                selectInput("select_beta_condition_NMDS", "Select condition", covariates.colorbar),
+                selectInput("select_beta_condition_NMDS", "Select condition", choices=covariates),
                 actionButton("beta_NMDS", "Plot NMDS", class = "btn-primary"),
                 plotOutput("betaDiversityNMDSPlot")
             ),
