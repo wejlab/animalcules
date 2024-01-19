@@ -112,7 +112,7 @@ plotBetaNMDSServerButton <- eventReactive(input$beta_NMDS, {
         tax_level = input$taxl.beta,
         input_beta_method = input$beta_method,
         input_select_beta_condition = input$select_beta_condition_NMDS) #,
-        #input_select_beta_stat_method = input$select_beta_stat_m ethod,
+        #input_select_beta_stat_method = input$select_beta_stat_method,
         #input_num_permutation_permanova = input$num_permutation_permanova)
 })
 
