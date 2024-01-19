@@ -18,7 +18,7 @@ Instructions:
 
 Running time: < 1s
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_035.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_035.png?raw=true)
 
 ### Beta Diversity Heatmap
 
@@ -34,7 +34,7 @@ Instructions:
 
 Running time: < 1s
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_036.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_036.png?raw=true)
 
 ### Beta Diversity Statistical Test
 
@@ -49,7 +49,7 @@ Instructions:
 * Select the taxonomy level and distance metric in the left panel.
 * Click the button "Run"
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_037.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_037.png?raw=true)
 
 ### Beta Diversity NMDS Plot
 

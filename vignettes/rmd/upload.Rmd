@@ -33,7 +33,7 @@ Make sure:
 * All three files have the same file separator / same file type (e.g. csv).
 * All three files have the same format as seen in the example below:
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/count2.PNG?raw=true" width="1200">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/count2.PNG?raw=true" width="1200">
 
 Example files:
 
@@ -54,7 +54,7 @@ Each uploaded table will show up in the right panel.
 
 Running time: < 1s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/count.PNG?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/count.PNG?raw=true" width="500">
 
 ### Example Data
 
@@ -67,7 +67,7 @@ Instructions:
 
 Running time: < 0.5s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/example.PNG?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/example.PNG?raw=true" width="500">
 
 
 ### animalcules file
@@ -76,7 +76,7 @@ In animalcules, users could choose to save their dataset to a .rds file in the T
 
 Running time: < 0.5s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/animalcules_file.PNG?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/animalcules_file.PNG?raw=true" width="500">
 
 
 ### Phyloseq object
@@ -130,7 +130,7 @@ Instructions:
 
 Running time: < 0.5s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/biom.png?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/biom.png?raw=true" width="500">
 
 
 
@@ -163,7 +163,7 @@ Each uploaded table will show up in the right panel.
 
 Running time: < 1s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/countTi.png?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/countTi.png?raw=true" width="500">
 
 
 
@@ -194,7 +194,7 @@ Running time:
 * Test dataset A with 30 samples: 10.8s
 * Test dataset B with 587 samples: 22.1s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/pathoscope.PNG?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/pathoscope.PNG?raw=true" width="500">
 
 ### animalcules-id file
 
@@ -206,5 +206,5 @@ animalcules-id is a separate R pipeline that generates pathoscope-like outputs f
 
 Running time: < 1s
 
-<img src="https://github.com/wejlab/materials/blob/master/animalcules/animalcules_id.PNG?raw=true" width="500">
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/animalcules_id.PNG?raw=true" width="500">
 

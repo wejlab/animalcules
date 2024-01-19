@@ -22,4 +22,4 @@ Running time:
 * Test dataset with 30 samples and 427 microbes: 2.48s
 * Test dataset with 587 samples and 203 microbes: 46.59s
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_038.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_038.png?raw=true)
