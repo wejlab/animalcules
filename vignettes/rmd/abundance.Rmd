@@ -22,7 +22,7 @@ Instructions:
 * (Optional) Adjust plot height
 * Click the button "Plot"
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_047.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_047.png?raw=true)
 
 ### Relative Abundance Heatmap
 
@@ -38,7 +38,7 @@ Instructions:
 * (Optional) Adjust plot height
 * Click the button "Plot"
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_048.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_048.png?raw=true)
 
 ### Relative Abundance Boxplot
 
@@ -53,4 +53,4 @@ Instructions:
 * Select a datatype to use
 * Click the button "Plot"
 
-![](https://github.com/wejlab/materials/blob/master/animalcules/fig_049.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_049.png?raw=true)
