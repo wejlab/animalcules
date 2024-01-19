@@ -325,6 +325,18 @@ diversity_beta_test(
     input_num_permutation_permanova = 999
 )
 ```
+## Beta Diversity NMDS Plot
+
+Display an NMDS plot based on the selected beta diversity analysis performed.
+
+```{r}
+diversity_beta_NMDS(
+    MAE = MAE,
+    tax_level = "genus",
+    input_beta_method = "bray",
+    input_select_beta_condition = "Disease"
+)
+```
 
 # Dimensionality Reduction
 
