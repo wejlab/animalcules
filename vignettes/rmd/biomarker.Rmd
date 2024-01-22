@@ -9,14 +9,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### Run Biomarker
 
-To identify biomarkers for a specific binary classification problem, users need to specify the taxonomy level and target variable. In the Advanced Options, users could also specify the number of CV repeats, number of CV folds, and top biomarker proportion. For example, with a 3-repeats 3-fold cross validation, animalcules will randomly split the dataset into 3 fold and run CV, then this procedure is repeated 3 times (each time has different random data split). The top biomarker proportion defines the threshold for selecting biomarkers: animalcules will generate an classification model based importance score for each microbe/feature, and will choose the top 20% (suppose the proportion is 0.2 as default) features as the biomarkers.
+To identify biomarkers for a specific binary classification problem, users need to specify the taxonomy level and target variable. In the Advanced Options, users can also specify the number of CV repeats, number of CV folds, and top biomarker proportion. For example, with a 3-repeats 3-fold cross validation, animalcules will randomly split the dataset into 3 fold and run CV, then this procedure is repeated 3 times (each time will have a different random data split). The top biomarker proportion defines the threshold for selecting biomarkers: animalcules will generate a classification model based importance score for each microbe/feature and will choose the top 20% (based on the selected proportion which is 0.2 as default) features as the biomarkers.
 
-Also, users could choose binary classification models including logistic regression and random forest. After clicking the button "Run", the biomarker list will shouw up at the right-hand side.
+Users can also choose binary classification models including logistic regression and random forest. After clicking the button "Run", the biomarker list will show up at the right-hand side.
 
 Note:
 
-* If the dataset is too small or unbalanced, cross-validation can't be applied. You will see error messages like: NA/NaN/Inf in foreign function call.
-* The target variable can not contain any special characters, otherwise there will be an error.
+* If the dataset is too small or unbalanced, cross-validation cannot be applied. You will see an error messages like: "NA/NaN/Inf in foreign function call".
+* The target variable cannot contain any special characters, otherwise there will be an error.
 
 Instructions:
 
@@ -37,12 +37,12 @@ Running time:
 
 ### Importance Plot
 
-Ranked feature importance score plot for the identified biomarkers is showed here. The higher score is, the more important this feature (species, genus, ..) is regarding the prediction power.
+Ranked feature importance score plot for the identified biomarkers is showed here. The higher the score, the more important this feature (species, genus, ..) in regard to the prediction power.
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_040.png?raw=true)
 
 ### CV ROC Plot
 
-The identified biomarkers were used to re-train the model via a cross-validation, and ROC plot is showed automatically in this subtab. 
+The identified biomarkers were used to re-train the model via a cross-validation and a ROC plot is showed automatically in this tab. 
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_041.png?raw=true)

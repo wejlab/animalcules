@@ -114,6 +114,15 @@ physeq <- phyloseq(OTU, TAX, SAM)
 
 
 
+### Other file Types
+Select the "Alternative Upload" option to upload additional file types, including:
+* BIOM file
+* Count file with tax id
+* PathoScope file
+* animalcules-id file
+
+<img src="https://github.com/wejlab/animalcules-docs/blob/master/images/alternative_upload.png?raw=true" width="500">
+
 ### Biom file
 
 Make sure:
@@ -124,7 +133,7 @@ Make sure:
 
 Instructions: 
 
-* Click the "Advanced Options" checkbox and select "BIOM file"
+* Click the "Alternative Upload" checkbox and select "BIOM file"
 * Click the "Browse..." button to upload required .biom file.
 * Click the button "Upload". 
 
@@ -151,7 +160,7 @@ Make sure:
 
 Instructions: 
 
-* Click the "Advanced Options" checkbox and select "Count file with tax id"
+* Click the "Alternative Upload" checkbox and select "Count file with tax id"
 * Click the "Browse..." button to upload required two files.
 * Input which column in the annotation file is the sample name (default is 1).
 * Check if the annotation file has header (default is TRUE).
@@ -176,8 +185,8 @@ To analyze pathoscope outputs, users need to upload pathoscope reports (use brow
 
 Instructions: 
 
-* Click the "Advanced Options" checkbox and select "PathoScope file"
-* Click the "Browse..." button to upload required files.
+* Click the "Alternative Upload" checkbox and select "PathoScope file"
+* Click the "Browse..." buttons to upload required files.
 * Specify the pathoscope report file suffix (default is -sam-report.tsv).
 * Input which column in the annotation file is the sample name (default is 1).
 * Check if the annotation file has header (default is TRUE).
@@ -200,7 +209,7 @@ Running time:
 
 animalcules-id is a separate R pipeline that generates pathoscope-like outputs from fastq files. The required input is the animalcules-id generated .rds file. Here users could choose either EM count assay or Best hit assay. 
 
-* Click the "Advanced Options" checkbox and select "animalcules-id file"
+* Click the "Alternative Upload" checkbox and select "animalcules-id file"
 * Click the "Browse..." button to upload required files.
 * Choose EM count or best hit option
 
