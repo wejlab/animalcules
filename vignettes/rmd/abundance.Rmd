@@ -17,9 +17,12 @@ Instructions:
 * (Optional) Add a color bar for one of more sample conditions
 * (Optional) Group samples and aggregate abundances by a condition
 * (Optional) Sort samples by conditions or the presence of specific organisms
-* (Optional) Isolate or discard samples
-* (Optional) Hide or show legend
-* (Optional) Adjust plot height
+* (Optional) Select "Advanced Options" to view:
+    * (Optional) Isolate or discard samples
+    * (Optional) Order organisms
+    * (Optional) Hide or show legend (default is to show legend)
+    * (Optional) Adjust plot height
+    * (Optional) Adjust plot width
 * Click the button "Plot"
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_047.png?raw=true)
@@ -33,9 +36,12 @@ Instructions:
 * Select taxonomy level in the menu (default is genus)
 * (Optional) Add a color bar for one of more sample conditions
 * (Optional) Sort samples by conditions or the presence of specific organisms
-* (Optional) Isolate or discard samples
-* (Optional) Use raw counts or log(CPM)
-* (Optional) Adjust plot height
+* (Optional) Select "Advanced Options"
+    * (Optional) Isolate organisms or samples
+    * (Optional) Discard samples
+    * (Optional) Use raw counts or log(CPM) (default is log(CPM))
+    * (Optional) Adjust plot height
+    * (Optional) Adjust plot width
 * Click the button "Plot"
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_048.png?raw=true)
@@ -51,6 +57,9 @@ Instructions:
 * (Optional) Separate plots when viewing multiple organisms on the same taxonomy level
 * Select a condition to compare organisms across
 * Select a datatype to use
+* (Optional) Select "Advanced Options"
+    * (Optional) Select a custom plot height
+    * (Optional) Select a custom plot width
 * Click the button "Plot"
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_049.png?raw=true)

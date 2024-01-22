@@ -5,15 +5,15 @@ output: html_document
 
 ### Alpha Diversity
 
-Users could visualize the alpha diversity boxplot comparing different levels within a selected condition by selecting taxonomy levels and target condition. In Advanced options, users could choose different alpha diversity metrics including Shannon, Inverse Simpson and Gini Simpson. 
+Users can visualize alpha diversity with a boxplot comparing different levels within a selected condition by selecting taxonomy levels and target condition. Users can also choose different alpha diversity metrics including Shannon, Inverse Simpson and Gini Simpson. 
 
-The statistical test will be performed between levels in the selected target condition. Multiple statistical test methods will be applied automatically, including T-test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Test p-values will be showed in the result table.
+The statistical test will be performed between levels in the selected target condition. Appropriate statistical test methods will be applied automatically, which may include T-test, Kruskal-Wallis rank sum test, or Wilcoxon rank sum test. Test p-values will be shown in the result table.
 
 Instructions:
 
 * Select taxonomy level in the menu (default is genus).
 * Select the target variable for alpha diversity comparison.
-* (Optional) Select alpha diversity metrics.
+* (Optional) Select alpha diversity metrics (default is Inverse Simpson).
 * Click the button "Run"
 
 Running time: < 1s
@@ -22,7 +22,7 @@ Running time: < 1s
 
 ### Beta Diversity Heatmap
 
-Users could visualize the beta diversity by selecting taxonomy levels, different beta diversity metrics (including Bray-curtis or Jaccard), and  sample color condition. Samples could also be sorted by the selected condition.
+Users can visualize the beta diversity with a heatmap by selecting the "Beta Diversity" tab within "Diversity" tab. Users should select the taxonomy level they wish to view, as well as the beta diversity metric of interest (including Bray-curtis or Jaccard), and which sample conditions they wish the heatmap to display. Samples can also be sorted by the selected condition.
 
 Instructions:
 
@@ -38,15 +38,15 @@ Running time: < 1s
 
 ### Beta Diversity Statistical Test
 
-To check if there is significant beta diversity difference existing between two communities, users could also perform statistical test like PERMANOVA test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Note that the left panel options apply to both beta diversity heatmap and statistical test. Test p-value will be showed in the "Pr(>F)" column from the result table.
+To check if there is significant beta diversity difference existing between two communities, users can also perform statistical test like PERMANOVA test, Kruskal-Wallis rank sum test, and Wilcoxon rank sum test. Note that the left panel options apply to both beta diversity heatmap and statistical test. Test p-value will be showed in the "Pr(>F)" column from the result table.
 
 Instructions:
 
-* Click the tab "Boxplot" in the right panel next to the tab "Heatmap"
+* Click the "Boxplot" tab in the right panel next to the "Heatmap" tab.
+* Select the taxonomy level and distance metric in the left panel.
 * Select the test type (default is PERMANOVA). 
 * Select the target variable.
 * (Optional) Select the number of permutations if doing PERMANOVA (default is 999).
-* Select the taxonomy level and distance metric in the left panel.
 * Click the button "Run"
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_037.png?raw=true)
@@ -59,6 +59,9 @@ Instructions:
 
 * Click the tab "NMDS" in the right panel next to the tab "Boxplot"
 * Select taxonomy level in the left panel menu (default is genus).
-* Select beta diversity metrics int he left panel manu (default is bray-curtis).
+* Select beta diversity metrics in the left panel menu (default is bray-curtis).
 * Select the target variable/condition
 * Click the button "Plot NMDS"
+
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/NMDS_plot.png?raw=true)
+

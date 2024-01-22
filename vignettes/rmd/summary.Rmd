@@ -16,10 +16,10 @@ Instructions:
 * Filter by either metadata or microbe information
 * Select a condition to filter by
 * Choose a cutoff point or range of acceptable values
-* (Optional) Discard samples or organisms
+* (Optional) Discard samples or organisms (must click Discard to apply selections)
 * Click filter to filter the datasaet
 * Click reset to remove all previous applied filters
-* Click download to export the modified animacules file for later use
+* Click download (either animalcules or BIOM file) to export the modified animacules file for later use
 
 Running time: < 1s
 
@@ -31,13 +31,29 @@ It is often necessary to bin continuous data into categories when performing ana
 
 Instructions:
 
-* Select a continous variable to categorize
+* Select a continuous variable to categorize
 * (Optional) Choose the number of bins
 * (Optional) Choose a new variable name
-* (Optional) Set custom breaks to define the new bins
-* (Optional) Add custom labels to each of the bins
+* (Optional) Select "Advanced Options"
+    * (Optional) Set custom breaks to define the new bins
+    * (Optional) Add custom labels to each of the bins
 * Click "Create Bins"
 
 Running time: < 1s
 
 ![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_043.png?raw=true)
+
+### Assay Dashboard
+
+This feature allows a user to view the data for individual assays. 
+
+Instructions:
+
+* Select the assay to view
+* Select the tax level for the rows
+* Select "View"
+* (Optional) Click "Download" to save teh specific assay for other analysis
+
+Running time: < 1s
+
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/assay_dashboard.png?raw=true)

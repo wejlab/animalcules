@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ### PCA
 
-A wrapper for conduction 2D and 3D Principal Component Analysis.
+A wrapper for conducting 2D and 3D Principal Component Analysis.
 
 Instructions:
 
@@ -27,7 +27,7 @@ Instructions:
 
 ### PCoA
 
-A wrapper for conduction 2D and 3D Principal Coordinate Analysis.
+A wrapper for conducting 2D and 3D Principal Coordinate Analysis.
 
 Instructions:
 
@@ -45,7 +45,7 @@ Instructions:
 
 ### UMAP
 
-A wrapper for conduction 2D and 3D Uniform Manifold Approximation and Projection.
+A wrapper for conducting 2D and 3D Uniform Manifold Approximation and Projection.
 
 Instructions:
 
@@ -63,7 +63,7 @@ Instructions:
 * (Optional) Select a datatype to use
 * Click the button "Plot" to plot
 
-![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_044.png?raw=true)
+![](https://github.com/wejlab/animalcules-docs/blob/master/images/fig_umap.png?raw=true)
 
 ### t-SNE
 
