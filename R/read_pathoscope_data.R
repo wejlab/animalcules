@@ -25,7 +25,8 @@ read_pathoscope_data <- function(input_dir = ".",
             pattern = pattern,
             full.names = TRUE
         )
-        input.files.name.vec <- list.files(input_dir)
+        input.files.name.vec <- list.files(input_dir,
+            pattern = paste0(pathoreport_file_suffix, "$"))
     } else {
         filenames <- input.files.path.vec
     }
