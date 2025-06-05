@@ -27,6 +27,7 @@ ui <- navbarPage(
 )
 
 server <- function(input, output, session) {
+  options(shiny.maxRequestSize = 100*1024^2) # 100MB limit
   source(file.path("server", "server_01_upload.R"),  local = TRUE)$value
   source(file.path("server", "server_02_filter.R"),  local = TRUE)$value
   source(file.path("server", "server_03_relabu.R"),  local = TRUE)$value
